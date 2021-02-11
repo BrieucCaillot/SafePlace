@@ -1,6 +1,5 @@
 import { createSSRApp } from 'vue';
 import App from './app.vue';
-import el from 'element-plus';
 import createRouter from './router/';
 import { renderToString } from '@vue/server-renderer';
 

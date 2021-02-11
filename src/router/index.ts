@@ -1,7 +1,7 @@
-import { createRouter, createWebHistory, createMemoryHistory } from 'vue-router';
+import { createRouter, createWebHistory, createMemoryHistory } from 'vue-router'
 
 export default function () {
-  const routerHistory = import.meta.env.SSR === false ? createWebHistory() : createMemoryHistory();
+  const routerHistory = import.meta.env.SSR === false ? createWebHistory() : createMemoryHistory()
 
   return createRouter({
     history: routerHistory,
@@ -9,8 +9,8 @@ export default function () {
       {
         path: '/',
         name: 'index',
-        component: () => import('@/views/index.vue')
+        component: () => import('@/views/index.vue'),
       },
-    ]
-  });
+    ],
+  })
 }

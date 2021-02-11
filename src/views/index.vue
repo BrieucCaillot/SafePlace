@@ -1,16 +1,14 @@
 <template>
-  <h1>Safe Place</h1>
+  <h2>Hello from the home page :p</h2>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
+export default {
   name: 'Index',
   data() {
     return {
-      value: false
-    };
-  }
-});
+      title: 'Safe Place',
+    }
+  },
+}
 </script>
