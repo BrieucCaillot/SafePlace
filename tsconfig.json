@@ -16,5 +16,5 @@
       "@img/*": ["src/assets/img/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "prerender.js"]
 }

@@ -10,14 +10,12 @@
 </template>
 
 <script lang="ts">
-import '@/scss/style.scss';
-
 export default {
   name: 'App',
   data() {
     return {
       title: 'Safe Place',
-    };
+    }
   },
-};
+}
 </script>
