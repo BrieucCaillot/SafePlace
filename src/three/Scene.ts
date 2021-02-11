@@ -1,7 +1,9 @@
 import * as THREE from 'three'
 import ThreeObject from './Abstract/ThreeObject'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 export default class Scene {
+  public controls: OrbitControls
   public scene: THREE.Scene
   public renderer: THREE.WebGLRenderer
   public camera: THREE.Camera
@@ -21,6 +23,7 @@ export default class Scene {
     this.renderer.setClearColor(0x000000)
 
     this.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000)
+    this.controls = new OrbitControls(this.camera, canvas)
 
     this.camera.position.z = 5
 
