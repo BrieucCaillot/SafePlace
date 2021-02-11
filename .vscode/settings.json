@@ -1,9 +1,8 @@
 {
   "svn.ignoreMissingSvnWarning": true,
-	"eslint.validate": [
-    "typescript"
-  ],
+  "eslint.validate": ["typescript"],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
+  "editor.tabSize": 2
 }
