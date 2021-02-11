@@ -32,21 +32,21 @@ export default class Scene {
     this.renderer.render(this.scene, this.camera)
   }
 
-  public Add(object3d: ThreeObject) {
-    this.objects.push(object3d)
-    this.scene.add(object3d.object3d)
-    object3d.OnMount()
+  public Add(threeObject: ThreeObject) {
+    this.objects.push(threeObject)
+    this.scene.add(threeObject.object3d)
+    threeObject.OnMount()
   }
 
   public AddSeveral(objects: ThreeObject[]) {
     objects.forEach((o) => this.Add(o))
   }
 
-  public Remove(object3d: ThreeObject) {
-    const index = this.objects.indexOf(object3d)
+  public Remove(threeObject: ThreeObject) {
+    const index = this.objects.indexOf(threeObject)
     if (index === -1) return
-    object3d.OnUnmount()
-    this.scene.remove(object3d.object3d)
+    threeObject.OnUnmount()
+    this.scene.remove(threeObject.object3d)
     this.objects.splice(index, 1)
   }
 
