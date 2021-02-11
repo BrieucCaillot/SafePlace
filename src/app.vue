@@ -1,18 +1,16 @@
 <template>
-  <div class="container">
-    <h1>Safe Place</h1>
-    <router-view v-slot="{ Component }">
-      <Suspense>
-        <component :is="Component" />
-      </Suspense>
-    </router-view>
-  </div>
+  <h1>{{ title }}</h1>
 </template>
 
 <script lang="ts">
+import three from './three'
+
 export default {
   name: 'App',
   data() {
+    // Init Three Scene
+    three()
+
     return {
       title: 'Safe Place',
     }

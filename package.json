@@ -4,22 +4,15 @@
   "description": "Use vue3 vite typescript eslint SSR vue-router scss",
   "author": "Brieuc Caillot & Léon Baudoin",
   "scripts": {
-    "dev": "npm-run-all -p start lint",
-    "start": "node server",
+    "dev": "vite && npm-run-all -p start lint",
     "lint": "esw -w --cache --color --ext .ts,.vue,.tsx src/ --cache-location node_modules",
-    "build": "yarn build:client && yarn build:server",
-    "build:client": "vite build --ssrManifest --outDir dist/client",
-    "build:server": "vite build --ssr src/entry-server.js --outDir dist/server",
-    "serve": "cross-env NODE_ENV=production node server",
-    "server:data": "node server-data.js",
-    "test": "npm-run-all -s build serve"
+    "build": "vite build"
   },
   "dependencies": {
     "axios": "^0.21.0",
+    "howler": "^2.2.1",
     "three": "^0.125.2",
-    "vue": "^3.0.5",
-    "vue-router": "^4.0.0",
-    "vuex": "^4.0.0"
+    "vue": "^3.0.5"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.1",
