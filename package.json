@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^0.21.0",
+    "glslify": "^7.1.1",
     "howler": "^2.2.1",
     "three": "^0.125.2",
     "vue": "^3.0.5"
@@ -27,6 +28,9 @@
     "@vitejs/plugin-vue-jsx": "^1.0.2",
     "@vue/compiler-sfc": "^3.0.5",
     "@vue/server-renderer": "^3.0.5",
+    "babel": "^6.23.0",
+    "babel-plugin-component": "^1.1.1",
+    "babel-plugin-glslify": "^2.0.0",
     "compression": "^1.7.4",
     "cross-env": "^7.0.3",
     "eslint": "^7.14.0",
@@ -38,11 +42,27 @@
     "sass": "^1.30.0",
     "typescript": "^4.1.2",
     "vite": "^2.0.0-beta.64",
-    "vite-plugin-string": "^1.0.1"
+    "vite-plugin-string": "^1.0.1",
+    "vite-babel-plugin": "^0.0.2"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/BrieucKyo/SafePlace"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ],
+          "plugins": [
+            "glslify"
+          ]
+        }
+      ]
+    ]
   },
   "license": "MIT"
 }

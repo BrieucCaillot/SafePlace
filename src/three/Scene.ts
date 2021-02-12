@@ -6,10 +6,15 @@ export default class Scene {
   public controls: OrbitControls
   public scene: THREE.Scene
   public renderer: THREE.WebGLRenderer
-  public camera: THREE.Camera
+  public camera: THREE.PerspectiveCamera
   public objects: ThreeObject[] = []
+  public sizes = { width: 0, height: 0 }
 
   constructor(canvas: HTMLCanvasElement) {
+    // Set window sizes
+    this.sizes.width = window.innerWidth
+    this.sizes.height = window.innerHeight
+
     this.scene = new THREE.Scene()
 
     this.renderer = new THREE.WebGLRenderer({
@@ -17,15 +22,15 @@ export default class Scene {
       alpha: true,
       antialias: true,
     })
-    this.renderer.setSize(window.innerWidth, window.innerHeight)
+    this.renderer.setSize(this.sizes.width, this.sizes.height)
     this.renderer.setPixelRatio(window.devicePixelRatio)
 
     this.renderer.setClearColor(0x000000)
 
-    this.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000)
-    this.controls = new OrbitControls(this.camera, canvas)
-
+    this.camera = new THREE.PerspectiveCamera(50, this.sizes.width / this.sizes.height, 0.1, 1000)
     this.camera.position.z = 5
+
+    this.controls = new OrbitControls(this.camera, canvas)
 
     this.scene.add(this.camera)
   }
@@ -60,5 +65,19 @@ export default class Scene {
 
   public Delete() {
     this.CleanObjects()
+  }
+
+  public OnResize() {
+    // Update sizes
+    this.sizes.width = window.innerWidth
+    this.sizes.height = window.innerHeight
+
+    // Update camera
+    this.camera.aspect = this.sizes.width / this.sizes.height
+    this.camera.updateProjectionMatrix()
+
+    // Update renderer
+    this.renderer.setSize(this.sizes.width, this.sizes.height)
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   }
 }
