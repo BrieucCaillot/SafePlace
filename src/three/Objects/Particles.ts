@@ -3,10 +3,11 @@ import * as THREE from 'three'
 import fragmentShader from './fragmentShader.frag'
 import vertexShader from './vertexShader.vert'
 import Handtrack, { HandtrackResult } from '@/utils/events/Handtrack'
+import SingletonManager from '@/utils/SingletonManager'
 
 export default class Particles extends ThreeObject {
   public uniforms: { [name: string]: THREE.IUniform }
-  public handtrack: Handtrack
+  public handtrack: Handtrack = SingletonManager.Handtrack
 
   constructor() {
     super()
@@ -55,7 +56,6 @@ export default class Particles extends ThreeObject {
   }
 
   OnMount() {
-    this.handtrack = new Handtrack(document.querySelector('video') as HTMLVideoElement)
     this.handtrack.Load().then(() => {
       this.handtrack.Subscribe('all', this.UpdateMousePos)
     })

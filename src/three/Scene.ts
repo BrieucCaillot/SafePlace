@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import ThreeObject from './Abstract/ThreeObject'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import SingletonManager from '@/utils/SingletonManager'
 
 export default class Scene {
   public canvas: HTMLCanvasElement
@@ -18,6 +19,7 @@ export default class Scene {
     this.SetupSize()
     this.SetupRenderer()
     this.SetupCamera()
+    SingletonManager.createRaycaster(this.camera)
   }
 
   public Update() {

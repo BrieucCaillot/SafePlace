@@ -1,8 +1,10 @@
+import SingletonManager from '@/utils/SingletonManager'
 import Stats from 'stats.js'
 import SceneLayout from './SceneLayout'
 
 export default function () {
   if (typeof document === 'undefined') return
+  SingletonManager.createHandtrack(document.querySelector('video') as HTMLVideoElement)
   const scene = SceneLayout()
 
   const stats = new Stats()
