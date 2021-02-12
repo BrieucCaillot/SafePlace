@@ -13,9 +13,12 @@ type SingleHandtrackResult = {
   multiHandLandmarks: [HandLandmarks]
   multiHandedness: [Handedness]
 }
-type EmptyHandtrackResult = Record<string, never>
+type EmptyHandtrackResult = {
+  multiHandLandmarks: undefined
+  multiHandedness: undefined
+}
 
-type HandtrackResult = DoubleHandtrackResult | SingleHandtrackResult | EmptyHandtrackResult
+export type HandtrackResult = DoubleHandtrackResult | SingleHandtrackResult | EmptyHandtrackResult
 
 type HandtrackCallback = (r: HandtrackResult) => void
 

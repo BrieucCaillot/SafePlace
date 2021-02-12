@@ -11,11 +11,6 @@ export default {
   data() {
     // Init Three Scene
     three()
-    // const handtrack = new Handtrack(document.querySelector('video') as HTMLVideoElement)
-    // handtrack.Load().then(() => {
-    //   handtrack.StartCamera()
-    //   handtrack.Subscribe(console.log)
-    // })
 
     return {
       title: 'Safe Place',

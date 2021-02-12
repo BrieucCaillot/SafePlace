@@ -2,9 +2,11 @@ import ThreeObject from '../Abstract/ThreeObject'
 import * as THREE from 'three'
 import fragmentShader from './fragmentShader.frag'
 import vertexShader from './vertexShader.vert'
+import Handtrack, { HandtrackResult } from '@/utils/Handtrack'
 
 export default class Particles extends ThreeObject {
   public uniforms: { [name: string]: THREE.IUniform }
+  public handtrack: Handtrack
 
   constructor() {
     super()
@@ -53,14 +55,20 @@ export default class Particles extends ThreeObject {
   }
 
   OnMount() {
-    window.addEventListener('mousemove', this.UpdateMousePos)
+    this.handtrack = new Handtrack(document.querySelector('video') as HTMLVideoElement)
+    this.handtrack.Load().then(() => {
+      this.handtrack.StartCamera()
+    })
+    this.handtrack.Subscribe(this.UpdateMousePos)
   }
 
   OnUnmount() {
-    window.removeEventListener('mousemove', this.UpdateMousePos)
+    this.handtrack.Unsubscribe(this.UpdateMousePos)
   }
 
-  private UpdateMousePos({ clientX, clientY }: MouseEvent) {
-    this.uniforms.uMousePos.value.set(clientX / window.innerWidth, 1 - clientY / window.innerHeight)
+  private UpdateMousePos({ multiHandLandmarks }: HandtrackResult) {
+    if (typeof multiHandLandmarks === 'undefined') return
+    this.uniforms.uMousePos.value.set(1 - multiHandLandmarks[0][0].x, 1 - multiHandLandmarks[0][0].y)
+    // this.uniforms.uMousePos.value.set(clientX / window.innerWidth, 1 - clientY / window.innerHeight)
   }
 }

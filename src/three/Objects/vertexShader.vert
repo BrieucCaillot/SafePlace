@@ -11,6 +11,8 @@ uniform float uRows;
 uniform float uColumns;
 uniform float uSpacing;
 uniform float uTime;
+uniform vec2 uMousePos;
+
 attribute float aIndex;
 
 float remap(float value, float start1, float stop1, float start2, float stop2)
@@ -23,8 +25,9 @@ void main() {
 		mod(aIndex, uRows),
 		floor(aIndex / uColumns)
 	);
+	float dist = step(length(offset / vec2(uRows, uColumns) - uMousePos), .1) * 50.;
 	offset -= vec2(uRows, uColumns) / 2.;
 	offset *= uSpacing;
 
-	gl_Position = projectionMatrix * modelViewMatrix * vec4(position + vec3(offset.x, offset.y, 0.), 1.0);
+	gl_Position = projectionMatrix * modelViewMatrix * vec4(position + vec3(offset.x, offset.y, dist), 1.0);
 }
