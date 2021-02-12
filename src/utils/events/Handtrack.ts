@@ -1,6 +1,7 @@
 //
 import { Hands } from '@mediapipe/hands/hands'
 import { Camera } from '@mediapipe/camera_utils/camera_utils'
+import StandaloneEventEmitter from './StandaloneEventEmitter'
 
 type HandLandmarks = Array<{ x: number; y: number }>
 type Handedness = { index: number; label: 'Right' | 'Left'; score: number }
@@ -20,18 +21,17 @@ type EmptyHandtrackResult = {
 
 export type HandtrackResult = DoubleHandtrackResult | SingleHandtrackResult | EmptyHandtrackResult
 
-type HandtrackCallback = (r: HandtrackResult) => void
-
-export default class Handtrack {
+export default class Handtrack extends StandaloneEventEmitter<'all', HandtrackResult> {
   private camera: any
   private hands: any
-  private callbacks: HandtrackCallback[] = []
   private isLoaded: boolean = false
   public get IsLoaded(): boolean {
     return this.isLoaded
   }
 
   constructor(videoElement: HTMLVideoElement) {
+    super()
+
     this.hands = new Hands({
       locateFile: (file: string) => {
         return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`
@@ -39,9 +39,7 @@ export default class Handtrack {
     })
 
     this.camera = new Camera(videoElement, {
-      onFrame: () => {
-        this.hands.send({ image: videoElement })
-      },
+      onFrame: () => this.CameraCallback(videoElement),
       width: 1280,
       height: 720,
     })
@@ -54,28 +52,27 @@ export default class Handtrack {
       image.addEventListener('load', () => {
         this.hands.send({ image })
       })
-      this.hands.onResults((r: HandtrackResult) => this.CameraCallback(r, res))
+      this.hands.onResults((r: HandtrackResult) => this.HandCallback(r, res))
     })
   }
 
-  public StartCamera(): void {
+  protected Start(): void {
     if (!this.isLoaded) throw new Error('Handtrack is not loaded')
-    this.camera.start()
+    // Disable alert and error and camera is used elsewhere
+    window.alert = function () {}
+    this.camera.start().catch(console.log)
   }
 
-  public Subscribe(cb: HandtrackCallback): void {
-    this.callbacks.push(cb)
-  }
+  protected Stop(): void {}
 
-  public Unsubscribe(cb: HandtrackCallback): void {
-    const index = this.callbacks.indexOf(cb)
-    if (index > -1) this.callbacks.splice(index, 1)
-  }
-
-  private CameraCallback(result: HandtrackResult, onLoad: (h: Handtrack) => void): void {
-    this.callbacks.forEach((c) => c(result))
+  private HandCallback(result: HandtrackResult, onLoad: (h: Handtrack) => void): void {
+    this.Emit('all', result)
     if (this.isLoaded) return
     this.isLoaded = true
     onLoad(this)
+  }
+
+  private CameraCallback(videoElement: HTMLVideoElement) {
+    if (this.isRunning) this.hands.send({ image: videoElement })
   }
 }
