@@ -13,10 +13,8 @@ type SingleHandtrackResult = {
   multiHandLandmarks: [HandLandmarks]
   multiHandedness: [Handedness]
 }
-type EmptyHandtrackResult = {
-  multiHandLandmarks: [HandLandmarks]
-  multiHandedness: [Handedness]
-}
+type EmptyHandtrackResult = Record<string, never>
+
 type HandtrackResult = DoubleHandtrackResult | SingleHandtrackResult | EmptyHandtrackResult
 
 type HandtrackCallback = (r: HandtrackResult) => void
