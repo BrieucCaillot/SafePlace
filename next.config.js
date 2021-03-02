@@ -1,4 +1,8 @@
-const withTM = require('next-transpile-modules')(['three', '@react-three/drei'])
+const withTM = require('next-transpile-modules')([
+  'three',
+  '@react-three/drei',
+  'react-spring',
+])
 
 module.exports = withTM({
   webpack: (config, options) => {
