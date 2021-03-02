@@ -93,6 +93,16 @@
   resolved "https://registry.yarnpkg.com/@hapi/hoek/-/hoek-9.1.1.tgz#9daf5745156fd84b8e9889a2dc721f0c58e894aa"
   integrity sha512-CAEbWH7OIur6jEOzaai83jq3FmKmv4PmX1JYfs9IrYcGEVI/lyL1EXJGCj7eFVJ0bg5QR8LMxBlEtA+xKiLpFw==
 
+"@mediapipe/camera_utils@0.1.1606863050":
+  version "0.1.1606863050"
+  resolved "https://registry.yarnpkg.com/@mediapipe/camera_utils/-/camera_utils-0.1.1606863050.tgz#8f7da485148a62cd16c17c4d1c9ef79e8193858a"
+  integrity sha512-/vrwMsfsyEkXwjHyLKqDVu6j9Z1Jyi2rOpgqV/I9GTydkAVAtg1sbxlEfLFqlTK4fY367D5Yd79FPXrXqBPyIg==
+
+"@mediapipe/hands@0.1.1612238212":
+  version "0.1.1612238212"
+  resolved "https://registry.yarnpkg.com/@mediapipe/hands/-/hands-0.1.1612238212.tgz#08fb3c6d24f694d210fed8c89c6b0d3ff048cab2"
+  integrity sha512-Kl4QlV0xVpmtjWmmkQtKm+q8qeCdIktkAz7scPWwBHNJtDrAd1B8svyp/3MIK8VVcTEYp3k6it9KOHezsX9Myw==
+
 "@next/env@10.0.7":
   version "10.0.7"
   resolved "https://registry.yarnpkg.com/@next/env/-/env-10.0.7.tgz#7b3e87a9029ca37491e2ec25c27593f0906725f9"
@@ -4256,7 +4266,7 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zustand@^3.0.3:
+zustand@^3.0.3, zustand@^3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/zustand/-/zustand-3.3.3.tgz#88b930a873d0f13e406f96958c1409645ea8b370"
   integrity sha512-KTN/O76rVc9muDoprsCDe/LQjbuq+GHYt5JdYahuXaGZ+8Gyk44SepzTFeQTF5J+b8+/Q+o90BaSEQ3WImKPog==
