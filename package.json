@@ -1,70 +1,25 @@
 {
-  "name": "safe-place",
-  "version": "0.0.1",
-  "description": "Use vue3 vite typescript eslint SSR vue-router scss",
-  "author": "Brieuc Caillot & Léon Baudoin",
+  "name": "safe-place-next",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "dev": "vite && npm-run-all -p start lint",
-    "lint": "esw -w --cache --color --ext .ts,.vue,.tsx src/ --cache-location node_modules",
-    "build": "vite build"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
-    "axios": "^0.21.0",
-    "glslify": "^7.1.1",
-    "howler": "^2.2.1",
-    "three": "^0.125.2",
-    "vue": "^3.0.5"
+    "next": "10.0.7",
+    "react": "17.0.1",
+    "react-dom": "17.0.1"
   },
   "devDependencies": {
-    "@mediapipe/camera_utils": "^0.1.1606863050",
-    "@mediapipe/hands": "^0.1.1612238212",
-    "@rollup/plugin-alias": "^3.1.1",
-    "@rollup/plugin-replace": "^2.3.4",
-    "@types/node": "^14.14.25",
-    "@types/stats.js": "^0.17.0",
-    "@types/three": "^0.125.1",
-    "@typescript-eslint/eslint-plugin": "^4.9.0",
-    "@typescript-eslint/parser": "^4.9.0",
-    "@vitejs/plugin-vue": "^1.1.4",
-    "@vitejs/plugin-vue-jsx": "^1.0.2",
-    "@vue/compiler-sfc": "^3.0.5",
-    "@vue/server-renderer": "^3.0.5",
-    "babel": "^6.23.0",
-    "babel-plugin-component": "^1.1.1",
-    "babel-plugin-glslify": "^2.0.0",
-    "compression": "^1.7.4",
-    "cross-env": "^7.0.3",
-    "eslint": "^7.14.0",
-    "eslint-plugin-vue": "^7.5.0",
-    "eslint-watch": "^7.0.0",
-    "express": "^4.17.1",
-    "npm-run-all": "^4.1.5",
+    "@types/next": "^9.0.0",
+    "@types/node": "^14.14.31",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.1",
+    "eslint": "^7.21.0",
+    "eslint-plugin-react": "^7.22.0",
     "prettier": "^2.2.1",
-    "sass": "^1.30.0",
-    "stats.js": "^0.17.0",
-    "typescript": "^4.1.2",
-    "vite": "^2.0.0-beta.64",
-    "vite-babel-plugin": "^0.0.2",
-    "vite-plugin-string": "^1.0.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/BrieucKyo/SafePlace"
-  },
-  "browserify": {
-    "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            "es2015"
-          ],
-          "plugins": [
-            "glslify"
-          ]
-        }
-      ]
-    ]
-  },
-  "license": "MIT"
+    "typescript": "^4.2.2"
+  }
 }
