@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@react-three/drei": "^3.9.0",
     "glsl-easings": "^1.0.0",
     "glsl-noise": "^0.0.0",
     "next": "10.0.7",
@@ -25,6 +26,7 @@
     "eslint": "^7.21.0",
     "eslint-plugin-react": "^7.22.0",
     "glslify-loader": "^2.0.0",
+    "next-transpile-modules": "^6.3.0",
     "node-sass": "^5.0.0",
     "prettier": "^2.2.1",
     "raw-loader": "^4.0.2",

@@ -1,10 +1,10 @@
 import { useRef } from 'react'
-import { useFrame } from 'react-three-fiber'
+import { MeshProps, useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
 import fragmentShader from './fragmentShader.frag'
 import vertexShader from './vertexShader.vert'
 
-const Box = () => {
+const Box = (props: MeshProps) => {
   const ref = useRef<THREE.Mesh>(null)
 
   const uniforms = useRef<{ [name: string]: THREE.IUniform }>({
@@ -22,7 +22,7 @@ const Box = () => {
   })
 
   return (
-    <mesh ref={ref}>
+    <mesh ref={ref} {...props}>
       <boxBufferGeometry args={[1, 1, 1]} />
       <rawShaderMaterial
         uniforms={uniforms.current}
