@@ -5,5 +5,9 @@
   },
   "globals": {
     "React": "writable"
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
   }
 }
