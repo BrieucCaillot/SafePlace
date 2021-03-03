@@ -5,6 +5,7 @@ const withTM = require('next-transpile-modules')([
 ])
 
 module.exports = withTM({
+  productionBrowserSourceMaps: true,
   webpack: (config, options) => {
     config.module.rules.push({
       test: /\.(glsl|vs|fs|vert|frag)$/,
