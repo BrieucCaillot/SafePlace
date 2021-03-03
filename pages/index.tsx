@@ -4,7 +4,7 @@ import CanvasGL from 'components/CanvasGL'
 const Home = () => {
   return (
     <>
-      {/* {!!process.browser && <Stats showPanel={0} />} */}
+      {!!process.browser && <Stats showPanel={0} />}
       <CanvasGL />
     </>
   )

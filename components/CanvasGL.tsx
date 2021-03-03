@@ -8,21 +8,21 @@ import style from './CanvasGL.module.scss'
 const CanvasGL = () => {
   const videoRef = useRef<HTMLVideoElement>(null)
 
-  // const areHandsLoaded = useHandtrackStore((s) => s.isLoaded)
+  const areHandsLoaded = useHandtrackStore((s) => s.isLoaded)
   // const subscribeHands = useHandtrackStore((s) => s.subscribe)
 
   useEffect(() => {
     if (videoRef.current === null)
       throw new Error('Video element is not loaded')
-    // const { initHands, initCamera, load } = useHandtrackStore.getState()
-    // initHands()
-    // initCamera(videoRef.current)
-    // load()
+    const { initHands, initCamera, load } = useHandtrackStore.getState()
+    initHands()
+    initCamera(videoRef.current)
+    load()
   }, [])
 
-  // useEffect(() => {
-  //   if (areHandsLoaded) useHandtrackStore.getState().start()
-  // }, [areHandsLoaded])
+  useEffect(() => {
+    if (areHandsLoaded) useHandtrackStore.getState().start()
+  }, [areHandsLoaded])
 
   // useEffect(() => subscribeHands(console.log), [])
 
