@@ -1,6 +1,6 @@
 import create from 'zustand'
-import { Hands } from 'lib/mediapipe/hands'
-import { Camera } from 'lib/mediapipe/camera_utils'
+import { Hands } from '@mediapipe/hands/hands'
+import { Camera } from '@mediapipe/camera_utils/camera_utils'
 
 type HandLandmarks = Array<{ x: number; y: number }>
 type Handedness = { index: number; label: 'Right' | 'Left'; score: number }
