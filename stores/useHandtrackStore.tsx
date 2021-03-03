@@ -1,6 +1,9 @@
 import create from 'zustand'
-import { Hands } from 'lib/mediapipe/hands'
-import { Camera } from 'lib/mediapipe/camera_utils'
+import HandModule, { Hands } from 'lib/mediapipe/hands'
+import CameraModule, { Camera } from 'lib/mediapipe/camera_utils'
+
+console.log('cam', CameraModule)
+console.log('hand', HandModule)
 
 type HandLandmarks = Array<{ x: number; y: number }>
 type Handedness = { index: number; label: 'Right' | 'Left'; score: number }
