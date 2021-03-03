@@ -1,18 +1,23 @@
-import { useMemo, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { MeshProps, useFrame, Vector3 } from 'react-three-fiber'
 import * as THREE from 'three'
 import fragmentShader from './fragmentShader.frag'
 import vertexShader from './vertexShader.vert'
-import { animated, SpringValue } from 'react-spring/three'
+import { animated } from 'react-spring/three'
 import { useSpring } from 'react-spring'
+import Easing from 'easing-functions'
 
 const Box = (props: MeshProps) => {
   const ref = useRef<THREE.Mesh>(null)
 
-  const [isClicked, setIsClicked] = useState<boolean>(false)
+  const [isHover, setIsHover] = useState<boolean>(false)
 
   const springProps = useSpring<Vector3>({
-    scale: isClicked ? [2, 2, 2] : [1, 1, 1],
+    scale: isHover ? [1.2, 1.2, 1.2] : [1, 1, 1],
+    config: {
+      easing: Easing.Quartic.Out,
+      duration: 300,
+    },
   })
 
   const uniforms = useRef<{ [name: string]: THREE.IUniform }>({
@@ -34,7 +39,8 @@ const Box = (props: MeshProps) => {
       ref={ref}
       {...props}
       scale={springProps['scale']}
-      onClick={() => setIsClicked(!isClicked)}
+      onPointerOver={() => setIsHover(true)}
+      onPointerOut={() => setIsHover(false)}
     >
       <boxBufferGeometry args={[1, 1, 1]} />
       <rawShaderMaterial
