@@ -33,7 +33,7 @@ const Box = (props: MeshProps) => {
     <animated.mesh
       ref={ref}
       {...props}
-      {...springProps}
+      scale={springProps['scale']}
       onClick={() => setIsClicked(!isClicked)}
     >
       <boxBufferGeometry args={[1, 1, 1]} />

@@ -44,7 +44,7 @@ const useHandtrackStore = create<HandtrackStore>((set, get) => ({
     set({
       hands: new Hands({
         locateFile: (file: string) => {
-          return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`
+          return `models/${file}`
         },
       }),
     })
