@@ -103,7 +103,7 @@ const HoverCircle = ({
         progress: 2,
         config: {
           easing: Easing.Quartic.In,
-          duration: 800,
+          duration: 600,
         },
       })
       return
@@ -113,7 +113,7 @@ const HoverCircle = ({
         innerRadius: 0.6,
         outerRadius: 0.6,
         progress: 1,
-        config: { duration: 2500 },
+        config: { duration: 1500 },
       })
     else
       set({
