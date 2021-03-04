@@ -21,8 +21,8 @@ const HoverCircle = ({
 }) => {
   const defaultCircleProps = {
     outerRadius: 0.9,
-    innerRadius: 0,
-    outerThickness: 0.15,
+    innerRadius: 0.2,
+    outerThickness: 0.03,
     progress: 0,
   }
 
@@ -110,8 +110,8 @@ const HoverCircle = ({
     }
     if (isHovered)
       set({
-        innerRadius: 0.6,
-        outerRadius: 0.6,
+        innerRadius: 0.7,
+        outerRadius: 0.7,
         progress: 1,
         config: { duration: 1500 },
       })
