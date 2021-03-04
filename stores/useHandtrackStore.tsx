@@ -1,6 +1,7 @@
 import create from 'zustand'
 import { Hands } from '@mediapipe/hands/hands'
 import { Camera } from '@mediapipe/camera_utils/camera_utils'
+import * as THREE from 'three'
 
 type HandLandmarks = Array<{ x: number; y: number }>
 type Handedness = { index: number; label: 'Right' | 'Left'; score: number }
@@ -30,11 +31,15 @@ type HandtrackStore = {
   hands: { [name: string]: any } | null
   camera: { [name: string]: any } | null
   isLoaded: boolean
+  cursor: THREE.Vector2
+  cursorTarget: THREE.Vector2
   initHands: () => void
   initCamera: (videoElement: HTMLVideoElement) => void
   load: () => Promise<void>
   subscribe: (cb: HandtrackCallback) => () => void
   start: () => void
+  updateCursor: (x: number, y: number) => void
+  updateCursorTarget: (x: number, y: number) => void
 }
 
 const useHandtrackStore = create<HandtrackStore>((set, get) => ({
@@ -46,6 +51,8 @@ const useHandtrackStore = create<HandtrackStore>((set, get) => ({
         locateFile: (file: string) => {
           return `models/${file}`
         },
+        minDetectionConfidence: 0.7,
+        minTrackingConfidence: 0.7,
       }),
     })
   },
@@ -91,6 +98,14 @@ const useHandtrackStore = create<HandtrackStore>((set, get) => ({
     if (camera === null)
       throw new Error('Cannot start camera before it is initiated')
     camera.start()
+  },
+  cursor: new THREE.Vector2(),
+  updateCursor: (x, y) => {
+    get().cursor.set(x, y)
+  },
+  cursorTarget: new THREE.Vector2(),
+  updateCursorTarget: (x, y) => {
+    get().cursorTarget.set(x, y)
   },
 }))
 

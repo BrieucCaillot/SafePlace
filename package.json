@@ -21,6 +21,8 @@
     "react-spring": "^9.0.0-rc.3",
     "react-three-fiber": "^5.3.19",
     "three": "^0.126.0",
+    "tweakpane": "1.5.7",
+    "use-tweaks": "^0.3.1",
     "zustand": "^3.3.3"
   },
   "devDependencies": {

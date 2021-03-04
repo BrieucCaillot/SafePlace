@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { MeshProps, useFrame, Vector3 } from 'react-three-fiber'
 import * as THREE from 'three'
 import fragmentShader from './fragmentShader.frag'
