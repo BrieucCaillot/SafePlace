@@ -15,7 +15,9 @@
     "strictNullChecks": true,
     "jsx": "preserve",
     "baseUrl": ".",
-    "paths": {},
+    "paths": {
+        "@/components/*": ["components/*"]
+    },
     "plugins": [
       {
         "name": "typescript-plugin-css-modules"

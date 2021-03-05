@@ -1,5 +1,5 @@
 import { Stats } from '@react-three/drei'
-import CanvasGL from 'components/CanvasGL'
+import CanvasGL from '@/components/CanvasGL'
 
 const Home = () => {
   return (

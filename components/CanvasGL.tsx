@@ -1,8 +1,8 @@
 import { Canvas } from 'react-three-fiber'
-import ProtoPlane from './3d-components/ProtoPlane/ProtoPlane'
+import ProtoPlane from '@/components/3d-components/ProtoPlane/ProtoPlane'
 import style from './CanvasGL.module.scss'
-import HandNote from './HandNote/HandNote'
-import Handtrack from './Handtrack/Handtrack'
+import HandNote from '@/components/HandNote/HandNote'
+import Handtrack from '@/components/Handtrack/Handtrack'
 
 const CanvasGL = () => {
   // useEffect(() => subscribeHands(console.log), [])
