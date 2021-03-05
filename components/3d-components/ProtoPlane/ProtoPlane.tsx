@@ -31,7 +31,7 @@ const ProtoPlane = () => {
     () => [
       [-0.5568, -0.1008, 0],
       [0.2408, -0.1358, 0],
-      [0.5538, 0.0504, 0],
+      // [0.5538, 0.0504, 0],
       [-0.1536, 0.1754, 0],
     ],
     []
@@ -39,14 +39,14 @@ const ProtoPlane = () => {
 
   const textures = useMemo<THREE.Texture[]>(() => {
     const loader = new THREE.TextureLoader()
-
-    return new Array(5)
-      .fill(0)
-      .map((_, i) =>
-        loader.load(`textures/4-onboarding-construct-${i + 1}.jpg`, () =>
-          setLoadProgress(i)
-        )
-      )
+    const path = [
+      'textures/4-onboarding-construct-1.jpg',
+      'textures/4-onboarding-construct-2.jpg',
+      'textures/4-onboarding-construct-3.jpg',
+      // 'textures/4-onboarding-construct-4.jpg',
+      'textures/4-onboarding-construct-5.jpg',
+    ]
+    return path.map((p, i) => loader.load(p, () => setLoadProgress(i)))
   }, [])
 
   const ratio = useMemo(() => {
