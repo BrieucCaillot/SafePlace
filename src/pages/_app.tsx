@@ -2,7 +2,7 @@ import { Children, ComponentType } from 'react'
 import Header from '../config'
 import dynamic from 'next/dynamic'
 import Dom from '@/components/layout/_dom'
-import '@/styles/index.css'
+import '@/styles/index.scss'
 
 let LCanvas: ComponentType<{ children: any }> | null = null
 if (process.env.NODE_ENV === 'production') {
