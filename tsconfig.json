@@ -16,13 +16,8 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-        "@/components/*": ["components/*"]
-    },
-    "plugins": [
-      {
-        "name": "typescript-plugin-css-modules"
-      }
-    ]
+      "@/*": ["src/*"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js"],
   "exclude": ["node_modules"]

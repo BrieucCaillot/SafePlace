@@ -1,44 +1,89 @@
 {
-  "name": "safe-place-next",
-  "version": "0.1.0",
-  "private": true,
+  "name": "r3f-next-starter",
+  "version": "1.6.0",
+  "authors": [
+    "Renaud ROHLINGER <https://twitter.com/onirenaud>"
+  ],
+  "private": false,
   "scripts": {
+    "lint": "yarn prettier && yarn eslint",
+    "eslint": "eslint --fix 'src/**/*.{js,jsx,ts,tsx}' --ext jsconfig.json",
+    "prettier": "prettier --list-different '**/*.{js,jsx,ts,tsx,md}'",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "export": "EXPORT=true next build && EXPORT=true next export",
+    "analyze": "ANALYZE=true next build",
+    "start": "next start",
+    "postinstall": "husky install"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,md}": [
+      "prettier --write"
+    ],
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ]
   },
   "dependencies": {
-    "@mediapipe/camera_utils": "0.1.1606863050",
-    "@mediapipe/hands": "0.1.1612238212",
-    "@react-three/drei": "^3.9.0",
+    "@react-spring/three": "^9.0.0-rc.3",
+    "@react-three/drei": "^3.8.6",
+    "@react-three/postprocessing": "^1.5.1",
+    "@types/bezier-easing": "^2.1.2",
     "bezier-easing": "^2.1.0",
     "easing-functions": "^1.0.1",
     "glsl-easings": "^1.0.0",
     "glsl-noise": "^0.0.0",
-    "next": "10.0.7",
+    "lerp": "^1.0.3",
+    "next": "^10.0.7",
+    "postprocessing": "^6.20.3",
+    "r3f-perf": "^0.82.0",
     "react": "17.0.1",
-    "react-dom": "17.0.1",
+    "react-dom": "^17.0.1",
     "react-spring": "^9.0.0-rc.3",
-    "react-three-fiber": "^5.3.19",
-    "three": "^0.126.0",
-    "tweakpane": "1.5.7",
-    "use-tweaks": "^0.3.1",
+    "react-three-fiber": "^5.3.18",
+    "tailwindcss": "^2.0.3",
+    "three": "^0.125.2",
+    "webpack": "^5.23.0",
     "zustand": "^3.3.3"
   },
   "devDependencies": {
-    "@types/bezier-easing": "^2.1.2",
+    "@babel/core": "^7.12.17",
+    "@next/bundle-analyzer": "^10.0.7",
     "@types/next": "^9.0.0",
-    "@types/node": "^14.14.31",
-    "@types/react": "^17.0.2",
+    "@types/node": "^14.14.32",
+    "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.1",
-    "@types/three": "^0.125.3",
-    "eslint": "^7.21.0",
-    "eslint-plugin-react": "^7.22.0",
+    "@types/three": "^0.126.0",
+    "autoprefixer": "^10.2.4",
+    "babel-eslint": "^10.0.0",
+    "babel-plugin-glsl": "^1.0.0",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-flowtype": "^5.2.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-tailwind": "^0.2.0",
+    "express": "^4.17.1",
+    "glslify": "^7.1.1",
     "glslify-loader": "^2.0.0",
-    "next-transpile-modules": "^6.3.0",
-    "node-sass": "^5.0.0",
+    "husky": "^5.0.9",
+    "lint-staged": "^10.5.4",
+    "next-compose-plugins": "^2.2.1",
+    "next-offline": "^5.0.3",
+    "next-transpile-modules": "https://github.com/martpie/next-transpile-modules",
+    "postcss": "^8.2.6",
     "prettier": "^2.2.1",
     "raw-loader": "^4.0.2",
-    "typescript": "^4.2.2"
-  }
+    "typescript": "^4.2.3"
+  },
+  "license": "MIT"
 }

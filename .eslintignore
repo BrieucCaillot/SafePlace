@@ -1,7 +1,0 @@
-bundler/
-dist/
-node_modules/
-
-**/*.html
-
-next.config.js

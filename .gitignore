@@ -1,9 +1,5 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
-/.pnp
-.pnp.js
 
 # testing
 /coverage
@@ -32,3 +28,15 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# next-pwa
+/public/workbox-*.js
+/public/sw.js
+
+# prefer yarn than npm
+package-lock.json
+
+report.*.json
+
+# .vscode Debugging
+.vscode/*-debug-profile
