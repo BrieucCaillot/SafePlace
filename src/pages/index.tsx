@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic'
 import Go from '@/components/dom/title'
 
-const Sphere = dynamic(() => import('@/components/canvas/Sphere'), {
+const Sphere = dynamic(() => import('@/components/canvas/Sphere/Sphere'), {
   ssr: false,
 })
 
