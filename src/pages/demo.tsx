@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic'
 
 const SafePlace = dynamic(
-  () => import('@/components/canvas/Sphere/safeplace/safeplace'),
+  () => import('@/components/canvas/Safeplace/Safeplace'),
   {
     ssr: false,
   }

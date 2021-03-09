@@ -7,7 +7,7 @@ import * as THREE from 'three'
 const Safeplace = () => {
   return (
     <Suspense fallback={null}>
-      <mesh position={[20, 0, 0]}>
+      <mesh position={[0, 0, 0]}>
         <boxGeometry args={[1, 1, 1]} />
         <meshNormalMaterial />
       </mesh>
