@@ -5,7 +5,7 @@ const Sphere = dynamic(() => import('@/components/canvas/Sphere/Sphere'), {
   ssr: false,
 })
 
-const Page = () => {
+const Index = () => {
   return (
     <>
       <Sphere r3f />
@@ -14,7 +14,7 @@ const Page = () => {
   )
 }
 
-export default Page
+export default Index
 
 export async function getStaticProps() {
   return {
