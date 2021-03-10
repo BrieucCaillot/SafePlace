@@ -1,16 +1,16 @@
 {
-  "name": "r3f-next-starter",
-  "version": "1.6.0",
+  "name": "safe-place",
+  "version": "0.0.1",
   "authors": [
-    "Renaud ROHLINGER <https://twitter.com/onirenaud>"
+    "Brieuc CAILLOT & Léon BAUDOIN"
   ],
-  "private": false,
+  "private": true,
   "scripts": {
     "lint": "yarn prettier && yarn eslint",
     "eslint": "eslint --fix 'src/**/*.{js,jsx,ts,tsx}' --ext jsconfig.json",
     "prettier": "prettier --list-different '**/*.{js,jsx,ts,tsx,md}'",
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "export": "EXPORT=true next build && EXPORT=true next export",
     "analyze": "ANALYZE=true next build",
     "start": "next start",

@@ -1,15 +1,24 @@
 import dynamic from 'next/dynamic'
-import Go from '@/components/dom/title'
 
-const Sphere = dynamic(() => import('@/components/canvas/Sphere/Sphere'), {
-  ssr: false,
-})
+const SafeplaceCanvas = dynamic(
+  () => import('@/components/Safeplace/SafeplaceCanvas'),
+  {
+    ssr: false,
+  }
+)
+
+const SafeplaceDom = dynamic(
+  () => import('@/components/Safeplace/SafeplaceDom'),
+  {
+    ssr: false,
+  }
+)
 
 const Index = () => {
   return (
     <>
-      <Sphere r3f />
-      <Go />
+      <SafeplaceCanvas r3f />
+      <SafeplaceDom />
     </>
   )
 }

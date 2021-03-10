@@ -1,11 +1,17 @@
+import * as THREE from 'three'
 import { Canvas } from 'react-three-fiber'
 import { Perf } from 'r3f-perf'
 import { OrbitControls, Preload } from '@react-three/drei'
 import { EffectComposer, Vignette } from '@react-three/postprocessing'
+import { useControls } from 'leva'
 // enable shader editor
 // import { MaterialEditor, useEditorComposer } from '@three-material-editor/react'
 
-const LCanvas = ({ children }) => {
+const LayoutCanvas = ({ children }) => {
+  const { ocEnabled } = useControls('OrbitControls', {
+    ocEnabled: false,
+  })
+
   return (
     <Canvas
       style={{
@@ -13,10 +19,13 @@ const LCanvas = ({ children }) => {
         top: 0,
       }}
       colorManagement={false}
+      onCreated={({ gl }) => {
+        gl.setClearColor(0xffffff, 1)
+      }}
     >
       <Preload all />
       <Perf openByDefault trackGPU={true} position={'bottom-right'} />
-      <OrbitControls />
+      {ocEnabled && <OrbitControls />}
       {/* <MaterialEditor /> */}
       {/* <EffectComposer ref={useEditorComposer()}> */}
       <EffectComposer>
@@ -27,4 +36,4 @@ const LCanvas = ({ children }) => {
   )
 }
 
-export default LCanvas
+export default LayoutCanvas

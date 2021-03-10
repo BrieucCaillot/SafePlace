@@ -1,24 +1,22 @@
 import { Children, ComponentType } from 'react'
-import Header from '../config'
+import Head from '@/components/common/Head'
 import dynamic from 'next/dynamic'
-import Dom from '@/components/layout/_dom'
-import '@/styles/index.scss'
+import LayoutDom from '@/components/layout/LayoutDom'
+import '@/styles/style.scss'
 
-let LCanvas: ComponentType<{ children: any }> | null = null
-if (process.env.NODE_ENV === 'production') {
-  LCanvas = dynamic(() => import('@/components/layout/_canvas'), {
-    ssr: false,
-  })
-} else {
-  LCanvas = require('@/components/layout/_canvas').default
-}
+let LayoutCanvas: ComponentType<{ children: any }> | null = null
+LayoutCanvas = dynamic(() => import('@/components/layout/LayoutCanvas'), {
+  ssr: false,
+})
 
 function SplitApp({ canvas, dom }) {
   return (
     <>
-      <Header />
-      {dom && <Dom dom={dom} />}
-      {LCanvas && <LCanvas>{canvas && <group>{canvas}</group>}</LCanvas>}
+      <Head />
+      {dom && <LayoutDom dom={dom} />}
+      {LayoutCanvas && (
+        <LayoutCanvas>{canvas && <group>{canvas}</group>}</LayoutCanvas>
+      )}
     </>
   )
 }

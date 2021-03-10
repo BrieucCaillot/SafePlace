@@ -1,15 +1,14 @@
-import Head from 'next/head'
+import HeadNext from 'next/head'
 
-const title = 'Threejs Next Starter'
-const url = 'http://r3f-next-starter.vercel.app/'
-const description =
-  'The easiest and fastest way to create a 3D website using React Three Fiber and NextJS'
-const author = 'Author'
+const title = 'Safeplace'
+const url = 'https://safe-place.vercel.app/'
+const description = 'Safeplace description'
+const author = 'Brieuc CAILLOT & Léon BAUDOIN'
 
-const Header = () => {
+const Head = () => {
   return (
     <>
-      <Head>
+      <HeadNext>
         {/* Recommended Meta Tags */}
         <meta charSet='utf-8' />
         <meta name='language' content='english' />
@@ -27,7 +26,7 @@ const Header = () => {
         />
         <meta name='robots' content='index,follow' />
         <meta name='distribution' content='web' />
-        {/* 
+        {/*
       Facebook Open Graph meta tags
         documentation: https://developers.facebook.com/docs/sharing/opengraph */}
         <meta name='og:title' content={title} />
@@ -71,15 +70,15 @@ const Header = () => {
         <meta name='theme-color' content='#000' />
         <link rel='shortcut icon' href='/icons/favicon.ico' />
 
-        {/* 
+        {/*
       Twitter Summary card
         documentation: https://dev.twitter.com/cards/getting-started
         Be sure validate your Twitter card markup on the documentation site. */}
         <meta name='twitter:card' content='summary' />
         <meta name='twitter:site' content='@onirenaud' />
-      </Head>
+      </HeadNext>
     </>
   )
 }
 
-export default Header
+export default Head
