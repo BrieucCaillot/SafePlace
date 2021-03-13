@@ -7,6 +7,8 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
+import SafeplacePedestal from '@/components/Safeplace/SafeplacePedestal'
+import { SafeplacePOI } from '@/stores/useSafeplaceStore'
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -28,37 +30,28 @@ type GLTFResult = GLTF & {
 export default function SafeplaceModel(props: JSX.IntrinsicElements['group']) {
   const group = useRef<THREE.Group>()
   const { nodes, materials } = useGLTF('/models/safeplace.glb') as GLTFResult
+
   return (
     <group ref={group} {...props} dispose={null}>
-      <mesh
-        material={nodes.Cube.material}
-        geometry={nodes.Cube.geometry}
-        position={nodes.Cube.position}
-        scale={nodes.Cube.scale}
+      <SafeplacePedestal
+        safeplacePOI={SafeplacePOI.Pedestal1}
+        pedestalObj={nodes.Cube}
       />
-      <mesh
-        material={nodes.Cube001.material}
-        geometry={nodes.Cube001.geometry}
-        scale={nodes.Cube001.scale}
-        position={nodes.Cube001.position}
+      <SafeplacePedestal
+        safeplacePOI={SafeplacePOI.Pedestal2}
+        pedestalObj={nodes.Cube001}
       />
-      <mesh
-        material={nodes.Cube002.material}
-        geometry={nodes.Cube002.geometry}
-        scale={nodes.Cube002.scale}
-        position={nodes.Cube002.position}
+      <SafeplacePedestal
+        safeplacePOI={SafeplacePOI.Pedestal3}
+        pedestalObj={nodes.Cube002}
       />
-      <mesh
-        material={nodes.Cube003.material}
-        geometry={nodes.Cube003.geometry}
-        scale={nodes.Cube003.scale}
-        position={nodes.Cube003.position}
+      <SafeplacePedestal
+        safeplacePOI={SafeplacePOI.Pedestal4}
+        pedestalObj={nodes.Cube003}
       />
-      <mesh
-        material={nodes.Cube004.material}
-        geometry={nodes.Cube004.geometry}
-        scale={nodes.Cube004.scale}
-        position={nodes.Cube004.position}
+      <SafeplacePedestal
+        safeplacePOI={SafeplacePOI.Pedestal5}
+        pedestalObj={nodes.Cube004}
       />
       <mesh
         material={nodes.Floor.material}
@@ -66,6 +59,7 @@ export default function SafeplaceModel(props: JSX.IntrinsicElements['group']) {
         position={nodes.Floor.position}
         scale={nodes.Floor.scale}
       />
+
       <mesh
         material={nodes.Pillard_1.material}
         geometry={nodes.Pillard_1.geometry}

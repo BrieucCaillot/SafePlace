@@ -4,12 +4,13 @@ import { Perf } from 'r3f-perf'
 import { OrbitControls, Preload } from '@react-three/drei'
 import { EffectComposer, Vignette } from '@react-three/postprocessing'
 import { useControls } from 'leva'
+import Camera from '@/components/Camera/Camera'
 // enable shader editor
 // import { MaterialEditor, useEditorComposer } from '@three-material-editor/react'
 
 const LayoutCanvas = ({ children }) => {
-  const { ocEnabled } = useControls('OrbitControls', {
-    ocEnabled: false,
+  const { orbitControlsEnabled } = useControls('Camera', {
+    orbitControlsEnabled: false,
   })
 
   return (
@@ -23,9 +24,10 @@ const LayoutCanvas = ({ children }) => {
         gl.setClearColor(0xffffff, 1)
       }}
     >
+      <Camera />
       <Preload all />
       <Perf openByDefault trackGPU={true} position={'bottom-right'} />
-      {ocEnabled && <OrbitControls />}
+      {orbitControlsEnabled && <OrbitControls />}
       {/* <MaterialEditor /> */}
       {/* <EffectComposer ref={useEditorComposer()}> */}
       <EffectComposer>
