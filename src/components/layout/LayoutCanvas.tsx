@@ -20,8 +20,10 @@ const LayoutCanvas = ({ children }) => {
         top: 0,
       }}
       colorManagement={false}
+      pixelRatio={[devicePixelRatio, 2]}
       onCreated={({ gl }) => {
         gl.setClearColor(0xffffff, 1)
+        console.log(gl.getPixelRatio())
       }}
     >
       <Camera />
