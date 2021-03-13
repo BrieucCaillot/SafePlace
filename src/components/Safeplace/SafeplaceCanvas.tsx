@@ -1,33 +1,54 @@
 import { Suspense, useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { useThree } from 'react-three-fiber'
 import { useControls } from 'leva'
-import gsap from 'gsap'
 import SafeplaceModel from '@/components/Safeplace/SafeplaceModel'
-import useSafeplaceStore from '@/stores/useSafeplaceStore'
+import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 
 const SafeplaceCanvas = () => {
-  const { camPos } = useControls('Camera position', {
-    camPos: [0, 6, 50],
-  })
-
-  const { camera } = useThree()
-
   const insideHouseRef = useRef<THREE.Mesh | null>(null)
 
-  useEffect(() => {
-    camera.position.set(camPos[0], camPos[1], camPos[2])
-  }, [camPos])
+  const currentPOI = useSafeplaceStore((state) => state.currentPOI)
+  const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
+  const setPOI = useSafeplaceStore((state) => state.setPOI)
 
-  // const moveInside = useSafeplaceStore((state) => {
-  //   state.moveInside(camera.position)
-  // })
+  /**
+   * Debug
+   */
+  const { currPOI } = useControls('Safeplace', {
+    currPOI: {
+      value: currentPOI,
+      options: SafeplacePOI,
+    },
+  })
+
+  useEffect(() => {
+    setCurrentPOI(currPOI)
+  }, [currPOI])
+
+  /**
+   * SET POIS POSITION
+   */
+  useEffect(() => {
+    setPOI(SafeplacePOI.OnBoarding, {
+      position: new THREE.Vector3(0, 6, 50),
+    })
+    setPOI(SafeplacePOI.Inside, {
+      position: new THREE.Vector3(0, 6, 0),
+    })
+  })
+
+  /**
+   * SET CURRENT POI ON CLICK INSIDE
+   */
+  const onClick = () => {
+    setCurrentPOI(SafeplacePOI.Inside)
+  }
 
   return (
     <>
       <Suspense fallback={null}>
         <pointLight position={[0, 20, 0]} />
-        <mesh ref={insideHouseRef} position={[0, 4, 0]}>
+        <mesh ref={insideHouseRef} position={[0, 6, 0]} onClick={onClick}>
           <boxGeometry />
           <meshNormalMaterial />
         </mesh>
