@@ -20,7 +20,7 @@ const getVectorFromTarget = (
 
 const useAnimateVector = (
   target: Target,
-  value: [number, number, number],
+  value: THREE.Vector3Tuple,
   gsapParams: gsap.TweenVars
 ): void => {
   useEffect(() => {

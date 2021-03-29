@@ -4,7 +4,7 @@ import * as THREE from 'three'
 const useVector3Uniform = (
   uniform: THREE.IUniform,
   value:
-    | [number, number, number]
+    | THREE.Vector3Tuple
     | THREE.Vector3
     | { x: number; y: number; z: number }
 ) => {

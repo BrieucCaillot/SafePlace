@@ -3,7 +3,8 @@ import { useThree } from 'react-three-fiber'
 import { useControls } from 'leva'
 import useCameraStore from '@/stores/useCameraStore'
 import useAnimateVector from '@/hooks/animation/useAnimateVector'
-import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
+import useSafeplaceStore, { POIData } from '@/stores/useSafeplaceStore'
+import * as THREE from 'three'
 
 const Camera = () => {
   // Store
@@ -12,51 +13,39 @@ const Camera = () => {
   const setCameraIsTravelling = useCameraStore(
     (state) => state.setCameraIsTravelling
   )
-
-  // POI
-  const currentPOI = useSafeplaceStore((state) => state.currentPOI)
-  const getPOIData = useSafeplaceStore((state) => state.getPOIData)
-
-  /**
-   * Debug
-   */
-  const { position } = useControls('Camera', {
-    position: {
-      value: [0, 6, 50],
-    },
-  })
-
-  useEffect(() => {
-    camera.position.fromArray(position)
-  }, [position[0], position[1], position[2]])
+  const currentPOIData = useSafeplaceStore((s) => s.getPOIData(s.currentPOI))
 
   /**
    * GET NEW CAMERA PARAMS
    */
-  const getNewCameraParams = (
-    currentPOI: SafeplacePOI
-  ): [[number, number, number], GSAPTweenVars] => {
-    const currentPOIObj = getPOIData(currentPOI)
-
-    let camPosition: [number, number, number] = [0, 6, 50]
-    const GSAPparams: GSAPTweenVars = {
-      duration: 2,
-      onStart: () => setCameraIsTravelling(true),
-      onComplete: () => setCameraIsTravelling(false),
+  const { position, rotation, scale, params } = useMemo(() => {
+    const output: {
+      position: THREE.Vector3Tuple
+      rotation: THREE.Vector3Tuple
+      scale: THREE.Vector3Tuple
+      params: GSAPTweenVars
+    } = {
+      position: [0, 0, 0],
+      rotation: [0, 0, 0],
+      scale: [1, 1, 1],
+      params: {
+        duration: 2,
+        onStart: () => setCameraIsTravelling(true),
+        onComplete: () => setCameraIsTravelling(false),
+      },
     }
 
-    if (currentPOIObj === undefined) return [camPosition, GSAPparams]
+    if (currentPOIData !== undefined) {
+      const { position, scale, quaternion } = currentPOIData
+      position.toArray(output.position)
+      new THREE.Euler()
+        .setFromQuaternion(quaternion)
+        .toArray(output.rotation as THREE.Vector3Tuple)
+      scale.toArray(output.scale)
+    }
 
-    const { x, y, z } = currentPOIObj.position
-    camPosition = [x, y, z]
-
-    return [camPosition, GSAPparams]
-  }
-
-  const [camPos, camAnimParams] = useMemo(
-    () => getNewCameraParams(currentPOI),
-    [currentPOI]
-  )
+    return output
+  }, [currentPOIData])
 
   /**
    * ANIMATE CAMERA
@@ -66,8 +55,24 @@ const Camera = () => {
       ref: camRef,
       target: 'position',
     },
-    camPos,
-    camAnimParams
+    position,
+    params
+  )
+  useAnimateVector(
+    {
+      ref: camRef,
+      target: 'rotation',
+    },
+    rotation,
+    params
+  )
+  useAnimateVector(
+    {
+      ref: camRef,
+      target: 'scale',
+    },
+    scale,
+    params
   )
 
   return null
