@@ -16,6 +16,8 @@ if (process.env.NODE_ENV === 'production') {
 function SplitApp({ canvas, dom }) {
   return (
     <>
+      <script src='https://cdn.jsdelivr.net/npm/@tensorflow/tfjs'></script>
+      <script src='https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm/dist/tf-backend-wasm.js'></script>
       <Header />
       {dom && <Dom dom={dom} />}
       {LCanvas && <LCanvas>{canvas && <group>{canvas}</group>}</LCanvas>}

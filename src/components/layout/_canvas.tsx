@@ -1,9 +1,17 @@
-import { Canvas } from 'react-three-fiber'
+import { Canvas, useFrame, useThree } from 'react-three-fiber'
 import { Perf } from 'r3f-perf'
 import { OrbitControls, Preload } from '@react-three/drei'
 import { EffectComposer, Vignette } from '@react-three/postprocessing'
+import useRAFStore from '@/stores/useRAFStore'
 // enable shader editor
 // import { MaterialEditor, useEditorComposer } from '@three-material-editor/react'
+
+const RAF = () => {
+  const execRaf = useRAFStore((s) => s.execRaf)
+  useFrame(execRaf)
+
+  return null
+}
 
 const LCanvas = ({ children }) => {
   return (
@@ -14,6 +22,7 @@ const LCanvas = ({ children }) => {
       }}
       colorManagement={false}
     >
+      <RAF />
       <Preload all />
       <Perf openByDefault trackGPU={true} position={'bottom-right'} />
       <OrbitControls />

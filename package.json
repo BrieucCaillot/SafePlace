@@ -30,8 +30,16 @@
     ]
   },
   "dependencies": {
+    "@mediapipe/camera_utils": "^0.1.1606863050",
+    "@mediapipe/hands": "^0.1.1614621970",
     "@react-three/drei": "^3.8.6",
     "@react-three/postprocessing": "^1.5.1",
+    "@tensorflow-models/handpose": "^0.0.7",
+    "@tensorflow/tfjs": "^3.3.0",
+    "@tensorflow/tfjs-backend-wasm": "^3.3.0",
+    "@tensorflow/tfjs-backend-webgl": "^3.3.0",
+    "@tensorflow/tfjs-converter": "^3.3.0",
+    "@tensorflow/tfjs-core": "^3.3.0",
     "@types/bezier-easing": "^2.1.2",
     "bezier-easing": "^2.1.0",
     "easing-functions": "^1.0.1",

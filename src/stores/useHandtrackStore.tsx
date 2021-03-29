@@ -33,7 +33,7 @@ type HandtrackStore = {
   isLoaded: boolean
   cursor: THREE.Vector2
   cursorTarget: THREE.Vector2
-  initHands: () => void
+  initHands: (params: any) => void
   initCamera: (videoElement: HTMLVideoElement) => void
   load: () => Promise<void>
   subscribe: (cb: HandtrackCallback) => () => void
@@ -45,15 +45,9 @@ type HandtrackStore = {
 const useHandtrackStore = create<HandtrackStore>((set, get) => ({
   handtrackCallbacks: [],
   hands: null,
-  initHands: () => {
+  initHands: (params: any) => {
     set({
-      hands: new Hands({
-        locateFile: (file: string) => {
-          return `models/${file}`
-        },
-        minDetectionConfidence: 0.7,
-        minTrackingConfidence: 0.7,
-      }),
+      hands: new Hands(params),
     })
   },
   camera: null,
