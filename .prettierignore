@@ -7,3 +7,11 @@ node_modules/*
 package.json
 .eslintrc.js
 babel.config.js
+
+# Shaders
+*.frag
+*.vs
+*.fs
+*.vert
+*.frag
+*.glsl
