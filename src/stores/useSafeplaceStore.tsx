@@ -5,6 +5,7 @@ import create from 'zustand'
 export enum SafeplacePOI {
   OnBoarding = 'OnBoarding',
   Inside = 'Inside',
+  Waterfall = 'Waterfall',
   MountainPedestral = 'MountainPedestral',
   PlaceholderPedetral1 = 'PlaceholderPedetral1',
   PlaceholderPedetral2 = 'PlaceholderPedetral2',

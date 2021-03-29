@@ -1,5 +1,5 @@
 import { useEffect, useRef, useMemo } from 'react'
-import { useThree } from 'react-three-fiber'
+import { useFrame, useThree } from 'react-three-fiber'
 import { useControls } from 'leva'
 import useCameraStore from '@/stores/useCameraStore'
 import useAnimateVector from '@/hooks/animation/useAnimateVector'
@@ -13,7 +13,13 @@ const Camera = () => {
   const setCameraIsTravelling = useCameraStore(
     (state) => state.setCameraIsTravelling
   )
+
   const currentPOIData = useSafeplaceStore((s) => s.getPOIData(s.currentPOI))
+
+  useFrame(({ gl, camera, scene }) => {
+    gl.autoClear = true
+    gl.render(scene, camera)
+  }, 100)
 
   /**
    * GET NEW CAMERA PARAMS

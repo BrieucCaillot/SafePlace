@@ -6,6 +6,7 @@ import SafeplaceSky from '@/components/Safeplace/SafeplaceSky'
 import SafeplaceGround from '@/components/Safeplace/SafeplaceGround/SafeplaceGround'
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import { PointerEvent } from 'react-three-fiber'
+import Waterfall from '../canvas/Waterfall/Waterfall'
 
 const SafeplaceCanvas = () => {
   const insideHouseRef = useRef<THREE.Mesh | null>(null)
@@ -66,6 +67,7 @@ const SafeplaceCanvas = () => {
         </mesh>
         <SafeplaceModel />
         <SafeplaceGround />
+        <Waterfall position={[-50, 6, 0]} rotation={[0, 45, 0]} />
       </Suspense>
     </>
   )
