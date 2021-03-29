@@ -2,9 +2,8 @@ import * as THREE from 'three'
 import { Canvas } from 'react-three-fiber'
 import { Perf } from 'r3f-perf'
 import { OrbitControls, Preload } from '@react-three/drei'
-import { EffectComposer, Vignette } from '@react-three/postprocessing'
 import { useControls } from 'leva'
-import Camera from '@/components/Camera/Camera'
+import Camera from '@/components/canvas/Camera/Camera'
 // enable shader editor
 // import { MaterialEditor, useEditorComposer } from '@three-material-editor/react'
 
@@ -23,7 +22,6 @@ const LayoutCanvas = ({ children }) => {
       pixelRatio={[devicePixelRatio, 2]}
       onCreated={({ gl }) => {
         gl.setClearColor(0xffffff, 1)
-        console.log(gl.getPixelRatio())
       }}
     >
       <Camera />
@@ -32,9 +30,9 @@ const LayoutCanvas = ({ children }) => {
       {orbitControlsEnabled && <OrbitControls />}
       {/* <MaterialEditor /> */}
       {/* <EffectComposer ref={useEditorComposer()}> */}
-      <EffectComposer>
+      {/* <EffectComposer>
         <Vignette eskil={false} offset={0.1} darkness={1.1} />
-      </EffectComposer>
+      </EffectComposer> */}
       {children}
     </Canvas>
   )

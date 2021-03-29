@@ -2,6 +2,8 @@ import { Suspense, useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { useControls } from 'leva'
 import SafeplaceModel from '@/components/Safeplace/SafeplaceModel'
+import SafeplaceSky from '@/components/Safeplace/SafeplaceSky'
+import SafeplaceGround from '@/components/Safeplace/SafeplaceGround/SafeplaceGround'
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 
 const SafeplaceCanvas = () => {
@@ -47,12 +49,14 @@ const SafeplaceCanvas = () => {
   return (
     <>
       <Suspense fallback={null}>
+        <SafeplaceSky />
         <pointLight position={[0, 20, 0]} />
         <mesh ref={insideHouseRef} position={[0, 6, 0]} onClick={onClick}>
           <boxGeometry />
           <meshNormalMaterial />
         </mesh>
         <SafeplaceModel />
+        <SafeplaceGround />
       </Suspense>
     </>
   )
