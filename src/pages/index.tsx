@@ -1,4 +1,6 @@
 import dynamic from 'next/dynamic'
+import OnBoarding from '@/components/OnBoarding/OnBoarding'
+import Bottom from '@/components/common/Bottom/Bottom'
 
 const SafeplaceCanvas = dynamic(
   () => import('@/components/Safeplace/SafeplaceCanvas'),
@@ -17,8 +19,10 @@ const SafeplaceDom = dynamic(
 const Index = () => {
   return (
     <>
+      {/* <OnBoarding /> */}
       <SafeplaceCanvas r3f />
       <SafeplaceDom />
+      <Bottom />
     </>
   )
 }

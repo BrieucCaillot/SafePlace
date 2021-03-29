@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 const Header = () => (
-  <header className='flex align-center justify-between p-10'>
+  <header className='pointer-events-auto absolute top-0 w-screen flex align-center justify-between p-10'>
     <Link href='/'>
       <a className='bg-skyblue border-gray-50 text-black'>Home</a>
     </Link>

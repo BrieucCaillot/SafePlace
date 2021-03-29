@@ -2,7 +2,7 @@ import Header from '@/components/common/Header'
 
 const LayoutDom = ({ dom }) => {
   return (
-    <div className='absolute top-0 left-0 right-0 z-20 dom'>
+    <div className='dom relative h-screen w-screen z-10 pointer-events-none'>
       <Header />
       {dom}
     </div>

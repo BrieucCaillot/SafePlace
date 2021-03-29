@@ -1,9 +1,10 @@
 import { useMemo, useRef } from 'react'
 import mergeRefs from 'react-merge-refs'
-import useSafeplaceStore from '@/stores/useSafeplaceStore'
+import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 
 const SafeplacePedestal = ({ safeplacePOI, pedestalObj }) => {
+  const currentPOI = useSafeplaceStore((state) => state.currentPOI)
   const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
   const setPOIData = useSafeplaceStore((state) => state.setPOIData)
 
@@ -17,7 +18,7 @@ const SafeplacePedestal = ({ safeplacePOI, pedestalObj }) => {
    * SET CURRENT POI ON CLICK
    */
   const onClick = () => {
-    setCurrentPOI(safeplacePOI)
+    if (currentPOI == SafeplacePOI.Inside) setCurrentPOI(safeplacePOI)
   }
 
   return (
