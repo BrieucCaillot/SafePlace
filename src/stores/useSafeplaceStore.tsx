@@ -5,11 +5,11 @@ import create from 'zustand'
 export enum SafeplacePOI {
   OnBoarding = 'OnBoarding',
   Inside = 'Inside',
-  Pedestal1 = 'Pedestal1',
-  Pedestal2 = 'Pedestal2',
-  Pedestal3 = 'Pedestal3',
-  Pedestal4 = 'Pedestal4',
-  Pedestal5 = 'Pedestal5',
+  MountainPedestral = 'MountainPedestral',
+  PlaceholderPedetral1 = 'PlaceholderPedetral1',
+  PlaceholderPedetral2 = 'PlaceholderPedetral2',
+  PlaceholderPedetral3 = 'PlaceholderPedetral3',
+  PlaceholderPedetral4 = 'PlaceholderPedetral4',
 }
 
 export type POIData = {
