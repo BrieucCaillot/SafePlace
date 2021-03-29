@@ -3,13 +3,13 @@ import useSafeplaceStore from '@/stores/useSafeplaceStore'
 
 const SafeplacePedestal = ({ safeplacePOI, pedestalObj }) => {
   const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
-  const setPOI = useSafeplaceStore((state) => state.setPOI)
+  const setPOIData = useSafeplaceStore((state) => state.setPOIData)
 
   /**
    * SET PEDESTRAL POI
    */
   useEffect(() => {
-    setPOI(safeplacePOI, {
+    setPOIData(safeplacePOI, {
       position: pedestalObj.position,
     })
   }, [])

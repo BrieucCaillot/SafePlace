@@ -20,18 +20,16 @@ type SafeplaceStore = {
   currentPOI: SafeplacePOI
   setCurrentPOI: (SafeplacePOI) => void
   POIMap: Map<SafeplacePOI, POI>
-  setPOI: (key: SafeplacePOI, value: POI) => void
-  getPOI: (key: SafeplacePOI) => POI | undefined
+  setPOIData: (key: SafeplacePOI, value: POI) => void
+  getPOIData: (key: SafeplacePOI) => POI | undefined
 }
 
 const useSafeplaceStore = create<SafeplaceStore>((set, get, state) => ({
   currentPOI: SafeplacePOI.OnBoarding,
   setCurrentPOI: (SafeplacePOI) => set({ currentPOI: SafeplacePOI }),
   POIMap: new Map(),
-  setPOI: (key, value) => set({ POIMap: get().POIMap.set(key, value) }),
-  getPOI: (key) => get().POIMap.get(key),
+  setPOIData: (key, value) => set({ POIMap: get().POIMap.set(key, value) }),
+  getPOIData: (key) => get().POIMap.get(key),
 }))
-
-window.useSafeplaceStore = useSafeplaceStore
 
 export default useSafeplaceStore

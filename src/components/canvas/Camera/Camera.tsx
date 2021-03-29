@@ -6,17 +6,16 @@ import useAnimateVector from '@/hooks/animation/useAnimateVector'
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 
 const Camera = () => {
-  // CAMERA
+  // Store
   const { camera } = useThree()
   const camRef = useRef<THREE.Camera>(camera)
-  const cameraIsTravelling = useCameraStore((state) => state.cameraIsTravelling)
   const setCameraIsTravelling = useCameraStore(
     (state) => state.setCameraIsTravelling
   )
 
   // POI
   const currentPOI = useSafeplaceStore((state) => state.currentPOI)
-  const getPOI = useSafeplaceStore((state) => state.getPOI)
+  const getPOIData = useSafeplaceStore((state) => state.getPOIData)
 
   /**
    * Debug
@@ -28,8 +27,8 @@ const Camera = () => {
   })
 
   useEffect(() => {
-    camera.position.set(position[0], position[1], position[2])
-  }, [position])
+    camera.position.fromArray(position)
+  }, [position[0], position[1], position[2]])
 
   /**
    * GET NEW CAMERA PARAMS
@@ -37,7 +36,7 @@ const Camera = () => {
   const getNewCameraParams = (
     currentPOI: SafeplacePOI
   ): [[number, number, number], GSAPTweenVars] => {
-    const currentPOIObj = getPOI(currentPOI)
+    const currentPOIObj = getPOIData(currentPOI)
 
     let camPosition: [number, number, number] = [0, 6, 50]
     const GSAPparams: GSAPTweenVars = {
