@@ -1,12 +1,16 @@
 import { forwardRef, RefObject, useEffect, useRef } from 'react'
-import { createPortal } from 'react-three-fiber'
+import { createPortal, useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
+import useVector2Uniform from '@/hooks/uniforms/useVector2Uniform'
 import fragmentShader from './fragmentShader.frag'
 import vertexShader from './vertexShader.vert'
 
 const WaterfallFBO = forwardRef(
   (
-    { scene }: { scene: RefObject<THREE.Scene> },
+    {
+      scene,
+      size,
+    }: { scene: RefObject<THREE.Scene>; size: THREE.Vector2Tuple },
     ref: RefObject<THREE.Mesh>
   ) => {
     useEffect(() => {
@@ -14,34 +18,26 @@ const WaterfallFBO = forwardRef(
       scene.current.background = new THREE.Color('black')
     }, [])
 
-    // const cameraRef = useRef<THREE.Camera>(null)
     const uniforms = useRef<Record<string, THREE.IUniform>>({
+      uSize: { value: new THREE.Vector2() },
       uTexture: { value: null },
+      uTime: { value: 0 },
+    })
+    useVector2Uniform(uniforms.current.uSize, size)
+
+    useFrame(({ clock }) => {
+      uniforms.current.uTime.value = clock.getElapsedTime()
     })
 
-    // useFrame(({ gl }) => {
-    //   if (cameraRef.current === null) return
-    //   gl.setRenderTarget(fbo)
-    //   gl.render(scene.current, cameraRef.current)
-    //   gl.setRenderTarget(null)
-    // }, 1)
-
     return createPortal(
-      <>
-        {/* <orthographicCamera
-        args={[-0.5, 0.5, 0.5, -0.5]}
-        position-z={6}
-        ref={cameraRef}
-      /> */}
-        <mesh scale={[1, 1, 1]} ref={ref}>
-          <planeGeometry />
-          <shaderMaterial
-            uniforms={uniforms.current}
-            fragmentShader={fragmentShader}
-            vertexShader={vertexShader}
-          />
-        </mesh>
-      </>,
+      <mesh scale={[1, 1, 1]} ref={ref}>
+        <planeGeometry />
+        <shaderMaterial
+          uniforms={uniforms.current}
+          fragmentShader={fragmentShader}
+          vertexShader={vertexShader}
+        />
+      </mesh>,
       scene.current
     ) as JSX.Element
   }

@@ -1,5 +1,7 @@
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
+import { useControls } from 'leva'
 import { forwardRef, RefObject, useEffect, useMemo, useRef } from 'react'
+import { MeshProps } from 'react-three-fiber'
 import * as THREE from 'three'
 import fragmentShader from './fragmentShader.frag'
 import vertexShader from './vertexShader.vert'
@@ -7,14 +9,31 @@ import vertexShader from './vertexShader.vert'
 const WaterfallParticles = forwardRef(
   (
     {
-      size,
+      size: bufferSize,
       numPoints,
+      ...meshProps
     }: {
       size: THREE.Vector2Tuple
       numPoints: number
-    },
+    } & MeshProps,
     ref: RefObject<THREE.Mesh>
   ) => {
+    const { size, movementFactor, alpha } = useControls('Particles', {
+      size: 0.04,
+      movementFactor: 1,
+      alpha: { value: 1, min: 0, max: 1 },
+    })
+
+    const uniforms = useRef<Record<string, THREE.IUniform>>({
+      uTexture: { value: null },
+      uSize: { value: 0 },
+      uAmplitude: { value: 0 },
+      uAlpha: { value: 0 },
+    })
+    useNumberUniform(uniforms.current.uSize, size)
+    useNumberUniform(uniforms.current.uAmplitude, movementFactor)
+    useNumberUniform(uniforms.current.uAlpha, alpha)
+
     const bufferGeometry = useMemo(() => {
       const geometry = new THREE.InstancedBufferGeometry()
 
@@ -52,8 +71,8 @@ const WaterfallParticles = forwardRef(
 
       const pixelPos = new Float32Array(numPoints * 2)
       for (let i = 0; i < numPoints; i++) {
-        pixelPos[i * 2] = (i % size[0]) / size[0]
-        pixelPos[i * 2 + 1] = Math.floor(i / size[0]) / size[1]
+        pixelPos[i * 2] = (i % bufferSize[0]) / bufferSize[0]
+        pixelPos[i * 2 + 1] = Math.floor(i / bufferSize[0]) / bufferSize[1]
       }
       geometry.setAttribute(
         'aPixelPosition',
@@ -61,23 +80,10 @@ const WaterfallParticles = forwardRef(
       )
 
       return geometry
-    }, [numPoints, size[0], size[1]])
-
-    const uniforms = useRef<Record<string, THREE.IUniform>>({
-      uTexture: { value: null },
-      uSize: { value: 0 },
-      uAmplitude: { value: 0 },
-    })
-    useNumberUniform(uniforms.current.uSize, 0.1)
-    useNumberUniform(uniforms.current.uAmplitude, 2)
+    }, [numPoints, bufferSize[0], bufferSize[1]])
 
     return (
-      <mesh
-        geometry={bufferGeometry}
-        position-z={2}
-        scale={[1, 1, 1]}
-        ref={ref}
-      >
+      <mesh {...meshProps} geometry={bufferGeometry} ref={ref}>
         <shaderMaterial
           transparent={true}
           fragmentShader={fragmentShader}

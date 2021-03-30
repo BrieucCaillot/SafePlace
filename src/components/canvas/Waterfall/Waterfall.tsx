@@ -1,32 +1,54 @@
-import useSavePOIData from '@/hooks/POI/useSavePOIData'
-import { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import { useFBO } from '@react-three/drei'
 import { useEffect, useMemo, useRef } from 'react'
 import { GroupProps, useFrame, useThree } from 'react-three-fiber'
 import * as THREE from 'three'
+import { MeshSurfaceSampler } from 'three/examples/jsm/math/MeshSurfaceSampler'
+import useSavePOIData from '@/hooks/POI/useSavePOIData'
+import { SafeplacePOI } from '@/stores/useSafeplaceStore'
+import randomPointsInBufferGeometry from '@/utils/randomPointsInBufferGeometry'
 import WaterfallFBO from './WaterfallFBO/WaterfallFBO'
 import WaterfallParticles from './WaterfallParticles/WaterfallParticles'
 
-function getRandomData(width, height, size) {
+function getRandomData(
+  width: number,
+  height: number,
+  size: number
+): Float32Array {
   var len = width * height * 4
   var data = new Float32Array(len)
   while (len--) data[len] = (Math.random() * 2 - 1) * size
   return data
 }
 
+function getGeometryData(mesh: THREE.Mesh | null, n: number): Float32Array {
+  if (mesh === null) throw 'No mesh'
+  const data = new Float32Array(n * 4)
+  const sampler = new MeshSurfaceSampler(mesh).build()
+  const position = new THREE.Vector3()
+  for (let index = 0; index < n; index++) {
+    sampler.sample(position)
+    data[index * 4 + 0] = position.x
+    data[index * 4 + 1] = position.y
+    data[index * 4 + 2] = position.z
+    data[index * 4 + 3] = 0
+  }
+  return data
+}
+
 const Waterfall = (props: GroupProps) => {
-  const bufferSize = useMemo(() => [100, 100], [])
+  const bufferSize = useMemo<THREE.Vector2Tuple>(() => [100, 100], [])
 
   const sceneRef = useRef<THREE.Scene>(new THREE.Scene())
   const cameraRef = useRef<THREE.Camera>(
     new THREE.OrthographicCamera(-0.5, 0.5, 0.5, -0.5)
   )
+  const targetMeshRef = useRef<THREE.Mesh>(null)
 
   const feedbackRef = useRef<THREE.Mesh>(null)
   const particleRef = useRef<THREE.Mesh>(null)
   const quadRef = useRef<THREE.Mesh>(null)
 
-  let fbo1 = useFBO(100, 100, {
+  let fbo1 = useFBO(bufferSize[0], bufferSize[1], {
     minFilter: THREE.NearestFilter,
     magFilter: THREE.NearestFilter,
     type: THREE.FloatType,
@@ -39,17 +61,20 @@ const Waterfall = (props: GroupProps) => {
   useEffect(() => {
     cameraRef.current.position.setZ(6)
 
-    const data = getRandomData(bufferSize[0], bufferSize[1], 1)
-    const dataTex = new THREE.DataTexture(
+    const data = getGeometryData(
+      targetMeshRef.current,
+      bufferSize[0] * bufferSize[1]
+    )
+    const initDataTexture = new THREE.DataTexture(
       data,
       bufferSize[0],
       bufferSize[1],
       THREE.RGBAFormat,
       THREE.FloatType
     )
-    dataTex.needsUpdate = true
+    initDataTexture.needsUpdate = true
     ;((quadRef.current as THREE.Mesh)
-      .material as THREE.ShaderMaterial).uniforms.uTexture.value = dataTex
+      .material as THREE.ShaderMaterial).uniforms.uTexture.value = initDataTexture
 
     gl.setRenderTarget(fbo1)
     gl.render(sceneRef.current, cameraRef.current)
@@ -85,12 +110,18 @@ const Waterfall = (props: GroupProps) => {
         <meshBasicMaterial />
       </mesh>
       <group position-z={6} ref={savePOI} />
-      <WaterfallFBO ref={quadRef} scene={sceneRef} />
-      <WaterfallParticles
-        ref={particleRef}
-        numPoints={10000}
-        size={[100, 100]}
-      />
+      <WaterfallFBO ref={quadRef} scene={sceneRef} size={bufferSize} />
+      <group>
+        <mesh ref={targetMeshRef}>
+          <torusKnotBufferGeometry />
+          <meshNormalMaterial visible={true} />
+        </mesh>
+        <WaterfallParticles
+          ref={particleRef}
+          numPoints={10000}
+          size={bufferSize}
+        />
+      </group>
     </group>
   )
 }
