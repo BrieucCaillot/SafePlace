@@ -1,0 +1,116 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v1.3.48",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "herbe",
+            "nodes" : [
+                0
+            ]
+        },
+        {
+            "name" : "Scene"
+        },
+        {
+            "name" : "tree"
+        },
+        {
+            "name" : "tree_2"
+        },
+        {
+            "name" : "tree_3"
+        }
+    ],
+    "nodes" : [
+        {
+            "mesh" : 0,
+            "name" : "herbe_grp_3.003",
+            "rotation" : [
+                0.6507173776626587,
+                -0.2767072916030884,
+                0.2767072916030884,
+                0.6507173180580139
+            ],
+            "scale" : [
+                1.129844069480896,
+                1.129844069480896,
+                1.129844069480896
+            ],
+            "translation" : [
+                -11.873274803161621,
+                -0.4193267524242401,
+                2.34023380279541
+            ]
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "herbe_grp_3.003",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "TEXCOORD_0" : 1
+                    },
+                    "indices" : 2
+                }
+            ]
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 12,
+            "max" : [
+                0.8585945963859558,
+                0.7131802439689636,
+                0.04565548896789551
+            ],
+            "min" : [
+                -0.6664053797721863,
+                -0.8069398403167725,
+                -1.0198140144348145
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 12,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5123,
+            "count" : 18,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 144,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 96,
+            "byteOffset" : 144
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 36,
+            "byteOffset" : 240
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 276,
+            "uri" : "data:application/octet-stream;base64,i5kqv4ANlj4ALYy828xbP4ANlj4ALYy828xbP4ANlj60MIK/i5kqv4ANlj60MIK/iYXZPvuSNj/gUKK81hubPpyTTr+wUKK81xubPpyTTr9DiYK/ioXZPvuSNj9EiYK/1o7yvs6B8D5AATs9K/AbPyeiGr9AATs9K/AbPyeiGr/sT3S/1o7yvs6B8D7sT3S/AAAAAAAAgD8AAIA/AACAPwAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAAAAAAAAAAAAAAAAAAAAAAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAABAAIAAAACAAMABAAFAAYABAAGAAcACAAJAAoACAAKAAsA"
+        }
+    ]
+}

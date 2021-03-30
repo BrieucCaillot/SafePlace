@@ -2,11 +2,11 @@ import { useFBO } from '@react-three/drei'
 import { useEffect, useMemo, useRef } from 'react'
 import { GroupProps, useFrame, useThree } from 'react-three-fiber'
 import * as THREE from 'three'
-import { MeshSurfaceSampler } from 'three/examples/jsm/math/MeshSurfaceSampler'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import WaterfallFBO from './WaterfallFBO/WaterfallFBO'
 import WaterfallParticles from './WaterfallParticles/WaterfallParticles'
+import getPositionTexture from '@/utils/getPositionTexture'
 
 function getRandomData(
   width: number,
@@ -16,21 +16,6 @@ function getRandomData(
   var len = width * height * 4
   var data = new Float32Array(len)
   while (len--) data[len] = (Math.random() * 2 - 1) * size
-  return data
-}
-
-function getGeometryData(mesh: THREE.Mesh | null, n: number): Float32Array {
-  if (mesh === null) throw 'No mesh'
-  const data = new Float32Array(n * 4)
-  const sampler = new MeshSurfaceSampler(mesh).build()
-  const position = new THREE.Vector3()
-  for (let index = 0; index < n; index++) {
-    sampler.sample(position)
-    data[index * 4 + 0] = position.x
-    data[index * 4 + 1] = position.y
-    data[index * 4 + 2] = position.z
-    data[index * 4 + 3] = 0
-  }
   return data
 }
 
@@ -60,18 +45,11 @@ const Waterfall = (props: GroupProps) => {
   useEffect(() => {
     cameraRef.current.position.setZ(6)
 
-    const data = getGeometryData(
+    const initDataTexture = getPositionTexture(
       targetMeshRef.current,
-      bufferSize[0] * bufferSize[1]
+      bufferSize
     )
-    const initDataTexture = new THREE.DataTexture(
-      data,
-      bufferSize[0],
-      bufferSize[1],
-      THREE.RGBAFormat,
-      THREE.FloatType
-    )
-    initDataTexture.needsUpdate = true
+
     ;((quadRef.current as THREE.Mesh)
       .material as THREE.ShaderMaterial).uniforms.uTexture.value = initDataTexture
 
