@@ -41,7 +41,6 @@ export function getPositionTextureFromBox(
 ): THREE.DataTexture {
   const pixelAmount = textureSize[0] * textureSize[1]
   var data = new Float32Array(pixelAmount * 4)
-  console.log('slt', remap(Math.random(), [0, 1], [box.min.x, box.max.x]))
   for (let index = 0; index < pixelAmount; index++) {
     data[index * 4 + 0] = remap(Math.random(), [0, 1], [box.min.x, box.max.x])
     data[index * 4 + 1] = remap(Math.random(), [0, 1], [box.min.y, box.max.y])
