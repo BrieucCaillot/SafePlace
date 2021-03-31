@@ -1,7 +1,8 @@
 import * as THREE from 'three'
 import { MeshSurfaceSampler } from 'three/examples/jsm/math/MeshSurfaceSampler'
+import remap from '../math/remap'
 
-export default function getPositionTexture(
+export function getPositionTextureFromMesh(
   mesh: THREE.Mesh | null,
   textureSize: THREE.Vector2 | THREE.Vector2Tuple,
   sampleAmount: number = 0,
@@ -26,6 +27,32 @@ export default function getPositionTexture(
     data,
     size[0],
     size[1],
+    THREE.RGBAFormat,
+    THREE.FloatType
+  )
+  dataTexture.needsUpdate = true
+
+  return dataTexture
+}
+
+export function getPositionTextureFromBox(
+  textureSize: THREE.Vector2Tuple,
+  box: THREE.Box3
+): THREE.DataTexture {
+  const pixelAmount = textureSize[0] * textureSize[1]
+  var data = new Float32Array(pixelAmount * 4)
+  console.log('slt', remap(Math.random(), [0, 1], [box.min.x, box.max.x]))
+  for (let index = 0; index < pixelAmount; index++) {
+    data[index * 4 + 0] = remap(Math.random(), [0, 1], [box.min.x, box.max.x])
+    data[index * 4 + 1] = remap(Math.random(), [0, 1], [box.min.y, box.max.y])
+    data[index * 4 + 2] = remap(Math.random(), [0, 1], [box.min.z, box.max.z])
+    data[index * 4 + 3] = 1
+  }
+
+  const dataTexture = new THREE.DataTexture(
+    data,
+    textureSize[0],
+    textureSize[1],
     THREE.RGBAFormat,
     THREE.FloatType
   )

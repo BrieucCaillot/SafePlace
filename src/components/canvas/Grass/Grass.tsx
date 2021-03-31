@@ -1,6 +1,6 @@
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
 import findMinimumTexSize from '@/utils/FBO/findMinimumTexSize'
-import getPositionTexture from '@/utils/FBO/getPositionTexture'
+import { getPositionTextureFromMesh } from '@/utils/FBO/getPositionTexture'
 import pow2roundup from '@/utils/FBO/power2roundup'
 import { useGLTF } from '@react-three/drei'
 import { useControls } from 'leva'
@@ -116,7 +116,7 @@ const Grass = (props: GroupProps) => {
 
   useEffect(() => {
     ;(instancedMeshRef.current as THREE.InstancedMesh).count = numPoints
-    uniforms.current.uPositionTexture.value = getPositionTexture(
+    uniforms.current.uPositionTexture.value = getPositionTextureFromMesh(
       targetMeshRef.current,
       textureSize,
       numPoints

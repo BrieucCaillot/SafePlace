@@ -6,21 +6,11 @@ import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import WaterfallFBO from './WaterfallFBO/WaterfallFBO'
 import WaterfallParticles from './WaterfallParticles/WaterfallParticles'
-import getPositionTexture from '@/utils/FBO/getPositionTexture'
-
-function getRandomData(
-  width: number,
-  height: number,
-  size: number
-): Float32Array {
-  var len = width * height * 4
-  var data = new Float32Array(len)
-  while (len--) data[len] = (Math.random() * 2 - 1) * size
-  return data
-}
+import { getPositionTextureFromBox } from '@/utils/FBO/getPositionTexture'
 
 const Waterfall = (props: GroupProps) => {
   const bufferSize = useMemo<THREE.Vector2Tuple>(() => [100, 100], [])
+  const particlesAmount = bufferSize[0] * bufferSize[1]
 
   const sceneRef = useRef<THREE.Scene>(new THREE.Scene())
   const cameraRef = useRef<THREE.Camera>(
@@ -45,9 +35,15 @@ const Waterfall = (props: GroupProps) => {
   useEffect(() => {
     cameraRef.current.position.setZ(6)
 
-    const initDataTexture = getPositionTexture(
-      targetMeshRef.current,
-      bufferSize
+    if (!targetMeshRef.current?.geometry) return
+    targetMeshRef.current.geometry.computeBoundingBox()
+    targetMeshRef.current.updateMatrix()
+    const boundingBox = targetMeshRef.current.geometry.boundingBox?.clone()
+    boundingBox?.applyMatrix4(targetMeshRef.current.matrix)
+
+    const initDataTexture = getPositionTextureFromBox(
+      bufferSize,
+      boundingBox as THREE.Box3
     )
 
     ;((quadRef.current as THREE.Mesh)
@@ -88,14 +84,19 @@ const Waterfall = (props: GroupProps) => {
       </mesh>
       <group position-z={6} ref={savePOI} />
       <WaterfallFBO ref={quadRef} scene={sceneRef} size={bufferSize} />
-      <group>
-        <mesh ref={targetMeshRef}>
-          <torusKnotBufferGeometry />
-          <meshNormalMaterial visible={true} />
+      <group position-z={1}>
+        <mesh
+          ref={targetMeshRef}
+          scale={[5, 0.5, 2]}
+          position-y={2}
+          visible={true}
+        >
+          <boxBufferGeometry />
+          <meshBasicMaterial color={'blue'} wireframe={true} />
         </mesh>
         <WaterfallParticles
           ref={particleRef}
-          numPoints={10000}
+          numPoints={particlesAmount}
           size={bufferSize}
         />
       </group>
