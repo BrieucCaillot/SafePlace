@@ -6,11 +6,11 @@ import * as THREE from 'three'
 import React, { useMemo, useRef } from 'react'
 import { GroupProps } from 'react-three-fiber'
 import { useGLTF } from '@react-three/drei'
-import SafeplacePedestal from '@/components/Safeplace/SafeplacePedestal'
+import SafeplacePedestal from '@/components/Safeplace/SafePlacePedestal/SafeplacePedestal'
 import { SafeplacePOI } from '@/stores/useSafeplaceStore'
 
-const PedestralsAssoc = {
-  POI_1: SafeplacePOI.MountainPedestral,
+const pedestalsAssoc = {
+  POI_1: SafeplacePOI.MountainPedestal,
   POI_2: SafeplacePOI.PlaceholderPedetral1,
   POI_3: SafeplacePOI.PlaceholderPedetral2,
   POI_4: SafeplacePOI.PlaceholderPedetral3,
@@ -21,16 +21,16 @@ export default function SafeplaceTest(props: GroupProps) {
   const group = useRef<THREE.Group>(null)
   const { scene } = useGLTF('/models/safeplace-test.glb')
 
-  const pedestrals = useMemo(() => scene.children[0].children, [scene])
+  const pedestals = useMemo(() => scene.children[0].children, [scene])
   const houseElems = useMemo(() => scene.children[1].children, [scene])
 
   return (
     <group ref={group} {...props} dispose={null}>
       <group>
-        {pedestrals.map((poi, index) => (
+        {pedestals.map((poi, index) => (
           <SafeplacePedestal
             key={index}
-            safeplacePOI={PedestralsAssoc[poi.name]}
+            safeplacePOI={pedestalsAssoc[poi.name]}
             pedestalObj={poi}
           />
         ))}

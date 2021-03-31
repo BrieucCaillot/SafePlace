@@ -1,17 +1,18 @@
 import { Suspense, useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { useControls } from 'leva'
+
+import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
+
 import SafeplaceModel from '@/components/Safeplace/SafeplaceModel'
 import SafeplaceSky from '@/components/Safeplace/SafeplaceSky'
 import SafeplaceGround from '@/components/Safeplace/SafeplaceGround/SafeplaceGround'
-import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
-import { PointerEvent } from 'react-three-fiber'
+import SafeplaceInsideHouse from '@/components/Safeplace/SafeplaceInsideHouse'
+
 import Waterfall from '../canvas/Waterfall/Waterfall'
 import Grass from '../canvas/Grass/Grass'
 
 const SafeplaceCanvas = () => {
-  const insideHouseRef = useRef<THREE.Mesh | null>(null)
-
   const currentPOI = useSafeplaceStore((state) => state.currentPOI)
   const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
   const setPOIData = useSafeplaceStore((state) => state.setPOIData)
@@ -50,22 +51,12 @@ const SafeplaceCanvas = () => {
     })
   }, [])
 
-  /**
-   * SET CURRENT POI ON CLICK INSIDE
-   */
-  const onClick = (e: PointerEvent) => {
-    setCurrentPOI(SafeplacePOI.Inside)
-  }
-
   return (
     <>
       <Suspense fallback={null}>
         <SafeplaceSky />
         <pointLight position={[0, 20, 0]} />
-        <mesh ref={insideHouseRef} position-y={6} onClick={onClick}>
-          <boxGeometry />
-          <meshNormalMaterial />
-        </mesh>
+        <SafeplaceInsideHouse />
         <SafeplaceModel />
         <SafeplaceGround />
         <Waterfall position={[-50, 6, 0]} rotation={[0, 45, 0]} />
