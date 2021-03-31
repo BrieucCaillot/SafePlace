@@ -18,11 +18,15 @@ const WaterfallParticles = forwardRef(
     } & MeshProps,
     ref: RefObject<THREE.Mesh>
   ) => {
-    const { size, movementFactor, alpha } = useControls('Particles', {
-      size: 0.04,
-      movementFactor: 1,
-      alpha: { value: 1, min: 0, max: 1 },
-    })
+    const { size, movementFactor, alpha } = useControls(
+      'Particles',
+      {
+        size: 0.04,
+        movementFactor: 1,
+        alpha: { value: 1, min: 0, max: 1 },
+      },
+      { collapsed: true }
+    )
 
     const uniforms = useRef<Record<string, THREE.IUniform>>({
       uTexture: { value: null },

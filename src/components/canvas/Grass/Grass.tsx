@@ -1,5 +1,7 @@
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
-import getPositionTexture from '@/utils/getPositionTexture'
+import findMinimumTexSize from '@/utils/FBO/findMinimumTexSize'
+import getPositionTexture from '@/utils/FBO/getPositionTexture'
+import pow2roundup from '@/utils/FBO/power2roundup'
 import { useGLTF } from '@react-three/drei'
 import { useControls } from 'leva'
 import { useEffect, useMemo, useRef } from 'react'
@@ -15,19 +17,30 @@ const Grass = (props: GroupProps) => {
   const ref = useRef<THREE.Mesh>(null)
   const { nodes } = useGLTF('/models/grass.gltf')
 
-  const textureSize = useMemo<THREE.Vector2Tuple>(() => [64, 64], [])
-  const numPoints = textureSize[0] * textureSize[1]
-
-  const { size, windSpeed, windAmplitude, windNoiseSize } = useControls(
+  const {
+    size,
+    windSpeed,
+    windAmplitude,
+    windNoiseSize,
+    grassAmount: numPoints,
+  } = useControls(
     'Grass',
     {
-      windNoiseSize: 0.2,
-      windAmplitude: 0.3,
-      windSpeed: 0.2,
+      grassAmount: { value: 4096, step: 1 },
       size: 1,
+      windNoiseSize: { value: 0.2, min: 0, max: 1 },
+      windAmplitude: { value: 0.3, min: 0, max: 1 },
+      windSpeed: 0.2,
     },
-    { collapsed: false }
+    { collapsed: true }
   )
+
+  const textureSize = useMemo<THREE.Vector2Tuple>(
+    () => findMinimumTexSize(numPoints),
+    [numPoints]
+  )
+  // const textureSize = useMemo<THREE.Vector2Tuple>(() => [64, 64], [])
+  // const numPoints = textureSize[0] * textureSize[1]
 
   // --- GEOMETRY
 
@@ -59,6 +72,20 @@ const Grass = (props: GroupProps) => {
       new THREE.InstancedBufferAttribute(pixelPos, 2, false)
     )
 
+    const rotationArray = new Float32Array(numPoints * 4)
+    const q = new THREE.Quaternion()
+    for (let i = 0; i < numPoints; i++) {
+      q.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.random() * Math.PI)
+      rotationArray[i * 4 + 0] = q.x
+      rotationArray[i * 4 + 1] = q.y
+      rotationArray[i * 4 + 2] = q.z
+      rotationArray[i * 4 + 3] = q.w
+    }
+    geometry.setAttribute(
+      'aRotation',
+      new THREE.InstancedBufferAttribute(rotationArray, 4, false)
+    )
+
     return geometry
   }, [numPoints, textureSize[0], textureSize[1]])
 
@@ -88,11 +115,13 @@ const Grass = (props: GroupProps) => {
   })
 
   useEffect(() => {
+    ;(ref.current as THREE.InstancedMesh).count = numPoints
     uniforms.current.uPositionTexture.value = getPositionTexture(
       targetMeshRef.current,
-      textureSize
+      textureSize,
+      numPoints
     )
-  }, [textureSize[0], textureSize[1]])
+  }, [textureSize[0], textureSize[1], numPoints])
 
   return (
     <group {...props} rotation-x={-Math.PI / 2}>
@@ -100,12 +129,7 @@ const Grass = (props: GroupProps) => {
         <planeGeometry args={[100, 100]} />
         <meshBasicMaterial color={0x46765a} />
       </mesh>
-      <instancedMesh
-        geometry={bufferGeometry}
-        position-z={1}
-        args={[null as any, null as any, numPoints]}
-        ref={ref}
-      >
+      <instancedMesh geometry={bufferGeometry} position-z={1} ref={ref}>
         <shaderMaterial
           alphaTest={0.5}
           transparent={true}

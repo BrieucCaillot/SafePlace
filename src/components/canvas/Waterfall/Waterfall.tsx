@@ -6,7 +6,7 @@ import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import WaterfallFBO from './WaterfallFBO/WaterfallFBO'
 import WaterfallParticles from './WaterfallParticles/WaterfallParticles'
-import getPositionTexture from '@/utils/getPositionTexture'
+import getPositionTexture from '@/utils/FBO/getPositionTexture'
 
 function getRandomData(
   width: number,
