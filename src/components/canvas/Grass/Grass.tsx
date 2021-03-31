@@ -14,7 +14,7 @@ const Grass = (props: GroupProps) => {
   // --- STATE
 
   const targetMeshRef = useRef<THREE.Mesh>(null)
-  const ref = useRef<THREE.Mesh>(null)
+  const instancedMeshRef = useRef<THREE.Mesh>(null)
   const { nodes } = useGLTF('/models/grass.gltf')
 
   const {
@@ -115,7 +115,7 @@ const Grass = (props: GroupProps) => {
   })
 
   useEffect(() => {
-    ;(ref.current as THREE.InstancedMesh).count = numPoints
+    ;(instancedMeshRef.current as THREE.InstancedMesh).count = numPoints
     uniforms.current.uPositionTexture.value = getPositionTexture(
       targetMeshRef.current,
       textureSize,
@@ -129,7 +129,11 @@ const Grass = (props: GroupProps) => {
         <planeGeometry args={[100, 100]} />
         <meshBasicMaterial color={0x46765a} />
       </mesh>
-      <instancedMesh geometry={bufferGeometry} position-z={1} ref={ref}>
+      <instancedMesh
+        geometry={bufferGeometry}
+        position-z={1}
+        ref={instancedMeshRef}
+      >
         <shaderMaterial
           alphaTest={0.5}
           transparent={true}
