@@ -1,7 +1,7 @@
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
 import { useControls } from 'leva'
 import { forwardRef, RefObject, useEffect, useMemo, useRef } from 'react'
-import { MeshProps } from 'react-three-fiber'
+import { MeshProps, useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
 import fragmentShader from './WaterfallParticles.fs'
 import vertexShader from './WaterfallParticles.vs'
@@ -18,24 +18,22 @@ const WaterfallParticles = forwardRef(
     } & MeshProps,
     ref: RefObject<THREE.Mesh>
   ) => {
-    const { size, movementFactor, alpha } = useControls(
+    const { particlesSize, scale, alpha } = useControls(
       'Particles',
       {
-        size: 0.04,
-        movementFactor: 1,
+        particlesSize: 0.04,
+        scale: 1,
         alpha: { value: 1, min: 0, max: 1 },
       },
       { collapsed: true }
     )
 
     const uniforms = useRef<Record<string, THREE.IUniform>>({
-      uTexture: { value: null },
+      uOrigPosTexture: { value: null },
       uSize: { value: 0 },
-      uAmplitude: { value: 0 },
       uAlpha: { value: 0 },
     })
-    useNumberUniform(uniforms.current.uSize, size)
-    useNumberUniform(uniforms.current.uAmplitude, movementFactor)
+    useNumberUniform(uniforms.current.uSize, particlesSize)
     useNumberUniform(uniforms.current.uAlpha, alpha)
 
     const bufferGeometry = useMemo(() => {
@@ -87,7 +85,12 @@ const WaterfallParticles = forwardRef(
     }, [numPoints, bufferSize[0], bufferSize[1]])
 
     return (
-      <mesh {...meshProps} geometry={bufferGeometry} ref={ref}>
+      <mesh
+        {...meshProps}
+        geometry={bufferGeometry}
+        ref={ref}
+        scale={[scale, scale, scale]}
+      >
         <shaderMaterial
           transparent={true}
           fragmentShader={fragmentShader}

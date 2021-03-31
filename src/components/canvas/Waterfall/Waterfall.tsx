@@ -1,12 +1,18 @@
-import { useFBO } from '@react-three/drei'
-import { useEffect, useMemo, useRef } from 'react'
-import { GroupProps, useFrame, useThree } from 'react-three-fiber'
+import {
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react'
+import { GroupProps } from 'react-three-fiber'
 import * as THREE from 'three'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import WaterfallFBO from './WaterfallFBO/WaterfallFBO'
 import WaterfallParticles from './WaterfallParticles/WaterfallParticles'
 import { getPositionTextureFromBox } from '@/utils/FBO/getPositionTexture'
+import usePingPong from '@/hooks/FBO/usePingPong'
 
 const Waterfall = (props: GroupProps) => {
   const bufferSize = useMemo<THREE.Vector2Tuple>(() => [100, 100], [])
@@ -22,15 +28,18 @@ const Waterfall = (props: GroupProps) => {
   const particleRef = useRef<THREE.Mesh>(null)
   const quadRef = useRef<THREE.Mesh>(null)
 
-  let fbo1 = useFBO(bufferSize[0], bufferSize[1], {
-    minFilter: THREE.NearestFilter,
-    magFilter: THREE.NearestFilter,
-    type: THREE.FloatType,
-    stencilBuffer: false,
-  })
-  let fbo2 = useMemo(() => fbo1.clone(), [])
+  const setQuadTexture = useCallback((texture: THREE.Texture | null) => {
+    ;((quadRef.current as THREE.Mesh)
+      .material as THREE.ShaderMaterial).uniforms.uTexture.value = texture
+  }, [])
 
-  const { gl } = useThree()
+  const setParticlesTexture = useCallback((texture: THREE.Texture | null) => {
+    ;(feedbackRef.current?.material as THREE.MeshBasicMaterial).map = texture
+    ;((particleRef.current as THREE.Mesh)
+      .material as THREE.ShaderMaterial).uniforms.uOrigPosTexture.value = texture
+  }, [])
+
+  const initTextureRef = useRef<THREE.Texture>() as MutableRefObject<THREE.Texture>
 
   useEffect(() => {
     cameraRef.current.position.setZ(6)
@@ -41,38 +50,19 @@ const Waterfall = (props: GroupProps) => {
     const boundingBox = targetMeshRef.current.geometry.boundingBox?.clone()
     boundingBox?.applyMatrix4(targetMeshRef.current.matrix)
 
-    const initDataTexture = getPositionTextureFromBox(
+    initTextureRef.current = getPositionTextureFromBox(
       bufferSize,
       boundingBox as THREE.Box3
     )
-
-    ;((quadRef.current as THREE.Mesh)
-      .material as THREE.ShaderMaterial).uniforms.uTexture.value = initDataTexture
-
-    gl.setRenderTarget(fbo1)
-    gl.render(sceneRef.current, cameraRef.current)
-
-    gl.setRenderTarget(fbo2)
-    gl.render(sceneRef.current, cameraRef.current)
   }, [])
 
-  useFrame(({ gl }) => {
-    let oldFbo1 = fbo1 // store A, the penultimate state
-    fbo1 = fbo2 // advance A to the updated state
-    fbo2 = oldFbo1
-    ;((quadRef.current as THREE.Mesh)
-      .material as THREE.ShaderMaterial).uniforms.uTexture.value = fbo1.texture
-
-    gl.setRenderTarget(fbo2)
-    gl.render(sceneRef.current, cameraRef.current)
-    // pass the new positional values to the scene users see
-    ;(feedbackRef.current?.material as THREE.MeshBasicMaterial).map =
-      fbo2.texture
-    ;((particleRef.current as THREE.Mesh)
-      .material as THREE.ShaderMaterial).uniforms.uTexture.value = fbo2.texture
-
-    gl.setRenderTarget(null)
-  }, 1)
+  usePingPong(bufferSize, {
+    setParticlesTexture,
+    setQuadTexture,
+    initTextureRef,
+    sceneRef,
+    cameraRef,
+  })
 
   const savePOI = useSavePOIData(SafeplacePOI.Waterfall)
 
