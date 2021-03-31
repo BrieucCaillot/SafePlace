@@ -2,8 +2,8 @@ import { forwardRef, RefObject, useEffect, useRef } from 'react'
 import { createPortal, useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
 import useVector2Uniform from '@/hooks/uniforms/useVector2Uniform'
-import fragmentShader from './fragmentShader.frag'
-import vertexShader from './vertexShader.vert'
+import fragmentShader from './WaterfallFBO.fs'
+import vertexShader from './WaterfallFBO.vs'
 
 const WaterfallFBO = forwardRef(
   (

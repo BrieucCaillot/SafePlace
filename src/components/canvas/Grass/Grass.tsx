@@ -7,8 +7,8 @@ import { useControls } from 'leva'
 import { useEffect, useMemo, useRef } from 'react'
 import { GroupProps, useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
-import fragmentShader from './fragmentShader.frag'
-import vertexShader from './vertexShader.vert'
+import fragmentShader from './Grass.fs'
+import vertexShader from './Grass.vs'
 
 const Grass = (props: GroupProps) => {
   // --- STATE

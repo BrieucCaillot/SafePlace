@@ -3,8 +3,8 @@ import { useControls } from 'leva'
 import { forwardRef, RefObject, useEffect, useMemo, useRef } from 'react'
 import { MeshProps } from 'react-three-fiber'
 import * as THREE from 'three'
-import fragmentShader from './fragmentShader.frag'
-import vertexShader from './vertexShader.vert'
+import fragmentShader from './WaterfallParticles.fs'
+import vertexShader from './WaterfallParticles.vs'
 
 const WaterfallParticles = forwardRef(
   (
