@@ -25,7 +25,7 @@ const Grass = (props: GroupProps) => {
   } = useControls(
     'Grass',
     {
-      grassAmount: { value: 4096, step: 1 },
+      grassAmount: { value: 4096 * 32, step: 1 },
       size: 1,
       windNoiseSize: { value: 0.2, min: 0, max: 1 },
       windAmplitude: { value: 0.3, min: 0, max: 1 },
@@ -125,7 +125,7 @@ const Grass = (props: GroupProps) => {
   return (
     <group {...props} rotation-x={-Math.PI / 2}>
       <mesh scale={[1, 1, 1]} ref={targetMeshRef}>
-        <planeGeometry args={[100, 100]} />
+        <planeGeometry args={[500, 500]} />
         <meshBasicMaterial color={0x46765a} />
       </mesh>
       <instancedMesh
