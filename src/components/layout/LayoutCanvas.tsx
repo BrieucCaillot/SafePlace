@@ -1,9 +1,8 @@
 import * as THREE from 'three'
-import { Canvas } from 'react-three-fiber'
+import { Canvas, useFrame, useThree } from 'react-three-fiber'
 import { Perf } from 'r3f-perf'
 import { OrbitControls, Preload } from '@react-three/drei'
 import { useControls } from 'leva'
-import Camera from '@/components/canvas/Camera/Camera'
 // enable shader editor
 // import { MaterialEditor, useEditorComposer } from '@three-material-editor/react'
 
@@ -20,14 +19,14 @@ const LayoutCanvas = ({ children }) => {
       }}
       colorManagement={false}
       pixelRatio={[devicePixelRatio, 2]}
-      onCreated={({ gl }) => {
+      onCreated={({ gl, camera }) => {
+        camera.name = 'Camera'
         gl.setClearColor(0xffffff, 1)
       }}
     >
-      <Camera />
       <Preload all />
-      <Perf openByDefault trackGPU={true} position={'bottom-right'} />
       {orbitControlsEnabled && <OrbitControls />}
+      <Perf openByDefault trackGPU={true} position={'bottom-right'} />
       {/* <MaterialEditor /> */}
       {/* <EffectComposer ref={useEditorComposer()}> */}
       {/* <EffectComposer>

@@ -1,7 +1,6 @@
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
 import findMinimumTexSize from '@/utils/FBO/findMinimumTexSize'
 import { getPositionTextureFromMesh } from '@/utils/FBO/getPositionTexture'
-import pow2roundup from '@/utils/FBO/power2roundup'
 import { useGLTF } from '@react-three/drei'
 import { useControls } from 'leva'
 import { useEffect, useMemo, useRef } from 'react'

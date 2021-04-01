@@ -5,6 +5,7 @@ const SafeplaceSky = () => {
   const skyParams = useControls(
     'Safeplace Sky',
     {
+      enabled: true,
       distance: 45000,
       turbidity: {
         value: 1.0,
@@ -41,10 +42,14 @@ const SafeplaceSky = () => {
   )
 
   return (
-    <Sky
-      {...skyParams}
-      // {...props} // All three/examples/jsm/objects/Sky props are valid
-    />
+    <>
+      {skyParams.enabled && (
+        <Sky
+          {...skyParams}
+          // {...props} // All three/examples/jsm/objects/Sky props are valid
+        />
+      )}
+    </>
   )
 }
 

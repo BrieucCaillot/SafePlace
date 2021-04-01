@@ -5,7 +5,7 @@ import {
   useMemo,
   useRef,
 } from 'react'
-import { GroupProps } from 'react-three-fiber'
+import { GroupProps, PointerEvent } from 'react-three-fiber'
 import * as THREE from 'three'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import { SafeplacePOI } from '@/stores/useSafeplaceStore'
@@ -13,10 +13,17 @@ import WaterfallFBO from './WaterfallFBO/WaterfallFBO'
 import WaterfallParticles from './WaterfallParticles/WaterfallParticles'
 import { getPositionTextureFromBox } from '@/utils/FBO/getPositionTexture'
 import usePingPong from '@/hooks/FBO/usePingPong'
+import { useControls } from 'leva'
 
 const Waterfall = (props: GroupProps) => {
-  const bufferSize = useMemo<THREE.Vector2Tuple>(() => [100, 100], [])
+  const bufferSize = useMemo<THREE.Vector2Tuple>(() => [128, 128], [])
   const particlesAmount = bufferSize[0] * bufferSize[1]
+
+  const { showDegug } = useControls(
+    'Particles',
+    { showDegug: true },
+    { collapsed: true }
+  )
 
   const sceneRef = useRef<THREE.Scene>(new THREE.Scene())
   const cameraRef = useRef<THREE.Camera>(
@@ -30,13 +37,13 @@ const Waterfall = (props: GroupProps) => {
 
   const setQuadTexture = useCallback((texture: THREE.Texture | null) => {
     ;((quadRef.current as THREE.Mesh)
-      .material as THREE.ShaderMaterial).uniforms.uTexture.value = texture
+      .material as THREE.ShaderMaterial).uniforms.uPosTexture.value = texture
   }, [])
 
   const setParticlesTexture = useCallback((texture: THREE.Texture | null) => {
     ;(feedbackRef.current?.material as THREE.MeshBasicMaterial).map = texture
     ;((particleRef.current as THREE.Mesh)
-      .material as THREE.ShaderMaterial).uniforms.uOrigPosTexture.value = texture
+      .material as THREE.ShaderMaterial).uniforms.uPosTexture.value = texture
   }, [])
 
   const initTextureRef = useRef<THREE.Texture>() as MutableRefObject<THREE.Texture>
@@ -54,6 +61,9 @@ const Waterfall = (props: GroupProps) => {
       bufferSize,
       boundingBox as THREE.Box3
     )
+    ;((quadRef.current as THREE.Mesh)
+      .material as THREE.ShaderMaterial).uniforms.uOrigPosTexture.value =
+      initTextureRef.current
   }, [])
 
   usePingPong(bufferSize, {
@@ -66,9 +76,19 @@ const Waterfall = (props: GroupProps) => {
 
   const savePOI = useSavePOIData(SafeplacePOI.Waterfall)
 
+  const onPointerMove = useCallback<(e: PointerEvent) => void>(
+    ({ intersections: [{ point }] }) => {
+      ;((quadRef.current as THREE.Mesh)
+        .material as THREE.ShaderMaterial).uniforms.uMousePos.value.copy(
+        particleRef.current?.worldToLocal(point)
+      )
+    },
+    []
+  )
+
   return (
     <group {...props}>
-      <mesh scale={[5, 5, 1]} ref={feedbackRef}>
+      <mesh scale={[5, 5, 1]} ref={feedbackRef} visible={showDegug}>
         <planeGeometry />
         <meshBasicMaterial />
       </mesh>
@@ -76,13 +96,22 @@ const Waterfall = (props: GroupProps) => {
       <WaterfallFBO ref={quadRef} scene={sceneRef} size={bufferSize} />
       <group position-z={1}>
         <mesh
+          name='SpawnBox'
           ref={targetMeshRef}
           scale={[5, 0.5, 2]}
-          position-y={2}
-          visible={true}
+          position-y={3}
+          visible={showDegug}
         >
           <boxBufferGeometry />
           <meshBasicMaterial color={'blue'} wireframe={true} />
+        </mesh>
+        <mesh
+          visible={showDegug}
+          name='RaycastPlane'
+          onPointerMove={onPointerMove}
+        >
+          <planeGeometry args={[10, 10, 1]} />
+          <meshBasicMaterial color={'green'} wireframe={true} />
         </mesh>
         <WaterfallParticles
           ref={particleRef}
