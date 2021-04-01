@@ -14,6 +14,7 @@ import WaterfallParticles from './WaterfallParticles/WaterfallParticles'
 import { getPositionTextureFromBox } from '@/utils/FBO/getPositionTexture'
 import usePingPong from '@/hooks/FBO/usePingPong'
 import { useControls } from 'leva'
+import { useMatcapTexture } from '@react-three/drei'
 
 const Waterfall = (props: GroupProps) => {
   const bufferSize = useMemo<THREE.Vector2Tuple>(() => [128, 128], [])
@@ -21,7 +22,7 @@ const Waterfall = (props: GroupProps) => {
 
   const { showDegug } = useControls(
     'Particles',
-    { showDegug: true },
+    { showDegug: false },
     { collapsed: true }
   )
 
@@ -36,11 +37,13 @@ const Waterfall = (props: GroupProps) => {
   const quadRef = useRef<THREE.Mesh>(null)
 
   const setQuadTexture = useCallback((texture: THREE.Texture | null) => {
+    if (quadRef.current === null) return
     ;((quadRef.current as THREE.Mesh)
       .material as THREE.ShaderMaterial).uniforms.uPosTexture.value = texture
   }, [])
 
   const setParticlesTexture = useCallback((texture: THREE.Texture | null) => {
+    if (particleRef.current === null) return
     ;(feedbackRef.current?.material as THREE.MeshBasicMaterial).map = texture
     ;((particleRef.current as THREE.Mesh)
       .material as THREE.ShaderMaterial).uniforms.uPosTexture.value = texture

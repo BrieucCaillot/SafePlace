@@ -1,7 +1,8 @@
+import useColorUniform from '@/hooks/uniforms/useColorUniform'
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
 import { useControls } from 'leva'
-import { forwardRef, RefObject, useEffect, useMemo, useRef } from 'react'
-import { MeshProps, useFrame } from 'react-three-fiber'
+import { forwardRef, RefObject, useMemo, useRef } from 'react'
+import { PointsProps, useThree } from 'react-three-fiber'
 import * as THREE from 'three'
 import fragmentShader from './WaterfallParticles.fs'
 import vertexShader from './WaterfallParticles.vs'
@@ -15,61 +16,58 @@ const WaterfallParticles = forwardRef(
     }: {
       size: THREE.Vector2Tuple
       numPoints: number
-    } & MeshProps,
+    } & PointsProps,
     ref: RefObject<THREE.Mesh>
   ) => {
-    const { particlesSize, scale, alpha } = useControls(
+    const { particlesSize, alpha, startColor, endColor } = useControls(
       'Particles',
       {
-        particlesSize: 0.04,
-        scale: 1,
+        particlesSize: 32,
         alpha: { value: 1, min: 0, max: 1 },
+        startColor: '#3e69e8',
+        endColor: '#18275f',
       },
       { collapsed: true }
     )
+
+    // const [matcap] = useMatcapTexture('1B1B1B_999999_575757_747474', 64)
+    // const normalMap = useMemo(
+    //   () => new THREE.TextureLoader().load('img/normalMap.png'),
+    //   []
+    // )
+
+    const { gl } = useThree()
 
     const uniforms = useRef<Record<string, THREE.IUniform>>({
       uPosTexture: { value: null },
       uSize: { value: 0 },
       uAlpha: { value: 0 },
+      uStartColor: { value: new THREE.Color() },
+      uEndColor: { value: new THREE.Color() },
+      // uMatcap: { value: null },
+      // uNormalMap: { value: null },
     })
-    useNumberUniform(uniforms.current.uSize, particlesSize)
+
+    useNumberUniform(uniforms.current.uSize, particlesSize * gl.getPixelRatio())
     useNumberUniform(uniforms.current.uAlpha, alpha)
+    useColorUniform(uniforms.current.uStartColor, startColor)
+    useColorUniform(uniforms.current.uEndColor, endColor)
+    // useEffect(() => {
+    //   uniforms.current.uMatcap.value = matcap
+    // }, [matcap])
+    // useEffect(() => {
+    //   uniforms.current.uNormalMap.value = normalMap
+    // }, [normalMap])
 
     const bufferGeometry = useMemo(() => {
-      const geometry = new THREE.InstancedBufferGeometry()
+      const geometry = new THREE.BufferGeometry()
 
       // positions
-      const positions = new THREE.BufferAttribute(new Float32Array(4 * 3), 3)
-      positions.setXYZ(0, -0.5, 0.5, 0.0)
-      positions.setXYZ(1, 0.5, 0.5, 0.0)
-      positions.setXYZ(2, -0.5, -0.5, 0.0)
-      positions.setXYZ(3, 0.5, -0.5, 0.0)
+      const positions = new THREE.BufferAttribute(
+        new Float32Array(numPoints * 3).fill(0),
+        3
+      )
       geometry.setAttribute('position', positions)
-
-      // uvs
-      const uvs = new THREE.BufferAttribute(new Float32Array(4 * 2), 2)
-      uvs.setXY(0, 0.0, 0.0)
-      uvs.setXY(1, 1.0, 0.0)
-      uvs.setXY(2, 0.0, 1.0)
-      uvs.setXY(3, 1.0, 1.0)
-      geometry.setAttribute('uv', uvs)
-
-      // index
-      geometry.setIndex(
-        new THREE.BufferAttribute(new Uint16Array([0, 2, 1, 2, 3, 1]), 1)
-      )
-
-      const offsets = new Float32Array(numPoints * 3)
-      for (let i = 0; i < numPoints; i++) {
-        offsets[i * 3 + 0] = (Math.random() - 0.5) * 2 * 10
-        offsets[i * 3 + 1] = (Math.random() - 0.5) * 2 * 10
-        offsets[i * 3 + 2] = (Math.random() - 0.5) * 2 * 10
-      }
-      geometry.setAttribute(
-        'aOffset',
-        new THREE.InstancedBufferAttribute(offsets, 3, false)
-      )
 
       const pixelPos = new Float32Array(numPoints * 2)
       for (let i = 0; i < numPoints; i++) {
@@ -78,18 +76,18 @@ const WaterfallParticles = forwardRef(
       }
       geometry.setAttribute(
         'aPixelPosition',
-        new THREE.InstancedBufferAttribute(pixelPos, 2, false)
+        new THREE.BufferAttribute(pixelPos, 2, false)
       )
 
       return geometry
     }, [numPoints, bufferSize[0], bufferSize[1]])
 
     return (
-      <mesh
+      <points
         {...meshProps}
         geometry={bufferGeometry}
         ref={ref}
-        scale={[scale, scale, scale]}
+        frustumCulled={false}
       >
         <shaderMaterial
           transparent={true}
@@ -97,7 +95,7 @@ const WaterfallParticles = forwardRef(
           vertexShader={vertexShader}
           uniforms={uniforms.current}
         />
-      </mesh>
+      </points>
     )
   }
 )
