@@ -1,4 +1,5 @@
 attribute vec2 aPixelPosition;
+
 uniform sampler2D uPosTexture;
 uniform float uSize;
 uniform float uAmplitude;
