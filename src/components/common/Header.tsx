@@ -5,6 +5,9 @@ const Header = () => (
     <Link href='/'>
       <a className='bg-skyblue border-gray-50 text-black'>Home</a>
     </Link>
+    <Link href='/journeys/mountain'>
+      <a className='bg-skyblue border-gray-50 text-black'>Mountain</a>
+    </Link>
     <Link href='/test'>
       <a className='bg-skyblue border-gray-50 text-black'>Test</a>
     </Link>

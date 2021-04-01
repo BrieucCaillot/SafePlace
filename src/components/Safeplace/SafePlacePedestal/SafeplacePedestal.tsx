@@ -1,9 +1,14 @@
 import { useMemo, useRef } from 'react'
+import { useRouter } from 'next/router'
+
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import SafeplaceInteraction from '@/components/Safeplace/SafeplaceInteraction/SafeplaceInteraction'
 
 const SafeplacePedestal = ({ safeplacePOI, pedestalObj }) => {
+  const router = useRouter()
+
+  const currentPOI = useSafeplaceStore((state) => state.currentPOI)
   const isCurrentlyAvailable = useSafeplaceStore(
     (state) => state.isCurrentlyAvailable
   )
@@ -13,6 +18,14 @@ const SafeplacePedestal = ({ safeplacePOI, pedestalObj }) => {
 
   const cameraRef = useRef<THREE.Object3D>(null)
   const savePOI = useSavePOIData(safeplacePOI)
+
+  console.log(router)
+
+  const onPedestalClick = () => {
+    if (safeplacePOI !== SafeplacePOI.MountainPedestal) return
+    // Not working
+    // router.push('/journeys/mountain')
+  }
 
   return (
     <group position={pedestalObj.position} scale={pedestalObj.scale}>
@@ -32,6 +45,7 @@ const SafeplacePedestal = ({ safeplacePOI, pedestalObj }) => {
         scale={pedestal.scale}
         material={pedestal.material}
         geometry={pedestal.geometry}
+        onClick={onPedestalClick}
       />
     </group>
   )

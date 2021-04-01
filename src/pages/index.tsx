@@ -1,9 +1,10 @@
 import dynamic from 'next/dynamic'
 import OnBoarding from '@/components/OnBoarding/OnBoarding'
 import Bottom from '@/components/common/Bottom/Bottom'
+import SafeplaceCamera from '@/components/canvas/Camera/SafeplaceCamera'
 
-const SafeplaceCanvas = dynamic(
-  () => import('@/components/Safeplace/SafeplaceCanvas'),
+const SafeplaceScene = dynamic(
+  () => import('@/components/Safeplace/SafeplaceScene'),
   {
     ssr: false,
   }
@@ -20,7 +21,8 @@ const Index = () => {
   return (
     <>
       {/* <OnBoarding /> */}
-      <SafeplaceCanvas r3f />
+      <SafeplaceCamera r3f />
+      <SafeplaceScene r3f />
       <SafeplaceDom />
       <Bottom />
     </>
@@ -28,9 +30,3 @@ const Index = () => {
 }
 
 export default Index
-
-export async function getStaticProps() {
-  return {
-    props: {},
-  }
-}
