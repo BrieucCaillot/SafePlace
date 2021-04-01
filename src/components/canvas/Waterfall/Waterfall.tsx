@@ -15,8 +15,11 @@ import { getPositionTextureFromBox } from '@/utils/FBO/getPositionTexture'
 import usePingPong from '@/hooks/FBO/usePingPong'
 import { useControls } from 'leva'
 import { useMatcapTexture } from '@react-three/drei'
+import useWatchableRef from '@/hooks/useWatchableRef'
 
 const Waterfall = (props: GroupProps) => {
+  const savePOI = useSavePOIData(SafeplacePOI.Waterfall)
+
   const bufferSize = useMemo<THREE.Vector2Tuple>(() => [128, 128], [])
   const particlesAmount = bufferSize[0] * bufferSize[1]
 
@@ -36,18 +39,17 @@ const Waterfall = (props: GroupProps) => {
   const particleRef = useRef<THREE.Mesh>(null)
   const quadRef = useRef<THREE.Mesh>(null)
 
-  const setQuadTexture = useCallback((texture: THREE.Texture | null) => {
-    if (quadRef.current === null) return
-    ;((quadRef.current as THREE.Mesh)
-      .material as THREE.ShaderMaterial).uniforms.uPosTexture.value = texture
-  }, [])
+  const quadTexture = useWatchableRef<THREE.Texture | null>(null)
+  const particleTexture = useWatchableRef<THREE.Texture | null>(null)
 
-  const setParticlesTexture = useCallback((texture: THREE.Texture | null) => {
-    if (particleRef.current === null) return
-    ;(feedbackRef.current?.material as THREE.MeshBasicMaterial).map = texture
-    ;((particleRef.current as THREE.Mesh)
-      .material as THREE.ShaderMaterial).uniforms.uPosTexture.value = texture
-  }, [])
+  useEffect(
+    () =>
+      particleTexture.onChange((t) => {
+        if (t)
+          (feedbackRef.current?.material as THREE.MeshBasicMaterial).map = t
+      }),
+    []
+  )
 
   const initTextureRef = useRef<THREE.Texture>() as MutableRefObject<THREE.Texture>
 
@@ -70,14 +72,12 @@ const Waterfall = (props: GroupProps) => {
   }, [])
 
   usePingPong(bufferSize, {
-    setParticlesTexture,
-    setQuadTexture,
+    particleTexture,
+    quadTexture,
     initTextureRef,
     sceneRef,
     cameraRef,
   })
-
-  const savePOI = useSavePOIData(SafeplacePOI.Waterfall)
 
   const onPointerMove = useCallback<(e: PointerEvent) => void>(
     ({ intersections: [{ point }] }) => {
@@ -96,7 +96,12 @@ const Waterfall = (props: GroupProps) => {
         <meshBasicMaterial />
       </mesh>
       <group position-z={6} ref={savePOI} />
-      <WaterfallFBO ref={quadRef} scene={sceneRef} size={bufferSize} />
+      <WaterfallFBO
+        ref={quadRef}
+        scene={sceneRef}
+        size={bufferSize}
+        quadTexture={quadTexture}
+      />
       <group position-z={1}>
         <mesh
           name='SpawnBox'
@@ -117,6 +122,7 @@ const Waterfall = (props: GroupProps) => {
           <meshBasicMaterial color={'green'} wireframe={true} />
         </mesh>
         <WaterfallParticles
+          positionTexture={particleTexture}
           ref={particleRef}
           numPoints={particlesAmount}
           size={bufferSize}

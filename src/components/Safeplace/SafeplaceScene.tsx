@@ -59,7 +59,7 @@ const SafeplaceCanvas = () => {
         <SafeplaceInsideHouse />
         <SafeplaceModel />
         <SafeplaceGround />
-        {/* <Waterfall position={[-50, 6, 0]} rotation={[0, 45, 0]} /> */}
+        <Waterfall position={[-50, 6, 0]} rotation={[0, 45, 0]} />
         <Grass position={[0, 0.1, -60]} />
       </Suspense>
     </>

@@ -1,5 +1,7 @@
 import useColorUniform from '@/hooks/uniforms/useColorUniform'
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
+import useWatchableUniform from '@/hooks/uniforms/useWatchableUniform'
+import { WatchableRefObject } from '@/hooks/useWatchableRef'
 import { useControls } from 'leva'
 import { forwardRef, RefObject, useMemo, useRef } from 'react'
 import { PointsProps, useThree } from 'react-three-fiber'
@@ -10,10 +12,12 @@ import vertexShader from './WaterfallParticles.vs'
 const WaterfallParticles = forwardRef(
   (
     {
+      positionTexture,
       size: bufferSize,
       numPoints,
       ...meshProps
     }: {
+      positionTexture: WatchableRefObject<THREE.Texture>
       size: THREE.Vector2Tuple
       numPoints: number
     } & PointsProps,
@@ -52,6 +56,7 @@ const WaterfallParticles = forwardRef(
     useNumberUniform(uniforms.current.uAlpha, alpha)
     useColorUniform(uniforms.current.uStartColor, startColor)
     useColorUniform(uniforms.current.uEndColor, endColor)
+    useWatchableUniform(uniforms.current.uPosTexture, positionTexture)
     // useEffect(() => {
     //   uniforms.current.uMatcap.value = matcap
     // }, [matcap])

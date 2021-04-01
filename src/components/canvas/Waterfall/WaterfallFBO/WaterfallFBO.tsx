@@ -6,13 +6,20 @@ import fragmentShader from './WaterfallFBO.fs'
 import vertexShader from './WaterfallFBO.vs'
 import { useControls } from 'leva'
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
+import { WatchableRefObject } from '@/hooks/useWatchableRef'
+import useWatchableUniform from '@/hooks/uniforms/useWatchableUniform'
 
 const WaterfallFBO = forwardRef(
   (
     {
       scene,
       size,
-    }: { scene: RefObject<THREE.Scene>; size: THREE.Vector2Tuple },
+      quadTexture,
+    }: {
+      scene: RefObject<THREE.Scene>
+      size: THREE.Vector2Tuple
+      quadTexture: WatchableRefObject<THREE.Texture>
+    },
     ref: RefObject<THREE.Mesh>
   ) => {
     useEffect(() => {
@@ -58,6 +65,7 @@ const WaterfallFBO = forwardRef(
     useNumberUniform(uniforms.current.uAngleAmplitude, angleAmplitude)
     useNumberUniform(uniforms.current.uMovementSpeed, movementSpeed)
     useNumberUniform(uniforms.current.uLifeTime, lifeTime)
+    useWatchableUniform(uniforms.current.uPosTexture, quadTexture)
 
     useFrame(({ clock }) => {
       uniforms.current.uTime.value = clock.getElapsedTime()
