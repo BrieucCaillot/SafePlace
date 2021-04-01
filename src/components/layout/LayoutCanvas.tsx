@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { Canvas, useFrame, useThree } from 'react-three-fiber'
-import { Perf } from 'r3f-perf'
+import { Perf } from 'r3f-perf/dist/r3f-perf.cjs.development.js'
 import { OrbitControls, Preload } from '@react-three/drei'
 import { useControls } from 'leva'
 // enable shader editor
