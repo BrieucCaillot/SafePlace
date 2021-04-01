@@ -20,7 +20,8 @@ const WaterfallFBO = forwardRef(
 
     const uniforms = useRef<Record<string, THREE.IUniform>>({
       uSize: { value: new THREE.Vector2() },
-      uTexture: { value: null },
+      uOrigPosTexture: { value: null },
+      uPosTexture: { value: null },
       uTime: { value: 0 },
     })
     useVector2Uniform(uniforms.current.uSize, size)

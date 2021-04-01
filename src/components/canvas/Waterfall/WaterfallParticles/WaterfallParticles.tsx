@@ -29,7 +29,7 @@ const WaterfallParticles = forwardRef(
     )
 
     const uniforms = useRef<Record<string, THREE.IUniform>>({
-      uOrigPosTexture: { value: null },
+      uPosTexture: { value: null },
       uSize: { value: 0 },
       uAlpha: { value: 0 },
     })

@@ -30,13 +30,13 @@ const Waterfall = (props: GroupProps) => {
 
   const setQuadTexture = useCallback((texture: THREE.Texture | null) => {
     ;((quadRef.current as THREE.Mesh)
-      .material as THREE.ShaderMaterial).uniforms.uTexture.value = texture
+      .material as THREE.ShaderMaterial).uniforms.uPosTexture.value = texture
   }, [])
 
   const setParticlesTexture = useCallback((texture: THREE.Texture | null) => {
     ;(feedbackRef.current?.material as THREE.MeshBasicMaterial).map = texture
     ;((particleRef.current as THREE.Mesh)
-      .material as THREE.ShaderMaterial).uniforms.uOrigPosTexture.value = texture
+      .material as THREE.ShaderMaterial).uniforms.uPosTexture.value = texture
   }, [])
 
   const initTextureRef = useRef<THREE.Texture>() as MutableRefObject<THREE.Texture>
@@ -54,6 +54,9 @@ const Waterfall = (props: GroupProps) => {
       bufferSize,
       boundingBox as THREE.Box3
     )
+    ;((quadRef.current as THREE.Mesh)
+      .material as THREE.ShaderMaterial).uniforms.uOrigPosTexture.value =
+      initTextureRef.current
   }, [])
 
   usePingPong(bufferSize, {
