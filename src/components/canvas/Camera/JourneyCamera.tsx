@@ -12,8 +12,6 @@ const JourneyCamera = () => {
     (state) => state.setCameraIsTravelling
   )
 
-  window.camera = camera
-
   return null
 }
 

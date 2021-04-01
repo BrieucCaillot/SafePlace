@@ -39,8 +39,6 @@ export default function Rocks(props: JSX.IntrinsicElements['group']) {
 
   console.log(materials)
 
-  window.rocks = group
-
   return (
     <group ref={group} {...props} dispose={null}>
       <group rotation={[-Math.PI / 2, 0, 0]}>

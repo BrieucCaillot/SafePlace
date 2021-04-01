@@ -18,29 +18,10 @@ export type SectionData = {
   scale: THREE.Vector3
 }
 
-type SafeplaceStore = {
-  currentSection: MountainSections
-  setCurrentPOI: (section) => void
-  POIMap: Map<SafeplacePOI, POIData>
-  setPOIData: (key: SafeplacePOI, value: Partial<POIData>) => void
-  getPOIData: (key: SafeplacePOI) => POIData | undefined
-}
+type MountainJourneyStore = {}
 
-const useSafeplaceStore = create<SafeplaceStore>((set, get, state) => ({
-  currentPOI: SafeplacePOI.OnBoarding,
-  setCurrentPOI: (SafeplacePOI) => set({ currentPOI: SafeplacePOI }),
-  POIMap: new Map(),
-  setPOIData: (
-    key,
-    {
-      position = new THREE.Vector3(),
-      quaternion = new THREE.Quaternion(),
-      scale = new THREE.Vector3(1, 1, 1),
-    }
-  ) => {
-    set({ POIMap: get().POIMap.set(key, { position, quaternion, scale }) })
-  },
-  getPOIData: (key) => get().POIMap.get(key),
-}))
+const useMountainJourneyStore = create<MountainJourneyStore>(
+  (set, get, state) => ({})
+)
 
-export default useSafeplaceStore
+export default useMountainJourneyStore
