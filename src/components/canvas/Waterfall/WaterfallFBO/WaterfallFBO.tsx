@@ -27,7 +27,7 @@ const WaterfallFBO = forwardRef(
       scene: RefObject<THREE.Scene>
       size: THREE.Vector2Tuple
       quadTexture: WatchableRefObject<THREE.Texture>
-      initTexture: RefObject<THREE.Texture>
+      initTexture: WatchableRefObject<THREE.Texture>
       mousePosRef: WatchableRefObject<THREE.Vector3>
     },
     ref: RefObject<THREE.Mesh>
@@ -71,19 +71,12 @@ const WaterfallFBO = forwardRef(
     useNumberUniform(uniforms.current.uMovementSpeed, movementSpeed)
     useNumberUniform(uniforms.current.uLifeTime, lifeTime)
     useWatchableUniform(uniforms.current.uPosTexture, quadTexture)
+    useWatchableUniform(uniforms.current.uOrigPosTexture, initTexture)
 
     useEffect(
       () => mousePosRef.onChange((v) => (uniforms.current.uMousePos.value = v)),
       [mousePosRef]
     )
-
-    useEffect(() => {
-      const id = setTimeout(() => {
-        if (!initTexture.current) throw 'No Init Texture'
-        uniforms.current.uOrigPosTexture.value = initTexture.current
-      }, 0)
-      return () => clearTimeout(id)
-    }, [])
 
     useFrame(({ clock }) => {
       uniforms.current.uTime.value = clock.getElapsedTime()

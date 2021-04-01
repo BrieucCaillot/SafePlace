@@ -1,5 +1,5 @@
 import { useFBO } from '@react-three/drei'
-import { MutableRefObject, RefObject, useEffect, useMemo } from 'react'
+import { RefObject, useEffect, useMemo } from 'react'
 import { useFrame, useThree } from 'react-three-fiber'
 import * as THREE from 'three'
 import { WatchableRefObject } from '../useWatchableRef'
@@ -15,18 +15,25 @@ const usePingPong = (
   }: {
     cameraRef: RefObject<THREE.Camera>
     sceneRef: RefObject<THREE.Scene>
-    initTextureRef: MutableRefObject<THREE.Texture>
+    initTextureRef: WatchableRefObject<THREE.Texture>
     quadTexture: WatchableRefObject<THREE.Texture>
     particleTexture: WatchableRefObject<THREE.Texture>
   }
 ) => {
-  let fbo1 = useFBO(bufferSize[0], bufferSize[1], {
+  const initBufferSize = useMemo(() => [...bufferSize], [])
+  let fbo1 = useFBO(initBufferSize[0], initBufferSize[1], {
     minFilter: THREE.NearestFilter,
     magFilter: THREE.NearestFilter,
     type: THREE.FloatType,
     stencilBuffer: false,
   })
   let fbo2 = useMemo(() => fbo1.clone(), [])
+
+  useEffect(() => {
+    fbo2.setSize(...bufferSize)
+    fbo1.setSize(...bufferSize)
+    console.log(bufferSize)
+  }, [bufferSize[0], bufferSize[1]])
 
   const { gl } = useThree()
 

@@ -15,15 +15,21 @@ import WaterfallParticles from './WaterfallParticles/WaterfallParticles'
 import { getPositionTextureFromBox } from '@/utils/FBO/getPositionTexture'
 import usePingPong from '@/hooks/FBO/usePingPong'
 import useWatchableRef from '@/hooks/useWatchableRef'
+import findMinimumTexSize from '@/utils/FBO/findMinimumTexSize'
 
 const Waterfall = (props: GroupProps) => {
-  const bufferSize = useMemo<THREE.Vector2Tuple>(() => [128, 128], [])
-  const particlesAmount = bufferSize[0] * bufferSize[1]
-
-  const { showDegug } = useControls(
+  const { showDegug, numPoints } = useControls(
     'Particles',
-    { showDegug: false },
+    {
+      showDegug: false,
+      numPoints: { value: 16384, step: 1, label: 'Particle number' },
+    },
     { collapsed: true }
+  )
+
+  const bufferSize = useMemo<THREE.Vector2Tuple>(
+    () => findMinimumTexSize(numPoints),
+    [numPoints]
   )
 
   const savePOI = useSavePOIData(SafeplacePOI.Waterfall)
@@ -40,7 +46,7 @@ const Waterfall = (props: GroupProps) => {
 
   const quadTexture = useWatchableRef<THREE.Texture | null>(null)
   const particleTexture = useWatchableRef<THREE.Texture | null>(null)
-  const initTextureRef = useRef<THREE.Texture>() as MutableRefObject<THREE.Texture>
+  const initTextureRef = useWatchableRef<THREE.Texture | null>(null)
 
   const mousePosRef = useWatchableRef<THREE.Vector3>(new THREE.Vector3())
 
@@ -107,7 +113,7 @@ const Waterfall = (props: GroupProps) => {
       <WaterfallParticles
         positionTexture={particleTexture}
         ref={particleRef}
-        numPoints={particlesAmount}
+        numPoints={numPoints}
         size={bufferSize}
       />
       <WaterfallFBO

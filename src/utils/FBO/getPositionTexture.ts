@@ -37,11 +37,12 @@ export function getPositionTextureFromMesh(
 
 export function getPositionTextureFromBox(
   textureSize: THREE.Vector2Tuple,
-  box: THREE.Box3
+  box: THREE.Box3,
+  sampleAmount: number = 0
 ): THREE.DataTexture {
-  const pixelAmount = textureSize[0] * textureSize[1]
-  var data = new Float32Array(pixelAmount * 4)
-  for (let index = 0; index < pixelAmount; index++) {
+  const amount = sampleAmount || textureSize[0] * textureSize[1]
+  const data = new Float32Array(textureSize[0] * textureSize[1] * 4)
+  for (let index = 0; index < amount; index++) {
     data[index * 4 + 0] = remap(Math.random(), [0, 1], [box.min.x, box.max.x])
     data[index * 4 + 1] = remap(Math.random(), [0, 1], [box.min.y, box.max.y])
     data[index * 4 + 2] = remap(Math.random(), [0, 1], [box.min.z, box.max.z])
