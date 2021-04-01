@@ -3,8 +3,6 @@ import OnBoardingWelcome from '@/components/OnBoarding/OnBoardingWelcome'
 import OnBoardingTransition from './OnBoardingTransition'
 
 const OnBoarding = () => {
-  useEffect(() => console.log('mdrr'), [])
-
   return (
     <div
       id='on-boarding'
