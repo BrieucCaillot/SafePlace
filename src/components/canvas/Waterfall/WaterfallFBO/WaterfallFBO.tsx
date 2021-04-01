@@ -1,4 +1,10 @@
-import { forwardRef, RefObject, useEffect, useRef } from 'react'
+import {
+  forwardRef,
+  RefObject,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+} from 'react'
 import { createPortal, useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
 import useVector2Uniform from '@/hooks/uniforms/useVector2Uniform'
@@ -15,18 +21,17 @@ const WaterfallFBO = forwardRef(
       scene,
       size,
       quadTexture,
+      initTexture,
+      mousePosRef,
     }: {
       scene: RefObject<THREE.Scene>
       size: THREE.Vector2Tuple
       quadTexture: WatchableRefObject<THREE.Texture>
+      initTexture: RefObject<THREE.Texture>
+      mousePosRef: WatchableRefObject<THREE.Vector3>
     },
     ref: RefObject<THREE.Mesh>
   ) => {
-    useEffect(() => {
-      if (scene.current === null) return
-      scene.current.background = new THREE.Color('black')
-    }, [])
-
     const {
       baseDirection,
       angleAmplitude,
@@ -66,6 +71,19 @@ const WaterfallFBO = forwardRef(
     useNumberUniform(uniforms.current.uMovementSpeed, movementSpeed)
     useNumberUniform(uniforms.current.uLifeTime, lifeTime)
     useWatchableUniform(uniforms.current.uPosTexture, quadTexture)
+
+    useEffect(
+      () => mousePosRef.onChange((v) => (uniforms.current.uMousePos.value = v)),
+      [mousePosRef]
+    )
+
+    useEffect(() => {
+      const id = setTimeout(() => {
+        if (!initTexture.current) throw 'No Init Texture'
+        uniforms.current.uOrigPosTexture.value = initTexture.current
+      }, 0)
+      return () => clearTimeout(id)
+    }, [])
 
     useFrame(({ clock }) => {
       uniforms.current.uTime.value = clock.getElapsedTime()
