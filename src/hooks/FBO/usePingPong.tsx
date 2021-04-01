@@ -32,7 +32,6 @@ const usePingPong = (
   useEffect(() => {
     fbo2.setSize(...bufferSize)
     fbo1.setSize(...bufferSize)
-    console.log(bufferSize)
   }, [bufferSize[0], bufferSize[1]])
 
   const { gl } = useThree()
