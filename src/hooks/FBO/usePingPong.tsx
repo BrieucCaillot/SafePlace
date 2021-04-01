@@ -1,25 +1,27 @@
 import { useFBO } from '@react-three/drei'
-import { MutableRefObject, RefObject, useEffect, useMemo } from 'react'
+import { RefObject, useEffect, useMemo } from 'react'
 import { useFrame, useThree } from 'react-three-fiber'
 import * as THREE from 'three'
+import { WatchableRefObject } from '../useWatchableRef'
 
 const usePingPong = (
   bufferSize: THREE.Vector2Tuple,
   {
     cameraRef,
     sceneRef,
-    setQuadTexture,
-    setParticlesTexture,
+    quadTexture,
+    particleTexture,
     initTextureRef,
   }: {
     cameraRef: RefObject<THREE.Camera>
     sceneRef: RefObject<THREE.Scene>
-    initTextureRef: MutableRefObject<THREE.Texture>
-    setQuadTexture: (tex: THREE.Texture | null) => void
-    setParticlesTexture: (tex: THREE.Texture | null) => void
+    initTextureRef: WatchableRefObject<THREE.Texture>
+    quadTexture: WatchableRefObject<THREE.Texture>
+    particleTexture: WatchableRefObject<THREE.Texture>
   }
 ) => {
-  let fbo1 = useFBO(bufferSize[0], bufferSize[1], {
+  const initBufferSize = useMemo(() => [...bufferSize], [])
+  let fbo1 = useFBO(initBufferSize[0], initBufferSize[1], {
     minFilter: THREE.NearestFilter,
     magFilter: THREE.NearestFilter,
     type: THREE.FloatType,
@@ -27,12 +29,17 @@ const usePingPong = (
   })
   let fbo2 = useMemo(() => fbo1.clone(), [])
 
+  useEffect(() => {
+    fbo2.setSize(...bufferSize)
+    fbo1.setSize(...bufferSize)
+  }, [bufferSize[0], bufferSize[1]])
+
   const { gl } = useThree()
 
   useEffect(() => {
     if (sceneRef.current === null) throw 'No scene'
     if (cameraRef.current === null) throw 'No camera'
-    setQuadTexture(initTextureRef.current)
+    quadTexture.current = initTextureRef.current
 
     gl.setRenderTarget(fbo1)
     gl.render(sceneRef.current, cameraRef.current)
@@ -47,14 +54,14 @@ const usePingPong = (
     let oldFbo1 = fbo1 // store A, the penultimate state
     fbo1 = fbo2 // advance A to the updated state
     fbo2 = oldFbo1
-    setQuadTexture(fbo1.texture)
+    quadTexture.current = fbo1.texture
 
     gl.setRenderTarget(fbo2)
     gl.render(sceneRef.current, cameraRef.current)
     // pass the new positional values to the scene users see
 
     gl.setRenderTarget(null)
-    setParticlesTexture(fbo2.texture)
+    particleTexture.current = fbo2.texture
   }, 1)
 }
 

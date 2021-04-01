@@ -6,6 +6,7 @@ import {
   useRef,
 } from 'react'
 import { GroupProps, PointerEvent } from 'react-three-fiber'
+import { useControls } from 'leva'
 import * as THREE from 'three'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import { SafeplacePOI } from '@/stores/useSafeplaceStore'
@@ -13,40 +14,50 @@ import WaterfallFBO from './WaterfallFBO/WaterfallFBO'
 import WaterfallParticles from './WaterfallParticles/WaterfallParticles'
 import { getPositionTextureFromBox } from '@/utils/FBO/getPositionTexture'
 import usePingPong from '@/hooks/FBO/usePingPong'
-import { useControls } from 'leva'
+import useWatchableRef from '@/hooks/useWatchableRef'
+import findMinimumTexSize from '@/utils/FBO/findMinimumTexSize'
 
 const Waterfall = (props: GroupProps) => {
-  const bufferSize = useMemo<THREE.Vector2Tuple>(() => [128, 128], [])
-  const particlesAmount = bufferSize[0] * bufferSize[1]
-
-  const { showDegug } = useControls(
+  const { showDegug, numPoints } = useControls(
     'Particles',
-    { showDegug: true },
+    {
+      showDegug: false,
+      numPoints: { value: 16384, step: 1, label: 'Particle number' },
+    },
     { collapsed: true }
   )
+
+  const bufferSize = useMemo<THREE.Vector2Tuple>(
+    () => findMinimumTexSize(numPoints),
+    [numPoints]
+  )
+
+  const savePOI = useSavePOIData(SafeplacePOI.Waterfall)
 
   const sceneRef = useRef<THREE.Scene>(new THREE.Scene())
   const cameraRef = useRef<THREE.Camera>(
     new THREE.OrthographicCamera(-0.5, 0.5, 0.5, -0.5)
   )
+
   const targetMeshRef = useRef<THREE.Mesh>(null)
 
   const feedbackRef = useRef<THREE.Mesh>(null)
   const particleRef = useRef<THREE.Mesh>(null)
-  const quadRef = useRef<THREE.Mesh>(null)
 
-  const setQuadTexture = useCallback((texture: THREE.Texture | null) => {
-    ;((quadRef.current as THREE.Mesh)
-      .material as THREE.ShaderMaterial).uniforms.uPosTexture.value = texture
-  }, [])
+  const quadTexture = useWatchableRef<THREE.Texture | null>(null)
+  const particleTexture = useWatchableRef<THREE.Texture | null>(null)
+  const initTextureRef = useWatchableRef<THREE.Texture | null>(null)
 
-  const setParticlesTexture = useCallback((texture: THREE.Texture | null) => {
-    ;(feedbackRef.current?.material as THREE.MeshBasicMaterial).map = texture
-    ;((particleRef.current as THREE.Mesh)
-      .material as THREE.ShaderMaterial).uniforms.uPosTexture.value = texture
-  }, [])
+  const mousePosRef = useWatchableRef<THREE.Vector3>(new THREE.Vector3())
 
-  const initTextureRef = useRef<THREE.Texture>() as MutableRefObject<THREE.Texture>
+  useEffect(
+    () =>
+      particleTexture.onChange((t) => {
+        if (t && feedbackRef.current)
+          (feedbackRef.current?.material as THREE.MeshBasicMaterial).map = t
+      }),
+    []
+  )
 
   useEffect(() => {
     cameraRef.current.position.setZ(6)
@@ -61,64 +72,57 @@ const Waterfall = (props: GroupProps) => {
       bufferSize,
       boundingBox as THREE.Box3
     )
-    ;((quadRef.current as THREE.Mesh)
-      .material as THREE.ShaderMaterial).uniforms.uOrigPosTexture.value =
-      initTextureRef.current
   }, [])
 
   usePingPong(bufferSize, {
-    setParticlesTexture,
-    setQuadTexture,
+    particleTexture,
+    quadTexture,
     initTextureRef,
     sceneRef,
     cameraRef,
   })
 
-  const savePOI = useSavePOIData(SafeplacePOI.Waterfall)
-
   const onPointerMove = useCallback<(e: PointerEvent) => void>(
-    ({ intersections: [{ point }] }) => {
-      ;((quadRef.current as THREE.Mesh)
-        .material as THREE.ShaderMaterial).uniforms.uMousePos.value.copy(
-        particleRef.current?.worldToLocal(point)
-      )
-    },
+    ({ intersections: [{ point }] }) =>
+      (mousePosRef.current = particleRef.current?.worldToLocal(point)),
     []
   )
 
   return (
     <group {...props}>
-      <mesh scale={[5, 5, 1]} ref={feedbackRef} visible={showDegug}>
-        <planeGeometry />
-        <meshBasicMaterial />
-      </mesh>
-      <group position-z={6} ref={savePOI} />
-      <WaterfallFBO ref={quadRef} scene={sceneRef} size={bufferSize} />
-      <group position-z={1}>
+      <group visible={showDegug}>
+        <mesh scale={[5, 5, 1]} ref={feedbackRef}>
+          <planeGeometry />
+          <meshBasicMaterial />
+        </mesh>
         <mesh
           name='SpawnBox'
           ref={targetMeshRef}
           scale={[5, 0.5, 2]}
           position-y={3}
-          visible={showDegug}
         >
           <boxBufferGeometry />
           <meshBasicMaterial color={'blue'} wireframe={true} />
         </mesh>
-        <mesh
-          visible={showDegug}
-          name='RaycastPlane'
-          onPointerMove={onPointerMove}
-        >
+        <mesh name='RaycastPlane' onPointerMove={onPointerMove}>
           <planeGeometry args={[10, 10, 1]} />
           <meshBasicMaterial color={'green'} wireframe={true} />
         </mesh>
-        <WaterfallParticles
-          ref={particleRef}
-          numPoints={particlesAmount}
-          size={bufferSize}
-        />
       </group>
+      <group position-z={6} ref={savePOI} />
+      <WaterfallParticles
+        positionTexture={particleTexture}
+        ref={particleRef}
+        numPoints={numPoints}
+        size={bufferSize}
+      />
+      <WaterfallFBO
+        scene={sceneRef}
+        size={bufferSize}
+        quadTexture={quadTexture}
+        initTexture={initTextureRef}
+        mousePosRef={mousePosRef}
+      />
     </group>
   )
 }

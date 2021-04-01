@@ -37,8 +37,6 @@ export default function Rocks(props: JSX.IntrinsicElements['group']) {
   const group = useRef<THREE.Group>()
   const { nodes, materials } = useGLTF('/models/rocks/scene.gltf') as GLTFResult
 
-  console.log(materials)
-
   return (
     <group ref={group} {...props} dispose={null}>
       <group rotation={[-Math.PI / 2, 0, 0]}>

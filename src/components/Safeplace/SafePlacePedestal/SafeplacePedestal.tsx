@@ -19,8 +19,6 @@ const SafeplacePedestal = ({ safeplacePOI, pedestalObj }) => {
   const cameraRef = useRef<THREE.Object3D>(null)
   const savePOI = useSavePOIData(safeplacePOI)
 
-  console.log(router)
-
   const onPedestalClick = () => {
     if (safeplacePOI !== SafeplacePOI.MountainPedestal) return
     // Not working

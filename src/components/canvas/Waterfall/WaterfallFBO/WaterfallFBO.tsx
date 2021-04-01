@@ -1,4 +1,10 @@
-import { forwardRef, RefObject, useEffect, useRef } from 'react'
+import {
+  forwardRef,
+  RefObject,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+} from 'react'
 import { createPortal, useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
 import useVector2Uniform from '@/hooks/uniforms/useVector2Uniform'
@@ -6,20 +12,26 @@ import fragmentShader from './WaterfallFBO.fs'
 import vertexShader from './WaterfallFBO.vs'
 import { useControls } from 'leva'
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
+import { WatchableRefObject } from '@/hooks/useWatchableRef'
+import useWatchableUniform from '@/hooks/uniforms/useWatchableUniform'
 
 const WaterfallFBO = forwardRef(
   (
     {
       scene,
       size,
-    }: { scene: RefObject<THREE.Scene>; size: THREE.Vector2Tuple },
+      quadTexture,
+      initTexture,
+      mousePosRef,
+    }: {
+      scene: RefObject<THREE.Scene>
+      size: THREE.Vector2Tuple
+      quadTexture: WatchableRefObject<THREE.Texture>
+      initTexture: WatchableRefObject<THREE.Texture>
+      mousePosRef: WatchableRefObject<THREE.Vector3>
+    },
     ref: RefObject<THREE.Mesh>
   ) => {
-    useEffect(() => {
-      if (scene.current === null) return
-      scene.current.background = new THREE.Color('black')
-    }, [])
-
     const {
       baseDirection,
       angleAmplitude,
@@ -35,7 +47,7 @@ const WaterfallFBO = forwardRef(
       angleAmplitude: { value: 0.17, min: 0, max: Math.PI, label: 'Angle' },
       movementSpeed: {
         value: 0.06,
-        min: 0.01,
+        min: 0,
         max: 0.1,
         label: 'Speed',
       },
@@ -58,6 +70,13 @@ const WaterfallFBO = forwardRef(
     useNumberUniform(uniforms.current.uAngleAmplitude, angleAmplitude)
     useNumberUniform(uniforms.current.uMovementSpeed, movementSpeed)
     useNumberUniform(uniforms.current.uLifeTime, lifeTime)
+    useWatchableUniform(uniforms.current.uPosTexture, quadTexture)
+    useWatchableUniform(uniforms.current.uOrigPosTexture, initTexture)
+
+    useEffect(
+      () => mousePosRef.onChange((v) => (uniforms.current.uMousePos.value = v)),
+      [mousePosRef]
+    )
 
     useFrame(({ clock }) => {
       uniforms.current.uTime.value = clock.getElapsedTime()

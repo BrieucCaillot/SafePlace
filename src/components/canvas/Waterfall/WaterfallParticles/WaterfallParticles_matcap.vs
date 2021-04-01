@@ -2,13 +2,10 @@ attribute vec2 aPixelPosition;
 
 uniform sampler2D uPosTexture;
 uniform float uSize;
+uniform float uAmplitude;
 
-uniform vec3 uStartColor;
-uniform vec3 uEndColor;
-
-varying vec3 vColor;
-
-#pragma glslify: random2D = require('../../../../utils/shaders/random2D')
+varying vec3 vViewPosition;
+varying vec3 vNormal;
 
 void main() {
   vec3 offset = texture2D(uPosTexture, aPixelPosition).rgb;
@@ -21,5 +18,7 @@ void main() {
   gl_PointSize = uSize;
   gl_PointSize *= (1.0 / - mvPosition.z);
 
-  vColor = mix(uStartColor, uEndColor, random2D(aPixelPosition));
+
+  vViewPosition = - mvPosition.xyz;
+  vNormal = normalize(cameraPosition - mPosition.xyz);
 }
