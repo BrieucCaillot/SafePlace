@@ -3,7 +3,8 @@ import * as THREE from 'three'
 import { useFrame, useThree } from 'react-three-fiber'
 import useCameraStore from '@/stores/useCameraStore'
 import useAnimateVector from '@/hooks/animation/useAnimateVector'
-import useSafeplaceStore, { POIData } from '@/stores/useSafeplaceStore'
+import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
+import { useControls } from 'leva'
 
 const SafeplaceCamera = () => {
   const { camera } = useThree()
@@ -12,7 +13,31 @@ const SafeplaceCamera = () => {
     (state) => state.setCameraIsTravelling
   )
 
+  const statePOI = useSafeplaceStore((state) => state.currentPOI)
   const currentPOIData = useSafeplaceStore((s) => s.getPOIData(s.currentPOI))
+  const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
+
+  /**
+   * Debug
+   */
+  const [{ currentPOI }, set] = useControls('safeplace', () => ({
+    currentPOI: {
+      value: statePOI,
+      options: SafeplacePOI,
+    },
+  }))
+
+  useEffect(() => {
+    setCurrentPOI(currentPOI)
+  }, [currentPOI])
+  useEffect(
+    () =>
+      useSafeplaceStore.subscribe(
+        (n: SafeplacePOI) => set({ currentPOI: n }),
+        (s) => s.currentPOI
+      ),
+    []
+  )
 
   useFrame(({ gl, camera, scene }) => {
     gl.autoClear = true
