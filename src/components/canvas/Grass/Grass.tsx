@@ -23,7 +23,7 @@ const Grass = (props: GroupProps) => {
     windNoiseSize,
     grassAmount: numPoints,
   } = useControls(
-    'Grass',
+    'grass',
     {
       grassAmount: { value: 4096 * 32, step: 1 },
       size: 1,

@@ -15,7 +15,7 @@ const SphereComponent = () => {
     darkColor,
     debugLight,
     debugNormal,
-  } = useControls('Sphere material', {
+  } = useControls('sphere_material', {
     lightColor: '#800202',
     darkColor: '#000000',
     moveLight: true,

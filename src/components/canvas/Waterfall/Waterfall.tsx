@@ -19,12 +19,19 @@ import findMinimumTexSize from '@/utils/FBO/findMinimumTexSize'
 
 const Waterfall = (props: GroupProps) => {
   const { showDegug, numPoints } = useControls(
-    'Particles',
+    'particles',
     {
       showDegug: false,
-      numPoints: { value: 16384, step: 1, label: 'Particle number' },
+      numPoints: {
+        value: 16384,
+        step: 1,
+        label: 'Particle amount',
+      },
     },
-    { collapsed: true }
+    {
+      collapsed: true,
+      render: (get) => get('safeplace.currentPOI') === SafeplacePOI.Waterfall,
+    }
   )
 
   const bufferSize = useMemo<THREE.Vector2Tuple>(
@@ -48,7 +55,9 @@ const Waterfall = (props: GroupProps) => {
   const particleTexture = useWatchableRef<THREE.Texture | null>(null)
   const initTextureRef = useWatchableRef<THREE.Texture | null>(null)
 
-  const mousePosRef = useWatchableRef<THREE.Vector3>(new THREE.Vector3())
+  const mousePosRef = useWatchableRef<THREE.Vector3>(
+    new THREE.Vector3(-10, -10, -10)
+  )
 
   useEffect(
     () =>

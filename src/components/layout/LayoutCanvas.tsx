@@ -7,7 +7,7 @@ import { useControls } from 'leva'
 // import { MaterialEditor, useEditorComposer } from '@three-material-editor/react'
 
 const LayoutCanvas = ({ children }) => {
-  const { orbitControlsEnabled } = useControls('Camera', {
+  const { orbitControlsEnabled } = useControls('camera', {
     orbitControlsEnabled: false,
   })
 

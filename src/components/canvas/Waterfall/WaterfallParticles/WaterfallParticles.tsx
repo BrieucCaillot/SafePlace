@@ -2,7 +2,7 @@ import useColorUniform from '@/hooks/uniforms/useColorUniform'
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
 import useWatchableUniform from '@/hooks/uniforms/useWatchableUniform'
 import { WatchableRefObject } from '@/hooks/useWatchableRef'
-import { useControls } from 'leva'
+import { folder, useControls } from 'leva'
 import { forwardRef, RefObject, useMemo, useRef } from 'react'
 import { PointsProps, useThree } from 'react-three-fiber'
 import * as THREE from 'three'
@@ -24,12 +24,17 @@ const WaterfallParticles = forwardRef(
     ref: RefObject<THREE.Mesh>
   ) => {
     const { particlesSize, alpha, startColor, endColor } = useControls(
-      'Particles',
+      'particles',
       {
-        particlesSize: 32,
-        alpha: { value: 1, min: 0, max: 1 },
-        startColor: '#3e69e8',
-        endColor: '#18275f',
+        'Particle Params': folder(
+          {
+            particlesSize: 32,
+            alpha: { value: 1, min: 0, max: 1 },
+            startColor: '#3e69e8',
+            endColor: '#18275f',
+          },
+          { collapsed: true }
+        ),
       },
       { collapsed: true }
     )

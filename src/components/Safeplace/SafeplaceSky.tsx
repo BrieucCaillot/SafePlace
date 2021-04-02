@@ -3,7 +3,7 @@ import { useControls } from 'leva'
 
 const SafeplaceSky = () => {
   const skyParams = useControls(
-    'Safeplace Sky',
+    'safeplace_sky',
     {
       enabled: true,
       distance: 45000,

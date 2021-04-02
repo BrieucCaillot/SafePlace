@@ -10,7 +10,7 @@ import * as THREE from 'three'
 import useVector2Uniform from '@/hooks/uniforms/useVector2Uniform'
 import fragmentShader from './WaterfallFBO.fs'
 import vertexShader from './WaterfallFBO.vs'
-import { useControls } from 'leva'
+import { folder, useControls } from 'leva'
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
 import { WatchableRefObject } from '@/hooks/useWatchableRef'
 import useWatchableUniform from '@/hooks/uniforms/useWatchableUniform'
@@ -37,21 +37,26 @@ const WaterfallFBO = forwardRef(
       angleAmplitude,
       movementSpeed,
       lifeTime,
-    } = useControls('Particles', {
-      baseDirection: {
-        value: Math.PI / 2,
-        min: 0,
-        max: Math.PI * 2,
-        label: 'Direction',
-      },
-      angleAmplitude: { value: 0.17, min: 0, max: Math.PI, label: 'Angle' },
-      movementSpeed: {
-        value: 0.06,
-        min: 0,
-        max: 0.1,
-        label: 'Speed',
-      },
-      lifeTime: { value: 2, label: 'Life Time' },
+    } = useControls('particles', {
+      'Simulator Params': folder(
+        {
+          baseDirection: {
+            value: Math.PI / 2,
+            min: 0,
+            max: Math.PI * 2,
+            label: 'Direction',
+          },
+          angleAmplitude: { value: 0.17, min: 0, max: Math.PI, label: 'Angle' },
+          movementSpeed: {
+            value: 0.06,
+            min: 0,
+            max: 0.1,
+            label: 'Speed',
+          },
+          lifeTime: { value: 2, label: 'Life Time' },
+        },
+        { collapsed: true }
+      ),
     })
 
     const uniforms = useRef<Record<string, THREE.IUniform>>({

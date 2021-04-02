@@ -33,9 +33,13 @@ const SafeplaceInteraction = ({ safeplacePOI }) => {
   const { camera, viewport, aspect } = useThree()
   const vec3Ref = useMemo(() => new THREE.Vector3(), [])
 
-  const { scalarFactor } = useControls('Safeplace Interaction', {
-    scalarFactor: 2,
-  })
+  const { scalarFactor } = useControls(
+    'safeplace_interaction',
+    {
+      scalarFactor: 2,
+    },
+    { collapsed: true }
+  )
 
   const cameraIsTravelling = useCameraStore((state) => state.cameraIsTravelling)
   const currentPOI = useSafeplaceStore((state) => state.currentPOI)

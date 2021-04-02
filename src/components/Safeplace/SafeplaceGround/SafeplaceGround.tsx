@@ -1,7 +1,7 @@
 import { useControls } from 'leva'
 
 const SafeplaceGround = () => {
-  const { color } = useControls('Safeplace Ground', {
+  const { color } = useControls('safeplace_ground', {
     color: '#46765a',
   })
 

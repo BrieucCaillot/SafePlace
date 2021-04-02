@@ -13,27 +13,27 @@ import Waterfall from '../canvas/Waterfall/Waterfall'
 import Grass from '../canvas/Grass/Grass'
 
 const SafeplaceCanvas = () => {
-  const currentPOI = useSafeplaceStore((state) => state.currentPOI)
+  const statePOI = useSafeplaceStore((state) => state.currentPOI)
   const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
   const setPOIData = useSafeplaceStore((state) => state.setPOIData)
 
   /**
    * Debug
    */
-  const [{ currPOI }, set] = useControls('Safeplace', () => ({
-    currPOI: {
-      value: currentPOI,
+  const [{ currentPOI }, set] = useControls('safeplace', () => ({
+    currentPOI: {
+      value: statePOI,
       options: SafeplacePOI,
     },
   }))
 
   useEffect(() => {
-    setCurrentPOI(currPOI)
-  }, [currPOI])
+    setCurrentPOI(currentPOI)
+  }, [currentPOI])
   useEffect(
     () =>
       useSafeplaceStore.subscribe(
-        (n: SafeplacePOI) => set({ currPOI: n }),
+        (n: SafeplacePOI) => set({ currentPOI: n }),
         (s) => s.currentPOI
       ),
     []
