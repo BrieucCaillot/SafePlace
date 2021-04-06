@@ -10,8 +10,8 @@ uniform vec3 uEndColor;
 varying vec3 vColor;
 
 #pragma glslify: ease = require(glsl-easings/quartic-in-out)
-#pragma glslify: random2D = require('../../../../utils/shaders/random2D')
-#pragma glslify: remap = require('../../../../utils/shaders/remap')
+#pragma glslify: random2D = require('../../../utils/shaders/random2D')
+#pragma glslify: remap = require('../../../utils/shaders/remap')
 
 void main() {
   vec3 offset = texture2D(uPosTexture, aPixelPosition).rgb;

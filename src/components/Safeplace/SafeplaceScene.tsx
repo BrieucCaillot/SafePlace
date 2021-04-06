@@ -12,6 +12,7 @@ import SafeplaceAbout from '@/components/Safeplace/SafeplaceAbout/SafeplaceAbout
 
 import Waterfall from '../canvas/Waterfall/Waterfall'
 import Grass from '../canvas/Grass/Grass'
+import Dandelion from '../canvas/Dandelion/Dandelion'
 
 const SafeplaceCanvas = () => {
   const setPOIData = useSafeplaceStore((state) => state.setPOIData)
@@ -36,8 +37,9 @@ const SafeplaceCanvas = () => {
         <SafeplaceInsideHouse />
         <SafeplaceModel />
         {/* <SafeplaceGround /> */}
+        <Grass position-y={-0.2} />
         <Waterfall position={[-50, 6, 0]} rotation={[0, 45, 0]} />
-        <Grass position={[0, -0.2, -60]} />
+        <Dandelion position={[50, 6, 0]} rotation={[0, -45, 0]} />
       </Suspense>
     </>
   )
