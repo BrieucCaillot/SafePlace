@@ -23,7 +23,7 @@ const Waterfall = (props: GroupProps) => {
     {
       showDegug: false,
       numPoints: {
-        value: 16384,
+        value: 1024,
         step: 1,
         label: 'Particle amount',
       },
@@ -107,7 +107,7 @@ const Waterfall = (props: GroupProps) => {
         <mesh
           name='SpawnBox'
           ref={targetMeshRef}
-          scale={[5, 0.5, 2]}
+          scale={[5, 0.5, 0.5]}
           position-y={3}
         >
           <boxBufferGeometry />

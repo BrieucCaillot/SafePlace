@@ -23,12 +23,19 @@ const WaterfallParticles = forwardRef(
     } & PointsProps,
     ref: RefObject<THREE.Mesh>
   ) => {
-    const { particlesSize, alpha, startColor, endColor } = useControls(
+    const {
+      particlesSize,
+      sizeVariation,
+      alpha,
+      startColor,
+      endColor,
+    } = useControls(
       'particles',
       {
         'Particle Params': folder(
           {
-            particlesSize: 32,
+            particlesSize: 90,
+            sizeVariation: 1,
             alpha: { value: 1, min: 0, max: 1 },
             startColor: '#3e69e8',
             endColor: '#18275f',
@@ -50,6 +57,7 @@ const WaterfallParticles = forwardRef(
     const uniforms = useRef<Record<string, THREE.IUniform>>({
       uPosTexture: { value: null },
       uSize: { value: 0 },
+      uSizeVariation: { value: 0 },
       uAlpha: { value: 0 },
       uStartColor: { value: new THREE.Color() },
       uEndColor: { value: new THREE.Color() },
@@ -58,6 +66,7 @@ const WaterfallParticles = forwardRef(
     })
 
     useNumberUniform(uniforms.current.uSize, particlesSize * gl.getPixelRatio())
+    useNumberUniform(uniforms.current.uSizeVariation, sizeVariation)
     useNumberUniform(uniforms.current.uAlpha, alpha)
     useColorUniform(uniforms.current.uStartColor, startColor)
     useColorUniform(uniforms.current.uEndColor, endColor)
