@@ -73,11 +73,7 @@ const WaterfallFBO = forwardRef(
     useNumberUniform(uniforms.current.uLifeTime, lifeTime)
     useWatchableUniform(uniforms.current.uPosTexture, quadTexture)
     useWatchableUniform(uniforms.current.uOrigPosTexture, initTexture)
-
-    useEffect(
-      () => mousePosRef.onChange((v) => (uniforms.current.uMousePos.value = v)),
-      [mousePosRef]
-    )
+    useWatchableUniform(uniforms.current.uMousePos, mousePosRef)
 
     useFrame(({ clock }) => {
       uniforms.current.uTime.value = clock.getElapsedTime()

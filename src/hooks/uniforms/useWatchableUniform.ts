@@ -5,6 +5,9 @@ const useWatchableUniform = (
   uniform: THREE.IUniform,
   ref: WatchableRefObject<any>
 ) => {
-  useEffect(() => ref.onChange((v) => (uniform.value = v)), [ref])
+  useEffect(() => {
+    uniform.value = ref.current
+    return ref.onChange((v) => (uniform.value = v))
+  }, [ref])
 }
 export default useWatchableUniform
