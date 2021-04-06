@@ -12,7 +12,7 @@ const MountainScene = dynamic(
 const MountainJourney = () => {
   return (
     <>
-      <JourneyCamera r3f />
+      {/* <JourneyCamera r3f /> */}
       <MountainScene r3f />
       <JourneyUI />
     </>
