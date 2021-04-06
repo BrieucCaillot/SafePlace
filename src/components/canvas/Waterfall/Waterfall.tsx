@@ -127,7 +127,6 @@ const Waterfall = (props: GroupProps) => {
       />
       <WaterfallFBO
         scene={sceneRef}
-        size={bufferSize}
         quadTexture={quadTexture}
         initTexture={initTextureRef}
         mousePosRef={mousePosRef}

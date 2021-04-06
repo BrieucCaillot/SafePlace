@@ -19,13 +19,11 @@ const WaterfallFBO = forwardRef(
   (
     {
       scene,
-      size,
       quadTexture,
       initTexture,
       mousePosRef,
     }: {
       scene: RefObject<THREE.Scene>
-      size: THREE.Vector2Tuple
       quadTexture: WatchableRefObject<THREE.Texture>
       initTexture: WatchableRefObject<THREE.Texture>
       mousePosRef: WatchableRefObject<THREE.Vector3>
@@ -41,7 +39,7 @@ const WaterfallFBO = forwardRef(
       'Simulator Params': folder(
         {
           baseDirection: {
-            value: Math.PI / 2,
+            value: Math.PI,
             min: 0,
             max: Math.PI * 2,
             label: 'Direction',
@@ -60,7 +58,6 @@ const WaterfallFBO = forwardRef(
     })
 
     const uniforms = useRef<Record<string, THREE.IUniform>>({
-      uSize: { value: new THREE.Vector2() },
       uOrigPosTexture: { value: null },
       uPosTexture: { value: null },
       uMousePos: { value: new THREE.Vector3() },
@@ -70,7 +67,6 @@ const WaterfallFBO = forwardRef(
       uMovementSpeed: { value: 0 },
       uLifeTime: { value: 0 },
     })
-    useVector2Uniform(uniforms.current.uSize, size)
     useNumberUniform(uniforms.current.uBaseDirection, baseDirection)
     useNumberUniform(uniforms.current.uAngleAmplitude, angleAmplitude)
     useNumberUniform(uniforms.current.uMovementSpeed, movementSpeed)
