@@ -8,11 +8,11 @@ const Header = () => (
     <Link href='/journeys/mountain'>
       <a className='bg-skyblue border-gray-50 text-black'>Mountain</a>
     </Link>
-    <Link href='/test'>
+    {/* <Link href='/test'>
       <a className='bg-skyblue border-gray-50 text-black'>Test</a>
-    </Link>
+    </Link> */}
     <Link href='/about'>
-      <a className='bg-skyblue border-gray-50 text-black'>A propos</a>
+      <a className='bg-skyblue border-gray-50 text-black'>À propos</a>
     </Link>
   </header>
 )

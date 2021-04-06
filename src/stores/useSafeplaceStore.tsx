@@ -3,6 +3,8 @@ import create from 'zustand'
 
 // Safeplace points of interests
 export enum SafeplacePOI {
+  Bridge = 'Bridge',
+  About = 'About',
   OnBoarding = 'OnBoarding',
   Inside = 'Inside',
   Waterfall = 'Waterfall',
@@ -14,6 +16,8 @@ export enum SafeplacePOI {
 }
 
 const POI_AVAILABILITY: Record<SafeplacePOI, SafeplacePOI[]> = {
+  [SafeplacePOI.Bridge]: [],
+  [SafeplacePOI.About]: [],
   [SafeplacePOI.OnBoarding]: [SafeplacePOI.Inside],
   [SafeplacePOI.Inside]: [
     SafeplacePOI.MountainPedestal,
@@ -46,7 +50,7 @@ type SafeplaceStore = {
 }
 
 const useSafeplaceStore = create<SafeplaceStore>((set, get, state) => ({
-  currentPOI: SafeplacePOI.OnBoarding,
+  currentPOI: SafeplacePOI.Bridge,
   setCurrentPOI: (SafeplacePOI) => set({ currentPOI: SafeplacePOI }),
   POIMap: new Map(),
   setPOIData: (

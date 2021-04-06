@@ -6,6 +6,9 @@ import { useControls } from 'leva'
 // enable shader editor
 // import { MaterialEditor, useEditorComposer } from '@three-material-editor/react'
 
+import SafeplaceCamera from '@/components/canvas/Camera/SafeplaceCamera'
+import SafeplaceScene from '@/components/Safeplace/SafeplaceScene'
+
 const LayoutCanvas = ({ children }) => {
   const { orbitControlsEnabled } = useControls('camera', {
     orbitControlsEnabled: false,
@@ -25,6 +28,8 @@ const LayoutCanvas = ({ children }) => {
       }}
     >
       <Preload all />
+      <SafeplaceCamera />
+      <SafeplaceScene />
       {orbitControlsEnabled && <OrbitControls />}
       <Perf openByDefault trackGPU={true} position={'bottom-right'} />
       {/* <MaterialEditor /> */}

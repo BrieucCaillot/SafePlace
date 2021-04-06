@@ -1,12 +1,17 @@
-const OnBoardingWelcome = () => {
+const OnBoardingWelcome = ({ onStart }) => {
   return (
-    <div id='on-boarding-welcome' className='flex flex-col items-center h-full'>
-      <div className='flex flex-col justify-center items-center m-auto w-full md:w-8/12'>
-        <h1 className='text-black text-8xl text-center'>SAFE PLACE</h1>
-        <button className='bg-blue-500 text-white text-sm rounded px-10 py-3 mt-16 cursor-pointer'>
-          Lancer l'experience
-        </button>
-      </div>
+    <div id='on-boarding-welcome' className='h-full'>
+      <img
+        className='absolute top-32 md:top-40 left-1/2 transform -translate-x-1/2'
+        src='/img/index/logo.png'
+        alt='safeplace-logo'
+      />
+      <button
+        onClick={onStart}
+        className='absolute bottom-8 left-1/2 transform -translate-x-1/2 text-primary text-xl rounded px-10 py-3 focus:outline-none cursor-pointer pointer-events-auto'
+      >
+        Lancer l'experience
+      </button>
     </div>
   )
 }

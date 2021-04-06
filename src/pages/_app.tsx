@@ -32,10 +32,11 @@ function MyApp({ Component, pageProps }) {
     }
   })
 
-  return r3fArr.length > 0 ? (
-    <SplitApp canvas={r3fArr} dom={compArr} />
-  ) : (
-    <Component {...pageProps} />
+  return (
+    <>
+      <SplitApp canvas={r3fArr} dom={compArr} />
+      <Component {...pageProps} />
+    </>
   )
 }
 
