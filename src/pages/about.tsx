@@ -1,9 +1,18 @@
-import dynamic from 'next/dynamic'
+import { useEffect } from 'react'
+
+import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
+import AboutDom from '@/components/About/AboutDom'
 
 const About = () => {
+  const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
+
+  useEffect(() => {
+    setCurrentPOI(SafeplacePOI.About)
+  }, [])
+
   return (
     <>
-      <h1>About</h1>
+      <AboutDom />
     </>
   )
 }

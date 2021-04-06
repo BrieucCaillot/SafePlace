@@ -1,4 +1,5 @@
 import { PointerEvent } from 'react-three-fiber'
+
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import SafeplaceInteraction from '@/components/Safeplace/SafeplaceInteraction/SafeplaceInteraction'
 

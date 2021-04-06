@@ -12,21 +12,6 @@ import useCameraStore from '@/stores/useCameraStore'
 import useAnimateVector from '@/hooks/animation/useAnimateVector'
 import { useControls } from 'leva'
 
-const config = {
-  inactive: {
-    color: 'rgba(103, 108, 117, 1)',
-    scale: new THREE.Vector2(1, 1),
-  },
-  active: {
-    color: 'rgba(59, 130, 246, 0.5)',
-    scale: new THREE.Vector2(1, 1),
-  },
-  hover: {
-    color: 'rgba(59, 130, 246, 0.5)',
-    scale: new THREE.Vector2(2, 2),
-  },
-}
-
 const SafeplaceInteraction = ({ safeplacePOI }) => {
   const safeplaceInteractionRef = useRef<THREE.Mesh>()
 

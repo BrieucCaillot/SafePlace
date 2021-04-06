@@ -13,7 +13,7 @@ const SafeplaceSky = () => {
         max: 20,
       },
       rayleigh: {
-        value: 0.5,
+        value: 3.0,
         min: 0,
         max: 10,
       },
@@ -23,12 +23,12 @@ const SafeplaceSky = () => {
         max: 0.1,
       },
       mieDirectionalG: {
-        value: 0.39,
+        value: 0.15,
         min: 0,
         max: 1,
       },
       inclination: {
-        value: 0.55,
+        value: 0.54,
         min: 0,
         max: 1,
       },

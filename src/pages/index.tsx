@@ -1,28 +1,18 @@
-import dynamic from 'next/dynamic'
-import OnBoarding from '@/components/OnBoarding/OnBoarding'
+import React, { useEffect } from 'react'
+
+import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import Bottom from '@/components/common/Bottom/Bottom'
-import SafeplaceCamera from '@/components/canvas/Camera/SafeplaceCamera'
-
-const SafeplaceScene = dynamic(
-  () => import('@/components/Safeplace/SafeplaceScene'),
-  {
-    ssr: false,
-  }
-)
-
-const SafeplaceDom = dynamic(
-  () => import('@/components/Safeplace/SafeplaceDom'),
-  {
-    ssr: false,
-  }
-)
+import SafeplaceDom from '@/components/Safeplace/SafeplaceDom'
 
 const Index = () => {
+  const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
+
+  useEffect(() => {
+    setCurrentPOI(SafeplacePOI.Bridge)
+  }, [])
+
   return (
     <>
-      {/* <OnBoarding /> */}
-      <SafeplaceCamera r3f />
-      <SafeplaceScene r3f />
       <SafeplaceDom />
       <Bottom />
     </>

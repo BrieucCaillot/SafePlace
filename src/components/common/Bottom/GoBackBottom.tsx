@@ -7,6 +7,7 @@ const GoBackBottom = () => {
 
   const showGoBackButton = useMemo(() => {
     return (
+      currentPOI !== SafeplacePOI.Bridge &&
       currentPOI !== SafeplacePOI.OnBoarding &&
       currentPOI !== SafeplacePOI.Inside
     )

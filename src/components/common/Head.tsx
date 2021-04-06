@@ -36,6 +36,11 @@ const Head = () => {
         <meta name='og:site_name' content={title} />
         <meta name='og:description' content={description} />
 
+        <link rel='preconnect' href='https://fonts.gstatic.com' />
+        <link
+          href='https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400&display=swap'
+          rel='stylesheet'
+        />
         <link rel='apple-touch-icon' href='/icons/apple-touch-icon.png' />
         <link
           rel='apple-touch-icon'

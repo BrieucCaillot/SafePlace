@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useRef } from 'react'
+import { Suspense, useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { useControls } from 'leva'
 
@@ -8,6 +8,7 @@ import SafeplaceModel from '@/components/Safeplace/SafeplaceModel'
 import SafeplaceSky from '@/components/Safeplace/SafeplaceSky'
 import SafeplaceGround from '@/components/Safeplace/SafeplaceGround/SafeplaceGround'
 import SafeplaceInsideHouse from '@/components/Safeplace/SafeplaceInsideHouse'
+import SafeplaceAbout from '@/components/Safeplace/SafeplaceAbout/SafeplaceAbout'
 
 import Waterfall from '../canvas/Waterfall/Waterfall'
 import Grass from '../canvas/Grass/Grass'
