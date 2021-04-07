@@ -22,9 +22,6 @@ import useWatchableUniform from '@/hooks/uniforms/useWatchableUniform'
 const Dandelion = (props: GroupProps) => {
   const savePOI = useSavePOIData(SafeplacePOI.Dandelion)
 
-  const numPoints = 16
-  const bufferSize = useMemo(() => findMinimumTexSize(numPoints), [numPoints])
-
   const meshRef = useRef<THREE.Mesh>(null)
 
   const animRef = useRef<gsap.core.Tween>()
@@ -54,10 +51,12 @@ const Dandelion = (props: GroupProps) => {
     endColor,
     spreadFactor,
     windDirection,
+    particleAmount: numPoints,
   } = useControls(
     'dandelion',
     {
       particlesSize: 90,
+      particleAmount: 16,
       sizeVariation: 1,
       spreadFactor: { value: 0.1, min: 0, max: 1 },
       alpha: { value: 1, min: 0, max: 1 },
@@ -77,6 +76,8 @@ const Dandelion = (props: GroupProps) => {
     },
     { collapsed: true }
   )
+
+  const bufferSize = useMemo(() => findMinimumTexSize(numPoints), [numPoints])
 
   const { gl } = useThree()
 
