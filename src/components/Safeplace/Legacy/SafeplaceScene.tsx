@@ -1,18 +1,14 @@
-import { Suspense, useEffect, useMemo, useRef } from 'react'
+import { Suspense, useEffect } from 'react'
 import * as THREE from 'three'
-import { useControls } from 'leva'
 
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 
-import SafeplaceModel from '@/components/Safeplace/SafeplaceModel'
-import SafeplaceSky from '@/components/Safeplace/SafeplaceSky'
-import SafeplaceGround from '@/components/Safeplace/SafeplaceGround/SafeplaceGround'
-import SafeplaceInsideHouse from '@/components/Safeplace/SafeplaceInsideHouse'
-import SafeplaceAbout from '@/components/Safeplace/SafeplaceAbout/SafeplaceAbout'
+import SafeplaceModel from '@/components/Safeplace/Legacy/SafeplaceModel'
+import SafeplaceSky from '@/components/Safeplace/Canvas/Decorations/SafeplaceSky'
 
-import Waterfall from '../canvas/Waterfall/Waterfall'
-import Grass from '../canvas/Grass/Grass'
-import Dandelion from '../canvas/Dandelion/Dandelion'
+import Waterfall from '@/components/canvas/Waterfall/Waterfall'
+import Grass from '@/components/Safeplace/Canvas/Decorations/Grass/Grass'
+import Dandelion from '@/components/canvas/Dandelion/Dandelion'
 
 const SafeplaceCanvas = () => {
   const setPOIData = useSafeplaceStore((state) => state.setPOIData)
@@ -34,9 +30,7 @@ const SafeplaceCanvas = () => {
       <Suspense fallback={null}>
         <SafeplaceSky />
         <pointLight position={[0, 20, 0]} />
-        <SafeplaceInsideHouse />
         <SafeplaceModel />
-        {/* <SafeplaceGround /> */}
         <Grass position-y={-0.2} />
         <Waterfall position={[-50, 6, 0]} rotation={[0, 45, 0]} />
         <Dandelion position={[50, 6, 0]} rotation={[0, -45, 0]} />

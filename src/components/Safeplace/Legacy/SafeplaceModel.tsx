@@ -8,9 +8,8 @@ import { GroupProps } from 'react-three-fiber'
 import { useGLTF } from '@react-three/drei'
 import { SafeplacePOI } from '@/stores/useSafeplaceStore'
 
-import SafeplacePedestal from '@/components/Safeplace/SafePlacePedestal/SafeplacePedestal'
-import SafeplaceBridge from '@/components/Safeplace/SafeplaceBridge/SafeplaceBridge'
-import SafeplaceAbout from '@/components/Safeplace/SafeplaceAbout/SafeplaceAbout'
+import SafeplacePedestal from '@/components/Safeplace/Canvas/ColumLocation/ColumnLocation'
+import SafeplaceBridge from '@/components/Safeplace/Legacy/SafeplaceBridge/SafeplaceBridge'
 
 const pedestalsAssoc = {
   POI_1: SafeplacePOI.MountainPedestal,

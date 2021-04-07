@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 const Header = () => (
+  // TODO: Should be replaced with a leva panel
   <header className='pointer-events-auto absolute top-0 w-screen flex align-center justify-between p-10'>
     <Link href='/'>
       <a className='bg-skyblue border-gray-50 text-black'>Home</a>

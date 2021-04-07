@@ -3,20 +3,26 @@ import { useRouter } from 'next/router'
 
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
-import SafeplaceInteraction from '@/components/Safeplace/SafeplaceInteraction/SafeplaceInteraction'
+import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 
-const SafeplacePedestal = ({ safeplacePOI, pedestalObj }) => {
-  const router = useRouter()
+const ColumnLocation = ({
+  safeplacePOI,
+  pedestalObj,
+}: {
+  safeplacePOI: SafeplacePOI
+  pedestalObj: THREE.Object3D
+}) => {
+  // TODO: Have a look to this component
+  // const router = useRouter()
 
-  const currentPOI = useSafeplaceStore((state) => state.currentPOI)
-  const isCurrentlyAvailable = useSafeplaceStore(
-    (state) => state.isCurrentlyAvailable
+  const isCurrentlyAvailable = useSafeplaceStore((state) =>
+    state.isCurrentlyAvailable(safeplacePOI)
   )
 
   const camera = useMemo(() => pedestalObj.children[0], [])
-  const pedestal = useMemo(() => pedestalObj.children[1], [])
+  const pedestal = useMemo(() => pedestalObj.children[1] as THREE.Mesh, [])
 
-  const cameraRef = useRef<THREE.Object3D>(null)
+  // const cameraRef = useRef<THREE.Object3D>(null)
   const savePOI = useSavePOIData(safeplacePOI)
 
   const onPedestalClick = () => {
@@ -27,9 +33,7 @@ const SafeplacePedestal = ({ safeplacePOI, pedestalObj }) => {
 
   return (
     <group position={pedestalObj.position} scale={pedestalObj.scale}>
-      {isCurrentlyAvailable(safeplacePOI) && (
-        <SafeplaceInteraction safeplacePOI={safeplacePOI} />
-      )}
+      {isCurrentlyAvailable && <ColumnLink safeplacePOI={safeplacePOI} />}
       <mesh
         ref={savePOI}
         name={camera.name}
@@ -49,4 +53,4 @@ const SafeplacePedestal = ({ safeplacePOI, pedestalObj }) => {
   )
 }
 
-export default SafeplacePedestal
+export default ColumnLocation
