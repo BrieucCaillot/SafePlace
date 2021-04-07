@@ -60,3 +60,31 @@ export function getPositionTextureFromBox(
 
   return dataTexture
 }
+
+export function getRandomRotationTexture(
+  textureSize: THREE.Vector2Tuple,
+  sampleAmount: number = 0
+): THREE.DataTexture {
+  const amount = sampleAmount || textureSize[0] * textureSize[1]
+  const data = new Float32Array(textureSize[0] * textureSize[1] * 4)
+  for (let index = 0; index < amount; index++) {
+    const theta = Math.random() * Math.PI * 2
+    const phi = Math.random() * Math.PI * 2
+
+    data[index * 4 + 0] = Math.sin(theta) * Math.cos(phi)
+    data[index * 4 + 1] = Math.sin(theta) * Math.sin(phi)
+    data[index * 4 + 2] = Math.cos(theta)
+    data[index * 4 + 3] = 0
+  }
+
+  const dataTexture = new THREE.DataTexture(
+    data,
+    textureSize[0],
+    textureSize[1],
+    THREE.RGBAFormat,
+    THREE.FloatType
+  )
+  dataTexture.needsUpdate = true
+
+  return dataTexture
+}
