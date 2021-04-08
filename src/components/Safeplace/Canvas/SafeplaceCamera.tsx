@@ -1,17 +1,13 @@
-import { useEffect, useRef, useMemo, forwardRef, MutableRefObject } from 'react'
-import { useControls } from 'leva'
+import { useRef, useMemo, forwardRef, MutableRefObject } from 'react'
 import * as THREE from 'three'
-import { useFrame, useThree } from 'react-three-fiber'
 import useCameraStore from '@/stores/useCameraStore'
 import useAnimateVector from '@/hooks/animation/useAnimateVector'
-import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
+import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import mergeRefs from 'react-merge-refs'
 
 const SafeplaceCamera = forwardRef(
   (_, fowardedRef: MutableRefObject<THREE.Camera>) => {
-    const { camera } = useThree()
-
-    const camRef = useRef<THREE.Camera>(camera)
+    const camRef = useRef<THREE.Camera>()
     const setCameraIsTravelling = useCameraStore(
       (state) => state.setCameraIsTravelling
     )
@@ -59,7 +55,7 @@ const SafeplaceCamera = forwardRef(
         target: 'position',
       },
       position,
-      params
+      { ...params, onUpdate: () => camRef.current?.updateMatrixWorld() }
     )
     useAnimateVector(
       {
@@ -80,6 +76,7 @@ const SafeplaceCamera = forwardRef(
 
     return (
       <perspectiveCamera
+        name={'Safeplace Cam'}
         ref={mergeRefs([fowardedRef, camRef])}
         near={0.1}
         far={1000}
