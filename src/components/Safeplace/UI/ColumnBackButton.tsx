@@ -8,17 +8,13 @@ const ColumnBackButton = () => {
   const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
 
   return (
-    <div id='bottom' className='absolute bottom-0 left-0 w-full'>
-      <div className='relative w-full'>
-        <div
-          className={`${
-            showButton ? 'block' : 'hidden'
-          } pointer-events-auto relative -left-32 -bottom-32 bg-blue-500 rounded-full h-60 w-60 text-center cursor-pointer`}
-          onClick={() => setCurrentPOI(SafeplacePOI.Inside)}
-        >
-          <p className='absolute top-10 right-8 text-white text-2xl'>Abris</p>
-        </div>
-      </div>
+    <div
+      className={`${
+        showButton ? 'block' : 'hidden'
+      } pointer-events-auto cursor-pointer`}
+      onClick={() => setCurrentPOI(SafeplacePOI.Inside)}
+    >
+      <p className='absolute bottom-6 left-10 text-white text-2xl'>Abris</p>
     </div>
   )
 }

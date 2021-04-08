@@ -14,6 +14,10 @@ const LayoutCanvas = () => {
     orbitControlsEnabled: false,
   })
 
+  const { r3fActive } = useControls('r3f', {
+    r3fActive: true,
+  })
+
   const mountScene = useSceneStore((s) => s.mountScene)
   const setRenderedScene = useSceneStore((s) => s.setRenderedScene)
 
@@ -38,7 +42,9 @@ const LayoutCanvas = () => {
 
       <Preload all />
       {orbitControlsEnabled && <OrbitControls />}
-      <Perf openByDefault trackGPU={true} position={'bottom-right'} />
+      {r3fActive && (
+        <Perf openByDefault trackGPU={true} position={'bottom-right'} />
+      )}
       {/* <MaterialEditor /> */}
       {/* <EffectComposer ref={useEditorComposer()}> */}
       {/* <EffectComposer>
