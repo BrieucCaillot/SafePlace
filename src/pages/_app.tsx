@@ -1,9 +1,12 @@
 import { Children, ComponentType } from 'react'
-import Head from '@/components/common/Head'
 import dynamic from 'next/dynamic'
-import LayoutDom from '@/components/common/LayoutDom'
-import '@/styles/style.scss'
+import { useRouter } from 'next/router'
 import { AppProps } from 'next/dist/next-server/lib/router/router'
+
+import Head from '@/components/common/Head'
+import LayoutDom from '@/components/common/LayoutDom'
+import LayoutTransition from '@/components/common/LayoutTransition'
+import '@/styles/style.scss'
 
 let LayoutCanvas: ComponentType<{ children: any }> | null = null
 LayoutCanvas = dynamic(() => import('@/components/common/LayoutCanvas'), {
@@ -11,6 +14,8 @@ LayoutCanvas = dynamic(() => import('@/components/common/LayoutCanvas'), {
 })
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter()
+
   let r3fArr: any[] = []
   let compArr: any[] = []
   Children.forEach(
@@ -27,7 +32,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head />
-      {compArr && <LayoutDom dom={compArr} />}
+      <LayoutTransition location={router.pathname}>
+        {compArr && <LayoutDom dom={compArr} />}
+      </LayoutTransition>
       {LayoutCanvas && (
         <LayoutCanvas>{r3fArr && <group>{r3fArr}</group>}</LayoutCanvas>
       )}

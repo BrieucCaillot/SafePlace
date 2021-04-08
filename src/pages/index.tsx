@@ -4,7 +4,7 @@ import React from 'react'
 const Index = () => {
   return (
     <>
-      <div id='on-boarding-welcome' className='h-full'>
+      <div id='on-boarding-welcome' className='relative bg-black h-full'>
         <img
           className='absolute top-32 md:top-40 left-1/2 transform -translate-x-1/2'
           src='/img/index/logo.png'
