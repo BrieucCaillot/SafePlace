@@ -1,110 +1,121 @@
-import { useEffect, useRef, useMemo } from 'react'
+import {
+  useEffect,
+  useRef,
+  useMemo,
+  forwardRef,
+  MutableRefObject,
+  Ref,
+  createRef,
+  RefObject,
+} from 'react'
 import * as THREE from 'three'
 import { useFrame, useThree } from 'react-three-fiber'
 import useCameraStore from '@/stores/useCameraStore'
 import useAnimateVector from '@/hooks/animation/useAnimateVector'
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import { useControls } from 'leva'
+import mergeRefs from 'react-merge-refs'
 
-const SafeplaceCamera = () => {
-  const { camera } = useThree()
-  const camRef = useRef<THREE.Camera>(camera)
-  const setCameraIsTravelling = useCameraStore(
-    (state) => state.setCameraIsTravelling
-  )
+const SafeplaceCamera = forwardRef(
+  (_, fowardedRef: MutableRefObject<THREE.Camera>) => {
+    const { camera } = useThree()
 
-  const statePOI = useSafeplaceStore((state) => state.currentPOI)
-  const currentPOIData = useSafeplaceStore((s) => s.getPOIData(s.currentPOI))
-  const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
+    const camRef = useRef<THREE.Camera>(camera)
+    useEffect(() => {
+      fowardedRef.current = camRef.current
+    }, [])
+    const setCameraIsTravelling = useCameraStore(
+      (state) => state.setCameraIsTravelling
+    )
 
-  /**
-   * Debug
-   */
-  const [{ currentPOI }, set] = useControls('safeplace', () => ({
-    currentPOI: {
-      value: statePOI,
-      options: SafeplacePOI,
-    },
-  }))
+    const statePOI = useSafeplaceStore((state) => state.currentPOI)
+    const currentPOIData = useSafeplaceStore((s) => s.getPOIData(s.currentPOI))
+    const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
 
-  useEffect(() => {
-    setCurrentPOI(currentPOI)
-  }, [currentPOI])
-  useEffect(
-    () =>
-      useSafeplaceStore.subscribe(
-        (n: SafeplacePOI) => set({ currentPOI: n }),
-        (s) => s.currentPOI
-      ),
-    []
-  )
-
-  useFrame(({ gl, camera, scene }) => {
-    gl.autoClear = true
-    gl.render(scene, camera)
-  }, 100)
-
-  /**
-   * GET NEW CAMERA PARAMS
-   */
-  const { position, rotation, scale, params } = useMemo(() => {
-    const output: {
-      position: THREE.Vector3Tuple
-      rotation: THREE.Vector3Tuple
-      scale: THREE.Vector3Tuple
-      params: GSAPTweenVars
-    } = {
-      position: [0, 0, 0],
-      rotation: [0, 0, 0],
-      scale: [1, 1, 1],
-      params: {
-        duration: 2,
-        onStart: () => setCameraIsTravelling(true),
-        onComplete: () => setCameraIsTravelling(false),
+    /**
+     * Debug
+     */
+    const [{ currentPOI }, set] = useControls('safeplace', () => ({
+      currentPOI: {
+        value: statePOI,
+        options: SafeplacePOI,
       },
-    }
+    }))
 
-    if (currentPOIData !== undefined) {
-      const { position, scale, quaternion } = currentPOIData
-      position.toArray(output.position)
-      new THREE.Euler()
-        .setFromQuaternion(quaternion)
-        .toArray(output.rotation as THREE.Vector3Tuple)
-      scale.toArray(output.scale)
-    }
+    useEffect(() => {
+      setCurrentPOI(currentPOI)
+    }, [currentPOI])
+    useEffect(
+      () =>
+        useSafeplaceStore.subscribe(
+          (n: SafeplacePOI) => set({ currentPOI: n }),
+          (s) => s.currentPOI
+        ),
+      []
+    )
 
-    return output
-  }, [currentPOIData])
+    /**
+     * GET NEW CAMERA PARAMS
+     */
+    const { position, rotation, scale, params } = useMemo(() => {
+      const output: {
+        position: THREE.Vector3Tuple
+        rotation: THREE.Vector3Tuple
+        scale: THREE.Vector3Tuple
+        params: GSAPTweenVars
+      } = {
+        position: [0, 0, 0],
+        rotation: [0, 0, 0],
+        scale: [1, 1, 1],
+        params: {
+          duration: 2,
+          onStart: () => setCameraIsTravelling(true),
+          onComplete: () => setCameraIsTravelling(false),
+        },
+      }
 
-  /**
-   * ANIMATE CAMERA
-   */
-  useAnimateVector(
-    {
-      ref: camRef,
-      target: 'position',
-    },
-    position,
-    params
-  )
-  useAnimateVector(
-    {
-      ref: camRef,
-      target: 'rotation',
-    },
-    rotation,
-    params
-  )
-  useAnimateVector(
-    {
-      ref: camRef,
-      target: 'scale',
-    },
-    scale,
-    params
-  )
+      if (currentPOIData !== undefined) {
+        const { position, scale, quaternion } = currentPOIData
+        position.toArray(output.position)
+        new THREE.Euler()
+          .setFromQuaternion(quaternion)
+          .toArray(output.rotation as THREE.Vector3Tuple)
+        scale.toArray(output.scale)
+      }
 
-  return null
-}
+      return output
+    }, [currentPOIData])
+
+    /**
+     * ANIMATE CAMERA
+     */
+    useAnimateVector(
+      {
+        ref: camRef,
+        target: 'position',
+      },
+      position,
+      params
+    )
+    useAnimateVector(
+      {
+        ref: camRef,
+        target: 'rotation',
+      },
+      rotation,
+      params
+    )
+    useAnimateVector(
+      {
+        ref: camRef,
+        target: 'scale',
+      },
+      scale,
+      params
+    )
+
+    return null
+  }
+)
 
 export default SafeplaceCamera

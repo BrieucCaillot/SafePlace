@@ -5,10 +5,11 @@ import { useControls } from 'leva'
 import SafeplaceScene from '../Safeplace/Canvas/SafeplaceScene'
 import { ReactNode, Suspense } from 'react'
 import SafeplaceCamera from '../Safeplace/Canvas/SafeplaceCamera'
+import Scenes from './Scenes/Scenes'
 // enable shader editor
 // import { MaterialEditor, useEditorComposer } from '@three-material-editor/react'
 
-const LayoutCanvas = ({ children }: { children: ReactNode }) => {
+const LayoutCanvas = () => {
   const { orbitControlsEnabled } = useControls('camera', {
     orbitControlsEnabled: false,
   })
@@ -22,19 +23,16 @@ const LayoutCanvas = ({ children }: { children: ReactNode }) => {
       colorManagement={false}
       pixelRatio={[devicePixelRatio, 2]}
     >
+      <Scenes />
+
       <Preload all />
       {orbitControlsEnabled && <OrbitControls />}
       <Perf openByDefault trackGPU={true} position={'bottom-right'} />
-      <Suspense fallback={null}>
-        <SafeplaceScene />
-      </Suspense>
-      <SafeplaceCamera />
       {/* <MaterialEditor /> */}
       {/* <EffectComposer ref={useEditorComposer()}> */}
       {/* <EffectComposer>
         <Vignette eskil={false} offset={0.1} darkness={1.1} />
       </EffectComposer> */}
-      {children}
     </Canvas>
   )
 }

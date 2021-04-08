@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from 'react'
+import { Suspense, useEffect, useMemo } from 'react'
 import * as THREE from 'three'
 
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
@@ -11,6 +11,7 @@ import Dandelion from '@/components/canvas/Dandelion/Dandelion'
 import { useGLTF } from '@react-three/drei'
 import Shelter from './Shelter/Shelter'
 import ColumnLocation from './ColumLocation/ColumnLocation'
+import withScenePortal from '@/components/common/Scenes/withScenePortal'
 
 const SafeplaceScene = () => {
   const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
@@ -26,11 +27,9 @@ const SafeplaceScene = () => {
     setCurrentPOI(SafeplacePOI.OnBoarding)
   }, [])
 
-  const {
-    scene: {
-      children: [POIs, shelterModel, bridge],
-    },
-  } = useGLTF('/models/safeplace.glb')
+  const { scene } = useGLTF('/models/safeplace.glb')
+
+  const [POIs, shelterModel, bridge] = useMemo(() => scene.children, [])
 
   const columnAssoc: { [name: string]: SafeplacePOI } = {
     POI_1: SafeplacePOI.MountainPedestal,
@@ -52,9 +51,10 @@ const SafeplaceScene = () => {
         />
       ))}
 
+      <primitive object={bridge} />
+
       <SafeplaceSky />
 
-      <primitive object={bridge} />
       <Grass position-y={-0.2} />
       <Waterfall position={[-50, 6, 0]} rotation={[0, 45, 0]} />
       <Dandelion position={[50, 6, 0]} rotation={[0, -45, 0]} />
@@ -64,4 +64,4 @@ const SafeplaceScene = () => {
   )
 }
 
-export default SafeplaceScene
+export default withScenePortal(SafeplaceScene)

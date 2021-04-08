@@ -8,9 +8,10 @@ const Shelter = ({ object }: { object: THREE.Object3D }) => {
 
   const shelterRef = useRef<THREE.Object3D>()
 
-  const insidePOIObj = useMemo(() => object.getObjectByName('Inside_house'), [
-    object,
-  ])
+  const insidePOIObj = useMemo(
+    () => (object || shelterRef.current).getObjectByName('Inside_house'),
+    []
+  )
 
   const isPOIAvailable = useSafeplaceStore((s) =>
     s.isCurrentlyAvailable(SafeplacePOI.Inside)
