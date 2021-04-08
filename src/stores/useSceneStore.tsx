@@ -1,27 +1,60 @@
-import { get } from 'node:http'
-import * as THREE from 'three'
 import create from 'zustand'
+import { createRef, ExoticComponent, FC, RefObject } from 'react'
+import * as THREE from 'three'
+import { WithScenePortalProps } from '@/components/common/Scenes/withScenePortal'
+import SafeplaceScene from '@/components/Safeplace/Canvas/SafeplaceScene'
+import SafeplaceCamera from '@/components/Safeplace/Canvas/SafeplaceCamera'
 
-export enum Scenes {
+export enum SceneName {
   Safeplace = 'Safeplace',
-  About = 'About',
-  MountainJourney = 'MountainJourney',
+  // Journey = 'Journey',
+}
+
+export type SceneData = {
+  Component: FC<WithScenePortalProps>
+  scene: THREE.Scene
+  CameraComponent: ExoticComponent<{ ref: RefObject<THREE.Camera> }>
+  cameraRef: RefObject<THREE.Camera | undefined>
 }
 
 type SceneStore = {
-  currentScene: Scenes
-  setCurrentScene: (scene: Scenes) => void
-  isCurrentScene: (scene: Scenes) => boolean
-  showSafeplace: boolean
-  setShowSafeplace: (status: boolean) => void
+  mountedScenes: SceneName[]
+  renderedScene: SceneName | null
+  mountScene: (sceneName: SceneName) => void
+  unmountScene: (sceneName: SceneName) => void
+  setRenderedScene: (sceneName: SceneName | null) => void
+  scenesData: Record<SceneName, SceneData>
 }
 
 const useSceneStore = create<SceneStore>((set, get) => ({
-  currentScene: Scenes.Safeplace,
-  setCurrentScene: (scene) => set({ currentScene: scene }),
-  isCurrentScene: (scene) => scene == get().currentScene,
-  showSafeplace: true,
-  setShowSafeplace: (status) => set({ showSafeplace: status }),
+  mountedScenes: [],
+  renderedScene: null,
+  mountScene: (sceneName: SceneName) => {
+    const { mountedScenes } = get()
+    if (mountedScenes.includes(sceneName)) return
+    mountedScenes.push(sceneName)
+    set({ mountedScenes })
+  },
+  unmountScene: (sceneName: SceneName) => {
+    const { mountedScenes } = get()
+    const index = mountedScenes.indexOf(sceneName)
+    if (index > -1) mountedScenes.splice(index, 1)
+    set({ mountedScenes })
+  },
+  setRenderedScene: (sceneName: SceneName) => {
+    const { mountedScenes } = get()
+    if (!mountedScenes.includes(sceneName))
+      throw `${sceneName} : Cannot set a scene as rendered scene if it's not mounted`
+    set({ renderedScene: sceneName })
+  },
+  scenesData: {
+    [SceneName.Safeplace]: {
+      Component: SafeplaceScene,
+      scene: new THREE.Scene(),
+      CameraComponent: SafeplaceCamera,
+      cameraRef: createRef(),
+    },
+  },
 }))
 
 export default useSceneStore

@@ -2,10 +2,10 @@ import { Canvas } from 'react-three-fiber'
 import { Perf } from 'r3f-perf/dist/r3f-perf.cjs.development.js'
 import { OrbitControls, Preload } from '@react-three/drei'
 import { useControls } from 'leva'
-import SafeplaceScene from '../Safeplace/Canvas/SafeplaceScene'
-import { ReactNode, Suspense } from 'react'
-import SafeplaceCamera from '../Safeplace/Canvas/SafeplaceCamera'
+import { useEffect } from 'react'
 import Scenes from './Scenes/Scenes'
+import { useRouter } from 'next/router'
+import useSceneStore, { SceneName } from '@/stores/useSceneStore'
 // enable shader editor
 // import { MaterialEditor, useEditorComposer } from '@three-material-editor/react'
 
@@ -13,6 +13,17 @@ const LayoutCanvas = () => {
   const { orbitControlsEnabled } = useControls('camera', {
     orbitControlsEnabled: false,
   })
+
+  const mountScene = useSceneStore((s) => s.mountScene)
+  const setRenderedScene = useSceneStore((s) => s.setRenderedScene)
+
+  const { pathname } = useRouter()
+  useEffect(() => {
+    if (pathname === '/safeplace') {
+      mountScene(SceneName.Safeplace)
+      setRenderedScene(SceneName.Safeplace)
+    }
+  }, [pathname])
 
   return (
     <Canvas
