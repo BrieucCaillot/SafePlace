@@ -6,9 +6,10 @@ import {
   Fragment,
   RefObject,
   Suspense,
+  useEffect,
   useMemo,
 } from 'react'
-import { useFrame } from 'react-three-fiber'
+import { useFrame, useThree } from 'react-three-fiber'
 import * as THREE from 'three'
 import SafeplaceCamera from '../../Safeplace/Canvas/SafeplaceCamera'
 import SafeplaceScene from '../../Safeplace/Canvas/SafeplaceScene'
@@ -26,6 +27,7 @@ enum SceneName {
 }
 
 const Scenes = () => {
+  const { setDefaultCamera } = useThree()
   const mountedScenes: SceneName[] = [SceneName.Safeplace]
   const renderedScene: SceneName | null = SceneName.Safeplace
 
@@ -45,6 +47,12 @@ const Scenes = () => {
     () => mountedScenes.map((s) => scenesData[s]),
     [mountedScenes]
   )
+
+  useEffect(() => {
+    const { cameraRef } = scenesData[renderedScene]
+    if (cameraRef.current === null) return
+    setDefaultCamera(cameraRef.current as any)
+  }, [renderedScene])
 
   useFrame(({ gl }) => {
     if (renderedScene === null) return

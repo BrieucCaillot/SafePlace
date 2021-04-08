@@ -12,6 +12,7 @@ import { useGLTF } from '@react-three/drei'
 import Shelter from './Shelter/Shelter'
 import ColumnLocation from './ColumLocation/ColumnLocation'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
+import SafeplaceDebug from './SafeplaceDebug'
 
 const SafeplaceScene = () => {
   const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
@@ -41,6 +42,7 @@ const SafeplaceScene = () => {
 
   return (
     <>
+      <SafeplaceDebug />
       <Shelter object={shelterModel} />
 
       {POIs.children.map((o) => (

@@ -1,19 +1,10 @@
-import {
-  useEffect,
-  useRef,
-  useMemo,
-  forwardRef,
-  MutableRefObject,
-  Ref,
-  createRef,
-  RefObject,
-} from 'react'
+import { useEffect, useRef, useMemo, forwardRef, MutableRefObject } from 'react'
+import { useControls } from 'leva'
 import * as THREE from 'three'
 import { useFrame, useThree } from 'react-three-fiber'
 import useCameraStore from '@/stores/useCameraStore'
 import useAnimateVector from '@/hooks/animation/useAnimateVector'
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
-import { useControls } from 'leva'
 import mergeRefs from 'react-merge-refs'
 
 const SafeplaceCamera = forwardRef(
@@ -21,38 +12,11 @@ const SafeplaceCamera = forwardRef(
     const { camera } = useThree()
 
     const camRef = useRef<THREE.Camera>(camera)
-    useEffect(() => {
-      fowardedRef.current = camRef.current
-    }, [])
     const setCameraIsTravelling = useCameraStore(
       (state) => state.setCameraIsTravelling
     )
 
-    const statePOI = useSafeplaceStore((state) => state.currentPOI)
     const currentPOIData = useSafeplaceStore((s) => s.getPOIData(s.currentPOI))
-    const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
-
-    /**
-     * Debug
-     */
-    const [{ currentPOI }, set] = useControls('safeplace', () => ({
-      currentPOI: {
-        value: statePOI,
-        options: SafeplacePOI,
-      },
-    }))
-
-    useEffect(() => {
-      setCurrentPOI(currentPOI)
-    }, [currentPOI])
-    useEffect(
-      () =>
-        useSafeplaceStore.subscribe(
-          (n: SafeplacePOI) => set({ currentPOI: n }),
-          (s) => s.currentPOI
-        ),
-      []
-    )
 
     /**
      * GET NEW CAMERA PARAMS
@@ -114,7 +78,14 @@ const SafeplaceCamera = forwardRef(
       params
     )
 
-    return null
+    return (
+      <perspectiveCamera
+        ref={mergeRefs([fowardedRef, camRef])}
+        near={0.1}
+        far={1000}
+        fov={75}
+      />
+    )
   }
 )
 
