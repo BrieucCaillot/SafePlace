@@ -11,7 +11,7 @@ export enum Scenes {
 type SceneStore = {
   currentScene: Scenes
   setCurrentScene: (scene: Scenes) => void
-  isCurrentScene: (scene) => boolean
+  isCurrentScene: (scene: Scenes) => boolean
   showSafeplace: boolean
   setShowSafeplace: (status: boolean) => void
 }

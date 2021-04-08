@@ -1,15 +1,14 @@
-import * as THREE from 'three'
 import { Canvas } from 'react-three-fiber'
 import { Perf } from 'r3f-perf/dist/r3f-perf.cjs.development.js'
 import { OrbitControls, Preload } from '@react-three/drei'
 import { useControls } from 'leva'
 import SafeplaceScene from '../Safeplace/Canvas/SafeplaceScene'
-import { Suspense } from 'react'
+import { ReactNode, Suspense } from 'react'
 import SafeplaceCamera from '../Safeplace/Canvas/SafeplaceCamera'
 // enable shader editor
 // import { MaterialEditor, useEditorComposer } from '@three-material-editor/react'
 
-const LayoutCanvas = ({ children }) => {
+const LayoutCanvas = ({ children }: { children: ReactNode }) => {
   const { orbitControlsEnabled } = useControls('camera', {
     orbitControlsEnabled: false,
   })

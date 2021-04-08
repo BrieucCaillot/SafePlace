@@ -12,7 +12,7 @@ export function getPositionTextureFromMesh(
 
   if (mesh === null) throw 'No mesh'
   const amount = sampleAmount || size[0] * size[1]
-  const data = new Float32Array(textureSize[0] * textureSize[1] * 4)
+  const data = new Float32Array(size[0] * size[1] * 4)
   const sampler = customSampler || new MeshSurfaceSampler(mesh).build()
   const position = new THREE.Vector3()
   for (let index = 0; index < amount; index++) {

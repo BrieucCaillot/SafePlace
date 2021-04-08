@@ -32,7 +32,7 @@ const SafeplaceScene = () => {
     },
   } = useGLTF('/models/safeplace.glb')
 
-  const columnAssoc = {
+  const columnAssoc: { [name: string]: SafeplacePOI } = {
     POI_1: SafeplacePOI.MountainPedestal,
     POI_2: SafeplacePOI.PlaceholderPedetral1,
     POI_3: SafeplacePOI.PlaceholderPedetral2,

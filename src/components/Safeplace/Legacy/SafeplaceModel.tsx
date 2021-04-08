@@ -9,9 +9,8 @@ import { useGLTF } from '@react-three/drei'
 import { SafeplacePOI } from '@/stores/useSafeplaceStore'
 
 import SafeplacePedestal from '@/components/Safeplace/Canvas/ColumLocation/ColumnLocation'
-import SafeplaceBridge from '@/components/Safeplace/Legacy/SafeplaceBridge/SafeplaceBridge'
 
-const pedestalsAssoc = {
+const pedestalsAssoc: { [name: string]: SafeplacePOI } = {
   POI_1: SafeplacePOI.MountainPedestal,
   POI_2: SafeplacePOI.PlaceholderPedetral1,
   POI_3: SafeplacePOI.PlaceholderPedetral2,
@@ -37,7 +36,6 @@ export default function SafeplaceTest(props: GroupProps) {
 
   return (
     <group ref={group} {...props} dispose={null}>
-      <SafeplaceBridge safeplacePOI={SafeplacePOI.Bridge} bridge={bridge} />
       <group>
         {pedestals.map((poi, index) => (
           <SafeplacePedestal

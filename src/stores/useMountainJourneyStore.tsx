@@ -20,7 +20,7 @@ export type SectionData = {
 
 type MountainJourneyStore = {
   currentSection: MountainSections
-  setCurrentSection: (SectionData) => void
+  setCurrentSection: (section: MountainSections) => void
   sectionsMap: Map<MountainSections, SectionData>
   setSectionData: (key: MountainSections, value: Partial<SectionData>) => void
   getSectionData: (key: MountainSections) => SectionData | undefined

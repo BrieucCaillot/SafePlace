@@ -1,11 +1,7 @@
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 
 const ColumnBackButton = () => {
-  const POIsWhereHidden = [
-    SafeplacePOI.Inside,
-    SafeplacePOI.OnBoarding,
-    SafeplacePOI.Bridge,
-  ]
+  const POIsWhereHidden = [SafeplacePOI.Inside, SafeplacePOI.OnBoarding]
   const showButton = useSafeplaceStore(
     (state) => !POIsWhereHidden.includes(state.currentPOI)
   )
