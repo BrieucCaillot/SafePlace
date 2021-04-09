@@ -7,7 +7,7 @@ import { useControls } from 'leva'
 const AnimationTest = () => {
   const {
     animations: [anim],
-  } = useGLTF('/models/test.glb')
+  } = useGLTF('/models/test_cam_mouvement.gltf')
 
   const meshRef = useRef<THREE.Mesh>()
   const mixerRef = useRef<THREE.AnimationMixer>()
@@ -47,12 +47,12 @@ const AnimationTest = () => {
   useFrame(({ clock }) => {
     if (mixerRef.current == null) return
     mixerRef.current.update(clock.getDelta())
-    console.log(meshRef.current?.position)
+    // console.log(meshRef.current?.position)
   })
 
   return (
     <mesh ref={meshRef}>
-      <boxBufferGeometry args={[10, 10, 10]} />
+      <boxBufferGeometry args={[1, 1, 1]} />
       <meshNormalMaterial />
     </mesh>
   )
