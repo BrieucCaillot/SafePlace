@@ -7,6 +7,7 @@ const DebugNavigation = ({ router }: { router: NextRouter }) => {
   const paths = {
     index: '/',
     safeplace: '/safeplace',
+    journey: '/journey',
   }
 
   const [{ path }, set] = useControls(() => ({

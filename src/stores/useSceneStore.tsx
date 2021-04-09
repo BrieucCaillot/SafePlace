@@ -4,10 +4,12 @@ import * as THREE from 'three'
 import { WithScenePortalProps } from '@/components/common/Scenes/withScenePortal'
 import SafeplaceScene from '@/components/Safeplace/Canvas/SafeplaceScene'
 import SafeplaceCamera from '@/components/Safeplace/Canvas/SafeplaceCamera'
+import JourneyScene from '@/components/Journey/Canvas/JourneyScene'
+import JourneyCamera from '@/components/Journey/Canvas/JourneyCamera'
 
 export enum SceneName {
   Safeplace = 'Safeplace',
-  // Journey = 'Journey',
+  Journey = 'Journey',
 }
 
 export type SceneData = {
@@ -22,6 +24,7 @@ type SceneStore = {
   renderedScene: SceneName | null
   mountScene: (sceneName: SceneName) => void
   unmountScene: (sceneName: SceneName) => void
+  unmountAllScenes: () => void
   setRenderedScene: (sceneName: SceneName | null) => void
   scenesData: Record<SceneName, SceneData>
 }
@@ -41,9 +44,12 @@ const useSceneStore = create<SceneStore>((set, get) => ({
     if (index > -1) mountedScenes.splice(index, 1)
     set({ mountedScenes })
   },
-  setRenderedScene: (sceneName: SceneName) => {
+  unmountAllScenes: () => {
+    set({ mountedScenes: [] })
+  },
+  setRenderedScene: (sceneName: SceneName | null) => {
     const { mountedScenes } = get()
-    if (!mountedScenes.includes(sceneName))
+    if (sceneName !== null && !mountedScenes.includes(sceneName))
       throw `${sceneName} : Cannot set a scene as rendered scene if it's not mounted`
     set({ renderedScene: sceneName })
   },
@@ -52,6 +58,12 @@ const useSceneStore = create<SceneStore>((set, get) => ({
       Component: SafeplaceScene,
       scene: new THREE.Scene(),
       CameraComponent: SafeplaceCamera,
+      cameraRef: createRef(),
+    },
+    [SceneName.Journey]: {
+      Component: JourneyScene,
+      scene: new THREE.Scene(),
+      CameraComponent: JourneyCamera,
       cameraRef: createRef(),
     },
   },
