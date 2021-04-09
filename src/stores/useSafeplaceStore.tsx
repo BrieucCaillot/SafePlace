@@ -8,6 +8,7 @@ export enum SafeplacePOI {
   OnBoarding = 'OnBoarding',
   Inside = 'Inside',
   Waterfall = 'Waterfall',
+  Dandelion = 'Dandelion',
   MountainPedestal = 'MountainPedestal',
   PlaceholderPedetral1 = 'PlaceholderPedetral1',
   PlaceholderPedetral2 = 'PlaceholderPedetral2',
@@ -27,6 +28,7 @@ const POI_AVAILABILITY: Record<SafeplacePOI, SafeplacePOI[]> = {
     SafeplacePOI.PlaceholderPedetral4,
   ],
   [SafeplacePOI.Waterfall]: [],
+  [SafeplacePOI.Dandelion]: [],
   [SafeplacePOI.MountainPedestal]: [],
   [SafeplacePOI.PlaceholderPedetral1]: [],
   [SafeplacePOI.PlaceholderPedetral2]: [],
@@ -42,7 +44,7 @@ export type POIData = {
 
 type SafeplaceStore = {
   currentPOI: SafeplacePOI
-  setCurrentPOI: (SafeplacePOI) => void
+  setCurrentPOI: (key: SafeplacePOI) => void
   POIMap: Map<SafeplacePOI, POIData>
   setPOIData: (key: SafeplacePOI, value: Partial<POIData>) => void
   getPOIData: (key: SafeplacePOI) => POIData | undefined

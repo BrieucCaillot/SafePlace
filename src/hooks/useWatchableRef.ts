@@ -31,7 +31,7 @@ const useWatchableRef = <T>(defaultValue: T) => {
       onChange: onChangeCallback,
     }
     const handler: ProxyHandler<WatchableRefObject<T>> = {
-      set: (object, property: string, value: T) => {
+      set: (object, property: 'current', value: T) => {
         object[property] = value
         for (const callback of callbackArray.current) callback(value)
         return true

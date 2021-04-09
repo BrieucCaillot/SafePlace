@@ -15,7 +15,6 @@ varying vec3 vColor;
 
 void main() {
   vec3 offset = texture2D(uPosTexture, aPixelPosition).rgb;
-  vec4 mPosition = modelMatrix * vec4((position + offset), 1.0);
   vec4 mvPosition = modelViewMatrix * vec4((position + offset), 1.0);
 
   gl_Position = projectionMatrix * mvPosition;
