@@ -2,7 +2,7 @@ import { Canvas } from 'react-three-fiber'
 import { Perf } from 'r3f-perf/dist/r3f-perf.cjs.development.js'
 import { OrbitControls, Preload } from '@react-three/drei'
 import { useControls } from 'leva'
-import { useEffect } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { NextRouter, withRouter } from 'next/router'
 import Scenes from './Scenes/Scenes'
 import useSceneStore, { SceneName } from '@/stores/useSceneStore'
@@ -10,7 +10,13 @@ import usePrevious from '@/hooks/usePrevious'
 // enable shader editor
 // import { MaterialEditor, useEditorComposer } from '@three-material-editor/react'
 
-const LayoutCanvas = ({ router: { pathname } }: { router: NextRouter }) => {
+const LayoutCanvas = ({
+  router: { pathname },
+  children,
+}: {
+  router: NextRouter
+  children: ReactNode
+}) => {
   const { orbitControls, showPerf } = useControls({
     orbitControls: false,
     showPerf: true,
@@ -61,6 +67,7 @@ const LayoutCanvas = ({ router: { pathname } }: { router: NextRouter }) => {
       {showPerf && (
         <Perf openByDefault trackGPU={true} position={'bottom-right'} />
       )}
+      {children}
       {/* <MaterialEditor /> */}
       {/* <EffectComposer ref={useEditorComposer()}> */}
       {/* <EffectComposer>

@@ -3,7 +3,7 @@ import {
   Transition as ReactTransition,
 } from 'react-transition-group'
 
-import { ReactChild } from 'react'
+import { CSSProperties, ReactChild } from 'react'
 
 type TransitionKind<RC> = {
   children: RC
@@ -12,7 +12,7 @@ type TransitionKind<RC> = {
 
 const TIMEOUT: number = 200
 
-const getTransitionStyles = {
+const transitionStyles: { [name: string]: CSSProperties } = {
   entering: {
     position: `absolute`,
     opacity: 0,
@@ -45,7 +45,7 @@ const LayoutTransition: React.FC<TransitionKind<ReactChild>> = ({
           <div
             data-transition-status={status}
             style={{
-              ...getTransitionStyles[status],
+              ...transitionStyles[status],
             }}
           >
             {children}

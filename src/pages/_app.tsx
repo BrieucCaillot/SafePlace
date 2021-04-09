@@ -1,14 +1,19 @@
 import { Children, ComponentType, ReactChild, ReactNode } from 'react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
-import { AppProps } from 'next/dist/next-server/lib/router/router'
+import { AppProps, NextRouter } from 'next/dist/next-server/lib/router/router'
 
 import Head from '@/components/common/Head'
 import LayoutDom from '@/components/common/LayoutDom'
 import LayoutTransition from '@/components/common/LayoutTransition'
 import '@/styles/style.scss'
+import { ExcludeRouterProps } from 'next/dist/client/with-router'
 
-let LayoutCanvas: ComponentType<{ children: any }> | null = null
+let LayoutCanvas: ComponentType<
+  ExcludeRouterProps<{
+    router: NextRouter
+  }> & { children: any }
+> | null = null
 LayoutCanvas = dynamic(() => import('@/components/common/LayoutCanvas'), {
   ssr: false,
 })
