@@ -1,4 +1,4 @@
-import { Children, ComponentType } from 'react'
+import { Children, ComponentType, ReactChild, ReactNode } from 'react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { AppProps } from 'next/dist/next-server/lib/router/router'
@@ -32,9 +32,13 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head />
-      <LayoutTransition location={router.pathname}>
-        {compArr && <LayoutDom dom={compArr} />}
-      </LayoutTransition>
+      {compArr && (
+        <LayoutDom>
+          <LayoutTransition location={router.pathname}>
+            {(compArr as unknown) as ReactChild}
+          </LayoutTransition>
+        </LayoutDom>
+      )}
       {LayoutCanvas && (
         <LayoutCanvas>{r3fArr && <group>{r3fArr}</group>}</LayoutCanvas>
       )}

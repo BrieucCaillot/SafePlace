@@ -3,19 +3,16 @@ import { Perf } from 'r3f-perf/dist/r3f-perf.cjs.development.js'
 import { OrbitControls, Preload } from '@react-three/drei'
 import { useControls } from 'leva'
 import { useEffect } from 'react'
-import Scenes from './Scenes/Scenes'
 import { useRouter } from 'next/router'
+import Scenes from './Scenes/Scenes'
 import useSceneStore, { SceneName } from '@/stores/useSceneStore'
 // enable shader editor
 // import { MaterialEditor, useEditorComposer } from '@three-material-editor/react'
 
 const LayoutCanvas = () => {
-  const { orbitControlsEnabled } = useControls('camera', {
-    orbitControlsEnabled: false,
-  })
-
-  const { r3fActive } = useControls('r3f', {
-    r3fActive: true,
+  const { orbitControls, showPerf } = useControls({
+    orbitControls: false,
+    showPerf: true,
   })
 
   const mountScene = useSceneStore((s) => s.mountScene)
@@ -41,8 +38,8 @@ const LayoutCanvas = () => {
       <Scenes />
 
       <Preload all />
-      {orbitControlsEnabled && <OrbitControls />}
-      {r3fActive && (
+      {orbitControls && <OrbitControls />}
+      {showPerf && (
         <Perf openByDefault trackGPU={true} position={'bottom-right'} />
       )}
       {/* <MaterialEditor /> */}

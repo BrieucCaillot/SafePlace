@@ -1,12 +1,14 @@
 import * as THREE from 'three'
-import { useMemo, useRef, useState } from 'react'
+import { useControls } from 'leva'
 import { MeshProps, useFrame, useThree } from 'react-three-fiber'
+import { useMemo, useRef, useState } from 'react'
+import EasingFunction from 'easing-functions'
 
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 
 import vertexShader from './ColumnLink.vert'
 import fragmentShader from './ColumnLink.frag'
-import { useControls } from 'leva'
+import useAnimateVector from '@/hooks/animation/useAnimateVector'
 
 const ColumnLink = ({
   safeplacePOI,
@@ -14,11 +16,11 @@ const ColumnLink = ({
 }: { safeplacePOI: SafeplacePOI } & Omit<MeshProps, 'scale'>) => {
   const columnLinkRef = useRef<THREE.Mesh>()
 
-  const { camera, viewport, aspect } = useThree()
+  const { camera, viewport } = useThree()
   const vec3Ref = useMemo(() => new THREE.Vector3(), [])
 
   const { scalarFactor } = useControls(
-    'safeplace_interaction',
+    'column_button',
     {
       scalarFactor: 2,
     },
@@ -51,16 +53,17 @@ const ColumnLink = ({
   }
 
   const onPointerOver = () => {
-    setScaleAnim([2, 2, 2])
+    setScaleAnim([1.4, 1.4, 1.4])
   }
 
   const onPointerOut = () => {
     setScaleAnim([1, 1, 1])
   }
 
-  // useAnimateVector(scaleAnimRef, scaleAnim, {
-  //   duration: 2,
-  // })
+  useAnimateVector(scaleAnimRef, scaleAnim, {
+    duration: 0.8,
+    ease: EasingFunction.Quartic.Out,
+  })
 
   return (
     <mesh
