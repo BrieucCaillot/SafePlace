@@ -1,7 +1,12 @@
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 
 const ColumnBackButton = () => {
-  const POIsWhereHidden = [SafeplacePOI.Inside, SafeplacePOI.OnBoarding]
+  const POIsWhereHidden = [
+    SafeplacePOI.Inside,
+    SafeplacePOI.OnBoarding,
+    SafeplacePOI.Resources,
+    SafeplacePOI.ResourceFocused,
+  ]
   const showButton = useSafeplaceStore(
     (state) => !POIsWhereHidden.includes(state.currentPOI)
   )
@@ -14,7 +19,7 @@ const ColumnBackButton = () => {
       } pointer-events-auto cursor-pointer`}
       onClick={() => setCurrentPOI(SafeplacePOI.Inside)}
     >
-      <p className='absolute bottom-6 left-10 text-white text-2xl'>Abris</p>
+      <p className='text-white text-2xl'>Abris</p>
     </div>
   )
 }
