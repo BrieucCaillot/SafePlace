@@ -30,7 +30,7 @@
     ]
   },
   "dependencies": {
-    "@react-three/drei": "^3.10.2",
+    "@react-three/drei": "3.10.0",
     "@react-three/postprocessing": "^1.5.2",
     "@types/bezier-easing": "^2.1.2",
     "bezier-easing": "^2.1.0",
