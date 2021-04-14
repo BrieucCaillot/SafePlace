@@ -17,7 +17,7 @@ const LayoutCanvas = ({
   router: NextRouter
   children: ReactNode
 }) => {
-  const { orbitControls, showPerf } = useControls({
+  const { orbitControls: enableOrbitControls, showPerf } = useControls({
     orbitControls: false,
     showPerf: true,
   })
@@ -46,10 +46,11 @@ const LayoutCanvas = ({
   }, [pathname])
 
   useEffect(() => {
+    if (pathname == previousPathname) return
     if (previousPathname === '/journey') {
       unmountScene(SceneName.Journey)
     }
-  }, [previousPathname])
+  }, [previousPathname, pathname])
 
   return (
     <Canvas
@@ -57,13 +58,13 @@ const LayoutCanvas = ({
         position: 'absolute',
         top: 0,
       }}
-      colorManagement={false}
+      colorManagement={true}
       pixelRatio={[devicePixelRatio, 2]}
     >
+      {enableOrbitControls && <OrbitControls />}
       <Scenes />
 
       <Preload all />
-      {orbitControls && <OrbitControls />}
       {showPerf && (
         <Perf openByDefault trackGPU={true} position={'bottom-right'} />
       )}

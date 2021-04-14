@@ -3,6 +3,8 @@ import create from 'zustand'
 
 // Safeplace points of interests
 export enum SafeplacePOI {
+  Resources = 'Resources',
+  ResourceFocused = 'ResourceFocused',
   OnBoarding = 'OnBoarding',
   Inside = 'Inside',
   Waterfall = 'Waterfall',
@@ -15,8 +17,11 @@ export enum SafeplacePOI {
 }
 
 const POI_AVAILABILITY: Record<SafeplacePOI, SafeplacePOI[]> = {
+  [SafeplacePOI.Resources]: [SafeplacePOI.Inside],
+  [SafeplacePOI.ResourceFocused]: [SafeplacePOI.Resources],
   [SafeplacePOI.OnBoarding]: [SafeplacePOI.Inside],
   [SafeplacePOI.Inside]: [
+    SafeplacePOI.Resources,
     SafeplacePOI.MountainPedestal,
     SafeplacePOI.PlaceholderPedetral1,
     SafeplacePOI.PlaceholderPedetral2,

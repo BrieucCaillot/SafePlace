@@ -3,7 +3,7 @@ import withScenePortal from '@/components/common/Scenes/withScenePortal'
 const MountainScene = () => {
   return (
     <>
-      <mesh position-z={-6}>
+      <mesh>
         <boxGeometry />
         <meshNormalMaterial />
       </mesh>

@@ -1,7 +1,7 @@
-import useSceneStore from '@/stores/useSceneStore'
 import shallow from 'zustand/shallow'
 import { Fragment, RefObject, Suspense, useEffect } from 'react'
 import { Camera, useFrame, useThree } from 'react-three-fiber'
+import useSceneStore from '@/stores/useSceneStore'
 
 const Scenes = () => {
   const { setDefaultCamera } = useThree()
@@ -26,7 +26,7 @@ const Scenes = () => {
 
     const { cameraRef, scene } = renderedSceneData
 
-    if (cameraRef.current == undefined) return
+    if (cameraRef.current == null) return
 
     gl.autoClear = true
     gl.render(scene, cameraRef.current)
@@ -36,7 +36,7 @@ const Scenes = () => {
     <>
       {mountedSceneData.map(
         ({ Component, scene, CameraComponent, cameraRef }, i) => (
-          <Fragment key={i}>
+          <Fragment key={scene.uuid}>
             <Suspense fallback={'loading'}>
               <Component scene={scene} />
             </Suspense>

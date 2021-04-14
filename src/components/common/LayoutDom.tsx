@@ -10,7 +10,10 @@ const LayoutDom = ({ children }: { children: ReactNode }) => {
       <div className='dom font-serif relative h-screen w-screen z-10 pointer-events-none'>
         <LayoutBottom>
           <div id='layout-bottom-left'></div>
-          <div id='layout-bottom-right'>
+          <div
+            id='layout-bottom-right'
+            className='flex items-center flex-row-reverse'
+          >
             <LayoutSound />
           </div>
         </LayoutBottom>

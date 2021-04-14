@@ -5,6 +5,7 @@ const JourneyCamera = forwardRef(
   (_, fowardedRef: MutableRefObject<THREE.Camera>) => {
     return (
       <perspectiveCamera
+        position-z={6}
         name={'Journey Cam'}
         ref={fowardedRef}
         near={0.1}
