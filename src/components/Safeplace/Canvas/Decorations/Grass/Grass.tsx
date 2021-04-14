@@ -1,15 +1,20 @@
+import { useControls } from 'leva'
+import { ReactNode, RefObject, useEffect, useMemo, useRef } from 'react'
+import { GroupProps, useFrame } from 'react-three-fiber'
+import * as THREE from 'three'
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
 import findMinimumTexSize from '@/utils/FBO/findMinimumTexSize'
 import { getPositionTextureFromMesh } from '@/utils/FBO/getPositionTexture'
 import { useGLTF } from '@react-three/drei'
-import { useControls } from 'leva'
-import { useEffect, useMemo, useRef } from 'react'
-import { GroupProps, useFrame } from 'react-three-fiber'
-import * as THREE from 'three'
 import fragmentShader from './Grass.fs'
 import vertexShader from './Grass.vs'
 
-const Grass = (props: GroupProps) => {
+const Grass = ({
+  children,
+  ...props
+}: GroupProps & {
+  children: (ref: RefObject<THREE.Mesh>) => ReactNode
+}) => {
   // --- STATE
 
   const targetMeshRef = useRef<THREE.Mesh>(null)
@@ -25,10 +30,10 @@ const Grass = (props: GroupProps) => {
   } = useControls(
     'grass',
     {
-      grassAmount: { value: 4096 * 32, step: 1 },
-      size: 1,
-      windNoiseSize: { value: 0.2, min: 0, max: 1 },
-      windAmplitude: { value: 0.3, min: 0, max: 1 },
+      grassAmount: { value: 24576, step: 1 },
+      size: 0.4,
+      windNoiseSize: { value: 0.04, min: 0, max: 1 },
+      windAmplitude: { value: 0.06, min: 0, max: 1 },
       windSpeed: 0.2,
     },
     { collapsed: true }
@@ -43,15 +48,20 @@ const Grass = (props: GroupProps) => {
 
   // --- GEOMETRY
 
+  const origGeometry = useMemo(() => {
+    const g = (nodes['herbe_grp_3003'] as THREE.Mesh).geometry
+    g.rotateX(-Math.PI / 2)
+    return g
+  }, [nodes])
+
   const bufferGeometry = useMemo(() => {
-    const bufferGeometry = (nodes['herbe_grp_3003'] as THREE.Mesh).geometry
     const geometry = new THREE.InstancedBufferGeometry()
 
-    Object.keys(bufferGeometry.attributes).forEach((attributeName) => {
+    Object.keys(origGeometry.attributes).forEach((attributeName) => {
       geometry.attributes[attributeName] =
-        bufferGeometry.attributes[attributeName]
+        origGeometry.attributes[attributeName]
     })
-    geometry.index = bufferGeometry.index
+    geometry.index = origGeometry.index
 
     const index = new Float32Array(numPoints)
 
@@ -74,7 +84,7 @@ const Grass = (props: GroupProps) => {
     const rotationArray = new Float32Array(numPoints * 4)
     const q = new THREE.Quaternion()
     for (let i = 0; i < numPoints; i++) {
-      q.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.random() * Math.PI)
+      q.setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.random() * Math.PI)
       rotationArray[i * 4 + 0] = q.x
       rotationArray[i * 4 + 1] = q.y
       rotationArray[i * 4 + 2] = q.z
@@ -123,14 +133,11 @@ const Grass = (props: GroupProps) => {
   }, [textureSize[0], textureSize[1], numPoints])
 
   return (
-    <group {...props} rotation-x={-Math.PI / 2}>
-      <mesh scale={[1, 1, 1]} ref={targetMeshRef}>
-        <planeGeometry args={[500, 500]} />
-        <meshBasicMaterial color={0x46765a} />
-      </mesh>
+    <group {...props}>
+      {children(targetMeshRef)}
       <instancedMesh
         geometry={bufferGeometry}
-        position-z={1}
+        position-y={size}
         ref={instancedMeshRef}
       >
         <shaderMaterial

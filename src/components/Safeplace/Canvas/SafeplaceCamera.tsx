@@ -80,7 +80,7 @@ const SafeplaceCamera = forwardRef(
         ref={mergeRefs([fowardedRef, camRef])}
         near={0.1}
         far={1000}
-        fov={75}
+        fov={22.9}
       />
     )
   }

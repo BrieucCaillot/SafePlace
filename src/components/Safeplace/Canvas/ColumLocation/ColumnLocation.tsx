@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
@@ -7,22 +7,32 @@ import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/C
 const ColumnLocation = ({
   safeplacePOI,
   columnObj,
+  onClick = () => {},
 }: {
   safeplacePOI: SafeplacePOI
   columnObj: THREE.Object3D
+  onClick?: () => void
 }) => {
   const isCurrentlyAvailable = useSafeplaceStore((state) =>
     state.isCurrentlyAvailable(safeplacePOI)
   )
 
-  const camera = useMemo(() => columnObj.children[0], [])
-  const column = useMemo(() => columnObj.children[1] as THREE.Mesh, [])
+  const column = useMemo(
+    () => columnObj.children.find((o) => o.type === 'Mesh') as THREE.Mesh,
+    []
+  )
 
-  const savePOI = useSavePOIData(safeplacePOI)
+  const camera = useMemo(
+    () =>
+      columnObj.children
+        .find((o) => o.type === 'Object3D')
+        ?.children.find(
+          (o) => o.type === 'PerspectiveCamera'
+        ) as THREE.PerspectiveCamera,
+    []
+  )
 
-  const onPedestalClick = () => {
-    if (safeplacePOI !== SafeplacePOI.MountainPedestal) return
-  }
+  useSavePOIData(safeplacePOI, camera)
 
   return (
     <group
@@ -34,18 +44,12 @@ const ColumnLocation = ({
         <ColumnLink safeplacePOI={safeplacePOI} position={column.position} />
       )}
       <mesh
-        ref={savePOI}
-        name={camera.name}
-        position={camera.position}
-        rotation={columnObj.rotation}
-      />
-      <mesh
         name={column.name}
         position={column.position}
         scale={column.scale}
         material={column.material}
         geometry={column.geometry}
-        onClick={onPedestalClick}
+        onClick={onClick}
       />
     </group>
   )

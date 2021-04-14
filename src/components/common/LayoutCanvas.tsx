@@ -58,7 +58,7 @@ const LayoutCanvas = ({
         position: 'absolute',
         top: 0,
       }}
-      colorManagement={false}
+      colorManagement={true}
       pixelRatio={[devicePixelRatio, 2]}
     >
       {enableOrbitControls && <OrbitControls />}

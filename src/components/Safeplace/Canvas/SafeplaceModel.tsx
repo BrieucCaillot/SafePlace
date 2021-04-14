@@ -4,6 +4,7 @@ import { useGLTF } from '@react-three/drei'
 import { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import Shelter from '@/components/Safeplace/Canvas/Shelter/Shelter'
 import ColumnLocation from '@/components/Safeplace/Canvas/ColumLocation/ColumnLocation'
+import Grass from './Decorations/Grass/Grass'
 
 const SafeplaceModel = () => {
   const { scene } = useGLTF('/models/safeplace.glb')
@@ -28,14 +29,18 @@ const SafeplaceModel = () => {
       {columns.children.map((o) => (
         <ColumnLocation
           safeplacePOI={columnAssoc[o.name]}
+          onClick={() => console.log(columnAssoc[o.name])}
           columnObj={o}
           key={o.name}
         />
       ))}
 
       <primitive object={bridge} />
-      <primitive object={trees}></primitive>
-      <primitive object={ground}></primitive>
+      <primitive object={trees} />
+      <primitive object={ground} />
+      <Grass>
+        {(ref) => <primitive object={ground.children[1]} ref={ref} />}
+      </Grass>
     </>
   )
 }
