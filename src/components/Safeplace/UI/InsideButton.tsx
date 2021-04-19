@@ -1,20 +1,31 @@
+import LayoutShapeLink from '@/components/common/UI/LayoutShapeLink'
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 
 const InsideButton = () => {
-  const showButton = useSafeplaceStore(
-    (state) => state.currentPOI === SafeplacePOI.Resources
+  const POIsWhereHidden = [
+    SafeplacePOI.OnBoarding,
+    SafeplacePOI.Inside,
+    SafeplacePOI.ResourceFocused,
+  ]
+
+  const isCurrentlyAvailable = useSafeplaceStore(
+    (state) => !POIsWhereHidden.includes(state.currentPOI)
   )
   const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
 
   return (
-    <div
-      className={`${
-        showButton ? 'block' : 'hidden'
-      } pointer-events-auto cursor-pointer`}
-      onClick={() => setCurrentPOI(SafeplacePOI.Inside)}
+    <LayoutShapeLink
+      className={`shape-link__shelter ${
+        isCurrentlyAvailable ? 'block' : 'hidden'
+      }`}
     >
-      <p className='text-white text-2xl pr-10'>Abris</p>
-    </div>
+      <div
+        className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-auto cursor-pointer'
+        onClick={() => setCurrentPOI(SafeplacePOI.Inside)}
+      >
+        <p className='text-primary text-2xl'>Abris</p>
+      </div>
+    </LayoutShapeLink>
   )
 }
 

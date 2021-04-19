@@ -23,12 +23,8 @@ module.exports = {
     colors: {
       black: colors.black,
       white: colors.white,
-    },
-    textColor: {
-      black: colors.black,
-      white: colors.white,
-      primary: '#305736',
-      secondary: '#304F65',
+      primary: 'var(--primary)',
+      secondary: 'var(--secondary)',
     },
   },
   variants: {
