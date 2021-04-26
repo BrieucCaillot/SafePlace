@@ -32,8 +32,8 @@ const Grass = ({
     {
       grassAmount: { value: 24576, step: 1 },
       size: 0.4,
-      windNoiseSize: { value: 0.04, min: 0, max: 1 },
-      windAmplitude: { value: 0.06, min: 0, max: 1 },
+      windNoiseSize: { value: 0.2, min: 0, max: 1 },
+      windAmplitude: { value: 0.07, min: 0, max: 1 },
       windSpeed: 0.2,
     },
     { collapsed: true }

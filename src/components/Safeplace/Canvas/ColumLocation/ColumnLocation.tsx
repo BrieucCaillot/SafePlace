@@ -13,10 +13,6 @@ const ColumnLocation = ({
   columnObj: THREE.Object3D
   onClick?: () => void
 }) => {
-  const isCurrentlyAvailable = useSafeplaceStore((state) =>
-    state.isCurrentlyAvailable(safeplacePOI)
-  )
-
   const column = useMemo(
     () => columnObj.children.find((o) => o.type === 'Mesh') as THREE.Mesh,
     []
@@ -40,9 +36,7 @@ const ColumnLocation = ({
       rotation={columnObj.rotation}
       scale={columnObj.scale}
     >
-      {isCurrentlyAvailable && (
-        <ColumnLink safeplacePOI={safeplacePOI} position={column.position} />
-      )}
+      <ColumnLink safeplacePOI={safeplacePOI} position={column.position} />
       <mesh
         name={column.name}
         position={column.position}

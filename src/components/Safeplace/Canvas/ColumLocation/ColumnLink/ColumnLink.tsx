@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { useControls } from 'leva'
 import { MeshProps, useFrame, useThree } from 'react-three-fiber'
-import { useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import EasingFunction from 'easing-functions'
 
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
@@ -14,25 +14,30 @@ const ColumnLink = ({
   safeplacePOI,
   ...meshProps
 }: { safeplacePOI: SafeplacePOI } & Omit<MeshProps, 'scale'>) => {
-  const columnLinkRef = useRef<THREE.Mesh>()
-
+  // -- State
+  const show = useSafeplaceStore((s) => s.isCurrentlyAvailable(safeplacePOI))
+  const setCurrentPOI = useSafeplaceStore((s) => s.setCurrentPOI)
   const { camera, viewport } = useThree()
-  const vec3Ref = useMemo(() => new THREE.Vector3(), [])
+  const [scale, setScale] = useState<THREE.Vector3Tuple>(
+    show ? [1, 1, 1] : [0, 0, 0]
+  )
 
   const { scalarFactor } = useControls(
     'column_button',
     {
       scalarFactor: 2,
     },
-    { collapsed: true }
+    { collapsed: true, render: () => false }
   )
 
-  const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
+  // -- Refs
+  const columnLinkRef = useRef<THREE.Mesh>()
+  const vec3Ref = useMemo(() => new THREE.Vector3(), [])
+  const scaleRef = useRef<THREE.Vector3>(new THREE.Vector3(...scale))
 
-  const [scaleAnim, setScaleAnim] = useState<THREE.Vector3Tuple>([1, 1, 1])
-  const scaleAnimRef = useRef<THREE.Vector3>(new THREE.Vector3(...scaleAnim))
-
+  // -- Anim
   useFrame(() => {
+    if (!columnLinkRef.current.visible) return
     const { width, height } = viewport(
       camera,
       columnLinkRef.current?.getWorldPosition(vec3Ref) as THREE.Vector3
@@ -41,38 +46,34 @@ const ColumnLink = ({
     columnLinkRef.current?.quaternion.copy(camera.quaternion)
     columnLinkRef.current?.scale
       .setScalar((height * scalarFactor) / 200)
-      .multiply(scaleAnimRef.current)
+      .multiply(scaleRef.current)
   })
 
   const uniforms = useRef<{ [name: string]: THREE.IUniform }>({
     uColor: { value: new THREE.Color('rgba(59, 130, 246, 1.0)') },
   })
 
-  const onClick = () => {
-    setCurrentPOI(safeplacePOI)
-  }
-
-  const onPointerOver = () => {
-    setScaleAnim([1.4, 1.4, 1.4])
-  }
-
-  const onPointerOut = () => {
-    setScaleAnim([1, 1, 1])
-  }
-
-  useAnimateVector(scaleAnimRef, scaleAnim, {
+  useAnimateVector(scaleRef, scale, {
     duration: 0.8,
     ease: EasingFunction.Quartic.Out,
+    onUpdate: () => {
+      columnLinkRef.current.visible = scaleRef.current.x > 0
+    },
   })
+
+  // -- Callbacks
+  useEffect(() => {
+    setScale(show ? [1, 1, 1] : [0, 0, 0])
+  }, [show])
 
   return (
     <mesh
       {...meshProps}
       ref={columnLinkRef}
       renderOrder={1}
-      onClick={onClick}
-      onPointerOver={onPointerOver}
-      onPointerOut={onPointerOut}
+      onClick={() => setCurrentPOI(safeplacePOI)}
+      onPointerOver={() => show && setScale([1.4, 1.4, 1.4])}
+      onPointerOut={() => show && setScale([1, 1, 1])}
     >
       <planeGeometry args={[5, 5, 32, 32]} />
       <rawShaderMaterial
