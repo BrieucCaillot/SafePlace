@@ -39,9 +39,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head />
       {compArr && (
         <LayoutDom>
-          <LayoutTransition location={router.pathname}>
-            {(compArr as unknown) as ReactChild}
-          </LayoutTransition>
+          {/* <LayoutTransition location={router.pathname}> */}
+          {(compArr as unknown) as ReactChild}
+          {/* </LayoutTransition> */}
         </LayoutDom>
       )}
       {LayoutCanvas && (

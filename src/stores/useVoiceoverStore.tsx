@@ -1,37 +1,25 @@
 import create from 'zustand'
 import { Howl } from 'howler'
-
-// Moutain sections
-export enum VoiceoverSafeplace {
-  Arrived = 'safeplace_arrived',
-  Inside = 'safeplace_inside',
-}
+import { SafeplacePOI } from './useSafeplaceStore'
 
 type VoiceoverStore = {
-  voiceoverSafeplaceSrc: VoiceoverSafeplace
-  setVoiceoverSafeplaceSrc: (voiceoverSafeplace: VoiceoverSafeplace) => void
-  voiceoverSafeplace: Howl
-  voiceoverJourney: Howl
-  voiceoverIsMuted: boolean
+  voiceoverSafeplaceMap: Map<SafeplacePOI, Howl>
+  getVoiceoverSafeplace: (key: SafeplacePOI) => Howl | null
 }
 
 const useVoiceoverStore = create<VoiceoverStore>((set, get, state) => ({
-  voiceoverSafeplaceSrc: VoiceoverSafeplace.Arrived,
-  setVoiceoverSafeplaceSrc: (voiceover: VoiceoverSafeplace) =>
-    set({ voiceoverSafeplaceSrc: voiceover }),
-  voiceoverSafeplace: new Howl({
-    src: [`/audios/voiceover/safeplace/${VoiceoverSafeplace.Arrived}.mp3`],
-  }),
-  voiceoverJourney: new Howl({
-    src: [
-      '/audios/voiceover/journey/mountain_journey_1.mp3',
-      '/audios/voiceover/journey/mountain_journey_2.mp3',
-      '/audios/voiceover/journey/mountain_journey_3.mp3',
-      '/audios/voiceover/journey/mountain_journey_4.mp3',
-      '/audios/voiceover/journey/mountain_journey_5.mp3',
+  voiceoverSafeplaceMap: new Map([
+    [
+      SafeplacePOI.OnBoarding,
+      new Howl({ src: ['/audios/voiceover/safeplace/safeplace_arrived.mp3'] }),
     ],
-  }),
-  voiceoverIsMuted: false,
+    [
+      SafeplacePOI.Inside,
+      new Howl({ src: ['/audios/voiceover/safeplace/safeplace_inside.mp3'] }),
+    ],
+  ]),
+  getVoiceoverSafeplace: (key: SafeplacePOI) =>
+    get().voiceoverSafeplaceMap.get(key),
 }))
 
 export default useVoiceoverStore

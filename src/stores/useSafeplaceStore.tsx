@@ -50,11 +50,14 @@ type SafeplaceStore = {
   setPOIData: (key: SafeplacePOI, value: Partial<POIData>) => void
   getPOIData: (key: SafeplacePOI) => POIData | undefined
   isCurrentlyAvailable: (poi: SafeplacePOI) => boolean
+  isCameraTravelling: boolean
+  setIsCameraTravelling: (status: boolean) => void
 }
 
 const useSafeplaceStore = create<SafeplaceStore>((set, get, state) => ({
   currentPOI: SafeplacePOI.OnBoarding,
-  setCurrentPOI: (SafeplacePOI) => set({ currentPOI: SafeplacePOI }),
+  setCurrentPOI: (SafeplacePOI) =>
+    set({ currentPOI: SafeplacePOI, isCameraTravelling: true }),
   POIMap: new Map(),
   setPOIData: (
     key,
@@ -69,6 +72,8 @@ const useSafeplaceStore = create<SafeplaceStore>((set, get, state) => ({
   getPOIData: (key) => get().POIMap.get(key),
   isCurrentlyAvailable: (poi: SafeplacePOI) =>
     POI_AVAILABILITY[get().currentPOI].includes(poi),
+  isCameraTravelling: false,
+  setIsCameraTravelling: (status) => set({ isCameraTravelling: status }),
 }))
 
 export default useSafeplaceStore

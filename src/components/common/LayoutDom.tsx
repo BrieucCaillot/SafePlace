@@ -3,7 +3,6 @@ import React, { ReactNode } from 'react'
 import DebugNavigation from './DebugNavigation'
 import LayoutBottom from '@/components/common/UI/LayoutBottom'
 import LayoutSoundButton from '@/components/common/UI/LayoutSoundButton'
-import LayoutSoundManager from '@/components/common/LayoutSoundManager'
 
 const LayoutDom = ({ children }: { children: ReactNode }) => {
   return (
@@ -21,7 +20,6 @@ const LayoutDom = ({ children }: { children: ReactNode }) => {
             className='flex items-center flex-row-reverse'
           >
             <div>
-              <LayoutSoundManager />
               <LayoutSoundButton />
             </div>
           </div>

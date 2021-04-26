@@ -6,6 +6,7 @@ const DebugNavigation = ({ router }: { router: NextRouter }) => {
   const { pathname } = router
   const paths = {
     index: '/',
+    rules: '/rules',
     safeplace: '/safeplace',
     journey: '/journey',
   }

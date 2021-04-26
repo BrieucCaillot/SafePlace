@@ -7,21 +7,16 @@ import SVGSoundOff from '@/components/common/UI/SVG/SVGSoundOff'
 import SVGSoundOn from '@/components/common/UI/SVG/SVGSoundOn'
 
 const LayoutSoundButton = () => {
-  const voiceover = useAudioStore((state) => state.voiceover)
-  const voiceoverIsMuted = useAudioStore((state) => state.voiceoverIsMuted)
   const renderedScene = useSceneStore()
 
   const [isSoundPlaying, setIsSoundPlaying] = useState(false)
 
   const onClick = () => {
-    // console.log(voiceover.)
-    voiceover.fade(voiceover.volume(), 0, 2000)
     setIsSoundPlaying(!isSoundPlaying)
   }
 
   useEffect(() => {
     if (!renderedScene) return
-    // console.log({ renderedScene })
   }, [renderedScene])
 
   return (

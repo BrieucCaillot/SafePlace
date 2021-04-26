@@ -1,6 +1,7 @@
 import PortalUI from '@/components/common/UI/PortalUI'
 import ResourcesButton from '@/components/Safeplace/UI/ResourcesButton'
 import InsideButton from '@/components/Safeplace/UI/InsideButton'
+import SafeplaceVoiceover from '@/components/Safeplace/UI/SafeplaceVoiceover'
 
 const Safeplace = () => {
   return (
@@ -10,6 +11,7 @@ const Safeplace = () => {
         <InsideButton />
       </PortalUI>
       {/* <PortalUI selector='#layout-bottom-right'></PortalUI> */}
+      <SafeplaceVoiceover />
     </>
   )
 }
