@@ -19,7 +19,7 @@ const Grass = ({
 
   const targetMeshRef = useRef<THREE.Mesh>(null)
   const instancedMeshRef = useRef<THREE.Mesh>(null)
-  const { nodes } = useGLTF('/models/grass.gltf')
+  const { nodes } = useGLTF('/models/safeplace/grass.gltf')
 
   const {
     size,

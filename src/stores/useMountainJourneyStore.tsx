@@ -8,8 +8,6 @@ export enum MountainSections {
   Three = 'Three',
   Four = 'Four',
   Five = 'Five',
-  Six = 'Six',
-  Seven = 'Seven',
 }
 
 export type SectionData = {

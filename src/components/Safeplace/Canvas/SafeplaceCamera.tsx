@@ -6,7 +6,7 @@ import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import mergeRefs from 'react-merge-refs'
 
 const SafeplaceCamera = forwardRef(
-  (_, fowardedRef: MutableRefObject<THREE.Camera>) => {
+  (_, forwardedRef: MutableRefObject<THREE.Camera>) => {
     const camRef = useRef<THREE.Camera>()
     const setCameraIsTravelling = useCameraStore(
       (state) => state.setCameraIsTravelling
@@ -77,7 +77,7 @@ const SafeplaceCamera = forwardRef(
     return (
       <perspectiveCamera
         name={'Safeplace Cam'}
-        ref={mergeRefs([fowardedRef, camRef])}
+        ref={mergeRefs([forwardedRef, camRef])}
         near={0.1}
         far={1000}
         fov={22.9}

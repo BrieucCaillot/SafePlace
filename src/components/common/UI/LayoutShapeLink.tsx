@@ -5,7 +5,7 @@ const LayoutShapeLink = ({
   className,
 }: {
   children: ReactNode
-  className: string
+  className?: string
 }) => {
   return (
     <div
