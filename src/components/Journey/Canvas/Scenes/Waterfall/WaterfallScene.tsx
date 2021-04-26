@@ -1,16 +1,15 @@
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import JourneySky from '@/components/Journey/Canvas/Decorations/JourneySky'
-import JourneyChapter3Model from '@/components/Journey/Canvas/JourneyChapter3Model'
 import React from 'react'
+import JourneyChapter3Model from '../../JourneyChapter3Model'
 
-const MountainScene = () => {
+const WaterfallScene = () => {
   return (
     <>
       <JourneySky />
-
       <JourneyChapter3Model />
     </>
   )
 }
 
-export default withScenePortal(React.memo(MountainScene))
+export default withScenePortal(WaterfallScene)

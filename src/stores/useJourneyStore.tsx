@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import create from 'zustand'
-import { SceneName } from './useSceneStore'
+import useSceneStore, { SceneName } from './useSceneStore'
 
 // Moutain sections
 export enum JourneySection {
@@ -12,20 +12,28 @@ export enum JourneySection {
   Outro = 'Outro',
 }
 
-export const JourneyScenesAssoc: Partial<Record<JourneySection, SceneName>> = {
-  // [JourneySection.Intro]: SceneName.Lake,
+const JourneyScenesAssoc: Record<JourneySection, SceneName> = {
+  [JourneySection.Intro]: SceneName.JourneyIntro,
+  [JourneySection.Cairns]: SceneName.Cairns,
+  [JourneySection.Lake]: SceneName.Lake,
+  [JourneySection.Bridge]: SceneName.Waterfall,
+  [JourneySection.Waterfall]: SceneName.Waterfall,
+  [JourneySection.Outro]: SceneName.Waterfall,
 }
 
-type MountainJourneyStore = {
+type JourneyStore = {
   currentSection: JourneySection
   setSection: (section: JourneySection) => void
 }
 
-const useMountainJourneyStore = create<MountainJourneyStore>(
-  (set, get, state) => ({
-    currentSection: JourneySection.Intro,
-    setSection: (section: JourneySection) => set({ currentSection: section }),
-  })
-)
+const useJourneyStore = create<JourneyStore>((set, get, state) => ({
+  currentSection: JourneySection.Intro,
+  setSection: (section: JourneySection) => {
+    const { mountScene, setRenderedScene } = useSceneStore.getState()
+    mountScene(JourneyScenesAssoc[section])
+    setRenderedScene(JourneyScenesAssoc[section])
+    set({ currentSection: section })
+  },
+}))
 
-export default useMountainJourneyStore
+export default useJourneyStore

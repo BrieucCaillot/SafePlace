@@ -1,19 +1,23 @@
 import { forwardRef, MutableRefObject } from 'react'
+import { PerspectiveCameraProps } from 'react-three-fiber'
 import * as THREE from 'three'
 
-const JourneyCamera = forwardRef(
-  (_, fowardedRef: MutableRefObject<THREE.Camera>) => {
+const ClassicCamera = forwardRef(
+  (
+    props: PerspectiveCameraProps,
+    fowardedRef: MutableRefObject<THREE.Camera>
+  ) => {
     return (
       <perspectiveCamera
         position-z={6}
-        name={'Journey Cam'}
         ref={fowardedRef}
         near={0.1}
         far={1000}
         fov={75}
+        {...props}
       />
     )
   }
 )
 
-export default JourneyCamera
+export default ClassicCamera

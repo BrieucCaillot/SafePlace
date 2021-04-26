@@ -1,5 +1,5 @@
 import shallow from 'zustand/shallow'
-import { Fragment, RefObject, Suspense, useEffect } from 'react'
+import React, { Fragment, RefObject, Suspense, useEffect } from 'react'
 import { Camera, useFrame, useThree } from 'react-three-fiber'
 import useSceneStore from '@/stores/useSceneStore'
 
@@ -48,4 +48,4 @@ const Scenes = () => {
   )
 }
 
-export default Scenes
+export default React.memo(Scenes)

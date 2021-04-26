@@ -4,8 +4,11 @@ import * as THREE from 'three'
 import { WithScenePortalProps } from '@/components/common/Scenes/withScenePortal'
 import SafeplaceScene from '@/components/Safeplace/Canvas/SafeplaceScene'
 import SafeplaceCamera from '@/components/Safeplace/Canvas/SafeplaceCamera'
-import JourneyScene from '@/components/Journey/Canvas/JourneyScene'
-import JourneyCamera from '@/components/Journey/Canvas/JourneyCamera'
+import IntroScene from '@/components/Journey/Canvas/Scenes/Intro/IntroScene'
+import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
+import LakeScene from '@/components/Journey/Canvas/Scenes/Lake/LakeScene'
+import CairnsScene from '@/components/Journey/Canvas/Scenes/Cairns/CairnsScene'
+import WaterfallScene from '@/components/Journey/Canvas/Scenes/Waterfall/WaterfallScene'
 
 export enum Place {
   Safeplace = 'Safeplace',
@@ -15,9 +18,9 @@ export enum Place {
 export enum SceneName {
   Safeplace = 'Safeplace',
   Lake = 'Lake',
-  // Cairns = 'Cairns',
-  // JourneyIntro = 'JourneyIntro',
-  // Waterfall = 'Waterfall',
+  Cairns = 'Cairns',
+  JourneyIntro = 'JourneyIntro',
+  Waterfall = 'Waterfall',
 }
 
 export type SceneData = {
@@ -31,7 +34,9 @@ type SceneStore = {
   mountedScenes: SceneName[]
   renderedScene: SceneName | null
   mountScene: (sceneName: SceneName) => void
+  mountScenes: (sceneNames: SceneName[]) => void
   unmountScene: (sceneName: SceneName) => void
+  unmountScenes: (sceneNames: SceneName[]) => void
   unmountAllScenes: () => void
   setRenderedScene: (sceneName: SceneName | null) => void
   scenesData: Record<SceneName, SceneData>
@@ -46,10 +51,26 @@ const useSceneStore = create<SceneStore>((set, get) => ({
     mountedScenes.push(sceneName)
     set({ mountedScenes })
   },
+  mountScenes: (sceneNames: SceneName[]) => {
+    const { mountedScenes } = get()
+    for (const sceneName of sceneNames) {
+      if (mountedScenes.includes(sceneName)) return
+      mountedScenes.push(sceneName)
+    }
+    set({ mountedScenes })
+  },
   unmountScene: (sceneName: SceneName) => {
     const { mountedScenes } = get()
     const index = mountedScenes.indexOf(sceneName)
     if (index > -1) mountedScenes.splice(index, 1)
+    set({ mountedScenes })
+  },
+  unmountScenes: (sceneNames: SceneName[]) => {
+    const { mountedScenes } = get()
+    for (const name of sceneNames) {
+      const index = mountedScenes.indexOf(name)
+      if (index > -1) mountedScenes.splice(index, 1)
+    }
     set({ mountedScenes })
   },
   unmountAllScenes: () => {
@@ -69,9 +90,27 @@ const useSceneStore = create<SceneStore>((set, get) => ({
       cameraRef: createRef(),
     },
     [SceneName.Lake]: {
-      Component: JourneyScene,
+      Component: LakeScene,
       scene: new THREE.Scene(),
-      CameraComponent: JourneyCamera,
+      CameraComponent: ClassicCamera,
+      cameraRef: createRef(),
+    },
+    [SceneName.JourneyIntro]: {
+      Component: IntroScene,
+      scene: new THREE.Scene(),
+      CameraComponent: ClassicCamera,
+      cameraRef: createRef(),
+    },
+    [SceneName.Cairns]: {
+      Component: CairnsScene,
+      scene: new THREE.Scene(),
+      CameraComponent: ClassicCamera,
+      cameraRef: createRef(),
+    },
+    [SceneName.Waterfall]: {
+      Component: WaterfallScene,
+      scene: new THREE.Scene(),
+      CameraComponent: ClassicCamera,
       cameraRef: createRef(),
     },
   },

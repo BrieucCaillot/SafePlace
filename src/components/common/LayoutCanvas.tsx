@@ -7,11 +7,12 @@ import { NextRouter, withRouter } from 'next/router'
 import Scenes from './Scenes/Scenes'
 import useSceneStore, { SceneName } from '@/stores/useSceneStore'
 import usePrevious from '@/hooks/usePrevious'
+import ScenesRouting from './Scenes/ScenesRouting'
 // enable shader editor
 // import { MaterialEditor, useEditorComposer } from '@three-material-editor/react'
 
 const LayoutCanvas = ({
-  router: { pathname },
+  router,
   children,
 }: {
   router: NextRouter
@@ -21,38 +22,6 @@ const LayoutCanvas = ({
     orbitControls: false,
     showPerf: true,
   })
-  const previousPathname = usePrevious(pathname)
-
-  useEffect(() => {
-    const {
-      mountScene,
-      setRenderedScene,
-      unmountAllScenes,
-    } = useSceneStore.getState()
-
-    if (pathname === '/safeplace') {
-      mountScene(SceneName.Safeplace)
-      setRenderedScene(SceneName.Safeplace)
-    }
-
-    if (pathname === '/') {
-      unmountAllScenes()
-      setRenderedScene(null)
-    }
-
-    if (pathname === '/journey') {
-      mountScene(SceneName.Lake)
-      setRenderedScene(SceneName.Lake)
-    }
-  }, [pathname])
-
-  useEffect(() => {
-    const { unmountScene } = useSceneStore.getState()
-    if (pathname == previousPathname) return
-    if (previousPathname === '/journey') {
-      unmountScene(SceneName.Lake)
-    }
-  }, [previousPathname, pathname])
 
   return (
     <Canvas
@@ -65,6 +34,7 @@ const LayoutCanvas = ({
     >
       {enableOrbitControls && <OrbitControls />}
       <Scenes />
+      <ScenesRouting router={router} />
 
       <Preload all />
       {showPerf && (
