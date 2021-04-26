@@ -1,10 +1,10 @@
-import { useEffect } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { Howl, Howler } from 'howler'
 
 import useAudioStore, { VoiceoverSafeplace } from '@/stores/useVoiceoverStore'
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 
-const LayoutSoundManager = () => {
+const LayoutSoundManager = (): ReactNode => {
   const currentPOI = useSafeplaceStore((state) => state.currentPOI)
 
   const voiceoverSafeplace = useAudioStore((state) => state.voiceoverSafeplace)

@@ -7,9 +7,17 @@ import SafeplaceCamera from '@/components/Safeplace/Canvas/SafeplaceCamera'
 import JourneyScene from '@/components/Journey/Canvas/JourneyScene'
 import JourneyCamera from '@/components/Journey/Canvas/JourneyCamera'
 
-export enum SceneName {
+export enum Place {
   Safeplace = 'Safeplace',
   Journey = 'Journey',
+}
+
+export enum SceneName {
+  Safeplace = 'Safeplace',
+  Lake = 'Lake',
+  // Cairns = 'Cairns',
+  // JourneyIntro = 'JourneyIntro',
+  // Waterfall = 'Waterfall',
 }
 
 export type SceneData = {
@@ -60,7 +68,7 @@ const useSceneStore = create<SceneStore>((set, get) => ({
       CameraComponent: SafeplaceCamera,
       cameraRef: createRef(),
     },
-    [SceneName.Journey]: {
+    [SceneName.Lake]: {
       Component: JourneyScene,
       scene: new THREE.Scene(),
       CameraComponent: JourneyCamera,

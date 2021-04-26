@@ -21,14 +21,15 @@ const LayoutCanvas = ({
     orbitControls: false,
     showPerf: true,
   })
-
-  const mountScene = useSceneStore((s) => s.mountScene)
-  const unmountScene = useSceneStore((s) => s.unmountScene)
-  const unmountAllScenes = useSceneStore((s) => s.unmountAllScenes)
-  const setRenderedScene = useSceneStore((s) => s.setRenderedScene)
   const previousPathname = usePrevious(pathname)
 
   useEffect(() => {
+    const {
+      mountScene,
+      setRenderedScene,
+      unmountAllScenes,
+    } = useSceneStore.getState()
+
     if (pathname === '/safeplace') {
       mountScene(SceneName.Safeplace)
       setRenderedScene(SceneName.Safeplace)
@@ -40,15 +41,16 @@ const LayoutCanvas = ({
     }
 
     if (pathname === '/journey') {
-      mountScene(SceneName.Journey)
-      setRenderedScene(SceneName.Journey)
+      mountScene(SceneName.Lake)
+      setRenderedScene(SceneName.Lake)
     }
   }, [pathname])
 
   useEffect(() => {
+    const { unmountScene } = useSceneStore.getState()
     if (pathname == previousPathname) return
     if (previousPathname === '/journey') {
-      unmountScene(SceneName.Journey)
+      unmountScene(SceneName.Lake)
     }
   }, [previousPathname, pathname])
 
