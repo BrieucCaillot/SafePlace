@@ -6,7 +6,8 @@ const DebugNavigation: FC<{ router: NextRouter }> = ({ router }) => {
   const { pathname } = router
   const paths = {
     index: '/',
-    rules: '/rules',
+    about: '/about',
+    onboarding: '/onboarding',
     safeplace: '/safeplace',
     journey: '/journey',
   }

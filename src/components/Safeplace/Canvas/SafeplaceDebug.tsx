@@ -2,7 +2,7 @@ import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import { useControls } from 'leva'
 import { useEffect } from 'react'
 
-const SafeplaceDebug = () => {
+const SafeplaceDebug = (): null => {
   const statePOI = useSafeplaceStore((state) => state.currentPOI)
   const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
 

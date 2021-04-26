@@ -3,7 +3,9 @@
 @import 'tailwindcss/utilities';
 @import './tailwind.css';
 
-@import 'colors';
-@import 'override';
-@import 'shapes';
-@import 'transitions';
+@import 'common/colors';
+@import 'common/override';
+@import 'common/shapes';
+@import 'common/transitions';
+
+@import 'pages/index';

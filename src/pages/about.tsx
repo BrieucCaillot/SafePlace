@@ -53,7 +53,6 @@ const About = () => {
               src='/img/about/logo-gobelins.png'
               alt='logo-gobelins'
             />
-            <a className='bg-skyblue border-gray-50 text-white'>Mountain</a>
           </div>
         </div>
       </main>

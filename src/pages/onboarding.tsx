@@ -2,17 +2,16 @@ import { useEffect, useState } from 'react'
 import { NextRouter } from 'next/router'
 
 import Rule from '@/components/Rules/Rule'
-import useRulesStore, { Rules } from '@/stores/useRulesStore'
 
-const OneRule = ({ router }: { router: NextRouter }) => {
-  const currentRule = useRulesStore((state) => state.currentRule)
-  const setCurrentRule = useRulesStore((state) => state.setCurrentRule)
+export enum Rules {
+  Rule1 = 'Rule1',
+  Rule2 = 'Rule2',
+  Rule3 = 'Rule3',
+  Rule4 = 'Rule4',
+}
 
-  const [step, setStep] = useState(0)
-
-  const onClick = () => {
-    setStep(step == 0 ? 1 : 0)
-  }
+const OnBoarding = ({ router }: { router: NextRouter }) => {
+  const [currentRule, setCurrentRule] = useState<Rules>(Rules.Rule1)
 
   return (
     <>
@@ -23,8 +22,7 @@ const OneRule = ({ router }: { router: NextRouter }) => {
         {currentRule == Rules.Rule1 && (
           <Rule
             rule={Rules.Rule1}
-            text='Pour une expérience plus riche, je vous recommande de prendre un casque
-        et de désactiver vos notifications.'
+            text='Pour une expérience plus riche, je vous recommande de prendre un casque et de désactiver vos notifications.'
             onNextStep={() => setCurrentRule(Rules.Rule2)}
           />
         )}
@@ -57,4 +55,4 @@ const OneRule = ({ router }: { router: NextRouter }) => {
   )
 }
 
-export default OneRule
+export default OnBoarding
