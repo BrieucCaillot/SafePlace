@@ -1,57 +1,30 @@
-import { ReactElement, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 
-import useMountainJourneyStore, {
-  MountainSections,
-} from '@/stores/useMountainJourneyStore'
+import useJourneyStore, { JourneySection } from '@/stores/useJourneyStore'
 
 const Timeline = () => {
-  const currentSection = useMountainJourneyStore(
-    (state) => state.currentSection
-  )
-  const setCurrentSection = useMountainJourneyStore(
-    (state) => state.setCurrentSection
-  )
-
-  const [timelineProgressClass, setTimelineProgressClass] = useState('w-0')
+  const currentSection = useJourneyStore((state) => state.currentSection)
+  const setCurrentSection = useJourneyStore((state) => state.setSection)
 
   const timelineProgressRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    console.log(currentSection)
+  const steps = [
+    JourneySection.Intro,
+    JourneySection.Cairns,
+    JourneySection.Lake,
+    JourneySection.Bridge,
+    JourneySection.Waterfall,
+  ]
 
-    switch (currentSection) {
-      case MountainSections.One:
-        gsap.to(timelineProgressRef.current, {
-          width: '0',
-          duration: 1,
-        })
-        break
-      case MountainSections.Two:
-        gsap.to(timelineProgressRef.current, {
-          width: '25%',
-          duration: 1,
-        })
-        break
-      case MountainSections.Three:
-        gsap.to(timelineProgressRef.current, {
-          width: '50%',
-          duration: 1,
-        })
-        break
-      case MountainSections.Four:
-        gsap.to(timelineProgressRef.current, {
-          width: '75%',
-          duration: 1,
-        })
-        break
-      case MountainSections.Five:
-        gsap.to(timelineProgressRef.current, {
-          width: '100%',
-          duration: 1,
-        })
-        break
-    }
+  useEffect(() => {
+    const index = steps.indexOf(currentSection)
+    const prog = index / (steps.length - 1)
+
+    gsap.to(timelineProgressRef.current, {
+      width: `${prog * 100}%`,
+      duration: 1,
+    })
   }, [currentSection])
 
   return (
@@ -61,36 +34,21 @@ const Timeline = () => {
         ref={timelineProgressRef}
         className={`absolute top-1/2 transform -translate-y-1/2 bg-primary h-1 rounded-full`}
       ></div>
-      <div className='relative flex-1 flex items-center'>
-        <span
-          className='block bg-white h-4 w-4 rounded-full pointer-events-auto cursor-pointer'
-          onClick={() => setCurrentSection(MountainSections.One)}
-        ></span>
-      </div>
-      <div className='relative flex-1 flex items-center'>
-        <span
-          className='block bg-white h-4 w-4 rounded-full pointer-events-auto cursor-pointer'
-          onClick={() => setCurrentSection(MountainSections.Two)}
-        ></span>
-      </div>
-      <div className='relative flex-1 flex items-center'>
-        <span
-          className='block bg-white h-4 w-4 rounded-full pointer-events-auto cursor-pointer'
-          onClick={() => setCurrentSection(MountainSections.Three)}
-        ></span>
-      </div>
-      <div className='relative flex-1 flex items-center'>
-        <span
-          className='block bg-white h-4 w-4 rounded-full pointer-events-auto cursor-pointer'
-          onClick={() => setCurrentSection(MountainSections.Four)}
-        ></span>
-      </div>
-      <div className='absolute -right-3.5'>
-        <span
-          className='block bg-white h-4 w-4 rounded-full pointer-events-auto cursor-pointer'
-          onClick={() => setCurrentSection(MountainSections.Five)}
-        ></span>
-      </div>
+      {steps.map((s, i, a) => (
+        <div
+          key={i}
+          className={
+            i === a.length - 1
+              ? 'absolute -right-3.5'
+              : 'relative flex-1 flex items-center'
+          }
+        >
+          <span
+            className='block bg-white h-4 w-4 rounded-full pointer-events-auto cursor-pointer'
+            onClick={() => setCurrentSection(s)}
+          ></span>
+        </div>
+      ))}
     </div>
   )
 }
