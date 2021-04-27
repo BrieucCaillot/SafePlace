@@ -37,7 +37,7 @@ const ColumnLink = ({
 
   // -- Anim
   useFrame(() => {
-    if (!columnLinkRef.current.visible) return
+    if (columnLinkRef.current == null || !columnLinkRef.current.visible) return
     const { width, height } = viewport(
       camera,
       columnLinkRef.current?.getWorldPosition(vec3Ref) as THREE.Vector3
@@ -57,6 +57,7 @@ const ColumnLink = ({
     duration: 0.8,
     ease: EasingFunction.Quartic.Out,
     onUpdate: () => {
+      if (columnLinkRef.current == null) return
       columnLinkRef.current.visible = scaleRef.current.x > 0
     },
   })
