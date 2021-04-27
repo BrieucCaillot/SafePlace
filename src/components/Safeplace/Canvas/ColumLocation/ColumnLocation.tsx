@@ -13,10 +13,8 @@ const ColumnLocation = ({
   columnObj: THREE.Object3D
   onClick?: () => void
 }) => {
-  const column = useMemo(
-    () => columnObj.children.find((o) => o.type === 'Mesh') as THREE.Mesh,
-    []
-  )
+  const column = useMemo(() => columnObj.children[2] as THREE.Mesh, [])
+  const column_rock = useMemo(() => columnObj.children[1] as THREE.Mesh, [])
 
   const camera = useMemo(
     () =>
@@ -36,7 +34,14 @@ const ColumnLocation = ({
       rotation={columnObj.rotation}
       scale={columnObj.scale}
     >
-      <ColumnLink safeplacePOI={safeplacePOI} position={column.position} />
+      {/* <ColumnLink safeplacePOI={safeplacePOI} position={column.position} /> */}
+      <mesh
+        name={column_rock.name}
+        position={column_rock.position}
+        scale={column_rock.scale}
+        material={column_rock.material}
+        geometry={column_rock.geometry}
+      />
       <mesh
         name={column.name}
         position={column.position}

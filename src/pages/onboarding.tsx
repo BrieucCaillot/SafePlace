@@ -1,52 +1,51 @@
 import { useEffect, useState } from 'react'
-import { NextRouter } from 'next/router'
+import { NextRouter, useRouter } from 'next/router'
 
-import Rule from '@/components/Rules/Rule'
+import Instruction from '@/components/Instructions/Instruction'
 
-export enum Rules {
-  Rule1 = 'Rule1',
-  Rule2 = 'Rule2',
-  Rule3 = 'Rule3',
-  Rule4 = 'Rule4',
+export enum Instructions {
+  Instruction1 = 'Instruction1',
+  Instruction2 = 'Instruction2',
+  Instruction3 = 'Instruction3',
 }
 
-const OnBoarding = ({ router }: { router: NextRouter }) => {
-  const [currentRule, setCurrentRule] = useState<Rules>(Rules.Rule1)
+const OnBoarding = () => {
+  const [currentInstruction, setCurrentInstruction] = useState<Instructions>(
+    Instructions.Instruction1
+  )
+
+  const router = useRouter()
+
+  useEffect(() => {
+    console.log(router)
+  }, [])
 
   return (
     <>
       <div
-        id='rules'
+        id='instructions'
         className='absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2'
       >
-        {currentRule == Rules.Rule1 && (
-          <Rule
-            rule={Rules.Rule1}
+        {currentInstruction == Instructions.Instruction1 && (
+          <Instruction
+            Instruction={Instructions.Instruction1}
             text='Pour une expérience plus riche, je vous recommande de prendre un casque et de désactiver vos notifications.'
-            onNextStep={() => setCurrentRule(Rules.Rule2)}
+            onNextStep={() => setCurrentInstruction(Instructions.Instruction2)}
           />
         )}
-        {currentRule == Rules.Rule2 && (
-          <Rule
-            rule={Rules.Rule2}
-            text='Pour réaliser certaines interactions, j’aurais besoin de votre caméra.'
-            onNextStep={() => setCurrentRule(Rules.Rule3)}
-          />
-        )}
-
-        {currentRule == Rules.Rule3 && (
-          <Rule
-            rule={Rules.Rule3}
+        {currentInstruction == Instructions.Instruction2 && (
+          <Instruction
+            Instruction={Instructions.Instruction2}
             text='Détendez-vous, respirez profondément, faites le calme autour de vous.'
-            onNextStep={() => setCurrentRule(Rules.Rule4)}
+            onNextStep={() => setCurrentInstruction(Instructions.Instruction3)}
           />
         )}
-        {currentRule == Rules.Rule4 && (
-          <Rule
-            rule={Rules.Rule4}
+        {currentInstruction == Instructions.Instruction3 && (
+          <Instruction
+            Instruction={Instructions.Instruction3}
             text='Installez-vous confortablement, le dos droit, les pieds bien à plat et quand vous serez prêt, venez me retrouver dans votre safe place.'
             onNextStep={() => {
-              // router.push('/safeplace')
+              router.push('/safeplace')
             }}
           />
         )}

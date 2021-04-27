@@ -25,6 +25,13 @@ const ScenesRouting = ({
       setRenderedScene(null)
     }
 
+    if (pathname === '/onboarding') {
+      const { setCurrentPOI } = useSafeplaceStore.getState()
+      mountScene(SceneName.Safeplace)
+      setRenderedScene(SceneName.Safeplace)
+      setCurrentPOI(SafeplacePOI.OnBoarding)
+    }
+
     if (pathname === '/safeplace') {
       const { setCurrentPOI } = useSafeplaceStore.getState()
       mountScene(SceneName.Safeplace)

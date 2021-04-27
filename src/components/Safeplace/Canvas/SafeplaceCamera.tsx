@@ -36,14 +36,16 @@ const SafeplaceCamera = forwardRef(
       if (currentPOIData !== undefined) {
         const { position, scale, quaternion } = currentPOIData
         position.toArray(output.position)
-        new THREE.Euler()
-          .setFromQuaternion(quaternion)
-          .toArray(output.rotation as THREE.Vector3Tuple)
+        // new THREE.Euler()
+        //   .setFromQuaternion(quaternion)
+        //   .toArray(output.rotation as THREE.Vector3Tuple)
         scale.toArray(output.scale)
       }
 
       return output
     }, [currentPOIData])
+
+    console.log(rotation)
 
     /**
      * ANIMATE CAMERA
@@ -77,6 +79,7 @@ const SafeplaceCamera = forwardRef(
       <perspectiveCamera
         name={'Safeplace Cam'}
         ref={mergeRefs([forwardedRef, camRef])}
+        // quaternion={[0.7071068286895752, 0, 0, 0.7071067094802856]}
         near={0.1}
         far={1000}
         fov={22.9}

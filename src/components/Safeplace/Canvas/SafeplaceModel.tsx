@@ -9,10 +9,19 @@ import Grass from '@/components/Safeplace/Canvas/Decorations/Grass/Grass'
 const SafeplaceModel = () => {
   const { scene } = useGLTF('/models/safeplace/safeplace.glb')
 
-  const [ground, trees, columns, shelter, bridge] = useMemo(
-    () => scene.children,
-    []
-  )
+  const [
+    backgrounds,
+    bridge_contain,
+    cairns,
+    columns,
+    ark,
+    flying_rocks,
+    ground_contain,
+    rocks,
+    shelter,
+    trees,
+    water_contain,
+  ] = useMemo(() => scene.children[0].children, [])
 
   const columnAssoc: { [name: string]: SafeplacePOI } = {
     column_group_1: SafeplacePOI.MountainPedestal,
@@ -35,12 +44,18 @@ const SafeplaceModel = () => {
         />
       ))}
 
-      <primitive object={bridge} />
+      <primitive object={backgrounds} />
+      <primitive object={bridge_contain} />
+      <primitive object={cairns} />
       <primitive object={trees} />
-      <primitive object={ground} />
-      <Grass>
-        {(ref) => <primitive object={ground.children[1]} ref={ref} />}
-      </Grass>
+      <primitive object={ark} />
+      <primitive object={flying_rocks} />
+      <primitive object={rocks} />
+      <primitive object={water_contain} />
+      <primitive object={ground_contain} />
+      {/* <Grass>
+        {(ref) => <primitive object={ground_contain.children[1]} ref={ref} />}
+      </Grass> */}
     </>
   )
 }

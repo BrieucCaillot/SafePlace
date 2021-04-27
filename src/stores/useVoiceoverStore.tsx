@@ -14,6 +14,10 @@ const useVoiceoverStore = create<VoiceoverStore>((set, get, state) => ({
       new Howl({ src: ['/audios/voiceover/safeplace/safeplace_arrived.mp3'] }),
     ],
     [
+      SafeplacePOI.OnBoarding,
+      new Howl({ src: ['/audios/voiceover/safeplace/safeplace_arrived.mp3'] }),
+    ],
+    [
       SafeplacePOI.Inside,
       new Howl({ src: ['/audios/voiceover/safeplace/safeplace_inside.mp3'] }),
     ],
