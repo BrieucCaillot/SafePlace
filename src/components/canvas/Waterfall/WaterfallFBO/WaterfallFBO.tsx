@@ -49,7 +49,7 @@ const WaterfallFBO = forwardRef(
           },
           angleAmplitude: { value: 0.2, min: 0, max: Math.PI, label: 'Angle' },
           movementSpeed: {
-            value: 0.06,
+            value: 0.03,
             min: 0,
             max: 0.5,
             label: 'Speed',

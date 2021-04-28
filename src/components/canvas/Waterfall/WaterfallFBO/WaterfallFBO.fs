@@ -72,6 +72,10 @@ float sdRoundBox( vec3 p, vec3 b, float r )
   vec3 q = abs(p) - b;
   return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0) - r;
 }
+float sdCylinder( vec3 p, vec3 c )
+{
+  return length(p.xy-c.xy)-c.z;
+}
 vec3 rotateVector( vec4 quat, vec3 vec ){
   return vec + 2.0 * cross( cross( vec, quat.xyz ) + quat.w * vec, quat.xyz );
 }
@@ -102,9 +106,6 @@ vec3 fakeVelocity(float seed, float seed2) {
   float theta = uAngleAmplitude;
   float z = remap(seed, 0., 1., cos(theta), 1.);
   float phi = remap(seed2, 0., 1., 0., 2. * PI);
-
-  // float angle = uBaseDirection + remap(seed, 0., 1., -uAngleAmplitude, uAngleAmplitude);
-  // vec3 offset = vec3(sin(angle), cos(angle), 0.);
 
   vec3 normDir = normalize(vec3(
     sqrt(1.-z*z) * cos(phi),
@@ -152,6 +153,8 @@ float sdScene(vec3 pos) {
   vec4 q5 = vec4(0., 0., 0., 1.);
   vec3 s5 = vec3(0.5431517258286476, 5.5155038237571716, 2.3606477677822113);
   d = min(sdBox(rotateVector(q5, p5 - pos), s5), d);
+  // Mouse
+  d = min(sdCylinder(uMousePos + uSdfOffset - pos, vec3(0., 0., 0.1)), d);
 
   return d;
 }
@@ -184,8 +187,6 @@ void main()
 
   vec3 v = fakeVelocity(random2D(vUv + 1.), random2D(vUv + 2.));
   
-  // v += waterfallBack(position);
-  // v += waterfallMiddle(position);
   v += sceneVelocity(position);
   position += v;
 

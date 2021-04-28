@@ -23,7 +23,7 @@ const Waterfall = (props: GroupProps) => {
     {
       showDegug: false,
       numPoints: {
-        value: 1024 * 4,
+        value: 16368,
         step: 1,
         label: 'Particle amount',
       },
@@ -98,16 +98,14 @@ const Waterfall = (props: GroupProps) => {
     cameraRef,
   })
 
-  const onPointerMove = useCallback<(e: PointerEvent) => void>(
-    ({ intersections: [{ point }] }) =>
-      (mousePosRef.current = particleRef.current?.worldToLocal(point)),
-    []
-  )
+  const onPointerMove = useCallback<(e: PointerEvent) => void>(({ point }) => {
+    mousePosRef.current = particleRef.current?.worldToLocal(point)
+  }, [])
 
   return (
     <group {...props}>
       <group visible={showDegug}>
-        <mesh scale={[5, 5, 1]} ref={feedbackRef} visible={true}>
+        <mesh scale={[5, 5, 1]} ref={feedbackRef} visible={false}>
           <planeGeometry />
           <meshBasicMaterial />
         </mesh>
@@ -120,20 +118,21 @@ const Waterfall = (props: GroupProps) => {
           <boxBufferGeometry />
           <meshBasicMaterial color={'blue'} wireframe={true} />
         </mesh>
-        <mesh name='RaycastPlane' onPointerMove={onPointerMove}>
-          <planeGeometry args={[10, 10, 1]} />
-          <meshBasicMaterial color={'green'} wireframe={true} />
+        <mesh
+          name='RaycastPlane'
+          onPointerMove={onPointerMove}
+          position-z={0.2}
+          position-y={5}
+        >
+          <planeGeometry args={[3.5, 2.5, 1]} />
+          <meshBasicMaterial
+            color={'green'}
+            wireframe={true}
+            depthTest={false}
+          />
         </mesh>
       </group>
 
-      {/* <mesh
-        scale={[0.8, 0.8, 0.8]}
-        rotation={[Math.PI / 4, Math.PI / 4, 0]}
-        ref={cubeRef}
-      >
-        <boxGeometry />
-        <meshNormalMaterial />
-      </mesh> */}
       <WaterfallParticles
         positionTexture={particleTexture}
         ref={particleRef}
