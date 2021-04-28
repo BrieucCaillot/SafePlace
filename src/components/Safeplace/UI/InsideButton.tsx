@@ -3,6 +3,7 @@ import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 
 const InsideButton = () => {
   const POIsWhereHidden = [
+    SafeplacePOI.Outside,
     SafeplacePOI.OnBoarding,
     SafeplacePOI.Inside,
     SafeplacePOI.ResourceFocused,

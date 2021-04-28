@@ -1,48 +1,25 @@
-.fadeInUp {
-  animation: fadeInUp 1s ease-in-out;
+.fadeIn {
+  animation: fadeIn 0.5s ease-in-out;
 }
 
-.fadeInDown {
-  animation: fadeInUp 1s ease-in-out reverse forwards;
-}
-
-@keyframes fadeInUp {
+@keyframes fadeIn {
   0% {
     opacity: 0;
-    transform: translateY(40px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
-.fadeInLeft {
-  animation: fadeInLeft 3s ease-in-out;
+.fadeOut {
+  animation: fadeOut 0.5s ease-in-out;
 }
 
-@keyframes fadeInLeft {
+@keyframes fadeOut {
   0% {
-    opacity: 0;
-    transform: translateX(80px);
+    opacity: 1;
   }
   100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fadeInRight {
-  animation: fadeInRight 3s ease-in-out;
-}
-
-@keyframes fadeInRight {
-  0% {
     opacity: 0;
-    transform: translateX(-80px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
   }
 }

@@ -1,9 +1,11 @@
-import usePrevious from '@/hooks/usePrevious'
+import { ReactElement, ReactNode, useEffect } from 'react'
+import { NextRouter, withRouter } from 'next/router'
+
 import useJourneyStore, { JourneySection } from '@/stores/useJourneyStore'
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import useSceneStore, { SceneName } from '@/stores/useSceneStore'
-import { NextRouter, withRouter } from 'next/router'
-import { ReactElement, ReactNode, useEffect } from 'react'
+import useUserStore from '@/stores/useUserStore'
+import usePrevious from '@/hooks/usePrevious'
 
 const ScenesRouting = ({
   router: { pathname },
@@ -11,6 +13,8 @@ const ScenesRouting = ({
   router: NextRouter
 }): ReactElement<any, any> => {
   const previousPathname = usePrevious(pathname)
+
+  const isFirstConnection = useUserStore((state) => state.isFirstConnection)
 
   useEffect(() => {
     const {
@@ -36,7 +40,11 @@ const ScenesRouting = ({
       const { setCurrentPOI } = useSafeplaceStore.getState()
       mountScene(SceneName.Safeplace)
       setRenderedScene(SceneName.Safeplace)
-      setCurrentPOI(SafeplacePOI.OnBoarding)
+      setCurrentPOI(
+        isFirstConnection == 'true'
+          ? SafeplacePOI.OnBoarding
+          : SafeplacePOI.Outside
+      )
     }
 
     if (pathname === '/journey') {

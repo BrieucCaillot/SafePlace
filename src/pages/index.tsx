@@ -13,7 +13,7 @@ const Index = () => {
           src='/img/index/logo.png'
           alt='safeplace-logo'
         />
-        <Link href='/safeplace'>
+        <Link href='/onboarding'>
           <button className='absolute bottom-8 left-1/2 transform -translate-x-1/2 text-primary text-xl rounded px-10 py-3 focus:outline-none cursor-pointer pointer-events-auto'>
             Lancer l'experience
           </button>

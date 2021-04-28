@@ -17,12 +17,7 @@ const ColumnLocation = ({
   const column_rock = useMemo(() => columnObj.children[1] as THREE.Mesh, [])
 
   const camera = useMemo(
-    () =>
-      columnObj.children
-        .find((o) => o.type === 'Object3D')
-        ?.children.find(
-          (o) => o.type === 'PerspectiveCamera'
-        ) as THREE.PerspectiveCamera,
+    () => columnObj.children[0] as THREE.PerspectiveCamera,
     []
   )
 
@@ -34,7 +29,7 @@ const ColumnLocation = ({
       rotation={columnObj.rotation}
       scale={columnObj.scale}
     >
-      {/* <ColumnLink safeplacePOI={safeplacePOI} position={column.position} /> */}
+      <ColumnLink safeplacePOI={safeplacePOI} position={column.position} />
       <mesh
         name={column_rock.name}
         position={column_rock.position}

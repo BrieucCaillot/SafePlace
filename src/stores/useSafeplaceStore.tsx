@@ -3,9 +3,10 @@ import create from 'zustand'
 
 // Safeplace points of interests
 export enum SafeplacePOI {
+  OnBoarding = 'OnBoarding',
+  Outside = 'Outside',
   Resources = 'Resources',
   ResourceFocused = 'ResourceFocused',
-  OnBoarding = 'OnBoarding',
   Inside = 'Inside',
   MountainPedestal = 'MountainPedestal',
   PlaceholderPedetral1 = 'PlaceholderPedetral1',
@@ -15,9 +16,10 @@ export enum SafeplacePOI {
 }
 
 const POI_AVAILABILITY: Record<SafeplacePOI, SafeplacePOI[]> = {
+  [SafeplacePOI.OnBoarding]: [],
+  [SafeplacePOI.Outside]: [SafeplacePOI.Inside],
   [SafeplacePOI.Resources]: [SafeplacePOI.Inside],
   [SafeplacePOI.ResourceFocused]: [SafeplacePOI.Resources],
-  [SafeplacePOI.OnBoarding]: [SafeplacePOI.Inside],
   [SafeplacePOI.Inside]: [
     SafeplacePOI.Resources,
     SafeplacePOI.MountainPedestal,
@@ -51,7 +53,7 @@ type SafeplaceStore = {
 }
 
 const useSafeplaceStore = create<SafeplaceStore>((set, get, state) => ({
-  currentPOI: SafeplacePOI.OnBoarding,
+  currentPOI: SafeplacePOI.Outside,
   setCurrentPOI: (SafeplacePOI) =>
     set({ currentPOI: SafeplacePOI, isCameraTravelling: true }),
   POIMap: new Map(),

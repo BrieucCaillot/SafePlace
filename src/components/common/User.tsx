@@ -11,7 +11,7 @@ const User = (): null => {
     (state) => state.setUserFirstConnection
   )
 
-  const userStatus = useMemo(() => {
+  const isFirstConnection = useMemo(() => {
     return getUserFirstConnection() == null ? 'true' : 'false'
   }, [])
 
@@ -25,7 +25,7 @@ const User = (): null => {
   }, [clearLocalStorage])
 
   useEffect(() => {
-    setUserFirstConnection(userStatus)
+    setUserFirstConnection(isFirstConnection)
   }, [])
 
   return null

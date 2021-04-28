@@ -24,23 +24,23 @@ const SafeplaceModel = () => {
   ] = useMemo(() => scene.children[0].children, [])
 
   const columnAssoc: { [name: string]: SafeplacePOI } = {
-    column_group_1: SafeplacePOI.MountainPedestal,
-    column_group_2: SafeplacePOI.PlaceholderPedetral1,
-    column_group_3: SafeplacePOI.PlaceholderPedetral2,
-    column_group_4: SafeplacePOI.PlaceholderPedetral3,
-    column_group_5: SafeplacePOI.PlaceholderPedetral4,
+    column_1_group: SafeplacePOI.MountainPedestal,
+    column_2_group: SafeplacePOI.PlaceholderPedetral1,
+    column_3_group: SafeplacePOI.PlaceholderPedetral2,
+    column_4_group: SafeplacePOI.PlaceholderPedetral3,
+    column_5_group: SafeplacePOI.PlaceholderPedetral4,
   }
 
   return (
     <>
       <Shelter object={shelter} />
 
-      {columns.children.map((o) => (
+      {columns.children.map((col) => (
         <ColumnLocation
-          safeplacePOI={columnAssoc[o.name]}
-          onClick={() => console.log(columnAssoc[o.name])}
-          columnObj={o}
-          key={o.name}
+          safeplacePOI={columnAssoc[col.name]}
+          onClick={() => console.log(columnAssoc[col.name])}
+          columnObj={col}
+          key={col.name}
         />
       ))}
 
