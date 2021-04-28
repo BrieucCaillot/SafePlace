@@ -1,13 +1,19 @@
+import Waterfall from '@/components/canvas/Waterfall/Waterfall'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import JourneySky from '@/components/Journey/Canvas/Decorations/JourneySky'
-import React from 'react'
-import JourneyChapter3Model from '../../JourneyChapter3Model'
+import { useGLTF } from '@react-three/drei'
+import React, { useRef } from 'react'
+import WaterfallModel from '../../WaterfallModel'
 
 const WaterfallScene = () => {
   return (
     <>
       <JourneySky />
-      <JourneyChapter3Model />
+      <WaterfallModel />
+
+      <Waterfall scale={[0.1, 0.1, 0.1]} position={[0.1, -0.07, -0.12]} />
+      <directionalLight position={[1, 2, 1]} intensity={0.7} />
+      <directionalLight position={[-1, 2, 1]} intensity={0.5} />
     </>
   )
 }

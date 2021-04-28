@@ -14,6 +14,7 @@ import { folder, useControls } from 'leva'
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
 import { WatchableRefObject } from '@/hooks/useWatchableRef'
 import useWatchableUniform from '@/hooks/uniforms/useWatchableUniform'
+import useVector3Uniform from '@/hooks/uniforms/useVector3Uniform'
 
 const WaterfallFBO = forwardRef(
   (
@@ -35,6 +36,7 @@ const WaterfallFBO = forwardRef(
       angleAmplitude,
       movementSpeed,
       lifeTime,
+      sdfOffset,
     } = useControls('particles', {
       'Simulator Params': folder(
         {
@@ -44,14 +46,15 @@ const WaterfallFBO = forwardRef(
             max: Math.PI * 2,
             label: 'Direction',
           },
-          angleAmplitude: { value: 0.17, min: 0, max: Math.PI, label: 'Angle' },
+          angleAmplitude: { value: 0.2, min: 0, max: Math.PI, label: 'Angle' },
           movementSpeed: {
             value: 0.06,
             min: 0,
-            max: 0.1,
+            max: 0.5,
             label: 'Speed',
           },
-          lifeTime: { value: 2, label: 'Life Time' },
+          lifeTime: { value: 4, label: 'Life Time' },
+          sdfOffset: { x: 1, y: 0, z: -1.5 },
         },
         { collapsed: true }
       ),
@@ -66,11 +69,13 @@ const WaterfallFBO = forwardRef(
       uAngleAmplitude: { value: 0 },
       uMovementSpeed: { value: 0 },
       uLifeTime: { value: 0 },
+      uSdfOffset: { value: new THREE.Vector3() },
     })
     useNumberUniform(uniforms.current.uBaseDirection, baseDirection)
     useNumberUniform(uniforms.current.uAngleAmplitude, angleAmplitude)
     useNumberUniform(uniforms.current.uMovementSpeed, movementSpeed)
     useNumberUniform(uniforms.current.uLifeTime, lifeTime)
+    useVector3Uniform(uniforms.current.uSdfOffset, sdfOffset)
     useWatchableUniform(uniforms.current.uPosTexture, quadTexture)
     useWatchableUniform(uniforms.current.uOrigPosTexture, initTexture)
     useWatchableUniform(uniforms.current.uMousePos, mousePosRef)

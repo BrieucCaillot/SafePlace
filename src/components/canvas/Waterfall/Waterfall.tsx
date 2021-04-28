@@ -23,14 +23,13 @@ const Waterfall = (props: GroupProps) => {
     {
       showDegug: false,
       numPoints: {
-        value: 1024,
+        value: 1024 * 4,
         step: 1,
         label: 'Particle amount',
       },
     },
     {
       collapsed: true,
-      render: (get) => get('safeplace.currentPOI') === SafeplacePOI.Waterfall,
     }
   )
 
@@ -39,14 +38,13 @@ const Waterfall = (props: GroupProps) => {
     [numPoints]
   )
 
-  const savePOI = useSavePOIData(SafeplacePOI.Waterfall)
-
   const sceneRef = useRef<THREE.Scene>(new THREE.Scene())
   const cameraRef = useRef<THREE.Camera>(
     new THREE.OrthographicCamera(-0.5, 0.5, 0.5, -0.5)
   )
 
   const targetMeshRef = useRef<THREE.Mesh>(null)
+  const cubeRef = useRef<THREE.Mesh>(null)
 
   const feedbackRef = useRef<THREE.Mesh>(null)
   const particleRef = useRef<THREE.Mesh>(null)
@@ -83,6 +81,15 @@ const Waterfall = (props: GroupProps) => {
     )
   }, [])
 
+  useEffect(
+    () =>
+      mousePosRef.onChange((v) => {
+        if (cubeRef.current == null) return
+        cubeRef.current.position.copy(v)
+      }),
+    []
+  )
+
   usePingPong(bufferSize, {
     particleTexture,
     quadTexture,
@@ -100,15 +107,15 @@ const Waterfall = (props: GroupProps) => {
   return (
     <group {...props}>
       <group visible={showDegug}>
-        <mesh scale={[5, 5, 1]} ref={feedbackRef}>
+        <mesh scale={[5, 5, 1]} ref={feedbackRef} visible={true}>
           <planeGeometry />
           <meshBasicMaterial />
         </mesh>
         <mesh
           name='SpawnBox'
           ref={targetMeshRef}
-          scale={[5, 0.5, 0.5]}
-          position-y={3}
+          scale={[3, 0.5, 0.3]}
+          position-y={8}
         >
           <boxBufferGeometry />
           <meshBasicMaterial color={'blue'} wireframe={true} />
@@ -118,7 +125,15 @@ const Waterfall = (props: GroupProps) => {
           <meshBasicMaterial color={'green'} wireframe={true} />
         </mesh>
       </group>
-      <group position-z={6} ref={savePOI} />
+
+      {/* <mesh
+        scale={[0.8, 0.8, 0.8]}
+        rotation={[Math.PI / 4, Math.PI / 4, 0]}
+        ref={cubeRef}
+      >
+        <boxGeometry />
+        <meshNormalMaterial />
+      </mesh> */}
       <WaterfallParticles
         positionTexture={particleTexture}
         ref={particleRef}

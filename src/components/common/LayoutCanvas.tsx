@@ -20,7 +20,7 @@ const LayoutCanvas = ({
 }) => {
   const { orbitControls: enableOrbitControls, showPerf } = useControls({
     orbitControls: false,
-    showPerf: true,
+    showPerf: false,
   })
 
   return (
