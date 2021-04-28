@@ -10,6 +10,7 @@ uniform float uBaseDirection;
 uniform float uAngleAmplitude;
 uniform float uMovementSpeed;
 uniform float uLifeTime;
+uniform float uRounding;
 
 varying vec2 vUv;
 
@@ -128,7 +129,7 @@ float sdScene(vec3 pos) {
   vec4 q2 = vec4(0., 0., 0., 1.);
   vec3 s2 = vec3(1.71309694647789, 1.6624484956264496, 1.1046463996171951);
   float d2 = sdRoundBox(rotateVector(q2, p2 - pos), s2, 0.8);
-  d = opSmoothUnion(d1, d2, 1.);
+  d = opSmoothUnion(d1, d2, uRounding);
   // // Right_wall_bottom
   // vec3 p6 = vec3(2.503381669521332, 1.2432478368282318, -0.712292492389679);
   // vec4 q6 = vec4(0., 0., 0., 1.);
@@ -138,7 +139,7 @@ float sdScene(vec3 pos) {
   // Waterfall_Bottom
   vec3 p3 = vec3(0.8683604747056961, -0.4426690936088562, 1.6026581823825836);
   vec4 q3 = vec4(0., 0., 0., 1.);
-  vec3 s3 = vec3(3.71309694647789, 1.09881278052926064, 2.4813516438007355);
+  vec3 s3 = vec3(3.71309694647789, 1.19881278052926064, 2.4813516438007355);
   float d3 = sdBox(rotateVector(q3, p3 - pos), s3);
   d = opSmoothUnion(d, d3, 0.5);
   // Left_wall
