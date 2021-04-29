@@ -1,7 +1,7 @@
 import create from 'zustand'
 import { Howl } from 'howler'
-import { InstructionsList } from '@/components/Instructions/Instructions'
-import { Place } from '@/stores/useSceneStore'
+import Place from 'constants/enums/Place'
+import InstructionsList from 'constants/enums/InstructionsList'
 
 export enum VoiceoverSafeplace {
   Outside = 'Outside',
@@ -14,10 +14,35 @@ export enum VoiceoverJourney {
   One = 'One',
 }
 
+export enum VoiceoverStatus {
+  Processing = 'Processing',
+  Playing = 'Playing',
+  Played = 'Played',
+}
+
 type AudioStore = {
   isAudioMuted: boolean
   setIsAudioMutued: (muted: boolean) => void
-  isVoiceoverDone: boolean
+  voiceoverStatusMap: Map<
+    VoiceoverSafeplace | InstructionsList | VoiceoverJourney,
+    VoiceoverStatus
+  >
+  setVoiceoverStatus: (
+    key: VoiceoverSafeplace | InstructionsList | VoiceoverJourney,
+    status: VoiceoverStatus
+  ) => void
+  isVoiceoverProcessing: (
+    key: VoiceoverSafeplace | InstructionsList | VoiceoverJourney
+  ) => boolean
+  isVoiceoverPlayed: (
+    key: VoiceoverSafeplace | InstructionsList | VoiceoverJourney
+  ) => boolean
+  isVoiceoverPlaying: (
+    key: VoiceoverSafeplace | InstructionsList | VoiceoverJourney
+  ) => boolean
+  // isVoiceoverPlayable: (
+  //   key: VoiceoverSafeplace | InstructionsList | VoiceoverJourney
+  // ) => boolean
   currentVoiceover: {
     name: VoiceoverSafeplace | InstructionsList | VoiceoverJourney | null
     voiceover: Howl | null
@@ -42,13 +67,26 @@ const useAudioStore = create<AudioStore>((set, get, state) => ({
       voiceover.fade(voiceover.volume(), 1, 1000)
     }
   },
-  isVoiceoverDone: false,
+  voiceoverStatusMap: new Map(),
+  setVoiceoverStatus: (key, status) => {
+    set({ voiceoverStatusMap: get().voiceoverStatusMap.set(key, status) })
+  },
+  isVoiceoverProcessing: (key) =>
+    get().voiceoverStatusMap.get(key) == VoiceoverStatus.Processing,
+  isVoiceoverPlayed: (key) =>
+    get().voiceoverStatusMap.get(key) == VoiceoverStatus.Played,
+  isVoiceoverPlaying: (key) =>
+    get().voiceoverStatusMap.get(key) == VoiceoverStatus.Playing,
+  // isVoiceoverPlayable: (key) =>
+  //   !get().isVoiceoverProcessing(key) &&
+  //   !get().isVoiceoverPlaying(key) &&
+  //   !get().isVoiceoverPlayed(key),
   currentVoiceover: {
     name: null,
     voiceover: null,
   },
   setCurrentVoiceover: (place, voiceoverName) => {
-    set({ isVoiceoverDone: false })
+    get().setVoiceoverStatus(voiceoverName, VoiceoverStatus.Processing)
 
     const sound = new Howl({
       src: [`/audios/voiceover/${place}/${voiceoverName}.mp3`],
@@ -58,11 +96,12 @@ const useAudioStore = create<AudioStore>((set, get, state) => ({
     // Clear listener after first call.
     sound.once('load', function () {
       sound.play()
+      get().setVoiceoverStatus(voiceoverName, VoiceoverStatus.Playing)
     })
 
     // Fires when the voiceover finishes playing.
     sound.on('end', function () {
-      set({ isVoiceoverDone: true })
+      get().setVoiceoverStatus(voiceoverName, VoiceoverStatus.Played)
     })
 
     set({ currentVoiceover: { name: voiceoverName, voiceover: sound } })
@@ -70,5 +109,7 @@ const useAudioStore = create<AudioStore>((set, get, state) => ({
     return get().currentVoiceover
   },
 }))
+
+// window.useAudioStore = useAudioStore
 
 export default useAudioStore

@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
-import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
+import useSafeplaceStore from '@/stores/useSafeplaceStore'
+import SafeplacePOI from 'constants/enums/SafeplacePOI'
+import Place from 'constants/enums/Place'
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 import useAudioStore, { VoiceoverSafeplace } from '@/stores/useAudioStore'
-import { Place } from '@/stores/useSceneStore'
 
 const Shelter = ({ object }: { object: THREE.Object3D }) => {
   const isCurrentlyAvailable = useSafeplaceStore((state) =>
@@ -14,22 +15,23 @@ const Shelter = ({ object }: { object: THREE.Object3D }) => {
   const isCameraTravelling = useSafeplaceStore(
     (state) => state.isCameraTravelling
   )
+
   const setCurrentVoiceover = useAudioStore(
     (state) => state.setCurrentVoiceover
   )
-
-  const [playedVoiceover, setPlayedVoiceover] = useState(false)
+  const isVoiceoverPlayed = useAudioStore((state) =>
+    state.isVoiceoverPlayed(VoiceoverSafeplace.Inside)
+  )
 
   useEffect(() => {
     if (
-      playedVoiceover ||
+      isVoiceoverPlayed ||
       currentPOI != SafeplacePOI.Inside ||
       isCameraTravelling
     )
       return
-    setPlayedVoiceover(true)
     setCurrentVoiceover(Place.Safeplace, VoiceoverSafeplace.Inside)
-  }, [currentPOI, isCameraTravelling])
+  }, [isVoiceoverPlayed, currentPOI, isCameraTravelling])
 
   const shelterRef = useRef<THREE.Object3D>()
 

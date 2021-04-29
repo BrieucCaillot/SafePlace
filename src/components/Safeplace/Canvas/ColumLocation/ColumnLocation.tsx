@@ -1,8 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
-import { Place } from '@/stores/useSceneStore'
-import useAudioStore, { VoiceoverSafeplace } from '@/stores/useAudioStore'
+import useSafeplaceStore from '@/stores/useSafeplaceStore'
+import useAudioStore, {
+  VoiceoverSafeplace,
+  VoiceoverStatus,
+} from '@/stores/useAudioStore'
+import Place from 'constants/enums/Place'
+import SafeplacePOI from 'constants/enums/SafeplacePOI'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 
@@ -22,32 +26,26 @@ const ColumnLocation = ({
   const isCameraTravelling = useSafeplaceStore(
     (state) => state.isCameraTravelling
   )
-  const currentVoiceover = useAudioStore((state) => state.currentVoiceover)
-  const isVoiceoverDone = useAudioStore((state) => state.isVoiceoverDone)
   const setCurrentVoiceover = useAudioStore(
     (state) => state.setCurrentVoiceover
   )
-  const [playedVoiceover, setPlayedVoiceover] = useState(false)
+  const isVoiceoverInsidePlayed = useAudioStore((state) =>
+    state.isVoiceoverPlayed(VoiceoverSafeplace.Inside)
+  )
+  const [isVoiceoverPlayable, setIsVoiceoverPlayable] = useState(true)
 
-  // Play voice over
   useEffect(() => {
-    if (
-      playedVoiceover ||
-      currentPOI != SafeplacePOI.MountainColumn ||
-      isCameraTravelling
-    )
+    if (currentPOI !== SafeplacePOI.MountainColumn || !isVoiceoverPlayable)
       return
-    setPlayedVoiceover(true)
+    setIsVoiceoverPlayable(false)
+    console.log('will play')
     setCurrentVoiceover(Place.Safeplace, VoiceoverSafeplace.MountainColumn)
-  }, [currentPOI, isCameraTravelling])
+  }, [isVoiceoverPlayable, currentPOI, isCameraTravelling])
 
-  const voiceverIsDone = useMemo(() => {
-    return currentVoiceover.name == VoiceoverSafeplace.Inside && isVoiceoverDone
-  }, [isVoiceoverDone])
-
-  const showColumnLink = useMemo(() => {
-    return voiceverIsDone && isCurrentlyAvailable
-  }, [voiceverIsDone])
+  const showColumnLink = useMemo(
+    () => isVoiceoverInsidePlayed && isCurrentlyAvailable,
+    [isVoiceoverInsidePlayed, isCurrentlyAvailable]
+  )
 
   const column = useMemo(
     () =>

@@ -24,15 +24,15 @@ const Instruction = ({
   const setCurrentVoiceover = useAudioStore(
     (state) => state.setCurrentVoiceover
   )
-  const isVoiceoverDone = useAudioStore((state) => state.isVoiceoverDone)
+  const isVoiceoverPlayed = useAudioStore((state) => state.isVoiceoverPlayed)
 
   const buttonActiveClass = useMemo(
     () =>
-      isVoiceoverDone
+      isVoiceoverPlayed
         ? 'cursor-pointer pointer-events-auto fadeIn'
         : 'opacity-0',
 
-    [isVoiceoverDone]
+    [isVoiceoverPlayed]
   )
 
   const handleClick = () => {
