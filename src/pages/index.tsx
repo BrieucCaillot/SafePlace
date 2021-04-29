@@ -22,7 +22,7 @@ const Index = () => {
           alt='safeplace-logo'
         />
         <Link href='onboarding'>
-          <button className='absolute bottom-8 left-1/2 transform -translate-x-1/2 text-primary text-xl rounded px-10 py-3 focus:outline-none cursor-pointer pointer-events-auto'>
+          <button className='button-stonefull absolute bottom-8 left-1/2 transform -translate-x-1/2 text-primary text-xl font-bold tracking-widest rounded px-10 py-3 focus:outline-none cursor-pointer pointer-events-auto'>
             Lancer l'experience
           </button>
         </Link>

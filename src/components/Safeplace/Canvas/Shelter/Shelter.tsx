@@ -7,6 +7,9 @@ import useAudioStore, { VoiceoverSafeplace } from '@/stores/useAudioStore'
 import { Place } from '@/stores/useSceneStore'
 
 const Shelter = ({ object }: { object: THREE.Object3D }) => {
+  const isCurrentlyAvailable = useSafeplaceStore((state) =>
+    state.isCurrentlyAvailable(SafeplacePOI.Inside)
+  )
   const currentPOI = useSafeplaceStore((state) => state.currentPOI)
   const isCameraTravelling = useSafeplaceStore(
     (state) => state.isCameraTravelling
@@ -52,6 +55,7 @@ const Shelter = ({ object }: { object: THREE.Object3D }) => {
     <primitive ref={shelterRef} object={object}>
       <ColumnLink
         position={shelterInsideCam.position.toArray()}
+        show={isCurrentlyAvailable}
         safeplacePOI={SafeplacePOI.Inside}
       />
     </primitive>

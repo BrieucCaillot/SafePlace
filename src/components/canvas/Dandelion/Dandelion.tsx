@@ -20,8 +20,6 @@ import useWatchableRef from '@/hooks/useWatchableRef'
 import useWatchableUniform from '@/hooks/uniforms/useWatchableUniform'
 
 const Dandelion = (props: GroupProps) => {
-  const savePOI = useSavePOIData(SafeplacePOI.Dandelion)
-
   const meshRef = useRef<THREE.Mesh>(null)
 
   const animRef = useRef<gsap.core.Tween>()
@@ -134,7 +132,7 @@ const Dandelion = (props: GroupProps) => {
 
   return (
     <group {...props}>
-      <group position-z={6} ref={savePOI} />
+      <group position-z={6} />
       <mesh ref={meshRef} visible={false}>
         <icosahedronGeometry args={[0.05, 2]} />
         <meshBasicMaterial color='red' wireframe={true} />
