@@ -31,7 +31,6 @@ const LoadAnimations = ({
 const WaterfallCamera = forwardRef(
   (_, forwardRef: MutableRefObject<THREE.Camera>) => {
     const containerRef = useRef<THREE.Object3D>(null)
-    const camRef = useRef<THREE.PerspectiveCamera>(null)
     const mixerRef = useRef<THREE.AnimationMixer>(null)
     const actionRef = useRef<THREE.AnimationAction>(null)
     const clockRef = useRef<THREE.Clock>(new THREE.Clock(true))
@@ -64,7 +63,6 @@ const WaterfallCamera = forwardRef(
       if (mixerRef.current == null) return
       mixerRef.current.update(clockRef.current.getDelta())
       if (actionRef.current == null || actionRef.current.paused) return
-      camRef.current.updateMatrixWorld()
       containerRef.current.updateMatrixWorld()
     })
 
@@ -84,7 +82,7 @@ const WaterfallCamera = forwardRef(
       <>
         <group ref={containerRef}>
           <perspectiveCamera
-            ref={mergeRefs([forwardRef, camRef])}
+            ref={forwardRef}
             rotation-x={-Math.PI / 2}
             near={0.1}
             far={1000}
