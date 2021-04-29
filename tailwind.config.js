@@ -25,6 +25,7 @@ module.exports = {
       white: colors.white,
       primary: 'var(--primary)',
       secondary: 'var(--secondary)',
+      'button-ui': 'var(--button-ui)',
     },
   },
   variants: {

@@ -24,11 +24,11 @@ const SafeplaceModel = () => {
   ] = useMemo(() => scene.children[0].children, [])
 
   const columnAssoc: { [name: string]: SafeplacePOI } = {
-    column_1_group: SafeplacePOI.MountainPedestal,
-    column_2_group: SafeplacePOI.PlaceholderPedetral1,
-    column_3_group: SafeplacePOI.PlaceholderPedetral2,
-    column_4_group: SafeplacePOI.PlaceholderPedetral3,
-    column_5_group: SafeplacePOI.PlaceholderPedetral4,
+    column_1_group: SafeplacePOI.MountainColumn,
+    column_2_group: SafeplacePOI.PlaceholderColumn1,
+    column_3_group: SafeplacePOI.PlaceholderColumn2,
+    column_4_group: SafeplacePOI.PlaceholderColumn3,
+    column_5_group: SafeplacePOI.PlaceholderColumn4,
   }
 
   return (
@@ -49,13 +49,13 @@ const SafeplaceModel = () => {
       <primitive object={cairns} />
       <primitive object={trees} />
       <primitive object={ark} />
-      <primitive object={flying_rocks} />
+      {/* <primitive object={flying_rocks} /> */}
       <primitive object={rocks} />
       <primitive object={water_contain} />
       <primitive object={ground_contain} />
-      {/* <Grass>
-        {(ref) => <primitive object={ground_contain.children[1]} ref={ref} />}
-      </Grass> */}
+      <Grass>
+        {(ref) => <primitive object={ground_contain.children[0]} ref={ref} />}
+      </Grass>
     </>
   )
 }

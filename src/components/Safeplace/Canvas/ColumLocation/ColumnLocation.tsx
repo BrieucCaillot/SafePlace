@@ -1,6 +1,8 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
+import { Place } from '@/stores/useSceneStore'
+import useAudioStore, { VoiceoverSafeplace } from '@/stores/useAudioStore'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 
@@ -13,11 +15,63 @@ const ColumnLocation = ({
   columnObj: THREE.Object3D
   onClick?: () => void
 }) => {
-  const column = useMemo(() => columnObj.children[2] as THREE.Mesh, [])
-  const column_rock = useMemo(() => columnObj.children[1] as THREE.Mesh, [])
+  const isCurrentlyAvailable = useSafeplaceStore((state) =>
+    state.isCurrentlyAvailable(safeplacePOI)
+  )
+  const currentPOI = useSafeplaceStore((state) => state.currentPOI)
+  const isCameraTravelling = useSafeplaceStore(
+    (state) => state.isCameraTravelling
+  )
+  const currentVoiceover = useAudioStore((state) => state.currentVoiceover)
+  const isVoiceoverDone = useAudioStore((state) => state.isVoiceoverDone)
+  const setCurrentVoiceover = useAudioStore(
+    (state) => state.setCurrentVoiceover
+  )
+  const [playedVoiceover, setPlayedVoiceover] = useState(false)
+
+  // Play voice over
+  useEffect(() => {
+    if (
+      playedVoiceover ||
+      currentPOI != SafeplacePOI.MountainColumn ||
+      isCameraTravelling
+    )
+      return
+    setPlayedVoiceover(true)
+    setCurrentVoiceover(Place.Safeplace, VoiceoverSafeplace.MountainColumn)
+  }, [currentPOI, isCameraTravelling])
+
+  const voiceverIsDone = useMemo(() => {
+    return currentVoiceover.name == VoiceoverSafeplace.Inside && isVoiceoverDone
+  }, [isVoiceoverDone])
+
+  const showColumnLink = useMemo(() => {
+    return voiceverIsDone && isCurrentlyAvailable
+  }, [voiceverIsDone])
+
+  const column = useMemo(
+    () =>
+      columnObj.children.find(
+        (obj) => obj.type === 'Mesh' && !obj.name.includes('column_rock')
+      ) as THREE.Mesh,
+    []
+  )
+
+  const column_rock = useMemo(
+    () =>
+      columnObj.children.find((obj) =>
+        obj.name.includes('_rock')
+      ) as THREE.Mesh,
+    []
+  )
 
   const camera = useMemo(
-    () => columnObj.children[0] as THREE.PerspectiveCamera,
+    () =>
+      columnObj.children
+        .find((o) => o.type === 'Object3D')
+        ?.children.find(
+          (o) => o.type === 'PerspectiveCamera'
+        ) as THREE.PerspectiveCamera,
     []
   )
 
@@ -29,7 +83,12 @@ const ColumnLocation = ({
       rotation={columnObj.rotation}
       scale={columnObj.scale}
     >
-      <ColumnLink safeplacePOI={safeplacePOI} position={column.position} />
+      <ColumnLink
+        safeplacePOI={safeplacePOI}
+        show={showColumnLink}
+        position={column.position}
+      />
+
       <mesh
         name={column_rock.name}
         position={column_rock.position}

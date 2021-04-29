@@ -7,11 +7,11 @@ const ResourcesButton = () => {
     SafeplacePOI.OnBoarding,
     SafeplacePOI.Resources,
     SafeplacePOI.ResourceFocused,
-    SafeplacePOI.MountainPedestal,
-    SafeplacePOI.PlaceholderPedetral1,
-    SafeplacePOI.PlaceholderPedetral2,
-    SafeplacePOI.PlaceholderPedetral3,
-    SafeplacePOI.PlaceholderPedetral4,
+    SafeplacePOI.MountainColumn,
+    SafeplacePOI.PlaceholderColumn1,
+    SafeplacePOI.PlaceholderColumn2,
+    SafeplacePOI.PlaceholderColumn3,
+    SafeplacePOI.PlaceholderColumn4,
   ]
 
   const isCurrentlyAvailable = useSafeplaceStore(
@@ -30,7 +30,7 @@ const ResourcesButton = () => {
         className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-auto cursor-pointer'
         onClick={() => setCurrentPOI(SafeplacePOI.Resources)}
       >
-        <p className='text-primary text-2xl'>Resources</p>
+        <p className='text-white text-xl'>Ressources</p>
       </div>
     </LayoutShapeLink>
   )

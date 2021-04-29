@@ -12,10 +12,13 @@ import useAnimateVector from '@/hooks/animation/useAnimateVector'
 
 const ColumnLink = ({
   safeplacePOI,
+  show,
   ...meshProps
-}: { safeplacePOI: SafeplacePOI } & Omit<MeshProps, 'scale'>) => {
+}: { safeplacePOI: SafeplacePOI; show: boolean } & Omit<
+  MeshProps,
+  'scale'
+>) => {
   // -- State
-  const show = useSafeplaceStore((s) => s.isCurrentlyAvailable(safeplacePOI))
   const setCurrentPOI = useSafeplaceStore((s) => s.setCurrentPOI)
   const { camera, viewport } = useThree()
   const [scale, setScale] = useState<THREE.Vector3Tuple>(

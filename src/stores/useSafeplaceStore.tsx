@@ -8,11 +8,11 @@ export enum SafeplacePOI {
   Resources = 'Resources',
   ResourceFocused = 'ResourceFocused',
   Inside = 'Inside',
-  MountainPedestal = 'MountainPedestal',
-  PlaceholderPedetral1 = 'PlaceholderPedetral1',
-  PlaceholderPedetral2 = 'PlaceholderPedetral2',
-  PlaceholderPedetral3 = 'PlaceholderPedetral3',
-  PlaceholderPedetral4 = 'PlaceholderPedetral4',
+  MountainColumn = 'MountainColumn',
+  PlaceholderColumn1 = 'PlaceholderColumn1',
+  PlaceholderColumn2 = 'PlaceholderColumn2',
+  PlaceholderColumn3 = 'PlaceholderColumn3',
+  PlaceholderColumn4 = 'PlaceholderColumn4',
 }
 
 const POI_AVAILABILITY: Record<SafeplacePOI, SafeplacePOI[]> = {
@@ -22,17 +22,17 @@ const POI_AVAILABILITY: Record<SafeplacePOI, SafeplacePOI[]> = {
   [SafeplacePOI.ResourceFocused]: [SafeplacePOI.Resources],
   [SafeplacePOI.Inside]: [
     SafeplacePOI.Resources,
-    SafeplacePOI.MountainPedestal,
-    SafeplacePOI.PlaceholderPedetral1,
-    SafeplacePOI.PlaceholderPedetral2,
-    SafeplacePOI.PlaceholderPedetral3,
-    SafeplacePOI.PlaceholderPedetral4,
+    SafeplacePOI.MountainColumn,
+    SafeplacePOI.PlaceholderColumn1,
+    SafeplacePOI.PlaceholderColumn2,
+    SafeplacePOI.PlaceholderColumn3,
+    SafeplacePOI.PlaceholderColumn4,
   ],
-  [SafeplacePOI.MountainPedestal]: [],
-  [SafeplacePOI.PlaceholderPedetral1]: [],
-  [SafeplacePOI.PlaceholderPedetral2]: [],
-  [SafeplacePOI.PlaceholderPedetral3]: [],
-  [SafeplacePOI.PlaceholderPedetral4]: [],
+  [SafeplacePOI.MountainColumn]: [],
+  [SafeplacePOI.PlaceholderColumn1]: [],
+  [SafeplacePOI.PlaceholderColumn2]: [],
+  [SafeplacePOI.PlaceholderColumn3]: [],
+  [SafeplacePOI.PlaceholderColumn4]: [],
 }
 
 export type POIData = {

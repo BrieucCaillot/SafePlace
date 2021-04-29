@@ -7,6 +7,7 @@ export enum VoiceoverSafeplace {
   Outside = 'Outside',
   OnBoarding = 'OnBoarding',
   Inside = 'Inside',
+  MountainColumn = 'MountainColumn',
 }
 
 export enum VoiceoverJourney {
@@ -17,25 +18,35 @@ type AudioStore = {
   isAudioMuted: boolean
   setIsAudioMutued: (muted: boolean) => void
   isVoiceoverDone: boolean
-  currentVoiceover: Howl | null
+  currentVoiceover: {
+    name: VoiceoverSafeplace | InstructionsList | VoiceoverJourney | null
+    voiceover: Howl | null
+  }
   setCurrentVoiceover: (
     place: Place,
     voiceoverName: VoiceoverSafeplace | InstructionsList | VoiceoverJourney
-  ) => Howl
+  ) => {
+    name: VoiceoverSafeplace | InstructionsList | VoiceoverJourney
+    voiceover: Howl
+  }
 }
 
 const useAudioStore = create<AudioStore>((set, get, state) => ({
   isAudioMuted: false,
   setIsAudioMutued: (muted) => {
     set({ isAudioMuted: muted })
+    const { voiceover } = get().currentVoiceover
     if (muted) {
-      get().currentVoiceover.fade(get().currentVoiceover.volume(), 0, 1000)
+      voiceover.fade(voiceover.volume(), 0, 1000)
     } else {
-      get().currentVoiceover.fade(get().currentVoiceover.volume(), 1, 1000)
+      voiceover.fade(voiceover.volume(), 1, 1000)
     }
   },
   isVoiceoverDone: false,
-  currentVoiceover: null,
+  currentVoiceover: {
+    name: null,
+    voiceover: null,
+  },
   setCurrentVoiceover: (place, voiceoverName) => {
     set({ isVoiceoverDone: false })
 
@@ -49,15 +60,14 @@ const useAudioStore = create<AudioStore>((set, get, state) => ({
       sound.play()
     })
 
-    // Fires when the sound finishes playing.
+    // Fires when the voiceover finishes playing.
     sound.on('end', function () {
-      console.log('Finished!')
       set({ isVoiceoverDone: true })
     })
 
-    set({ currentVoiceover: sound })
+    set({ currentVoiceover: { name: voiceoverName, voiceover: sound } })
 
-    return sound
+    return get().currentVoiceover
   },
 }))
 

@@ -1,5 +1,5 @@
 import PortalUI from '@/components/common/UI/PortalUI'
-import SafeplaceButton from '@/components/Journey/UI/SafeplaceButton'
+import SafeplaceButton from '@/components/Journey/UI/ShelterButton'
 import Timeline from '@/components/Journey/UI/Timeline'
 
 const Journey = () => {

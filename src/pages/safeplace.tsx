@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import PortalUI from '@/components/common/UI/PortalUI'
 import ResourcesButton from '@/components/Safeplace/UI/ResourcesButton'
 import InsideButton from '@/components/Safeplace/UI/InsideButton'
@@ -10,7 +9,6 @@ const Safeplace = () => {
         <ResourcesButton />
         <InsideButton />
       </PortalUI>
-      {/* <PortalUI selector='#layout-bottom-right'></PortalUI> */}
     </>
   )
 }

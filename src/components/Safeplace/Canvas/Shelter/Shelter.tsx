@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
@@ -15,8 +15,16 @@ const Shelter = ({ object }: { object: THREE.Object3D }) => {
     (state) => state.setCurrentVoiceover
   )
 
+  const [playedVoiceover, setPlayedVoiceover] = useState(false)
+
   useEffect(() => {
-    if (currentPOI != SafeplacePOI.Inside || isCameraTravelling) return
+    if (
+      playedVoiceover ||
+      currentPOI != SafeplacePOI.Inside ||
+      isCameraTravelling
+    )
+      return
+    setPlayedVoiceover(true)
     setCurrentVoiceover(Place.Safeplace, VoiceoverSafeplace.Inside)
   }, [currentPOI, isCameraTravelling])
 
@@ -27,15 +35,18 @@ const Shelter = ({ object }: { object: THREE.Object3D }) => {
     []
   )
 
-  const [shelterRessourcesCam, shelterInsideCam, shelterOutsideCam] = useMemo(
-    () => shelterCams,
-    []
-  )
+  const [
+    shelterResourceFocus,
+    shelterResourcesCam,
+    shelterInsideCam,
+    shelterOutsideCam,
+  ] = useMemo(() => shelterCams, [])
 
-  useSavePOIData(SafeplacePOI.OnBoarding, shelterOutsideCam)
-  useSavePOIData(SafeplacePOI.Outside, shelterOutsideCam)
-  useSavePOIData(SafeplacePOI.Inside, shelterInsideCam)
-  useSavePOIData(SafeplacePOI.Resources, shelterRessourcesCam)
+  useSavePOIData(SafeplacePOI.OnBoarding, shelterOutsideCam.children[0])
+  useSavePOIData(SafeplacePOI.Outside, shelterOutsideCam.children[0])
+  useSavePOIData(SafeplacePOI.Inside, shelterInsideCam.children[0])
+  useSavePOIData(SafeplacePOI.Resources, shelterResourcesCam.children[0])
+  useSavePOIData(SafeplacePOI.ResourceFocused, shelterResourceFocus.children[0])
 
   return (
     <primitive ref={shelterRef} object={object}>

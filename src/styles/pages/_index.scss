@@ -2,37 +2,19 @@
   background-image: url('/img/index/home.jpg');
 }
 
-// .instruction {
-//   &-enter {
-//     opacity: 0;
-//     transform: scale(0.9);
-//   }
-//   &-enter-active {
-//     opacity: 1;
-//     transform: translate3d(0, 0, 0);
-//     transition: opacity 1s, transform 1s;
-//   }
-//   &-exit {
-//     opacity: 1;
-//   }
-//   &-exit-active {
-//     opacity: 0;
-//     transform: scale(0.9);
-//     transition: opacity 0.5s, transform 0.5s;
-//   }
-// }
-
-.instruction-enter {
-  opacity: 0;
-}
-.instruction-enter-done {
-  opacity: 1;
-  transition: opacity 200ms;
-}
-.instruction-exit {
-  opacity: 1;
-}
-.instruction-exit-active {
-  opacity: 0;
-  transition: opacity 200ms;
+.instruction {
+  &-enter {
+    opacity: 0;
+  }
+  &-enter-done {
+    opacity: 1;
+    transition: opacity 200ms;
+  }
+  &-exit {
+    opacity: 1;
+  }
+  &-exit-active {
+    opacity: 0;
+    transition: opacity 200ms;
+  }
 }

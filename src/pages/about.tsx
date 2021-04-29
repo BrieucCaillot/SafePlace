@@ -1,7 +1,18 @@
+import React from 'react'
+import Link from 'next/link'
+
+import PortalUI from '@/components/common/UI/PortalUI'
+
 const About = () => {
   return (
     <>
-      <main className='h-full'>
+      <PortalUI selector='#layout-header-right'>
+        <Link href='/'>
+          <a className='bg-skyblue border-gray-50 text-black'>Accueil</a>
+        </Link>
+      </PortalUI>
+
+      <main className='h-full bg-home bg-no-repeat bg-top bg-cover pointer-events-auto'>
         <div className='container h-full'>
           <div className='flex w-full md:w-3/4 mx-auto h-full flex-col justify-center items-center text-center'>
             <h1 className='text-primary text-5xl pb-9'>Projet</h1>

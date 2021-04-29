@@ -36,9 +36,9 @@ const SafeplaceCamera = forwardRef(
       if (currentPOIData !== undefined) {
         const { position, scale, quaternion } = currentPOIData
         position.toArray(output.position)
-        // new THREE.Euler()
-        //   .setFromQuaternion(quaternion)
-        //   .toArray(output.rotation as THREE.Vector3Tuple)
+        new THREE.Euler()
+          .setFromQuaternion(quaternion)
+          .toArray(output.rotation as THREE.Vector3Tuple)
         scale.toArray(output.scale)
       }
 
