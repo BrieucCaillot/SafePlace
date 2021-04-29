@@ -38,6 +38,7 @@ const WaterfallFBO = forwardRef(
       lifeTime,
       sdfOffset,
       rounding,
+      cursorSize,
     } = useControls('particles', {
       'Simulator Params': folder(
         {
@@ -55,8 +56,9 @@ const WaterfallFBO = forwardRef(
             label: 'Speed',
           },
           lifeTime: { value: 4, label: 'Life Time' },
-          sdfOffset: { x: 1, y: 0, z: -1.4 },
-          rounding: { value: 0.7, min: 0, max: 2 },
+          sdfOffset: { x: 0.83, y: 3.5, z: -0.26 },
+          rounding: { value: 0.66, min: 0, max: 2 },
+          cursorSize: { value: 0.1, min: 0, max: 1 },
         },
         { collapsed: true }
       ),
@@ -73,12 +75,14 @@ const WaterfallFBO = forwardRef(
       uLifeTime: { value: 0 },
       uSdfOffset: { value: new THREE.Vector3() },
       uRounding: { value: 0 },
+      uCursorSize: { value: 0 },
     })
     useNumberUniform(uniforms.current.uBaseDirection, baseDirection)
     useNumberUniform(uniforms.current.uAngleAmplitude, angleAmplitude)
     useNumberUniform(uniforms.current.uMovementSpeed, movementSpeed)
     useNumberUniform(uniforms.current.uLifeTime, lifeTime)
     useNumberUniform(uniforms.current.uRounding, rounding)
+    useNumberUniform(uniforms.current.uCursorSize, cursorSize)
     useVector3Uniform(uniforms.current.uSdfOffset, sdfOffset)
     useWatchableUniform(uniforms.current.uPosTexture, quadTexture)
     useWatchableUniform(uniforms.current.uOrigPosTexture, initTexture)

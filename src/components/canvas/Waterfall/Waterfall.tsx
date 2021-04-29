@@ -112,8 +112,8 @@ const Waterfall = (props: GroupProps) => {
         <mesh
           name='SpawnBox'
           ref={targetMeshRef}
-          scale={[3, 0.5, 0.3]}
-          position-y={8}
+          scale={[3, 0.3, 0.3]}
+          position={[0, 3.25, -0.95]}
         >
           <boxBufferGeometry />
           <meshBasicMaterial color={'blue'} wireframe={true} />
@@ -121,14 +121,14 @@ const Waterfall = (props: GroupProps) => {
         <mesh
           name='RaycastPlane'
           onPointerMove={onPointerMove}
-          position-z={0.2}
-          position-y={5}
+          position-z={-1}
+          position-y={1.6}
         >
-          <planeGeometry args={[3.5, 2.5, 1]} />
+          <planeGeometry args={[3.3, 2.5, 1]} />
           <meshBasicMaterial
             color={'green'}
-            wireframe={true}
-            depthTest={false}
+            wireframe={false}
+            depthTest={true}
           />
         </mesh>
       </group>

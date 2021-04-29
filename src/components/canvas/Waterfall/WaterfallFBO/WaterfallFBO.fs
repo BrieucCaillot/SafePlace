@@ -11,6 +11,7 @@ uniform float uAngleAmplitude;
 uniform float uMovementSpeed;
 uniform float uLifeTime;
 uniform float uRounding;
+uniform float uCursorSize;
 
 varying vec2 vUv;
 
@@ -126,7 +127,7 @@ float sdScene(vec3 pos) {
   vec3 s1 = vec3(2.0873038470745087, 5.061842530965805, 1.1149679869413376);
   float d1 = sdBox(rotateVector(q1, p1 - pos), s1);
   // Waterfall_Middle
-  vec3 p2 = vec3(0.8683604747056961, 1.4525379240512848, -1.712292492389679);
+  vec3 p2 = vec3(0.8683604747056961, 1.4525379240512848, -1.652292492389679);
   vec4 q2 = vec4(0., 0., 0., 1.);
   vec3 s2 = vec3(1.71309694647789, 1.6624484956264496, 1.1046463996171951);
   float d2 = sdRoundBox(rotateVector(q2, p2 - pos), s2, 0.8);
@@ -154,7 +155,7 @@ float sdScene(vec3 pos) {
   vec3 s5 = vec3(0.5431517258286476, 5.5155038237571716, 2.3606477677822113);
   d = min(sdBox(rotateVector(q5, p5 - pos), s5), d);
   // Mouse
-  d = min(sdCylinder(uMousePos + uSdfOffset - pos, vec3(0., 0., 0.1)), d);
+  d = min(sdCylinder(uMousePos + uSdfOffset - pos, vec3(0., 0., uCursorSize)), d);
 
   return d;
 }

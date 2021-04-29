@@ -9,6 +9,7 @@ import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import LakeScene from '@/components/Journey/Canvas/Scenes/Lake/LakeScene'
 import CairnsScene from '@/components/Journey/Canvas/Scenes/Cairns/CairnsScene'
 import WaterfallScene from '@/components/Journey/Canvas/Scenes/Waterfall/WaterfallScene'
+import WaterfallCamera from '@/components/Journey/Canvas/Scenes/Waterfall/WaterfallCamera'
 
 export enum Place {
   Safeplace = 'Safeplace',
@@ -110,7 +111,8 @@ const useSceneStore = create<SceneStore>((set, get) => ({
     [SceneName.Waterfall]: {
       Component: WaterfallScene,
       scene: new THREE.Scene(),
-      CameraComponent: ClassicCamera,
+      CameraComponent: WaterfallCamera,
+      // CameraComponent: ClassicCamera,
       cameraRef: createRef(),
     },
   },
