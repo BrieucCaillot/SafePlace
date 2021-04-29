@@ -19,8 +19,6 @@ LayoutCanvas = dynamic(() => import('@/components/common/LayoutCanvas'), {
 })
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const router = useRouter()
-
   let r3fArr: any[] = []
   let compArr: any[] = []
   Children.forEach(
@@ -45,7 +43,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         </LayoutDom>
       )}
       {LayoutCanvas && (
-        <LayoutCanvas>{r3fArr && <group>{r3fArr}</group>}</LayoutCanvas>
+        <LayoutCanvas>
+          {r3fArr && <group>{r3fArr}</group>}
+          {console.log('layout canvas')}
+        </LayoutCanvas>
       )}
     </>
   )

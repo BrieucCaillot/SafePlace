@@ -1,5 +1,6 @@
 import LayoutShapeLink from '@/components/common/UI/LayoutShapeLink'
-import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
+import useSafeplaceStore from '@/stores/useSafeplaceStore'
+import SafeplacePOI from 'constants/enums/SafeplacePOI'
 
 const InsideButton = () => {
   const POIsWhereHidden = [

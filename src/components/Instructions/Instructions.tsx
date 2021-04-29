@@ -2,12 +2,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 
 import Instruction from '@/components/Instructions/Instruction'
-
-export enum InstructionsList {
-  Instruction1 = 'Instruction1',
-  Instruction2 = 'Instruction2',
-  Instruction3 = 'Instruction3',
-}
+import InstructionsList from 'constants/enums/InstructionsList'
 
 const Instructions = () => {
   const [

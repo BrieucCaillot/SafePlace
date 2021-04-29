@@ -10,19 +10,7 @@ import LakeScene from '@/components/Journey/Canvas/Scenes/Lake/LakeScene'
 import CairnsScene from '@/components/Journey/Canvas/Scenes/Cairns/CairnsScene'
 import WaterfallScene from '@/components/Journey/Canvas/Scenes/Waterfall/WaterfallScene'
 import WaterfallCamera from '@/components/Journey/Canvas/Scenes/Waterfall/WaterfallCamera'
-
-export enum Place {
-  Safeplace = 'Safeplace',
-  Journey = 'Journey',
-}
-
-export enum SceneName {
-  Safeplace = 'Safeplace',
-  Lake = 'Lake',
-  Cairns = 'Cairns',
-  JourneyIntro = 'JourneyIntro',
-  Waterfall = 'Waterfall',
-}
+import SceneName from 'constants/enums/SceneName'
 
 export type SceneData = {
   Component: FC<WithScenePortalProps>

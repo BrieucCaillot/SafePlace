@@ -4,7 +4,7 @@ import { MeshProps, useFrame, useThree } from 'react-three-fiber'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import EasingFunction from 'easing-functions'
 
-import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
+import useSafeplaceStore from '@/stores/useSafeplaceStore'
 
 import vertexShader from './ColumnLink.vert'
 import fragmentShader from './ColumnLink.frag'

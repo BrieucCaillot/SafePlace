@@ -1,5 +1,4 @@
 import LayoutShapeLink from '@/components/common/UI/LayoutShapeLink'
-import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import Link from 'next/link'
 
 const ShelterButton = () => {

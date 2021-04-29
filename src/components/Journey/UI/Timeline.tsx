@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 
-import useJourneyStore, { JourneySection } from '@/stores/useJourneyStore'
+import useJourneyStore from '@/stores/useJourneyStore'
+import JourneySection from 'constants/enums/JourneySection'
 
 const Timeline = () => {
   const currentSection = useJourneyStore((state) => state.currentSection)

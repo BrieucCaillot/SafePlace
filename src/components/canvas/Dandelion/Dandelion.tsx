@@ -9,7 +9,6 @@ import vertexShader from './Dandelion.vs'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import useColorUniform from '@/hooks/uniforms/useColorUniform'
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
-import { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import findMinimumTexSize from '@/utils/FBO/findMinimumTexSize'
 import {
   getPositionTextureFromMesh,

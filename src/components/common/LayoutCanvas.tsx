@@ -5,7 +5,6 @@ import { useControls } from 'leva'
 import { ReactNode, useEffect } from 'react'
 import { NextRouter, withRouter } from 'next/router'
 import Scenes from './Scenes/Scenes'
-import useSceneStore, { SceneName } from '@/stores/useSceneStore'
 import usePrevious from '@/hooks/usePrevious'
 import ScenesRouting from './Scenes/ScenesRouting'
 // enable shader editor
