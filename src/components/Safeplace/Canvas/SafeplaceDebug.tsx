@@ -1,5 +1,5 @@
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
-import SafeplacePOI from 'constants/enums/SafeplacePOI'
+import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import { useControls } from 'leva'
 import { useEffect } from 'react'
 

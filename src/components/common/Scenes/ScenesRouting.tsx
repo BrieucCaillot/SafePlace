@@ -6,9 +6,9 @@ import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import useSceneStore from '@/stores/useSceneStore'
 import useUserStore from '@/stores/useUserStore'
 import usePrevious from '@/hooks/usePrevious'
-import SceneName from 'constants/enums/SceneName'
-import JourneySection from 'constants/enums/JourneySection'
-import SafeplacePOI from 'constants/enums/SafeplacePOI'
+import SceneName from '@/constants/enums/SceneName'
+import SafeplacePOI from '@/constants/enums/SafeplacePOI'
+import JourneySection from '@/constants/enums/JourneySection'
 
 const ScenesRouting = ({
   router: { pathname },

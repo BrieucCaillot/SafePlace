@@ -2,8 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
-import SafeplacePOI from 'constants/enums/SafeplacePOI'
-import Place from 'constants/enums/Place'
+import SafeplacePOI from '@/constants/enums/SafeplacePOI'
+import Place from '@/constants/enums/Place'
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 import useAudioStore, { VoiceoverSafeplace } from '@/stores/useAudioStore'
 

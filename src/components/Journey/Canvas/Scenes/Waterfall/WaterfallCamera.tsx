@@ -10,11 +10,10 @@ import {
   useRef,
   useState,
 } from 'react'
-import mergeRefs from 'react-merge-refs'
 import * as THREE from 'three'
 import { useFrame } from 'react-three-fiber'
 import useJourneyStore from '@/stores/useJourneyStore'
-import JourneySection from 'constants/enums/JourneySection'
+import JourneySection from '@/constants/enums/JourneySection'
 
 const LoadAnimations = ({
   onAnimsLoaded,

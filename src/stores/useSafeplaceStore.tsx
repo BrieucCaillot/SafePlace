@@ -1,5 +1,5 @@
-import SafeplacePOI from 'constants/enums/SafeplacePOI'
-import POI_AVAILABILITY from 'constants/POI_AVAILABILITY'
+import SafeplacePOI from '@/constants/enums/SafeplacePOI'
+import POI_AVAILABILITY from '@/constants/POI_AVAILABILITY'
 import * as THREE from 'three'
 import create from 'zustand'
 

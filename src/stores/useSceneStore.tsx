@@ -1,5 +1,13 @@
 import create from 'zustand'
-import { createRef, ExoticComponent, FC, RefObject } from 'react'
+import {
+  createRef,
+  Ref,
+  FC,
+  RefObject,
+  PropsWithoutRef,
+  RefAttributes,
+  ForwardRefExoticComponent,
+} from 'react'
 import * as THREE from 'three'
 import { WithScenePortalProps } from '@/components/common/Scenes/withScenePortal'
 import SafeplaceScene from '@/components/Safeplace/Canvas/SafeplaceScene'
@@ -9,13 +17,13 @@ import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import LakeScene from '@/components/Journey/Canvas/Scenes/Lake/LakeScene'
 import CairnsScene from '@/components/Journey/Canvas/Scenes/Cairns/CairnsScene'
 import WaterfallScene from '@/components/Journey/Canvas/Scenes/Waterfall/WaterfallScene'
-import WaterfallCamera from '@/components/Journey/Canvas/Scenes/Waterfall/WaterfallCamera'
-import SceneName from 'constants/enums/SceneName'
+import SceneName from '@/constants/enums/SceneName'
 
 export type SceneData = {
-  Component: FC<WithScenePortalProps>
+  Component: ForwardRefExoticComponent<
+    PropsWithoutRef<WithScenePortalProps> & RefAttributes<THREE.Camera>
+  >
   scene: THREE.Scene
-  CameraComponent: ExoticComponent<{ ref: RefObject<THREE.Camera> }>
   cameraRef: RefObject<THREE.Camera | undefined>
 }
 
@@ -75,32 +83,26 @@ const useSceneStore = create<SceneStore>((set, get) => ({
     [SceneName.Safeplace]: {
       Component: SafeplaceScene,
       scene: new THREE.Scene(),
-      CameraComponent: SafeplaceCamera,
       cameraRef: createRef(),
     },
     [SceneName.Lake]: {
       Component: LakeScene,
       scene: new THREE.Scene(),
-      CameraComponent: ClassicCamera,
       cameraRef: createRef(),
     },
     [SceneName.JourneyIntro]: {
       Component: IntroScene,
       scene: new THREE.Scene(),
-      CameraComponent: ClassicCamera,
       cameraRef: createRef(),
     },
     [SceneName.Cairns]: {
       Component: CairnsScene,
       scene: new THREE.Scene(),
-      CameraComponent: ClassicCamera,
       cameraRef: createRef(),
     },
     [SceneName.Waterfall]: {
       Component: WaterfallScene,
       scene: new THREE.Scene(),
-      CameraComponent: WaterfallCamera,
-      // CameraComponent: ClassicCamera,
       cameraRef: createRef(),
     },
   },

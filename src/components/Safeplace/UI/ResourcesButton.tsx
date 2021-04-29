@@ -1,6 +1,6 @@
 import LayoutShapeLink from '@/components/common/UI/LayoutShapeLink'
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
-import SafeplacePOI from 'constants/enums/SafeplacePOI'
+import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 
 const ResourcesButton = () => {
   const POIsWhereHidden = [

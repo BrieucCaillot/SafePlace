@@ -43,10 +43,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         </LayoutDom>
       )}
       {LayoutCanvas && (
-        <LayoutCanvas>
-          {r3fArr && <group>{r3fArr}</group>}
-          {console.log('layout canvas')}
-        </LayoutCanvas>
+        <LayoutCanvas>{r3fArr && <group>{r3fArr}</group>}</LayoutCanvas>
       )}
     </>
   )

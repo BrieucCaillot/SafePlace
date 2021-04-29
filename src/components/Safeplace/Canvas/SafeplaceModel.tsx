@@ -4,7 +4,7 @@ import { useGLTF } from '@react-three/drei'
 import Shelter from '@/components/Safeplace/Canvas/Shelter/Shelter'
 import ColumnLocation from '@/components/Safeplace/Canvas/ColumLocation/ColumnLocation'
 import Grass from '@/components/Safeplace/Canvas/Decorations/Grass/Grass'
-import SafeplacePOI from 'constants/enums/SafeplacePOI'
+import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 
 const SafeplaceModel = () => {
   const { scene } = useGLTF('/models/safeplace/safeplace.glb')

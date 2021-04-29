@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 
 import Instruction from '@/components/Instructions/Instruction'
-import InstructionsList from 'constants/enums/InstructionsList'
+import InstructionsList from '@/constants/enums/InstructionsList'
 
 const Instructions = () => {
   const [

@@ -34,16 +34,13 @@ const Scenes = () => {
 
   return (
     <>
-      {mountedSceneData.map(
-        ({ Component, scene, CameraComponent, cameraRef }, i) => (
-          <Fragment key={scene.uuid}>
-            <Suspense fallback={'loading'}>
-              <Component scene={scene} />
-            </Suspense>
-            <CameraComponent ref={cameraRef as RefObject<Camera>} />
-          </Fragment>
-        )
-      )}
+      {mountedSceneData.map(({ Component, scene, cameraRef }, i) => (
+        <Fragment key={scene.uuid}>
+          <Suspense fallback={'loading'}>
+            <Component scene={scene} ref={cameraRef} />
+          </Suspense>
+        </Fragment>
+      ))}
     </>
   )
 }

@@ -5,8 +5,8 @@ import useAudioStore, {
   VoiceoverSafeplace,
   VoiceoverStatus,
 } from '@/stores/useAudioStore'
-import Place from 'constants/enums/Place'
-import SafeplacePOI from 'constants/enums/SafeplacePOI'
+import Place from '@/constants/enums/Place'
+import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 

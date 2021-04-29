@@ -1,7 +1,7 @@
 import create from 'zustand'
 import { Howl } from 'howler'
-import Place from 'constants/enums/Place'
-import InstructionsList from 'constants/enums/InstructionsList'
+import Place from '@/constants/enums/Place'
+import InstructionsList from '@/constants/enums/InstructionsList'
 
 export enum VoiceoverSafeplace {
   Outside = 'Outside',

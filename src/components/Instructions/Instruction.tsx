@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 
 import useAudioStore from '@/stores/useAudioStore'
-import InstructionsList from 'constants/enums/InstructionsList'
-import Place from 'constants/enums/Place'
+import InstructionsList from '@/constants/enums/InstructionsList'
+import Place from '@/constants/enums/Place'
 
 const Instruction = ({
   instruction,

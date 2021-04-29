@@ -1,5 +1,5 @@
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
-import SafeplacePOI from 'constants/enums/SafeplacePOI'
+import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import { useCallback, useEffect } from 'react'
 import * as THREE from 'three'
 
