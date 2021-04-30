@@ -21,7 +21,7 @@ const SafeplaceModel = () => {
     shelter,
     trees,
     water_contain,
-  ] = useMemo(() => scene.children[0].children, [])
+  ] = useMemo(() => [...scene.children[0].children], [])
 
   const columnAssoc: { [name: string]: SafeplacePOI } = {
     column_1_group: SafeplacePOI.MountainColumn,

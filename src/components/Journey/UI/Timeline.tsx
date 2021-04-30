@@ -14,12 +14,14 @@ const Timeline = () => {
     JourneySection.Intro,
     JourneySection.Cairns,
     JourneySection.Lake,
-    JourneySection.Bridge,
-    JourneySection.Waterfall,
+    [JourneySection.ToBridge, JourneySection.Bridge],
+    [JourneySection.Waterfall, JourneySection.Outro],
   ]
 
   useEffect(() => {
-    const index = steps.indexOf(currentSection)
+    const index = steps.findIndex((s) =>
+      Array.isArray(s) ? s.includes(currentSection) : s === currentSection
+    )
     const prog = index / (steps.length - 1)
 
     gsap.to(timelineProgressRef.current, {
@@ -46,7 +48,7 @@ const Timeline = () => {
         >
           <span
             className='block bg-white h-4 w-4 rounded-full pointer-events-auto cursor-pointer'
-            onClick={() => setCurrentSection(s)}
+            onClick={() => setCurrentSection(Array.isArray(s) ? s[0] : s)}
           ></span>
         </div>
       ))}
