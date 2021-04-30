@@ -8,7 +8,9 @@ const Index = () => {
     <>
       <PortalUI selector='#layout-header-right'>
         <Link href='about' as='/about'>
-          <a className='bg-skyblue border-gray-50 text-black'>À propos</a>
+          <a className='relative button-stonecut tracking-widest text-lg text-secondary'>
+            À propos
+          </a>
         </Link>
       </PortalUI>
 
@@ -21,11 +23,13 @@ const Index = () => {
           src='/img/index/logo.png'
           alt='safeplace-logo'
         />
-        <Link href='onboarding'>
-          <button className='button-stonefull absolute bottom-8 left-1/2 transform -translate-x-1/2 text-primary text-xl font-bold tracking-widest rounded px-10 py-3 focus:outline-none cursor-pointer pointer-events-auto'>
-            Lancer l'experience
-          </button>
-        </Link>
+        <div className='absolute bottom-16 flex justify-center w-full'>
+          <Link href='onboarding'>
+            <button className='relative button-stonefull text-secondary text-xl font-bold tracking-widest rounded px-10 py-3 focus:outline-none cursor-pointer pointer-events-auto'>
+              Lancer l'experience
+            </button>
+          </Link>
+        </div>
       </div>
     </>
   )

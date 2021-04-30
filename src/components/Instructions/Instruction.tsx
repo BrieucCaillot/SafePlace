@@ -59,12 +59,14 @@ const Instruction = ({
           src={`/img/Instructions/${Instruction}.png`}
         /> */}
 
-        <p className={`text-primary text-lg text-center pb-7 max-w-lg`}>
+        <p
+          className={`text-white tracking-wider text-lg text-center pb-7 whitespace-pre-line`}
+        >
           {text}
         </p>
         <button
           onClick={handleClick}
-          className={`bg-primary text-white rounded-lg px-6 py-3 m-auto ${buttonActiveClass}`}
+          className={`relative button-stonecut button-stonecut-white tracking-widest text-lg focus:outline-none text-white w-max m-auto ${buttonActiveClass}`}
         >
           {isLastStep ? 'Rejoindre la safeplace' : 'Continuer'}
         </button>

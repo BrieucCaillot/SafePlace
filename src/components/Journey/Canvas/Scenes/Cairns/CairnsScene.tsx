@@ -16,8 +16,6 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     []
   )
 
-  console.log(camera)
-
   return (
     <>
       <ClassicCamera
@@ -29,10 +27,6 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       />
       <JourneySky />
       <primitive object={gltf.scene} />
-      {/* <mesh>
-        <coneGeometry />
-        <meshNormalMaterial />
-      </mesh> */}
     </>
   )
 })

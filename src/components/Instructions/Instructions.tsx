@@ -20,7 +20,7 @@ const Instructions = () => {
       {currentInstruction == InstructionsList.Instruction1 && (
         <Instruction
           instruction={InstructionsList.Instruction1}
-          text='Pour une expérience plus riche, je vous recommande de prendre un casque et de désactiver vos notifications.'
+          text={`Pour une expérience plus riche, je vous recommande de prendre \n un casque et de désactiver vos \n notifications.`}
           onNextStep={() =>
             setCurrentInstruction(InstructionsList.Instruction2)
           }
@@ -29,7 +29,7 @@ const Instructions = () => {
       {currentInstruction == InstructionsList.Instruction2 && (
         <Instruction
           instruction={InstructionsList.Instruction2}
-          text='Détendez-vous, respirez profondément, faites le calme autour de vous.'
+          text={`Détendez-vous, respirez profondément, \n faites le calme autour de vous.`}
           onNextStep={() =>
             setCurrentInstruction(InstructionsList.Instruction3)
           }
@@ -38,7 +38,7 @@ const Instructions = () => {
       {currentInstruction == InstructionsList.Instruction3 && (
         <Instruction
           instruction={InstructionsList.Instruction3}
-          text='Installez-vous confortablement, le dos droit, les pieds bien à plat et quand vous serez prêt, venez me retrouver dans votre safe place.'
+          text={`Installez-vous confortablement, le dos droit, \n les pieds bien à plat et quand vous serez prêt, \n venez me retrouver dans votre safe place.`}
           onNextStep={() => {
             router.push('/safeplace')
           }}
