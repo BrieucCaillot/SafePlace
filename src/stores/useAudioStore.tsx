@@ -2,27 +2,17 @@ import create from 'zustand'
 import { Howl } from 'howler'
 import Place from '@/constants/enums/Place'
 import InstructionsList from '@/constants/enums/InstructionsList'
-
-export enum VoiceoverSafeplace {
-  Outside = 'Outside',
-  OnBoarding = 'OnBoarding',
-  Inside = 'Inside',
-  MountainColumn = 'MountainColumn',
-}
-
-export enum VoiceoverJourney {
-  One = 'One',
-}
-
-export enum VoiceoverStatus {
-  Processing = 'Processing',
-  Playing = 'Playing',
-  Played = 'Played',
-}
+import {
+  VoiceoverSafeplace,
+  VoiceoverJourney,
+  VoiceoverStatus,
+} from '@/constants/enums/Voiceover'
 
 type AudioStore = {
   isAudioMuted: boolean
   setIsAudioMutued: (muted: boolean) => void
+
+  // VOICEOVER
   voiceoverStatusMap: Map<
     VoiceoverSafeplace | InstructionsList | VoiceoverJourney,
     VoiceoverStatus
@@ -67,6 +57,7 @@ const useAudioStore = create<AudioStore>((set, get, state) => ({
       voiceover.fade(voiceover.volume(), 1, 1000)
     }
   },
+  // VOICEOVER
   voiceoverStatusMap: new Map(),
   setVoiceoverStatus: (key, status) => {
     set({ voiceoverStatusMap: get().voiceoverStatusMap.set(key, status) })

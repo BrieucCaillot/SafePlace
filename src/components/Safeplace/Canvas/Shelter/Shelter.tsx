@@ -3,8 +3,9 @@ import * as THREE from 'three'
 
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import Place from '@/constants/enums/Place'
+import { VoiceoverSafeplace } from '@/constants/enums/Voiceover'
 
-import useAudioStore, { VoiceoverSafeplace } from '@/stores/useAudioStore'
+import useAudioStore from '@/stores/useAudioStore'
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 

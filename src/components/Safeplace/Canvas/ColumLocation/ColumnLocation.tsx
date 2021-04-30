@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import * as THREE from 'three'
 
-import useSafeplaceStore from '@/stores/useSafeplaceStore'
-import useAudioStore, { VoiceoverSafeplace } from '@/stores/useAudioStore'
-import Place from '@/constants/enums/Place'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
+import Place from '@/constants/enums/Place'
+import { VoiceoverSafeplace } from '@/constants/enums/Voiceover'
+
+import useSafeplaceStore from '@/stores/useSafeplaceStore'
+import useAudioStore from '@/stores/useAudioStore'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
+
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 
 const ColumnLocation = ({
