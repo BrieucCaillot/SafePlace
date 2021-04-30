@@ -5,10 +5,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import EasingFunction from 'easing-functions'
 
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
+import SafeplacePOI from '@/constants/enums/SafeplacePOI'
+import useAnimateVector from '@/hooks/animation/useAnimateVector'
 
 import vertexShader from './ColumnLink.vert'
 import fragmentShader from './ColumnLink.frag'
-import useAnimateVector from '@/hooks/animation/useAnimateVector'
 
 const ColumnLink = ({
   safeplacePOI,

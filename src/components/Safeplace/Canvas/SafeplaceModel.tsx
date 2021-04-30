@@ -35,14 +35,16 @@ const SafeplaceModel = () => {
     <>
       <Shelter object={shelter} />
 
-      {columns.children.map((col) => (
-        <ColumnLocation
-          safeplacePOI={columnAssoc[col.name]}
-          onClick={() => console.log(columnAssoc[col.name])}
-          columnObj={col}
-          key={col.name}
-        />
-      ))}
+      <group position={columns.position}>
+        {columns.children.map((col) => (
+          <ColumnLocation
+            safeplacePOI={columnAssoc[col.name]}
+            onClick={() => console.log(columnAssoc[col.name])}
+            columnObj={col}
+            key={col.name}
+          />
+        ))}
+      </group>
 
       <primitive object={backgrounds} />
       <primitive object={bridge_contain} />
