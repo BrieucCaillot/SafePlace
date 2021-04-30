@@ -1,10 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
+import * as THREE from 'three'
 
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
-import useAudioStore, {
-  VoiceoverSafeplace,
-  VoiceoverStatus,
-} from '@/stores/useAudioStore'
+import useAudioStore, { VoiceoverSafeplace } from '@/stores/useAudioStore'
 import Place from '@/constants/enums/Place'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
@@ -82,23 +80,11 @@ const ColumnLocation = ({
       <ColumnLink
         safeplacePOI={safeplacePOI}
         show={showColumnLink}
-        position={column.position}
+        position={column_rock.position}
       />
 
-      <mesh
-        name={column_rock.name}
-        position={column_rock.position}
-        scale={column_rock.scale}
-        material={column_rock.material}
-        geometry={column_rock.geometry}
-      />
-      <mesh
-        name={column.name}
-        position={column.position}
-        scale={column.scale}
-        material={column.material}
-        geometry={column.geometry}
-      />
+      <primitive object={column_rock} />
+      <primitive object={column} />
     </group>
   )
 }

@@ -1,15 +1,15 @@
 import * as THREE from 'three'
 import { useControls } from 'leva'
 import { MeshProps, useFrame, useThree } from 'react-three-fiber'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import EasingFunction from 'easing-functions'
 
-import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
+import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import useAnimateVector from '@/hooks/animation/useAnimateVector'
 
-import vertexShader from './ColumnLink.vert'
-import fragmentShader from './ColumnLink.frag'
+import vertexShader from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink.vert'
+import fragmentShader from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink.frag'
 
 const ColumnLink = ({
   safeplacePOI,
@@ -29,7 +29,7 @@ const ColumnLink = ({
   const { scalarFactor } = useControls(
     'column_button',
     {
-      scalarFactor: 2,
+      scalarFactor: 3,
     },
     { collapsed: true, render: () => false }
   )
@@ -53,8 +53,13 @@ const ColumnLink = ({
       .multiply(scaleRef.current)
   })
 
+  const linkTexture = useMemo(
+    () => new THREE.TextureLoader().load('./img/safeplace/link.png'),
+    []
+  )
+
   const uniforms = useRef<{ [name: string]: THREE.IUniform }>({
-    uColor: { value: new THREE.Color('rgba(59, 130, 246, 1.0)') },
+    uTexture: { value: linkTexture },
   })
 
   useAnimateVector(scaleRef, scale, {
