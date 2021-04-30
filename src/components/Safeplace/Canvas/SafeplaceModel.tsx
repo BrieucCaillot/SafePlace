@@ -39,7 +39,6 @@ const SafeplaceModel = () => {
         {columns.children.map((col) => (
           <ColumnLocation
             safeplacePOI={columnAssoc[col.name]}
-            onClick={() => console.log(columnAssoc[col.name])}
             columnObj={col}
             key={col.name}
           />

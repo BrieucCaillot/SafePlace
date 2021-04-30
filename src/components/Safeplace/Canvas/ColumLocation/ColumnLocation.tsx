@@ -13,11 +13,9 @@ import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/C
 const ColumnLocation = ({
   safeplacePOI,
   columnObj,
-  onClick = () => {},
 }: {
   safeplacePOI: SafeplacePOI
   columnObj: THREE.Object3D
-  onClick?: () => void
 }) => {
   const isCurrentlyAvailable = useSafeplaceStore((state) =>
     state.isCurrentlyAvailable(safeplacePOI)
@@ -100,7 +98,6 @@ const ColumnLocation = ({
         scale={column.scale}
         material={column.material}
         geometry={column.geometry}
-        onClick={onClick}
       />
     </group>
   )

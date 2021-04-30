@@ -24,7 +24,9 @@ const Instruction = ({
   const setCurrentVoiceover = useAudioStore(
     (state) => state.setCurrentVoiceover
   )
-  const isVoiceoverPlayed = useAudioStore((state) => state.isVoiceoverPlayed)
+  const isVoiceoverPlayed = useAudioStore((state) =>
+    state.isVoiceoverPlayed(instruction)
+  )
 
   const buttonActiveClass = useMemo(
     () =>

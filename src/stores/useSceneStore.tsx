@@ -85,11 +85,6 @@ const useSceneStore = create<SceneStore>((set, get) => ({
       scene: new THREE.Scene(),
       cameraRef: createRef(),
     },
-    [SceneName.Lake]: {
-      Component: LakeScene,
-      scene: new THREE.Scene(),
-      cameraRef: createRef(),
-    },
     [SceneName.JourneyIntro]: {
       Component: IntroScene,
       scene: new THREE.Scene(),
@@ -97,6 +92,11 @@ const useSceneStore = create<SceneStore>((set, get) => ({
     },
     [SceneName.Cairns]: {
       Component: CairnsScene,
+      scene: new THREE.Scene(),
+      cameraRef: createRef(),
+    },
+    [SceneName.Lake]: {
+      Component: LakeScene,
       scene: new THREE.Scene(),
       cameraRef: createRef(),
     },
