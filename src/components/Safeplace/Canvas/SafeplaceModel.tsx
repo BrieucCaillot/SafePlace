@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 import Shelter from '@/components/Safeplace/Canvas/Shelter/Shelter'
@@ -61,4 +61,4 @@ const SafeplaceModel = () => {
   )
 }
 
-export default SafeplaceModel
+export default React.memo(SafeplaceModel)

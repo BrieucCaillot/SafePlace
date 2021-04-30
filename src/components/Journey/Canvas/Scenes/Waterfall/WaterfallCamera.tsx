@@ -21,7 +21,6 @@ const LoadAnimations = ({
   onAnimsLoaded: (clips: THREE.AnimationClip[]) => void
 }): ReactElement<any, any> => {
   const gltf = useGLTF('/models/journey/chapter3.glb')
-  console.log(gltf)
   useEffect(() => {
     onAnimsLoaded(gltf.animations)
   }, [])
