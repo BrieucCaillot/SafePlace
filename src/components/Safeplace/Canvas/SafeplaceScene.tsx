@@ -19,7 +19,7 @@ const SafeplaceScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       {/* <Waterfall position={[-50, 6, 0]} rotation={[0, 45, 0]} />
       <Dandelion position={[50, 6, 0]} rotation={[0, -45, 0]} /> */}
 
-      <ambientLight />
+      {/* <ambientLight /> */}
     </>
   )
 })

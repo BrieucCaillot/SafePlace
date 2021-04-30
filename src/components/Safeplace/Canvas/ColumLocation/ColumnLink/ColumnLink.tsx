@@ -81,7 +81,7 @@ const ColumnLink = ({
       {...meshProps}
       ref={columnLinkRef}
       renderOrder={1}
-      onClick={() => (show ? setCurrentPOI(safeplacePOI) : null)}
+      onClick={() => show && setCurrentPOI(safeplacePOI)}
       onPointerOver={() => show && setScale([1.4, 1.4, 1.4])}
       onPointerOut={() => show && setScale([1, 1, 1])}
     >

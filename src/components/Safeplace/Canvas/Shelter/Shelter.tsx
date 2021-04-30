@@ -36,17 +36,17 @@ const Shelter = ({ object }: { object: THREE.Object3D }) => {
     setCurrentVoiceover(Place.Safeplace, VoiceoverSafeplace.Inside)
   }, [isVoiceoverPlayed, currentPOI, isCameraTravelling])
 
-  const shelterCams = useMemo(
-    () => object.children.find((child) => child.children.length > 1).children,
-    []
-  )
-
   const [
     shelterResourceFocus,
     shelterResourcesCam,
     shelterInsideCam,
     shelterOutsideCam,
-  ] = useMemo(() => shelterCams, [])
+  ] = useMemo(
+    () => [
+      ...object.children.find((child) => child.children.length > 1).children,
+    ],
+    []
+  )
 
   useSavePOIData(SafeplacePOI.OnBoarding, shelterOutsideCam.children[0])
   useSavePOIData(SafeplacePOI.Outside, shelterOutsideCam.children[0])

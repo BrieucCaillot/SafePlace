@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { ReactElement, ReactNode, useMemo } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 import Shelter from '@/components/Safeplace/Canvas/Shelter/Shelter'
@@ -6,14 +6,13 @@ import ColumnLocation from '@/components/Safeplace/Canvas/ColumLocation/ColumnLo
 import Grass from '@/components/Safeplace/Canvas/Decorations/Grass/Grass'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 
-const SafeplaceModel = () => {
+const SafeplaceModel = (): ReactElement => {
   const { scene } = useGLTF('/models/safeplace/safeplace.glb')
-
   const [
     backgrounds,
     bridge_contain,
     cairns,
-    columns,
+    columnGroup,
     ark,
     flying_rocks,
     ground_contain,
@@ -31,18 +30,24 @@ const SafeplaceModel = () => {
     column_5_group: SafeplacePOI.PlaceholderColumn4,
   }
 
+  const ground = useMemo(() => ground_contain.children[0], [])
+
+  const columnChildren = useMemo(() => [...columnGroup.children.reverse()], [])
+  const [columnMesh, ...columns] = columnChildren
+
   return (
     <>
       <Shelter object={shelter} />
 
-      <group position={columns.position}>
-        {columns.children.map((col) => (
+      <group position={columnGroup.position}>
+        {columns.map((col) => (
           <ColumnLocation
             safeplacePOI={columnAssoc[col.name]}
             columnObj={col}
             key={col.name}
           />
         ))}
+        <primitive object={columnMesh} />
       </group>
 
       <primitive object={backgrounds} />
@@ -50,13 +55,10 @@ const SafeplaceModel = () => {
       <primitive object={cairns} />
       <primitive object={trees} />
       <primitive object={ark} />
-      {/* <primitive object={flying_rocks} /> */}
+      <primitive object={flying_rocks} />
       <primitive object={rocks} />
       <primitive object={water_contain} />
-      <primitive object={ground_contain} />
-      <Grass>
-        {(ref) => <primitive object={ground_contain.children[0]} ref={ref} />}
-      </Grass>
+      <Grass>{(ref) => <primitive object={ground} ref={ref} />}</Grass>
     </>
   )
 }

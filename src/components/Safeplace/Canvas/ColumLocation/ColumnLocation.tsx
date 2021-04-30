@@ -46,19 +46,8 @@ const ColumnLocation = ({
     [isVoiceoverInsidePlayed, isCurrentlyAvailable]
   )
 
-  const column = useMemo(
-    () =>
-      columnObj.children.find(
-        (obj) => obj.type === 'Mesh' && !obj.name.includes('column_rock')
-      ) as THREE.Mesh,
-    []
-  )
-
-  const column_rock = useMemo(
-    () =>
-      columnObj.children.find((obj) =>
-        obj.name.includes('_rock')
-      ) as THREE.Mesh,
+  const collider = useMemo(
+    () => columnObj.children.find((obj) => obj.type === 'Mesh') as THREE.Mesh,
     []
   )
 
@@ -80,13 +69,17 @@ const ColumnLocation = ({
       rotation={columnObj.rotation}
       scale={columnObj.scale}
     >
-      <primitive object={column_rock} />
-      <primitive object={column} />
+      <mesh
+        geometry={collider.geometry}
+        material={collider.material}
+        visible={false}
+        onClick={() => console.log(safeplacePOI)}
+      />
 
       <ColumnLink
         safeplacePOI={safeplacePOI}
         show={showColumnLink}
-        position={column_rock.position}
+        position={collider.position}
       />
     </group>
   )
