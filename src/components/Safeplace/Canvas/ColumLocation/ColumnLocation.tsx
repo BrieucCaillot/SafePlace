@@ -80,14 +80,14 @@ const ColumnLocation = ({
       rotation={columnObj.rotation}
       scale={columnObj.scale}
     >
+      <primitive object={column_rock} />
+      <primitive object={column} />
+
       <ColumnLink
         safeplacePOI={safeplacePOI}
         show={showColumnLink}
         position={column_rock.position}
       />
-
-      <primitive object={column_rock} />
-      <primitive object={column} />
     </group>
   )
 }
