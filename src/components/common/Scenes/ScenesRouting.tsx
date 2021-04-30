@@ -44,9 +44,6 @@ const ScenesRouting = ({
       const { setCurrentPOI } = useSafeplaceStore.getState()
       mountScene(SceneName.Safeplace)
       setRenderedScene(SceneName.Safeplace)
-      setTimeout(() => {
-        console.log(mountedScenes)
-      }, 1000)
       setCurrentPOI(
         isFirstConnection == 'true'
           ? SafeplacePOI.OnBoarding

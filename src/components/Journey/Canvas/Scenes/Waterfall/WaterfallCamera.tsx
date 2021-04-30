@@ -21,6 +21,7 @@ const LoadAnimations = ({
   onAnimsLoaded: (clips: THREE.AnimationClip[]) => void
 }): ReactElement<any, any> => {
   const gltf = useGLTF('/models/journey/chapter3.glb')
+  console.log(gltf)
   useEffect(() => {
     onAnimsLoaded(gltf.animations)
   }, [])
@@ -62,7 +63,12 @@ const WaterfallCamera = forwardRef(
     useFrame(() => {
       if (mixerRef.current == null) return
       mixerRef.current.update(clockRef.current.getDelta())
-      if (actionRef.current == null || actionRef.current.paused) return
+      if (
+        containerRef.current == null ||
+        actionRef.current == null ||
+        actionRef.current.paused
+      )
+        return
       containerRef.current.updateMatrixWorld()
     })
 
