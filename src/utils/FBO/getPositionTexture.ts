@@ -7,32 +7,61 @@ export function getPositionTextureFromMesh(
   textureSize: THREE.Vector2 | THREE.Vector2Tuple,
   sampleAmount: number = 0,
   customSampler: MeshSurfaceSampler | null = null
-): THREE.DataTexture {
+): [positionTexture: THREE.DataTexture, uvTexture: THREE.DataTexture] {
   const size = Array.isArray(textureSize) ? textureSize : textureSize.toArray()
 
   if (mesh === null) throw 'No mesh'
   const amount = sampleAmount || size[0] * size[1]
-  const data = new Float32Array(size[0] * size[1] * 4)
-  const sampler = customSampler || new MeshSurfaceSampler(mesh).build()
+  const positions = new Float32Array(size[0] * size[1] * 4)
+  const uvs = new Float32Array(size[0] * size[1] * 4)
+
   const position = new THREE.Vector3()
+  const normal = new THREE.Vector3()
+  const color = new THREE.Color()
+
+  const uvAttr = mesh.geometry.getAttribute('uv')
+  const fakeColor = new Float32Array(uvAttr.count * 3)
+
+  for (let index = 0; index < uvAttr.count; index++) {
+    fakeColor[index * 3 + 0] = uvAttr.array[index * uvAttr.itemSize + 0]
+    fakeColor[index * 3 + 1] = uvAttr.array[index * uvAttr.itemSize + 1]
+    fakeColor[index * 3 + 2] = 0
+  }
+  mesh.geometry.setAttribute('color', new THREE.BufferAttribute(fakeColor, 3))
+
+  const sampler = customSampler || new MeshSurfaceSampler(mesh).build()
   for (let index = 0; index < amount; index++) {
-    sampler.sample(position)
-    data[index * 4 + 0] = position.x
-    data[index * 4 + 1] = position.y
-    data[index * 4 + 2] = position.z
-    data[index * 4 + 3] = 0
+    sampler.sample(position, normal, color)
+    positions[index * 4 + 0] = position.x
+    positions[index * 4 + 1] = position.y
+    positions[index * 4 + 2] = position.z
+    positions[index * 4 + 3] = 0
+
+    uvs[index * 4 + 0] = color.r
+    uvs[index * 4 + 1] = color.g
+    uvs[index * 4 + 2] = color.b
+    uvs[index * 4 + 3] = 0
   }
 
-  const dataTexture = new THREE.DataTexture(
-    data,
+  const positionTexture = new THREE.DataTexture(
+    positions,
     size[0],
     size[1],
     THREE.RGBAFormat,
     THREE.FloatType
   )
-  dataTexture.needsUpdate = true
+  positionTexture.needsUpdate = true
 
-  return dataTexture
+  const uvTexture = new THREE.DataTexture(
+    uvs,
+    size[0],
+    size[1],
+    THREE.RGBAFormat,
+    THREE.FloatType
+  )
+  uvTexture.needsUpdate = true
+
+  return [positionTexture, uvTexture]
 }
 
 export function getPositionTextureFromBox(

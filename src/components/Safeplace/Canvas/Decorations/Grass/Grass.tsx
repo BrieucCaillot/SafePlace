@@ -107,7 +107,9 @@ const Grass = ({
 
   const uniforms = useRef<Record<string, THREE.IUniform>>({
     uPositionTexture: { value: null },
+    uUvTexture: { value: null },
     uTexture: { value: texture },
+    uGroundTexture: { value: null },
     uTime: { value: 0 },
     uSize: { value: 1 },
     uWindAmplitude: { value: 0 },
@@ -125,11 +127,15 @@ const Grass = ({
 
   useEffect(() => {
     ;(instancedMeshRef.current as THREE.InstancedMesh).count = numPoints
-    uniforms.current.uPositionTexture.value = getPositionTextureFromMesh(
+    const [positionTexture, uvTexture] = getPositionTextureFromMesh(
       targetMeshRef.current,
       textureSize,
       numPoints
     )
+    uniforms.current.uPositionTexture.value = positionTexture
+    uniforms.current.uUvTexture.value = uvTexture
+    uniforms.current.uGroundTexture.value = (targetMeshRef.current
+      .material as THREE.MeshBasicMaterial).map
   }, [textureSize[0], textureSize[1], numPoints])
 
   return (
