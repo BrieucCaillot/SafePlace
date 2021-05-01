@@ -59,10 +59,6 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
           rotation-x={-Math.PI / 2}
           position={[0, 0, 0]}
         />
-        <mesh>
-          <boxBufferGeometry args={[1, 1, 1]} />
-          <meshNormalMaterial />
-        </mesh>
       </group>
       <JourneySky />
       <primitive object={scene} />
