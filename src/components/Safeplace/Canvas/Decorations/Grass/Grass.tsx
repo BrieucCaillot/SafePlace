@@ -137,7 +137,7 @@ const Grass = ({
       {children(targetMeshRef)}
       <instancedMesh
         geometry={bufferGeometry}
-        position-y={size}
+        position-y={size + 0.05}
         ref={instancedMeshRef}
       >
         <shaderMaterial

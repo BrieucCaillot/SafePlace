@@ -28,8 +28,8 @@ const useSafeplaceStore = create<SafeplaceStore>((set, get, state) => ({
   setPOIData: (
     key,
     {
-      position = new THREE.Vector3(),
-      quaternion = new THREE.Quaternion(),
+      position = new THREE.Vector3(0, 0, 0),
+      quaternion = new THREE.Quaternion(0, 0, 0, 1),
       scale = new THREE.Vector3(1, 1, 1),
     }
   ) => {

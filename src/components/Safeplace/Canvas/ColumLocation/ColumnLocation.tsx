@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { ReactNode, useCallback, useEffect, useMemo } from 'react'
 import * as THREE from 'three'
 
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
@@ -16,74 +16,30 @@ import useUserStore from '@/stores/useUserStore'
 const ColumnLocation = ({
   safeplacePOI,
   columnObj,
+  children,
 }: {
   safeplacePOI: SafeplacePOI
   columnObj: THREE.Object3D
+  children?: ReactNode
 }) => {
-  const router = useUserStore((s) => s.router)
-
-  const isMountainColumn = useMemo(
-    () => safeplacePOI == SafeplacePOI.MountainColumn,
-    []
-  )
   const isCurrentlyAvailable = useSafeplaceStore((s) =>
     s.isCurrentlyAvailable(safeplacePOI)
   )
-  const isMountainColumnCurrentPOI = useSafeplaceStore(
-    (s) => SafeplacePOI.MountainColumn === s.currentPOI
-  )
   const setCurrentPOI = useSafeplaceStore((s) => s.setCurrentPOI)
 
-  const isCameraTravelling = useSafeplaceStore((s) => s.isCameraTravelling)
-  const setCurrentVoiceover = useAudioStore((s) => s.setCurrentVoiceover)
-  const isVoiceoverPlayable = useAudioStore((s) =>
-    s.isVoiceoverPlayable(VoiceoverSafeplace.MountainColumn)
-  )
-  const isVoiceoverPlayed = useAudioStore((s) =>
-    s.checkVoiceoverStatus(
-      VoiceoverSafeplace.MountainColumn,
-      AudioStatus.Played
-    )
-  )
   const isVoiceoverInsidePlayed = useAudioStore((s) =>
     s.checkVoiceoverStatus(VoiceoverSafeplace.Inside, AudioStatus.Played)
   )
-
-  useEffect(() => {
-    if (
-      !isMountainColumnCurrentPOI ||
-      !isMountainColumn ||
-      !isVoiceoverPlayable ||
-      isCameraTravelling
-    )
-      return
-    setCurrentVoiceover(Place.Safeplace, VoiceoverSafeplace.MountainColumn)
-  }, [isMountainColumnCurrentPOI, isCameraTravelling])
-
-  const isReadyToJourney = useMemo(
-    () => isMountainColumn && isMountainColumnCurrentPOI && isVoiceoverPlayed,
-    [isVoiceoverPlayed]
-  )
-
-  const showColumnLink = useMemo(
-    () => (isVoiceoverInsidePlayed && isCurrentlyAvailable) || isReadyToJourney,
-    [isVoiceoverInsidePlayed, isCurrentlyAvailable, isReadyToJourney]
-  )
-
-  const onClick = useCallback(() => {
-    // TODO : WHY PUSH OF NULL
-    isReadyToJourney ? router.push('/journey') : setCurrentPOI(safeplacePOI)
-  }, [isReadyToJourney])
 
   const collider = useMemo(
     () => columnObj.children.find((obj) => obj.type === 'Mesh') as THREE.Mesh,
     []
   )
 
-  const columnLinkPosition = useMemo(() => {
-    const { x, z } = collider.position
-    return new THREE.Vector3(x, 1.9, z)
-  }, [collider])
+  const columnLinkPosition = useMemo(
+    () => new THREE.Vector3(0, 1.9, 0).add(collider.position),
+    [collider]
+  )
 
   const camera = useMemo(
     () =>
@@ -103,17 +59,16 @@ const ColumnLocation = ({
       rotation={columnObj.rotation}
       scale={columnObj.scale}
     >
-      <mesh
+      {/* <mesh
         geometry={collider.geometry}
         material={collider.material}
         visible={false}
         onClick={() => console.log(safeplacePOI)}
-      />
-
+      /> */}
+      {children}
       <ColumnLink
-        safeplacePOI={safeplacePOI}
-        show={showColumnLink}
-        onColumnClick={onClick}
+        show={isVoiceoverInsidePlayed && isCurrentlyAvailable}
+        onColumnClick={() => setCurrentPOI(safeplacePOI)}
         position={columnLinkPosition}
       />
     </group>
