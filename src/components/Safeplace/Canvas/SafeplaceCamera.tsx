@@ -1,15 +1,15 @@
 import { useRef, useMemo, forwardRef, MutableRefObject } from 'react'
 import * as THREE from 'three'
-import useCameraStore from '@/stores/useCameraStore'
-import useAnimateVector from '@/hooks/animation/useAnimateVector'
-import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import mergeRefs from 'react-merge-refs'
 
+import useAnimateVector from '@/hooks/animation/useAnimateVector'
+import useSafeplaceStore from '@/stores/useSafeplaceStore'
+
 const SafeplaceCamera = forwardRef(
-  (_, fowardedRef: MutableRefObject<THREE.Camera>) => {
+  (_, forwardedRef: MutableRefObject<THREE.Camera>) => {
     const camRef = useRef<THREE.Camera>()
-    const setCameraIsTravelling = useCameraStore(
-      (state) => state.setCameraIsTravelling
+    const setIsCameraTravelling = useSafeplaceStore(
+      (state) => state.setIsCameraTravelling
     )
 
     const currentPOIData = useSafeplaceStore((s) => s.getPOIData(s.currentPOI))
@@ -29,8 +29,7 @@ const SafeplaceCamera = forwardRef(
         scale: [1, 1, 1],
         params: {
           duration: 2,
-          onStart: () => setCameraIsTravelling(true),
-          onComplete: () => setCameraIsTravelling(false),
+          onComplete: () => setIsCameraTravelling(false),
         },
       }
 
@@ -77,7 +76,7 @@ const SafeplaceCamera = forwardRef(
     return (
       <perspectiveCamera
         name={'Safeplace Cam'}
-        ref={mergeRefs([fowardedRef, camRef])}
+        ref={mergeRefs([forwardedRef, camRef])}
         near={0.1}
         far={1000}
         fov={22.9}

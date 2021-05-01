@@ -43,9 +43,9 @@ void main()
   vec3 worldPos = (modelMatrix * vec4(pos, 1.)).xyz;
 
   float windOffsetX = snoise3(vec3(worldPos.xz * uWindNoiseSize, uTime * uWindSpeed));
-  float windOffsetY = snoise3(vec3(worldPos.xz * uWindNoiseSize, uTime * uWindSpeed + 100000.));
+  float windOffsetZ = snoise3(vec3(worldPos.xz * uWindNoiseSize, uTime * uWindSpeed + 100000.));
   pos.x += windOffsetX * uv.y * uWindAmplitude;
-  pos.y += windOffsetY * uv.y * uWindAmplitude;
+  pos.z += windOffsetZ * uv.y * uWindAmplitude;
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
 }

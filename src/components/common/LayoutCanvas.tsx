@@ -2,16 +2,15 @@ import { Canvas } from 'react-three-fiber'
 import { Perf } from 'r3f-perf/dist/r3f-perf.cjs.development.js'
 import { OrbitControls, Preload } from '@react-three/drei'
 import { useControls } from 'leva'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode } from 'react'
 import { NextRouter, withRouter } from 'next/router'
 import Scenes from './Scenes/Scenes'
-import useSceneStore, { SceneName } from '@/stores/useSceneStore'
-import usePrevious from '@/hooks/usePrevious'
+import ScenesRouting from './Scenes/ScenesRouting'
 // enable shader editor
 // import { MaterialEditor, useEditorComposer } from '@three-material-editor/react'
 
 const LayoutCanvas = ({
-  router: { pathname },
+  router,
   children,
 }: {
   router: NextRouter
@@ -19,38 +18,8 @@ const LayoutCanvas = ({
 }) => {
   const { orbitControls: enableOrbitControls, showPerf } = useControls({
     orbitControls: false,
-    showPerf: true,
+    showPerf: false,
   })
-
-  const mountScene = useSceneStore((s) => s.mountScene)
-  const unmountScene = useSceneStore((s) => s.unmountScene)
-  const unmountAllScenes = useSceneStore((s) => s.unmountAllScenes)
-  const setRenderedScene = useSceneStore((s) => s.setRenderedScene)
-  const previousPathname = usePrevious(pathname)
-
-  useEffect(() => {
-    if (pathname === '/safeplace') {
-      mountScene(SceneName.Safeplace)
-      setRenderedScene(SceneName.Safeplace)
-    }
-
-    if (pathname === '/') {
-      unmountAllScenes()
-      setRenderedScene(null)
-    }
-
-    if (pathname === '/journey') {
-      mountScene(SceneName.Journey)
-      setRenderedScene(SceneName.Journey)
-    }
-  }, [pathname])
-
-  useEffect(() => {
-    if (pathname == previousPathname) return
-    if (previousPathname === '/journey') {
-      unmountScene(SceneName.Journey)
-    }
-  }, [previousPathname, pathname])
 
   return (
     <Canvas
@@ -63,6 +32,7 @@ const LayoutCanvas = ({
     >
       {enableOrbitControls && <OrbitControls />}
       <Scenes />
+      <ScenesRouting router={router} />
 
       <Preload all />
       {showPerf && (

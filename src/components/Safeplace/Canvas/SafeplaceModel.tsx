@@ -1,48 +1,66 @@
-import { useMemo } from 'react'
+import React, { ReactElement, ReactNode, useMemo } from 'react'
 import { useGLTF } from '@react-three/drei'
 
-import { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import Shelter from '@/components/Safeplace/Canvas/Shelter/Shelter'
 import ColumnLocation from '@/components/Safeplace/Canvas/ColumLocation/ColumnLocation'
-import Grass from './Decorations/Grass/Grass'
+import Grass from '@/components/Safeplace/Canvas/Decorations/Grass/Grass'
+import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 
-const SafeplaceModel = () => {
-  const { scene } = useGLTF('/models/safeplace.glb')
-
-  const [ground, trees, columns, shelter, bridge] = useMemo(
-    () => scene.children,
-    []
-  )
+const SafeplaceModel = (): ReactElement => {
+  const { scene } = useGLTF('/models/safeplace/safeplace.glb')
+  const [
+    backgrounds,
+    bridge_contain,
+    cairns,
+    columnGroup,
+    ark,
+    flying_rocks,
+    ground_contain,
+    rocks,
+    shelter,
+    trees,
+    water_contain,
+  ] = useMemo(() => [...scene.children[0].children], [])
 
   const columnAssoc: { [name: string]: SafeplacePOI } = {
-    column_group_1: SafeplacePOI.MountainPedestal,
-    column_group_2: SafeplacePOI.PlaceholderPedetral1,
-    column_group_3: SafeplacePOI.PlaceholderPedetral2,
-    column_group_4: SafeplacePOI.PlaceholderPedetral3,
-    column_group_5: SafeplacePOI.PlaceholderPedetral4,
+    column_1_group: SafeplacePOI.MountainColumn,
+    column_2_group: SafeplacePOI.PlaceholderColumn1,
+    column_3_group: SafeplacePOI.PlaceholderColumn2,
+    column_4_group: SafeplacePOI.PlaceholderColumn3,
+    column_5_group: SafeplacePOI.PlaceholderColumn4,
   }
+
+  const ground = useMemo(() => ground_contain.children[0], [])
+
+  const columnChildren = useMemo(() => [...columnGroup.children.reverse()], [])
+  const [columnMesh, ...columns] = columnChildren
 
   return (
     <>
       <Shelter object={shelter} />
 
-      {columns.children.map((o) => (
-        <ColumnLocation
-          safeplacePOI={columnAssoc[o.name]}
-          onClick={() => console.log(columnAssoc[o.name])}
-          columnObj={o}
-          key={o.name}
-        />
-      ))}
+      <group position={columnGroup.position}>
+        {columns.map((col) => (
+          <ColumnLocation
+            safeplacePOI={columnAssoc[col.name]}
+            columnObj={col}
+            key={col.name}
+          />
+        ))}
+        <primitive object={columnMesh} />
+      </group>
 
-      <primitive object={bridge} />
+      <primitive object={backgrounds} />
+      <primitive object={bridge_contain} />
+      <primitive object={cairns} />
       <primitive object={trees} />
-      <primitive object={ground} />
-      <Grass>
-        {(ref) => <primitive object={ground.children[1]} ref={ref} />}
-      </Grass>
+      <primitive object={ark} />
+      {/* <primitive object={flying_rocks} /> */}
+      <primitive object={rocks} />
+      <primitive object={water_contain} />
+      <Grass>{(ref) => <primitive object={ground} ref={ref} />}</Grass>
     </>
   )
 }
 
-export default SafeplaceModel
+export default React.memo(SafeplaceModel)

@@ -1,8 +1,9 @@
-import useSafeplaceStore, { SafeplacePOI } from '@/stores/useSafeplaceStore'
+import useSafeplaceStore from '@/stores/useSafeplaceStore'
+import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import { useControls } from 'leva'
 import { useEffect } from 'react'
 
-const SafeplaceDebug = () => {
+const SafeplaceDebug = (): null => {
   const statePOI = useSafeplaceStore((state) => state.currentPOI)
   const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
 

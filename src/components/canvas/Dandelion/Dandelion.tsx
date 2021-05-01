@@ -6,22 +6,18 @@ import EasingFunctions from 'easing-functions'
 import gsap from 'gsap'
 import fragmentShader from './Dandelion.fs'
 import vertexShader from './Dandelion.vs'
-import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import useColorUniform from '@/hooks/uniforms/useColorUniform'
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
-import { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import findMinimumTexSize from '@/utils/FBO/findMinimumTexSize'
-import {
-  getPositionTextureFromMesh,
-  getRandomRotationTexture,
-} from '@/utils/FBO/getPositionTexture'
+import { getRandomRotationTexture } from '@/utils/FBO/getPositionTexture'
 import useVector3Uniform from '@/hooks/uniforms/useVector3Uniform'
 import useWatchableRef from '@/hooks/useWatchableRef'
 import useWatchableUniform from '@/hooks/uniforms/useWatchableUniform'
 
-const Dandelion = (props: GroupProps) => {
-  const savePOI = useSavePOIData(SafeplacePOI.Dandelion)
-
+const Dandelion = ({
+  points,
+  ...props
+}: GroupProps & { points: THREE.Vector3[] }) => {
   const meshRef = useRef<THREE.Mesh>(null)
 
   const animRef = useRef<gsap.core.Tween>()
@@ -34,7 +30,7 @@ const Dandelion = (props: GroupProps) => {
       {
         current: 1,
         ease: EasingFunctions.Linear.None,
-        duration: 6,
+        duration: 10,
       }
     )
   }, [])
@@ -55,10 +51,10 @@ const Dandelion = (props: GroupProps) => {
   } = useControls(
     'dandelion',
     {
-      particlesSize: 90,
-      particleAmount: 16,
+      particlesSize: 30,
+      particleAmount: { value: 16 * 62, step: 1 },
       sizeVariation: 1,
-      spreadFactor: { value: 0.1, min: 0, max: 1 },
+      spreadFactor: { value: 0.015, min: 0, max: 1 },
       alpha: { value: 1, min: 0, max: 1 },
       startColor: '#f8ffb7',
       endColor: '#b1b1b1',
@@ -113,11 +109,15 @@ const Dandelion = (props: GroupProps) => {
     const geometry = new THREE.BufferGeometry()
 
     // positions
-    const positions = new THREE.BufferAttribute(
-      new Float32Array(numPoints * 3).fill(0),
-      3
-    )
-    geometry.setAttribute('position', positions)
+    const positions = new Float32Array(numPoints * 3)
+
+    for (let i = 0; i < numPoints; i++) {
+      const point = points[Math.floor((i / numPoints) * points.length)]
+      positions[i * 3 + 0] = point.x
+      positions[i * 3 + 1] = point.y
+      positions[i * 3 + 2] = point.z
+    }
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
 
     const pixelPos = new Float32Array(numPoints * 2)
     for (let i = 0; i < numPoints; i++) {
@@ -134,7 +134,6 @@ const Dandelion = (props: GroupProps) => {
 
   return (
     <group {...props}>
-      <group position-z={6} ref={savePOI} />
       <mesh ref={meshRef} visible={false}>
         <icosahedronGeometry args={[0.05, 2]} />
         <meshBasicMaterial color='red' wireframe={true} />

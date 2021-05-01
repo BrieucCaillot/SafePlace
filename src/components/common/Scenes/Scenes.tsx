@@ -1,5 +1,5 @@
 import shallow from 'zustand/shallow'
-import { Fragment, RefObject, Suspense, useEffect } from 'react'
+import React, { Fragment, RefObject, Suspense, useEffect } from 'react'
 import { Camera, useFrame, useThree } from 'react-three-fiber'
 import useSceneStore from '@/stores/useSceneStore'
 
@@ -34,18 +34,15 @@ const Scenes = () => {
 
   return (
     <>
-      {mountedSceneData.map(
-        ({ Component, scene, CameraComponent, cameraRef }, i) => (
-          <Fragment key={scene.uuid}>
-            <Suspense fallback={'loading'}>
-              <Component scene={scene} />
-            </Suspense>
-            <CameraComponent ref={cameraRef as RefObject<Camera>} />
-          </Fragment>
-        )
-      )}
+      {mountedSceneData.map(({ Component, scene, cameraRef }, i) => (
+        <Fragment key={scene.uuid}>
+          <Suspense fallback={'loading'}>
+            <Component scene={scene} ref={cameraRef} />
+          </Suspense>
+        </Fragment>
+      ))}
     </>
   )
 }
 
-export default Scenes
+export default React.memo(Scenes)

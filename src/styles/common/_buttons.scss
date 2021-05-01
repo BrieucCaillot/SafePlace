@@ -1,0 +1,35 @@
+.button {
+  &-stonecut {
+    &:before {
+      content: '';
+      background: url('/img/common/stonecut-button.svg') no-repeat center;
+      height: 29px;
+      width: 29px;
+      position: absolute;
+      top: -9px;
+      left: -20px;
+    }
+    &-white {
+      &::before {
+        background: url('/img/common/stonecut-white-button.svg') no-repeat
+          center;
+
+        height: 40px;
+        width: 40px;
+        left: -26px;
+      }
+    }
+  }
+  &-stonefull {
+    &:before {
+      content: '';
+      background: url('/img/common/stonefull-button.svg') no-repeat center;
+      height: 94px;
+      width: 97px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate3d(-50%, -50%, 0);
+    }
+  }
+}

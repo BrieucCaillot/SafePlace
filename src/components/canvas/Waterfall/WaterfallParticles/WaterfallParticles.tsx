@@ -34,7 +34,7 @@ const WaterfallParticles = forwardRef(
       {
         'Particle Params': folder(
           {
-            particlesSize: 90,
+            particlesSize: 200,
             sizeVariation: 1,
             alpha: { value: 1, min: 0, max: 1 },
             startColor: '#3e69e8',
@@ -48,7 +48,7 @@ const WaterfallParticles = forwardRef(
 
     // const [matcap] = useMatcapTexture('1B1B1B_999999_575757_747474', 64)
     // const normalMap = useMemo(
-    //   () => new THREE.TextureLoader().load('img/normalMap.png'),
+    //   () => new THREE.TextureLoader().load('img/journey/normalMap.png'),
     //   []
     // )
 

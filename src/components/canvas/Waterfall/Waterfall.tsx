@@ -9,7 +9,6 @@ import { GroupProps, PointerEvent } from 'react-three-fiber'
 import { useControls } from 'leva'
 import * as THREE from 'three'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
-import { SafeplacePOI } from '@/stores/useSafeplaceStore'
 import WaterfallFBO from './WaterfallFBO/WaterfallFBO'
 import WaterfallParticles from './WaterfallParticles/WaterfallParticles'
 import { getPositionTextureFromBox } from '@/utils/FBO/getPositionTexture'
@@ -23,14 +22,13 @@ const Waterfall = (props: GroupProps) => {
     {
       showDegug: false,
       numPoints: {
-        value: 1024,
+        value: 16368,
         step: 1,
         label: 'Particle amount',
       },
     },
     {
       collapsed: true,
-      render: (get) => get('safeplace.currentPOI') === SafeplacePOI.Waterfall,
     }
   )
 
@@ -39,14 +37,13 @@ const Waterfall = (props: GroupProps) => {
     [numPoints]
   )
 
-  const savePOI = useSavePOIData(SafeplacePOI.Waterfall)
-
   const sceneRef = useRef<THREE.Scene>(new THREE.Scene())
   const cameraRef = useRef<THREE.Camera>(
     new THREE.OrthographicCamera(-0.5, 0.5, 0.5, -0.5)
   )
 
   const targetMeshRef = useRef<THREE.Mesh>(null)
+  const cubeRef = useRef<THREE.Mesh>(null)
 
   const feedbackRef = useRef<THREE.Mesh>(null)
   const particleRef = useRef<THREE.Mesh>(null)
@@ -83,6 +80,15 @@ const Waterfall = (props: GroupProps) => {
     )
   }, [])
 
+  useEffect(
+    () =>
+      mousePosRef.onChange((v) => {
+        if (cubeRef.current == null) return
+        cubeRef.current.position.copy(v)
+      }),
+    []
+  )
+
   usePingPong(bufferSize, {
     particleTexture,
     quadTexture,
@@ -91,34 +97,41 @@ const Waterfall = (props: GroupProps) => {
     cameraRef,
   })
 
-  const onPointerMove = useCallback<(e: PointerEvent) => void>(
-    ({ intersections: [{ point }] }) =>
-      (mousePosRef.current = particleRef.current?.worldToLocal(point)),
-    []
-  )
+  const onPointerMove = useCallback<(e: PointerEvent) => void>(({ point }) => {
+    mousePosRef.current = particleRef.current?.worldToLocal(point)
+  }, [])
 
   return (
     <group {...props}>
       <group visible={showDegug}>
-        <mesh scale={[5, 5, 1]} ref={feedbackRef}>
+        <mesh scale={[5, 5, 1]} ref={feedbackRef} visible={false}>
           <planeGeometry />
           <meshBasicMaterial />
         </mesh>
         <mesh
           name='SpawnBox'
           ref={targetMeshRef}
-          scale={[5, 0.5, 0.5]}
-          position-y={3}
+          scale={[3, 0.3, 0.3]}
+          position={[0, 3.25, -0.95]}
         >
           <boxBufferGeometry />
           <meshBasicMaterial color={'blue'} wireframe={true} />
         </mesh>
-        <mesh name='RaycastPlane' onPointerMove={onPointerMove}>
-          <planeGeometry args={[10, 10, 1]} />
-          <meshBasicMaterial color={'green'} wireframe={true} />
+        <mesh
+          name='RaycastPlane'
+          onPointerMove={onPointerMove}
+          position-z={-1}
+          position-y={1.6}
+        >
+          <planeGeometry args={[3.3, 2.5, 1]} />
+          <meshBasicMaterial
+            color={'green'}
+            wireframe={false}
+            depthTest={true}
+          />
         </mesh>
       </group>
-      <group position-z={6} ref={savePOI} />
+
       <WaterfallParticles
         positionTexture={particleTexture}
         ref={particleRef}
