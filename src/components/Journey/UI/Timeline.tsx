@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import gsap from 'gsap'
 
 import useJourneyStore from '@/stores/useJourneyStore'
 import JourneySection from '@/constants/enums/JourneySection'
+import SVGCheckpoint from './SVG/SVGCheckpoint'
 
 const Timeline = () => {
   const currentSection = useJourneyStore((state) => state.currentSection)
@@ -18,11 +19,16 @@ const Timeline = () => {
     [JourneySection.Waterfall, JourneySection.Outro],
   ]
 
+  const currentIndex = useMemo(
+    () =>
+      steps.findIndex((s) =>
+        Array.isArray(s) ? s.includes(currentSection) : s === currentSection
+      ),
+    [currentSection]
+  )
+
   useEffect(() => {
-    const index = steps.findIndex((s) =>
-      Array.isArray(s) ? s.includes(currentSection) : s === currentSection
-    )
-    const prog = index / (steps.length - 1)
+    const prog = currentIndex / (steps.length - 1)
 
     gsap.to(timelineProgressRef.current, {
       width: `${prog * 100}%`,
@@ -32,10 +38,9 @@ const Timeline = () => {
 
   return (
     <div className='relative flex items-center w-full'>
-      <div className='absolute top-1/2 transform -translate-y-1/2 bg-white h-1 w-full rounded-full'></div>
       <div
         ref={timelineProgressRef}
-        className={`absolute top-1/2 transform -translate-y-1/2 bg-primary h-1 rounded-full`}
+        className={`absolute top-1/2 transform -translate-y-1/2 bg-white h-1 rounded-full`}
       ></div>
       {steps.map((s, i, a) => (
         <div
@@ -46,10 +51,14 @@ const Timeline = () => {
               : 'relative flex-1 flex items-center'
           }
         >
-          <span
-            className='block bg-white h-4 w-4 rounded-full pointer-events-auto cursor-pointer'
+          <SVGCheckpoint
+            step={i}
+            isActive={i <= currentIndex}
             onClick={() => setCurrentSection(Array.isArray(s) ? s[0] : s)}
-          ></span>
+          />
+          {i !== a.length - 1 && (
+            <div className='timeline-bullets bg-repeat-x h-1 w-full rounded-full'></div>
+          )}
         </div>
       ))}
     </div>
