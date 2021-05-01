@@ -48,7 +48,7 @@ const WaterfallParticles = forwardRef(
 
     // const [matcap] = useMatcapTexture('1B1B1B_999999_575757_747474', 64)
     // const normalMap = useMemo(
-    //   () => new THREE.TextureLoader().load('img/normalMap.png'),
+    //   () => new THREE.TextureLoader().load('img/journey/normalMap.png'),
     //   []
     // )
 
