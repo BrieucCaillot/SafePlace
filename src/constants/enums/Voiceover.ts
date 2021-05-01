@@ -1,5 +1,5 @@
 enum VoiceoverSafeplace {
-  Outside = 'Outside',
+  Arrived = 'Arrived',
   OnBoarding = 'OnBoarding',
   Inside = 'Inside',
   MountainColumn = 'MountainColumn',

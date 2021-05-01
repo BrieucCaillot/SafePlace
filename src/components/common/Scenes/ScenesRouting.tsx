@@ -44,11 +44,7 @@ const ScenesRouting = ({
       const { setCurrentPOI } = useSafeplaceStore.getState()
       mountScene(SceneName.Safeplace)
       setRenderedScene(SceneName.Safeplace)
-      setCurrentPOI(
-        isFirstConnection == 'true'
-          ? SafeplacePOI.OnBoarding
-          : SafeplacePOI.Outside
-      )
+      setCurrentPOI(SafeplacePOI.Outside)
     }
 
     if (pathname === '/journey') {

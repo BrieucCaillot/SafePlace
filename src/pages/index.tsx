@@ -24,7 +24,7 @@ const Index = () => {
           alt='safeplace-logo'
         />
         <div className='absolute bottom-16 flex justify-center w-full'>
-          <Link href='onboarding'>
+          <Link href='onboarding' as='onboarding'>
             <button className='relative button-stonefull text-secondary text-xl font-bold tracking-widest rounded px-10 py-3 focus:outline-none cursor-pointer pointer-events-auto'>
               Lancer l'experience
             </button>

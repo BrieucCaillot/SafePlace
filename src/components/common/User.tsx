@@ -25,7 +25,9 @@ const User = (): null => {
   }, [clearLocalStorage])
 
   useEffect(() => {
-    setUserFirstConnection(isFirstConnection)
+    // setUserFirstConnection(isFirstConnection)
+    // FOR USER TEST
+    setUserFirstConnection('false')
   }, [])
 
   return null
