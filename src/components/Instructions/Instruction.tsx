@@ -4,6 +4,7 @@ import { CSSTransition } from 'react-transition-group'
 import useAudioStore from '@/stores/useAudioStore'
 import InstructionsList from '@/constants/enums/InstructionsList'
 import Place from '@/constants/enums/Place'
+import AudioStatus from '@/constants/enums/Audio'
 
 const Instruction = ({
   instruction,
@@ -25,7 +26,7 @@ const Instruction = ({
     (state) => state.setCurrentVoiceover
   )
   const isVoiceoverPlayed = useAudioStore((state) =>
-    state.isVoiceoverPlayed(instruction)
+    state.checkVoiceoverStatus(instruction, AudioStatus.Played)
   )
 
   const buttonActiveClass = useMemo(

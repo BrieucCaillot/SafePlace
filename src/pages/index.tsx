@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
+
+import useAudioStore from '@/stores/useAudioStore'
+import Place from '@/constants/enums/Place'
+import Ambiants from '@/constants/enums/Ambiant'
 
 import PortalUI from '@/components/common/UI/PortalUI'
 
 const Index = () => {
+  const setCurrentAmbiant = useAudioStore((state) => state.setCurrentAmbiant)
+
+  useEffect(() => {
+    setCurrentAmbiant(Place.Safeplace, Ambiants.Safeplace)
+  }, [])
+
   return (
     <>
       <PortalUI selector='#layout-header-right'>

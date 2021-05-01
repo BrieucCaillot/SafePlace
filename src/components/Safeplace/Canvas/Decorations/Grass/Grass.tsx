@@ -101,7 +101,7 @@ const Grass = ({
   // --- UNIFORMS
 
   const texture = useMemo(
-    () => new THREE.TextureLoader().load('./img/grass.png'),
+    () => new THREE.TextureLoader().load('./img/common/grass.png'),
     []
   )
 

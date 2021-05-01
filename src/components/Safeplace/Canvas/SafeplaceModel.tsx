@@ -55,7 +55,7 @@ const SafeplaceModel = (): ReactElement => {
       <primitive object={cairns} />
       <primitive object={trees} />
       <primitive object={ark} />
-      <primitive object={flying_rocks} />
+      {/* <primitive object={flying_rocks} /> */}
       <primitive object={rocks} />
       <primitive object={water_contain} />
       <Grass>{(ref) => <primitive object={ground} ref={ref} />}</Grass>

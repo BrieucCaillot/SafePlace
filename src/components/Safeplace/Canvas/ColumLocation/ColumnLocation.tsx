@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import * as THREE from 'three'
 
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import Place from '@/constants/enums/Place'
+import AudioStatus from '@/constants/enums/Audio'
 import { VoiceoverSafeplace } from '@/constants/enums/Voiceover'
 
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
@@ -10,6 +11,7 @@ import useAudioStore from '@/stores/useAudioStore'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
+import useUserStore from '@/stores/useUserStore'
 
 const ColumnLocation = ({
   safeplacePOI,
@@ -18,38 +20,70 @@ const ColumnLocation = ({
   safeplacePOI: SafeplacePOI
   columnObj: THREE.Object3D
 }) => {
-  const isCurrentlyAvailable = useSafeplaceStore((state) =>
-    state.isCurrentlyAvailable(safeplacePOI)
+  const router = useUserStore((s) => s.router)
+
+  const isMountainColumn = useMemo(
+    () => safeplacePOI == SafeplacePOI.MountainColumn,
+    []
   )
-  const currentPOI = useSafeplaceStore((state) => state.currentPOI)
-  const isCameraTravelling = useSafeplaceStore(
-    (state) => state.isCameraTravelling
+  const isCurrentlyAvailable = useSafeplaceStore((s) =>
+    s.isCurrentlyAvailable(safeplacePOI)
   )
-  const setCurrentVoiceover = useAudioStore(
-    (state) => state.setCurrentVoiceover
+  const isMountainColumnCurrentPOI = useSafeplaceStore(
+    (s) => SafeplacePOI.MountainColumn === s.currentPOI
   )
-  const isVoiceoverInsidePlayed = useAudioStore((state) =>
-    state.isVoiceoverPlayed(VoiceoverSafeplace.Inside)
+  const setCurrentPOI = useSafeplaceStore((s) => s.setCurrentPOI)
+
+  const isCameraTravelling = useSafeplaceStore((s) => s.isCameraTravelling)
+  const setCurrentVoiceover = useAudioStore((s) => s.setCurrentVoiceover)
+  const isVoiceoverPlayable = useAudioStore((s) =>
+    s.isVoiceoverPlayable(VoiceoverSafeplace.MountainColumn)
   )
-  const [isVoiceoverPlayable, setIsVoiceoverPlayable] = useState(true)
+  const isVoiceoverPlayed = useAudioStore((s) =>
+    s.checkVoiceoverStatus(
+      VoiceoverSafeplace.MountainColumn,
+      AudioStatus.Played
+    )
+  )
+  const isVoiceoverInsidePlayed = useAudioStore((s) =>
+    s.checkVoiceoverStatus(VoiceoverSafeplace.Inside, AudioStatus.Played)
+  )
 
   useEffect(() => {
-    if (currentPOI !== SafeplacePOI.MountainColumn || !isVoiceoverPlayable)
+    if (
+      !isMountainColumnCurrentPOI ||
+      !isMountainColumn ||
+      !isVoiceoverPlayable ||
+      isCameraTravelling
+    )
       return
-    setIsVoiceoverPlayable(false)
-    console.log('will play')
     setCurrentVoiceover(Place.Safeplace, VoiceoverSafeplace.MountainColumn)
-  }, [isVoiceoverPlayable, currentPOI, isCameraTravelling])
+  }, [isMountainColumnCurrentPOI, isCameraTravelling])
+
+  const isReadyToJourney = useMemo(
+    () => isMountainColumn && isMountainColumnCurrentPOI && isVoiceoverPlayed,
+    [isVoiceoverPlayed]
+  )
 
   const showColumnLink = useMemo(
-    () => isVoiceoverInsidePlayed && isCurrentlyAvailable,
-    [isVoiceoverInsidePlayed, isCurrentlyAvailable]
+    () => (isVoiceoverInsidePlayed && isCurrentlyAvailable) || isReadyToJourney,
+    [isVoiceoverInsidePlayed, isCurrentlyAvailable, isReadyToJourney]
   )
+
+  const onClick = useCallback(() => {
+    // TODO : WHY PUSH OF NULL
+    isReadyToJourney ? router.push('/journey') : setCurrentPOI(safeplacePOI)
+  }, [isReadyToJourney])
 
   const collider = useMemo(
     () => columnObj.children.find((obj) => obj.type === 'Mesh') as THREE.Mesh,
     []
   )
+
+  const columnLinkPosition = useMemo(() => {
+    const { x, z } = collider.position
+    return new THREE.Vector3(x, 1.9, z)
+  }, [collider])
 
   const camera = useMemo(
     () =>
@@ -79,7 +113,8 @@ const ColumnLocation = ({
       <ColumnLink
         safeplacePOI={safeplacePOI}
         show={showColumnLink}
-        position={collider.position}
+        onColumnClick={onClick}
+        position={columnLinkPosition}
       />
     </group>
   )

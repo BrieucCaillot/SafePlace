@@ -14,13 +14,14 @@ import fragmentShader from '@/components/Safeplace/Canvas/ColumLocation/ColumnLi
 const ColumnLink = ({
   safeplacePOI,
   show,
+  onColumnClick,
   ...meshProps
-}: { safeplacePOI: SafeplacePOI; show: boolean } & Omit<
-  MeshProps,
-  'scale'
->) => {
+}: {
+  safeplacePOI: SafeplacePOI
+  show: boolean
+  onColumnClick: Function
+} & Omit<MeshProps, 'scale'>) => {
   // -- State
-  const setCurrentPOI = useSafeplaceStore((s) => s.setCurrentPOI)
   const { camera, viewport } = useThree()
   const [scale, setScale] = useState<THREE.Vector3Tuple>(
     show ? [1, 1, 1] : [0, 0, 0]
@@ -76,12 +77,16 @@ const ColumnLink = ({
     setScale(show ? [1, 1, 1] : [0, 0, 0])
   }, [show])
 
+  const handleClick = () => {
+    if (show) onColumnClick()
+  }
+
   return (
     <mesh
       {...meshProps}
       ref={columnLinkRef}
       renderOrder={1}
-      onClick={() => show && setCurrentPOI(safeplacePOI)}
+      onClick={() => handleClick()}
       onPointerOver={() => show && setScale([1.4, 1.4, 1.4])}
       onPointerOut={() => show && setScale([1, 1, 1])}
     >

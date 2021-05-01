@@ -1,18 +1,15 @@
-export enum VoiceoverSafeplace {
+enum VoiceoverSafeplace {
   Outside = 'Outside',
   OnBoarding = 'OnBoarding',
   Inside = 'Inside',
   MountainColumn = 'MountainColumn',
 }
 
-export enum VoiceoverJourney {
-  One = 'One',
+enum VoiceoverJourney {
+  Intro = 'Intro',
+  Cairns = 'Cairns',
+  Lake = 'Lake',
+  Waterfall = 'Waterfall',
 }
 
-export enum VoiceoverStatus {
-  Processing = 'Processing',
-  Playing = 'Playing',
-  Played = 'Played',
-}
-
-export default { VoiceoverSafeplace, VoiceoverJourney, VoiceoverStatus }
+export { VoiceoverSafeplace, VoiceoverJourney }

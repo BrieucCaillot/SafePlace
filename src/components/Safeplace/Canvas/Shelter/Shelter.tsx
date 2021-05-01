@@ -1,9 +1,10 @@
-import { useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import * as THREE from 'three'
 
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import Place from '@/constants/enums/Place'
 import { VoiceoverSafeplace } from '@/constants/enums/Voiceover'
+import AudioStatus from '@/constants/enums/Audio'
 
 import useAudioStore from '@/stores/useAudioStore'
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
@@ -12,18 +13,15 @@ import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 
 const Shelter = ({ object }: { object: THREE.Object3D }) => {
-  const isCurrentlyAvailable = useSafeplaceStore((state) =>
-    state.isCurrentlyAvailable(SafeplacePOI.Inside)
+  const isCurrentlyAvailable = useSafeplaceStore((s) =>
+    s.isCurrentlyAvailable(SafeplacePOI.Inside)
   )
-  const currentPOI = useSafeplaceStore((state) => state.currentPOI)
-  const isCameraTravelling = useSafeplaceStore(
-    (state) => state.isCameraTravelling
-  )
-  const setCurrentVoiceover = useAudioStore(
-    (state) => state.setCurrentVoiceover
-  )
-  const isVoiceoverPlayed = useAudioStore((state) =>
-    state.isVoiceoverPlayed(VoiceoverSafeplace.Inside)
+  const currentPOI = useSafeplaceStore((s) => s.currentPOI)
+  const setCurrentPOI = useSafeplaceStore((s) => s.setCurrentPOI)
+  const isCameraTravelling = useSafeplaceStore((s) => s.isCameraTravelling)
+  const setCurrentVoiceover = useAudioStore((s) => s.setCurrentVoiceover)
+  const isVoiceoverPlayed = useAudioStore((s) =>
+    s.checkVoiceoverStatus(VoiceoverSafeplace.Inside, AudioStatus.Played)
   )
 
   useEffect(() => {
@@ -54,6 +52,8 @@ const Shelter = ({ object }: { object: THREE.Object3D }) => {
   useSavePOIData(SafeplacePOI.Resources, shelterResourcesCam.children[0])
   useSavePOIData(SafeplacePOI.ResourceFocused, shelterResourceFocus.children[0])
 
+  const onLinkClick = useCallback(() => setCurrentPOI(SafeplacePOI.Inside), [])
+
   const shelterLinkPosition = useMemo(() => {
     const { x, z } = shelterInsideCam.position
     return new THREE.Vector3(x, -2, z)
@@ -62,9 +62,10 @@ const Shelter = ({ object }: { object: THREE.Object3D }) => {
   return (
     <primitive object={object}>
       <ColumnLink
-        position={shelterLinkPosition}
-        show={isCurrentlyAvailable}
         safeplacePOI={SafeplacePOI.Inside}
+        show={isCurrentlyAvailable}
+        onColumnClick={onLinkClick}
+        position={shelterLinkPosition}
       />
     </primitive>
   )
