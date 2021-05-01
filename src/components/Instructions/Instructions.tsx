@@ -1,5 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+
+import useAudioStore from '@/stores/useAudioStore'
+import Place from '@/constants/enums/Place'
+import Ambiants from '@/constants/enums/Ambiant'
 
 import Instruction from '@/components/Instructions/Instruction'
 import InstructionsList from '@/constants/enums/InstructionsList'
@@ -12,10 +16,16 @@ const Instructions = () => {
 
   const router = useRouter()
 
+  const setCurrentAmbiant = useAudioStore((state) => state.setCurrentAmbiant)
+
+  useEffect(() => {
+    setCurrentAmbiant(Place.Safeplace, Ambiants.Safeplace)
+  }, [])
+
   return (
     <div
       id='instructions'
-      className='absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2'
+      className='absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full'
     >
       {currentInstruction == InstructionsList.Instruction1 && (
         <Instruction
