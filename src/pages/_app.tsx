@@ -1,6 +1,6 @@
 import { Children, ComponentType, ReactChild, useEffect } from 'react'
 import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
+import { useRouter, Router } from 'next/router'
 import { AppProps, NextRouter } from 'next/dist/next-server/lib/router/router'
 import { ExcludeRouterProps } from 'next/dist/client/with-router'
 
@@ -38,7 +38,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   )
 
   useEffect(() => {
-    useUserStore.setState({ router })
+    useUserStore.setState({ router: router as Router })
   }, [router])
 
   return (
