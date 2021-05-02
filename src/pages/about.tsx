@@ -16,7 +16,7 @@ const About = () => {
 
       <main className='h-full bg-home bg-no-repeat bg-top bg-cover pointer-events-auto'>
         <div className='container h-full'>
-          <div className='flex w-full md:w-3/4 mx-auto h-full flex-col justify-center items-center text-center'>
+          <div className='fadeIn flex w-full md:w-3/4 mx-auto h-full flex-col justify-center items-center text-center'>
             <h1 className='text-secondary tracking-widest text-5xl pb-9'>
               Projet
             </h1>

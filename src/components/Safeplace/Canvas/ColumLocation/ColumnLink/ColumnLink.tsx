@@ -4,35 +4,25 @@ import { MeshProps, useFrame, useThree } from 'react-three-fiber'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import EasingFunction from 'easing-functions'
 
-import SafeplacePOI from '@/constants/enums/SafeplacePOI'
-import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import useAnimateVector from '@/hooks/animation/useAnimateVector'
 
 import vertexShader from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink.vert'
 import fragmentShader from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink.frag'
 
 const ColumnLink = ({
-  safeplacePOI,
   show,
   onColumnClick,
+  size = 3,
   ...meshProps
 }: {
-  safeplacePOI: SafeplacePOI
   show: boolean
+  size?: number
   onColumnClick: Function
 } & Omit<MeshProps, 'scale'>) => {
   // -- State
   const { camera, viewport } = useThree()
   const [scale, setScale] = useState<THREE.Vector3Tuple>(
     show ? [1, 1, 1] : [0, 0, 0]
-  )
-
-  const { scalarFactor } = useControls(
-    'column_button',
-    {
-      scalarFactor: 3,
-    },
-    { collapsed: true, render: () => false }
   )
 
   // -- Refs
@@ -50,7 +40,7 @@ const ColumnLink = ({
 
     columnLinkRef.current?.quaternion.copy(camera.quaternion)
     columnLinkRef.current?.scale
-      .setScalar((height * scalarFactor) / 200)
+      .setScalar((height * size) / 200)
       .multiply(scaleRef.current)
   })
 
@@ -77,16 +67,12 @@ const ColumnLink = ({
     setScale(show ? [1, 1, 1] : [0, 0, 0])
   }, [show])
 
-  const handleClick = () => {
-    if (show) onColumnClick()
-  }
-
   return (
     <mesh
       {...meshProps}
       ref={columnLinkRef}
       renderOrder={1}
-      onClick={() => handleClick()}
+      onClick={() => show && onColumnClick()}
       onPointerOver={() => show && setScale([1.4, 1.4, 1.4])}
       onPointerOut={() => show && setScale([1, 1, 1])}
     >

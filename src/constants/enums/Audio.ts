@@ -1,5 +1,4 @@
 enum AudioStatus {
-  Processing = 'Processing',
   Playing = 'Playing',
   Played = 'Played',
 }

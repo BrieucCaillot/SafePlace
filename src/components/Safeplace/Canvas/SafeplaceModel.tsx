@@ -5,6 +5,7 @@ import Shelter from '@/components/Safeplace/Canvas/Shelter/Shelter'
 import ColumnLocation from '@/components/Safeplace/Canvas/ColumLocation/ColumnLocation'
 import Grass from '@/components/Safeplace/Canvas/Decorations/Grass/Grass'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
+import MountainColumn from './ColumLocation/MountainColum'
 
 const SafeplaceModel = (): ReactElement => {
   const { scene } = useGLTF('/models/safeplace/safeplace.glb')
@@ -40,13 +41,17 @@ const SafeplaceModel = (): ReactElement => {
       <Shelter object={shelter} />
 
       <group position={columnGroup.position}>
-        {columns.map((col) => (
-          <ColumnLocation
-            safeplacePOI={columnAssoc[col.name]}
-            columnObj={col}
-            key={col.name}
-          />
-        ))}
+        {columns.map((col) =>
+          columnAssoc[col.name] === SafeplacePOI.MountainColumn ? (
+            <MountainColumn columnObj={col} key={col.name} />
+          ) : (
+            <ColumnLocation
+              safeplacePOI={columnAssoc[col.name]}
+              columnObj={col}
+              key={col.name}
+            />
+          )
+        )}
         <primitive object={columnMesh} />
       </group>
 

@@ -62,7 +62,6 @@ const Shelter = ({ object }: { object: THREE.Object3D }) => {
   return (
     <primitive object={object}>
       <ColumnLink
-        safeplacePOI={SafeplacePOI.Inside}
         show={isCurrentlyAvailable}
         onColumnClick={onLinkClick}
         position={shelterLinkPosition}

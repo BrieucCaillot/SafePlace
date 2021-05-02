@@ -2,13 +2,14 @@ import { Router } from 'next/router'
 import create from 'zustand'
 
 type UserStore = {
+  router: Router
   isFirstConnection: 'true' | 'false'
   getUserFirstConnection: () => string
   setUserFirstConnection: (status: string) => void
-  router: Router
 }
 
 const useUserStore = create<UserStore>((set) => ({
+  router: {} as Router,
   isFirstConnection: 'false',
   getUserFirstConnection: () =>
     window.localStorage.getItem('isFirstConnection'),
@@ -16,7 +17,6 @@ const useUserStore = create<UserStore>((set) => ({
     window.localStorage.setItem('isFirstConnection', status)
     set({ isFirstConnection: status })
   },
-  router: {} as Router,
 }))
 
 export default useUserStore
