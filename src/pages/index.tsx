@@ -14,8 +14,8 @@ const Index = () => {
         </Link>
       </PortalUI>
 
-      <div
-        id='on-boarding-welcome'
+      <main
+        id='home'
         className='relative bg-home bg-no-repeat bg-bottom bg-cover h-screen'
       >
         <img
@@ -30,7 +30,7 @@ const Index = () => {
             </button>
           </Link>
         </div>
-      </div>
+      </main>
     </>
   )
 }

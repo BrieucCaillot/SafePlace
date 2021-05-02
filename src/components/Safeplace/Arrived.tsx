@@ -12,11 +12,7 @@ const Arrived = (): null => {
   const isFirstConnection = useUserStore((s) => s.isFirstConnection)
 
   const setCurrentAmbiant = useAudioStore((state) => state.setCurrentAmbiant)
-
   const setCurrentVoiceover = useAudioStore((s) => s.setCurrentVoiceover)
-  const isVoiceoverSafeplaceArrivedPlayed = useAudioStore((s) =>
-    s.checkVoiceoverStatus(VoiceoverSafeplace.Arrived, AudioStatus.Played)
-  )
   const setVoiceoverStatus = useAudioStore((s) => s.setVoiceoverStatus)
 
   useEffect(() => {
