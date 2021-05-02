@@ -61,6 +61,7 @@ const ScenesRouting = ({
   }, [pathname])
 
   useEffect(() => {
+    const { setCurrentPOI } = useSafeplaceStore.getState()
     const { unmountScenes } = useSceneStore.getState()
     if (pathname == previousPathname) return
     if (previousPathname === '/journey') {
@@ -70,6 +71,7 @@ const ScenesRouting = ({
         SceneName.JourneyIntro,
         SceneName.Waterfall,
       ])
+      setCurrentPOI(SafeplacePOI.Inside)
     }
   }, [previousPathname, pathname])
 

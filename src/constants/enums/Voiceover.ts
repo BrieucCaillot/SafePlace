@@ -8,8 +8,11 @@ enum VoiceoverSafeplace {
 enum VoiceoverJourney {
   Intro = 'Intro',
   Cairns = 'Cairns',
-  Lake = 'Lake',
+  Lake1 = 'Lake1',
+  Lake2 = 'Lake2',
+  Bridge = 'Bridge',
   Waterfall = 'Waterfall',
+  Outro = 'Outro',
 }
 
 export { VoiceoverSafeplace, VoiceoverJourney }

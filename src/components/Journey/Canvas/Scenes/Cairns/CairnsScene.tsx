@@ -1,14 +1,19 @@
-import React, { forwardRef, RefObject, useMemo, useRef } from 'react'
+import React, { forwardRef, RefObject, useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { useGLTF } from '@react-three/drei'
 import { useFrame } from 'react-three-fiber'
 
+import useJourneyStore from '@/stores/useJourneyStore'
+import useAudioStore from '@/stores/useAudioStore'
+import useThreeAnimation from '@/hooks/animation/useThreeAnimation'
+import { VoiceoverJourney } from '@/constants/enums/Voiceover'
+import JourneySection from '@/constants/enums/JourneySection'
+import Place from '@/constants/enums/Place'
+
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import JourneySky from '@/components/Journey/Canvas/Decorations/JourneySky'
-import useThreeAnimation from '@/hooks/animation/useThreeAnimation'
-import useJourneyStore from '@/stores/useJourneyStore'
-import JourneySection from '@/constants/enums/JourneySection'
+import { Howl } from 'howler'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -36,6 +41,18 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     ref: containerRef,
     onFinished: () => setSection(JourneySection.Lake),
   })
+
+  /**
+   * Voiceover
+   */
+  const setCurrentVoiceover = useAudioStore(
+    (state) => state.setCurrentVoiceover
+  )
+
+  useEffect(() => {
+    if (!isCairnSection) return
+    setCurrentVoiceover(Place.Journey, VoiceoverJourney.Cairns)
+  }, [isCairnSection])
 
   useFrame(
     () =>

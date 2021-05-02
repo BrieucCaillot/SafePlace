@@ -3,6 +3,7 @@ import { Howl } from 'howler'
 
 import Place from '@/constants/enums/Place'
 import InstructionsList from '@/constants/enums/InstructionsList'
+import VOICEOVER_SPRITE from '@/constants/VOICEOVER_SPRITE'
 import AudioStatus from '@/constants/enums/Audio'
 import Ambiants from '@/constants/enums/Ambiant'
 import {
@@ -16,8 +17,8 @@ type AudioStore = {
 
   // AMBIANT
   ambiantStatusMap: Map<Ambiants, AudioStatus>
-  setAudioStatus: (key: Ambiants, status: AudioStatus) => void
-  checkAudioStatus: (key: Ambiants, status: AudioStatus) => boolean
+  setAmbiantStatus: (key: Ambiants, status: AudioStatus) => void
+  checkAmbiantStatus: (key: Ambiants, status: AudioStatus) => boolean
   currentAmbiant: {
     name: Ambiants | null
     ambiant: Howl | null
@@ -78,22 +79,19 @@ const useAudioStore = create<AudioStore>((set, get, state) => ({
   },
   // AMBIANT
   ambiantStatusMap: new Map(),
-  setAudioStatus: (key, status) => {
+  setAmbiantStatus: (key, status) => {
     set({ ambiantStatusMap: get().ambiantStatusMap.set(key, status) })
   },
-  checkAudioStatus: (key, ambiantStatus) =>
+  checkAmbiantStatus: (key, ambiantStatus) =>
     get().ambiantStatusMap.get(key) === ambiantStatus,
   currentAmbiant: {
     name: null,
     ambiant: null,
   },
   isAmbiantPlayable: (key) =>
-    !get().checkAudioStatus(key, AudioStatus.Processing) &&
-    !get().checkAudioStatus(key, AudioStatus.Playing) &&
-    !get().checkAudioStatus(key, AudioStatus.Processing),
+    !get().checkAmbiantStatus(key, AudioStatus.Playing) &&
+    !get().checkAmbiantStatus(key, AudioStatus.Played),
   setCurrentAmbiant: (place, ambiants) => {
-    get().setAudioStatus(ambiants, AudioStatus.Processing)
-
     const sound = new Howl({
       src: [`/audios/ambiants/${place}/${ambiants}.mp3`],
       volume: get().isAudioMuted ? 0 : 1,
@@ -103,12 +101,12 @@ const useAudioStore = create<AudioStore>((set, get, state) => ({
     // Clear listener after first call.
     sound.once('load', function () {
       sound.play()
-      get().setAudioStatus(ambiants, AudioStatus.Playing)
+      get().setAmbiantStatus(ambiants, AudioStatus.Playing)
     })
 
     // Fires when the voiceover finishes playing.
     sound.on('end', function () {
-      get().setAudioStatus(ambiants, AudioStatus.Played)
+      get().setAmbiantStatus(ambiants, AudioStatus.Played)
     })
 
     set({ currentAmbiant: { name: ambiants, ambiant: sound } })
@@ -126,7 +124,9 @@ const useAudioStore = create<AudioStore>((set, get, state) => ({
     voiceover: null,
   },
   setCurrentVoiceover: (place, voiceoverName) => {
-    get().setVoiceoverStatus(voiceoverName, AudioStatus.Processing)
+    const { voiceover } = get().currentVoiceover
+
+    if (voiceover) voiceover.unload()
 
     const sound = new Howl({
       src: [`/audios/voiceover/${place}/${voiceoverName}.mp3`],
@@ -151,7 +151,6 @@ const useAudioStore = create<AudioStore>((set, get, state) => ({
   checkVoiceoverStatus: (key, status) =>
     get().voiceoverStatusMap.get(key) === status,
   isVoiceoverPlayable: (key) =>
-    !get().checkVoiceoverStatus(key, AudioStatus.Processing) &&
     !get().checkVoiceoverStatus(key, AudioStatus.Playing) &&
     !get().checkVoiceoverStatus(key, AudioStatus.Played),
 }))

@@ -1,14 +1,18 @@
-import React, { forwardRef, RefObject, useMemo, useRef } from 'react'
+import React, { forwardRef, RefObject, useEffect, useMemo, useRef } from 'react'
+import { useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
 import { useGLTF } from '@react-three/drei'
+
+import useJourneyStore from '@/stores/useJourneyStore'
+import useAudioStore from '@/stores/useAudioStore'
+import useThreeAnimation from '@/hooks/animation/useThreeAnimation'
+import JourneySection from '@/constants/enums/JourneySection'
+import Place from '@/constants/enums/Place'
+import { VoiceoverJourney } from '@/constants/enums/Voiceover'
 
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import JourneySky from '@/components/Journey/Canvas/Decorations/JourneySky'
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
-import useThreeAnimation from '@/hooks/animation/useThreeAnimation'
-import useJourneyStore from '@/stores/useJourneyStore'
-import JourneySection from '@/constants/enums/JourneySection'
-import { useFrame } from 'react-three-fiber'
 import Dandelion from '@/components/canvas/Dandelion/Dandelion'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
@@ -60,6 +64,18 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     () => particules.children.map((o) => o.position),
     []
   )
+
+  /**
+   * Voiceover
+   */
+  const setCurrentVoiceover = useAudioStore(
+    (state) => state.setCurrentVoiceover
+  )
+
+  useEffect(() => {
+    if (!isLakeSection) return
+    setCurrentVoiceover(Place.Journey, VoiceoverJourney.Lake1)
+  }, [isLakeSection])
 
   return (
     <>
