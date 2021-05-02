@@ -8,12 +8,12 @@ import useAudioStore from '@/stores/useAudioStore'
 import useThreeAnimation from '@/hooks/animation/useThreeAnimation'
 import { VoiceoverJourney } from '@/constants/enums/Voiceover'
 import JourneySection from '@/constants/enums/JourneySection'
+import Ambiants from '@/constants/enums/Ambiant'
 import Place from '@/constants/enums/Place'
 
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import JourneySky from '@/components/Journey/Canvas/Decorations/JourneySky'
-import { Howl } from 'howler'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -42,15 +42,14 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     onFinished: () => setSection(JourneySection.Lake),
   })
 
-  /**
-   * Voiceover
-   */
-  const setCurrentVoiceover = useAudioStore(
-    (state) => state.setCurrentVoiceover
-  )
+  const setCurrentAmbiant = useAudioStore((s) => s.setCurrentAmbiant)
+  const setCurrentVoiceover = useAudioStore((s) => s.setCurrentVoiceover)
 
   useEffect(() => {
     if (!isCairnSection) return
+    // Ambiant
+    setCurrentAmbiant(Place.Journey, Ambiants.Cairns)
+    // Voiceover
     setCurrentVoiceover(Place.Journey, VoiceoverJourney.Cairns)
   }, [isCairnSection])
 

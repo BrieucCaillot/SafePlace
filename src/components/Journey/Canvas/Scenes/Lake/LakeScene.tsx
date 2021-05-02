@@ -8,6 +8,7 @@ import useAudioStore from '@/stores/useAudioStore'
 import useThreeAnimation from '@/hooks/animation/useThreeAnimation'
 import JourneySection from '@/constants/enums/JourneySection'
 import Place from '@/constants/enums/Place'
+import Ambiants from '@/constants/enums/Ambiant'
 import { VoiceoverJourney } from '@/constants/enums/Voiceover'
 
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
@@ -65,15 +66,14 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     []
   )
 
-  /**
-   * Voiceover
-   */
-  const setCurrentVoiceover = useAudioStore(
-    (state) => state.setCurrentVoiceover
-  )
+  const setCurrentAmbiant = useAudioStore((s) => s.setCurrentAmbiant)
+  const setCurrentVoiceover = useAudioStore((s) => s.setCurrentVoiceover)
 
   useEffect(() => {
     if (!isLakeSection) return
+    // Ambiant
+    setCurrentAmbiant(Place.Journey, Ambiants.Lake)
+    // Voiceover
     setCurrentVoiceover(Place.Journey, VoiceoverJourney.Lake1)
   }, [isLakeSection])
 
