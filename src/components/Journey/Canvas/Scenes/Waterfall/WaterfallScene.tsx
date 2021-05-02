@@ -1,11 +1,12 @@
 import React, { forwardRef, RefObject, useEffect, useMemo } from 'react'
 import { useGLTF } from '@react-three/drei'
 
-import useAudioStore from '@/stores/useAudioStore'
-import Place from '@/constants/enums/Place'
-import { VoiceoverJourney } from '@/constants/enums/Voiceover'
-import JourneySection from '@/constants/enums/JourneySection'
 import useJourneyStore from '@/stores/useJourneyStore'
+import useAudioStore from '@/stores/useAudioStore'
+import JourneySection from '@/constants/enums/JourneySection'
+import Place from '@/constants/enums/Place'
+import Ambiants from '@/constants/enums/Ambiant'
+import { VoiceoverJourney } from '@/constants/enums/Voiceover'
 
 import Waterfall from '@/components/canvas/Waterfall/Waterfall'
 import WaterfallCamera from '@/components/Journey/Canvas/Scenes/Waterfall/WaterfallCamera'
@@ -37,25 +38,26 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   const cameraOffset = useMemo(() => cameras.position.toArray(), [])
 
-  /**
-   * Voiceover
-   */
-  const setCurrentVoiceover = useAudioStore(
-    (state) => state.setCurrentVoiceover
-  )
+  const setCurrentAmbiant = useAudioStore((s) => s.setCurrentAmbiant)
+  const setCurrentVoiceover = useAudioStore((s) => s.setCurrentVoiceover)
 
   useEffect(() => {
     if (!isToBridgeSection) return
+    // Ambiant
+    setCurrentAmbiant(Place.Journey, Ambiants.Waterfall)
+    // Voiceover
     setCurrentVoiceover(Place.Journey, VoiceoverJourney.Bridge)
   }, [isToBridgeSection])
 
   useEffect(() => {
     if (!isWaterfallSection) return
+    // Voiceover
     setCurrentVoiceover(Place.Journey, VoiceoverJourney.Waterfall)
   }, [isWaterfallSection])
 
   useEffect(() => {
     if (!isOutroSection) return
+    // Voiceover
     setCurrentVoiceover(Place.Journey, VoiceoverJourney.Outro)
   }, [isOutroSection])
 

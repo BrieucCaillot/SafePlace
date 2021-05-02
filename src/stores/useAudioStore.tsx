@@ -92,6 +92,10 @@ const useAudioStore = create<AudioStore>((set, get, state) => ({
     !get().checkAmbiantStatus(key, AudioStatus.Playing) &&
     !get().checkAmbiantStatus(key, AudioStatus.Played),
   setCurrentAmbiant: (place, ambiants) => {
+    const { ambiant } = get().currentAmbiant
+
+    if (ambiant) ambiant.unload()
+
     const sound = new Howl({
       src: [`/audios/ambiants/${place}/${ambiants}.mp3`],
       volume: get().isAudioMuted ? 0 : 1,
