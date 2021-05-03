@@ -13,6 +13,7 @@ import WaterfallCamera from '@/components/Journey/Canvas/Scenes/Waterfall/Waterf
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import JourneySky from '@/components/Journey/Canvas/Decorations/JourneySky'
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
+import Slats from './Slats'
 
 const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const gltf = useGLTF('/models/journey/chapter3.glb')
@@ -23,8 +24,6 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     () => [...gltf.scene.children],
     []
   )
-
-  console.log(slats)
 
   const [camAnims, slatAnims] = useMemo(() => {
     const [cam1, cam2, cam3, ...slatsAnims] = gltf.animations
@@ -59,9 +58,10 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
       <JourneySky />
 
+      <Slats slatGroup={slats} slatAnims={slatAnims} />
+
       <primitive object={mountains} />
       <primitive object={rocks} />
-      <primitive object={slats} />
       <primitive object={waterfall} />
 
       <Waterfall scale={[7, 7, 7]} position={[-5.5, 0, 0]} />
