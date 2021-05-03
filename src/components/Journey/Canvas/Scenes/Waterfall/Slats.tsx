@@ -11,8 +11,12 @@ const Slats = ({
   slatAnims: THREE.AnimationClip[]
 }) => {
   const slats = useMemo(() => [...slatGroup.children] as THREE.Mesh[], [])
-  const isBridgeSection = useJourneyStore(
-    (s) => s.currentSection === JourneySection.Bridge
+  const animate = useJourneyStore((s) =>
+    [
+      JourneySection.Bridge,
+      JourneySection.Bridge,
+      JourneySection.Outro,
+    ].includes(s.currentSection)
   )
 
   return (
@@ -25,9 +29,7 @@ const Slats = ({
         <Slat
           slatObject={s}
           slatAnim={
-            isBridgeSection
-              ? slatAnims.find((a) => a.name.includes(s.name))
-              : null
+            animate ? slatAnims.find((a) => a.name.includes(s.name)) : null
           }
           key={i}
         />

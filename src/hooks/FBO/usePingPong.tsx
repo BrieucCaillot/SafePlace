@@ -12,12 +12,14 @@ const usePingPong = (
     quadTexture,
     particleTexture,
     initTextureRef,
+    enable = true,
   }: {
     cameraRef: RefObject<THREE.Camera>
     sceneRef: RefObject<THREE.Scene>
     initTextureRef: WatchableRefObject<THREE.Texture>
     quadTexture: WatchableRefObject<THREE.Texture>
     particleTexture: WatchableRefObject<THREE.Texture>
+    enable?: boolean
   }
 ) => {
   const initBufferSize = useMemo(() => [...bufferSize], [])
@@ -49,6 +51,7 @@ const usePingPong = (
   }, [])
 
   useFrame(({ gl }) => {
+    if (!enable) return
     if (sceneRef.current === null) return
     if (cameraRef.current === null) return
     let oldFbo1 = fbo1 // store A, the penultimate state

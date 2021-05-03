@@ -15,6 +15,8 @@ import { getPositionTextureFromBox } from '@/utils/FBO/getPositionTexture'
 import usePingPong from '@/hooks/FBO/usePingPong'
 import useWatchableRef from '@/hooks/useWatchableRef'
 import findMinimumTexSize from '@/utils/FBO/findMinimumTexSize'
+import useSceneStore from '@/stores/useSceneStore'
+import SceneName from '@/constants/enums/SceneName'
 
 const Waterfall = (props: GroupProps) => {
   const { showDegug, numPoints } = useControls(
@@ -29,6 +31,7 @@ const Waterfall = (props: GroupProps) => {
     },
     {
       collapsed: true,
+      render: (s) => s('path') === '/journey',
     }
   )
 
@@ -89,12 +92,16 @@ const Waterfall = (props: GroupProps) => {
     []
   )
 
+  const isSceneRendered = useSceneStore(
+    (s) => s.renderedScene === SceneName.Waterfall
+  )
   usePingPong(bufferSize, {
     particleTexture,
     quadTexture,
     initTextureRef,
     sceneRef,
     cameraRef,
+    enable: isSceneRendered,
   })
 
   const onPointerMove = useCallback<(e: PointerEvent) => void>(({ point }) => {
@@ -120,10 +127,11 @@ const Waterfall = (props: GroupProps) => {
         <mesh
           name='RaycastPlane'
           onPointerMove={onPointerMove}
-          position-z={-1}
-          position-y={1.6}
+          position-z={-0.85}
+          rotation-x={-0.1}
+          position-y={1.8}
         >
-          <planeGeometry args={[3.3, 2.5, 1]} />
+          <planeGeometry args={[3.8, 2.3, 1]} />
           <meshBasicMaterial
             color={'green'}
             wireframe={false}

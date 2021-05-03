@@ -38,7 +38,7 @@ const JourneySky = () => {
         max: 1,
       },
     },
-    { collapsed: true }
+    { collapsed: true, render: (s) => s('path') === '/journey' }
   )
 
   return (
