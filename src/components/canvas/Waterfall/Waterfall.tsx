@@ -111,7 +111,7 @@ const Waterfall = (props: GroupProps) => {
         <mesh
           name='SpawnBox'
           ref={targetMeshRef}
-          scale={[3, 0.3, 0.3]}
+          scale={[4, 0.3, 0.3]}
           position={[0, 3.25, -0.95]}
         >
           <boxBufferGeometry />

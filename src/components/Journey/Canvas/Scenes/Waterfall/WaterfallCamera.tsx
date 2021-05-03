@@ -64,7 +64,7 @@ const WaterfallCamera = forwardRef(
             rotation-x={-Math.PI / 2}
             near={0.1}
             far={1000}
-            fov={90}
+            fov={32.6}
           />
           {/* <mesh>
             <boxBufferGeometry args={[1, 1, 1]} />
