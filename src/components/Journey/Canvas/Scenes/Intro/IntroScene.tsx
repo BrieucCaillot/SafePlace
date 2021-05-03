@@ -30,7 +30,8 @@ const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   }, [isIntroSection])
 
   useEffect(() => {
-    useJourneyStore.getState().setSection(JourneySection.Cairns)
+    if (isVoiceoverFinished)
+      useJourneyStore.getState().setSection(JourneySection.Cairns)
   }, [isVoiceoverFinished])
 
   return (
