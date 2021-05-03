@@ -1,4 +1,13 @@
-import React, { forwardRef, RefObject, useEffect } from 'react'
+import React, {
+  forwardRef,
+  RefObject,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
+import { useThree } from 'react-three-fiber'
+import * as THREE from 'three'
 
 import useJourneyStore from '@/stores/useJourneyStore'
 import useAudioStore from '@/stores/useAudioStore'
@@ -10,29 +19,70 @@ import { VoiceoverJourney } from '@/constants/enums/Voiceover'
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
+import AudioStatus from '@/constants/enums/Audio'
 
 const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
+  const [sizeTex, setSizeTex] = useState({ width: 0, height: 0 })
+
+  const introTexure = useMemo(
+    () =>
+      new THREE.TextureLoader().load('/img/journey/chapter0.jpg', (t) => {
+        const { width, height } = t.image
+        setSizeTex({ width, height })
+      }),
+    []
+  )
+
+  const planeRef = useRef<THREE.Mesh>()
+  const vec3Ref = useMemo(() => new THREE.Vector3(), [])
+  const scaleRef = useRef<THREE.Vector3>(new THREE.Vector3(1000))
+
+  const { camera, viewport, size } = useThree()
+
+  useEffect(() => {
+    const { width, height } = viewport(
+      camera,
+      planeRef.current?.getWorldPosition(vec3Ref) as THREE.Vector3
+    )
+
+    const texRatio = sizeTex.width / sizeTex.height
+    const screenRatio = width / height
+
+    if (texRatio > screenRatio) {
+      planeRef.current?.scale.set(height * texRatio, height, 1)
+    } else {
+      planeRef.current?.scale.set(width, width / texRatio, 1)
+    }
+  }, [sizeTex, size])
+
   const isIntroSection = useJourneyStore(
     (s) => s.currentSection === JourneySection.Intro
   )
-  const setCurrentAmbiant = useAudioStore((s) => s.setCurrentAmbiant)
-  const setCurrentVoiceover = useAudioStore((s) => s.setCurrentVoiceover)
+  const isVoiceoverFinished = useAudioStore((s) =>
+    s.checkVoiceoverStatus(VoiceoverJourney.Intro, AudioStatus.Played)
+  )
 
   useEffect(() => {
     if (!isIntroSection) return
+    const { setCurrentAmbiant, setCurrentVoiceover } = useAudioStore.getState()
     // Ambiant
     setCurrentAmbiant(Place.Journey, Ambiants.Intro)
     // Voiceover
     setCurrentVoiceover(Place.Journey, VoiceoverJourney.Intro)
   }, [isIntroSection])
 
+  useEffect(() => {
+    if (isVoiceoverFinished)
+      useJourneyStore.getState().setSection(JourneySection.Cairns)
+  }, [isVoiceoverFinished])
+
   return (
     <>
       <ClassicCamera ref={camRef} />
       <CustomSky />
-      <mesh rotation={[Math.PI / 2, Math.PI / 2, 0]}>
-        <boxGeometry />
-        <meshNormalMaterial />
+      <mesh ref={planeRef}>
+        <planeGeometry />
+        <meshBasicMaterial map={introTexure} />
       </mesh>
     </>
   )

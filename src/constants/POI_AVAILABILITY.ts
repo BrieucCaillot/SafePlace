@@ -3,7 +3,7 @@ import SafeplacePOI from './enums/SafeplacePOI'
 const POI_AVAILABILITY: Record<SafeplacePOI, SafeplacePOI[]> = {
   [SafeplacePOI.OnBoarding]: [],
   [SafeplacePOI.Outside]: [SafeplacePOI.Inside],
-  [SafeplacePOI.Resources]: [SafeplacePOI.Inside],
+  [SafeplacePOI.Resources]: [SafeplacePOI.Inside, SafeplacePOI.ResourceFocused],
   [SafeplacePOI.ResourceFocused]: [SafeplacePOI.Resources],
   [SafeplacePOI.Inside]: [
     SafeplacePOI.Resources,

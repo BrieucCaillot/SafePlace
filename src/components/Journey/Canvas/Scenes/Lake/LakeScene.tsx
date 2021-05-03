@@ -1,4 +1,11 @@
-import React, { forwardRef, RefObject, useEffect, useMemo, useRef } from 'react'
+import React, {
+  forwardRef,
+  RefObject,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
 import { useGLTF } from '@react-three/drei'
@@ -15,6 +22,8 @@ import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import Dandelion from '@/components/canvas/Dandelion/Dandelion'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
+import AudioStatus from '@/constants/enums/Audio'
+import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -23,10 +32,6 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   } = useGLTF('/models/journey/chapter2.glb')
 
   const containerRef = useRef<THREE.Group>()
-  const isLakeSection = useJourneyStore(
-    (s) => s.currentSection === JourneySection.Lake
-  )
-  const setSection = useJourneyStore((s) => s.setSection)
 
   const [
     camGroup,
@@ -46,13 +51,22 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     []
   )
 
-  const animRef = useThreeAnimation({
-    // clip: isLakeSection ? camAnim : null,
-    clip: null,
-    ref: containerRef,
-    onFinished: () => setSection(JourneySection.Lake),
-  })
+  const [areDandelionAnimated, animateDandelion] = useState<boolean>(false)
 
+  const isVoiceoverFinished = useAudioStore((s) =>
+    s.checkVoiceoverStatus(VoiceoverJourney.Lake1, AudioStatus.Played)
+  )
+  const isLakeSection = useJourneyStore(
+    (s) => s.currentSection === JourneySection.Lake
+  )
+
+  const animRef = useThreeAnimation({
+    clip: areDandelionAnimated ? camAnim : null,
+    // clip: null,
+    ref: containerRef,
+    onFinished: () =>
+      useJourneyStore.getState().setSection(JourneySection.ToBridge),
+  })
   useFrame(
     () =>
       animRef.current != null &&
@@ -66,11 +80,9 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     []
   )
 
-  const setCurrentAmbiant = useAudioStore((s) => s.setCurrentAmbiant)
-  const setCurrentVoiceover = useAudioStore((s) => s.setCurrentVoiceover)
-
   useEffect(() => {
     if (!isLakeSection) return
+    const { setCurrentAmbiant, setCurrentVoiceover } = useAudioStore.getState()
     // Ambiant
     setCurrentAmbiant(Place.Journey, Ambiants.Lake)
     // Voiceover
@@ -79,15 +91,13 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   return (
     <>
-      <ClassicCamera
-        ref={camRef}
-        position={camera.getWorldPosition(new THREE.Vector3())}
-        quaternion={camera.getWorldQuaternion(new THREE.Quaternion())}
-        fov={camera.fov}
-      />
-      <group ref={containerRef}>
+      <group
+        ref={containerRef}
+        position={camGroup.position}
+        quaternion={camGroup.quaternion}
+      >
         <ClassicCamera
-          // ref={camRef}
+          ref={camRef}
           fov={camera.fov}
           rotation-x={-Math.PI / 2}
           position={[0, 0, 0]}
@@ -98,7 +108,16 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         </mesh> */}
       </group>
       <CustomSky />
-      <Dandelion points={dandelionPoints} position={particules.position} />
+      <ColumnLink
+        onColumnClick={() => animateDandelion(true)}
+        show={isVoiceoverFinished && !areDandelionAnimated}
+        position={[16, 0.5, 3]}
+      />
+      <Dandelion
+        points={dandelionPoints}
+        position={particules.position}
+        animate={areDandelionAnimated}
+      />
       <primitive object={ground} />
       <primitive object={lake} />
       <primitive object={trees} />

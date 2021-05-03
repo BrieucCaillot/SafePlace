@@ -26,21 +26,19 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const isCairnSection = useJourneyStore(
     (s) => s.currentSection === JourneySection.Cairns
   )
-  const setSection = useJourneyStore((s) => s.setSection)
 
   const cameraGroup = useMemo(() => scene.getObjectByName('camera'), [])
 
   const animRef = useThreeAnimation({
     clip: isCairnSection ? camAnim : null,
     ref: containerRef,
-    onFinished: () => setSection(JourneySection.Lake),
+    onFinished: () =>
+      useJourneyStore.getState().setSection(JourneySection.Lake),
   })
-
-  const setCurrentAmbiant = useAudioStore((s) => s.setCurrentAmbiant)
-  const setCurrentVoiceover = useAudioStore((s) => s.setCurrentVoiceover)
 
   useEffect(() => {
     if (!isCairnSection) return
+    const { setCurrentAmbiant, setCurrentVoiceover } = useAudioStore.getState()
     // Ambiant
     setCurrentAmbiant(Place.Journey, Ambiants.Cairns)
     // Voiceover

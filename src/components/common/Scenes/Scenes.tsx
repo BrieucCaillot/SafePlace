@@ -1,11 +1,9 @@
 import shallow from 'zustand/shallow'
-import React, { Fragment, RefObject, Suspense, useEffect } from 'react'
-import { Camera, useFrame, useThree } from 'react-three-fiber'
+import React, { Fragment, Suspense } from 'react'
+import { Camera, useFrame } from 'react-three-fiber'
 import useSceneStore from '@/stores/useSceneStore'
 
 const Scenes = () => {
-  const { setDefaultCamera } = useThree()
-
   const renderedSceneData = useSceneStore((s) =>
     s.renderedScene ? s.scenesData[s.renderedScene] : null
   )
@@ -14,19 +12,14 @@ const Scenes = () => {
     shallow
   )
 
-  useEffect(() => {
-    if (renderedSceneData === null) return
-    const { cameraRef } = renderedSceneData
-    if (cameraRef.current == undefined) throw `No camera for rendered scene`
-    setDefaultCamera(cameraRef.current as Camera)
-  }, [renderedSceneData])
-
-  useFrame(({ gl }) => {
+  useFrame(({ gl, camera, setDefaultCamera }) => {
     if (renderedSceneData === null) return
 
     const { cameraRef, scene } = renderedSceneData
 
     if (cameraRef.current == null) return
+    if (cameraRef.current !== camera)
+      setDefaultCamera(cameraRef.current as Camera)
 
     gl.autoClear = true
     gl.render(scene, cameraRef.current)

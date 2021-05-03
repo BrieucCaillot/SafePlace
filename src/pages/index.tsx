@@ -19,11 +19,11 @@ const Index = () => {
         className='relative bg-home bg-no-repeat bg-bottom bg-cover h-screen'
       >
         <img
-          className='absolute top-32 md:top-40 left-1/2 transform -translate-x-1/2'
+          className='absolute top-32 md:top-40 left-1/2 transform -translate-x-1/2 fadeIn'
           src='/img/index/logo.png'
           alt='safeplace-logo'
         />
-        <div className='absolute bottom-16 flex justify-center w-full'>
+        <div className='absolute bottom-16 flex justify-center w-full fadeIn'>
           <Link href='onboarding' as='onboarding'>
             <button className='relative button-stonefull text-secondary text-xl font-bold tracking-widest rounded px-10 py-3 focus:outline-none cursor-pointer pointer-events-auto'>
               Lancer l'experience

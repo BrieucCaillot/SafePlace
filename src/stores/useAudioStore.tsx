@@ -10,6 +10,8 @@ import {
   VoiceoverSafeplace,
 } from '@/constants/enums/Voiceover'
 
+type AudioKey = VoiceoverSafeplace | InstructionsList | VoiceoverJourney
+
 type AudioStore = {
   isAudioMuted: boolean
   setIsAudioMutued: (muted: boolean) => void
@@ -32,39 +34,30 @@ type AudioStore = {
   isAmbiantPlayable: (key: Ambiants) => boolean
 
   // VOICEOVER
-  voiceoverStatusMap: Map<
-    VoiceoverSafeplace | InstructionsList | VoiceoverJourney,
-    AudioStatus
-  >
-  setVoiceoverStatus: (
-    key: VoiceoverSafeplace | InstructionsList | VoiceoverJourney,
-    status: AudioStatus
-  ) => void
+  voiceoverStatusMap: Map<AudioKey, AudioStatus>
+  setVoiceoverStatus: (key: AudioKey, status: AudioStatus) => void
   currentVoiceover: {
-    name: VoiceoverSafeplace | InstructionsList | VoiceoverJourney | null
+    name: AudioKey | null
     voiceover: Howl | null
   }
   setCurrentVoiceover: (
     place: Place,
-    voiceoverName: VoiceoverSafeplace | InstructionsList | VoiceoverJourney
+    voiceoverName: AudioKey
   ) => {
-    name: VoiceoverSafeplace | InstructionsList | VoiceoverJourney
+    name: AudioKey
     voiceover: Howl
   }
-  checkVoiceoverStatus: (
-    key: VoiceoverSafeplace | InstructionsList | VoiceoverJourney,
-    status: AudioStatus
-  ) => boolean
-  isVoiceoverPlayable: (
-    key: VoiceoverSafeplace | InstructionsList | VoiceoverJourney
-  ) => boolean
+  checkVoiceoverStatus: (key: AudioKey, status: AudioStatus) => boolean
+  isVoiceoverPlayable: (key: AudioKey) => boolean
 }
 
 const useAudioStore = create<AudioStore>((set, get, state) => ({
   isAudioMuted: false,
   setIsAudioMutued: (muted) => {
-    const { ambiant } = get().currentAmbiant
-    const { voiceover } = get().currentVoiceover
+    const {
+      currentAmbiant: { ambiant },
+      currentVoiceover: { voiceover },
+    } = get()
 
     set({ isAudioMuted: muted })
 
@@ -91,30 +84,35 @@ const useAudioStore = create<AudioStore>((set, get, state) => ({
     !get().checkAmbiantStatus(key, AudioStatus.Playing) &&
     !get().checkAmbiantStatus(key, AudioStatus.Played),
   setCurrentAmbiant: (place, ambiants) => {
-    const { ambiant } = get().currentAmbiant
+    const {
+      currentAmbiant: { ambiant },
+      isAudioMuted,
+      setAmbiantStatus,
+    } = get()
 
     if (ambiant) ambiant.unload()
 
     const sound = new Howl({
       src: [`/audios/ambiants/${place}/${ambiants}.mp3`],
-      volume: get().isAudioMuted ? 0 : 1,
+      volume: isAudioMuted ? 0 : 1,
       loop: true,
     })
 
     // Clear listener after first call.
     sound.once('load', function () {
       sound.play()
-      get().setAmbiantStatus(ambiants, AudioStatus.Playing)
+      setAmbiantStatus(ambiants, AudioStatus.Playing)
     })
 
     // Fires when the voiceover finishes playing.
     sound.on('end', function () {
-      get().setAmbiantStatus(ambiants, AudioStatus.Played)
+      setAmbiantStatus(ambiants, AudioStatus.Played)
     })
 
-    set({ currentAmbiant: { name: ambiants, ambiant: sound } })
+    const currentAmbiant = { name: ambiants, ambiant: sound }
+    set({ currentAmbiant })
 
-    return get().currentAmbiant
+    return currentAmbiant
   },
 
   // VOICEOVER
@@ -127,29 +125,34 @@ const useAudioStore = create<AudioStore>((set, get, state) => ({
     voiceover: null,
   },
   setCurrentVoiceover: (place, voiceoverName) => {
-    const { voiceover } = get().currentVoiceover
+    const {
+      currentVoiceover: { voiceover },
+      isAudioMuted,
+      setVoiceoverStatus,
+    } = get()
 
     if (voiceover) voiceover.unload()
 
     const sound = new Howl({
       src: [`/audios/voiceover/${place}/${voiceoverName}.mp3`],
-      volume: get().isAudioMuted ? 0 : 1,
+      volume: isAudioMuted ? 0 : 1,
     })
 
     // Clear listener after first call.
     sound.once('load', function () {
       sound.play()
-      get().setVoiceoverStatus(voiceoverName, AudioStatus.Playing)
+      setVoiceoverStatus(voiceoverName, AudioStatus.Playing)
     })
 
     // Fires when the voiceover finishes playing.
     sound.on('end', function () {
-      get().setVoiceoverStatus(voiceoverName, AudioStatus.Played)
+      setVoiceoverStatus(voiceoverName, AudioStatus.Played)
     })
 
-    set({ currentVoiceover: { name: voiceoverName, voiceover: sound } })
+    const currentVoiceover = { name: voiceoverName, voiceover: sound }
+    set({ currentVoiceover })
 
-    return get().currentVoiceover
+    return currentVoiceover
   },
   checkVoiceoverStatus: (key, status) =>
     get().voiceoverStatusMap.get(key) === status,
@@ -157,6 +160,14 @@ const useAudioStore = create<AudioStore>((set, get, state) => ({
     !get().checkVoiceoverStatus(key, AudioStatus.Playing) &&
     !get().checkVoiceoverStatus(key, AudioStatus.Played),
 }))
+
+// const HELPER_OBJECT = {
+//   checkVoiceoverStatus: (s: AudioStore, key: AudioKey, status: AudioStatus) =>
+//     s.voiceoverStatusMap.get(key) === status,
+//   isVoiceoverPlayable: (s: AudioStore, key: AudioKey) =>
+//     !s.checkVoiceoverStatus(key, AudioStatus.Playing) &&
+//     !s.checkVoiceoverStatus(key, AudioStatus.Played),
+// }
 
 // window.useAudioStore = useAudioStore
 

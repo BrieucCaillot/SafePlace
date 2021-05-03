@@ -51,12 +51,12 @@ const WaterfallFBO = forwardRef(
           },
           angleAmplitude: { value: 0.2, min: 0, max: Math.PI, label: 'Angle' },
           movementSpeed: {
-            value: 0.03,
+            value: 1.17,
             min: 0,
-            max: 0.5,
+            max: 3,
             label: 'Speed',
           },
-          lifeTime: { value: 4, label: 'Life Time' },
+          lifeTime: { value: 7, label: 'Life Time' },
           sdfOffset: { x: 0.83, y: 3.5, z: -0.26 },
           rounding: { value: 0.66, min: 0, max: 2 },
           cursorSize: { value: 0.15, min: 0, max: 1 },
@@ -70,6 +70,7 @@ const WaterfallFBO = forwardRef(
       uPosTexture: { value: null },
       uMousePos: { value: new THREE.Vector3() },
       uTime: { value: 0 },
+      uDelta: { value: 0 },
       uBaseDirection: { value: 0 },
       uAngleAmplitude: { value: 0 },
       uMovementSpeed: { value: 0 },
@@ -90,7 +91,8 @@ const WaterfallFBO = forwardRef(
     useWatchableUniform(uniforms.current.uMousePos, mousePosRef)
 
     useFrame(() => {
-      uniforms.current.uTime.value = clockRef.current.getElapsedTime()
+      uniforms.current.uTime.value = clockRef.current.elapsedTime
+      uniforms.current.uDelta.value = clockRef.current.getDelta()
     })
 
     return createPortal(
