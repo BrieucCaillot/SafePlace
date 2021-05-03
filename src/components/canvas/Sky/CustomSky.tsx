@@ -13,8 +13,8 @@ const CustomSky = () => {
   } = useGLTF('/models/sky.glb')
 
   const { zenithColor, horizonColor, easePoint } = useControls('custom_sky', {
-    zenithColor: '#82a5b0',
-    horizonColor: '#d7b0a0',
+    zenithColor: '#7aaebe',
+    horizonColor: '#ce9f8c',
     easePoint: { x: 0.1, y: 0.5 },
   })
 

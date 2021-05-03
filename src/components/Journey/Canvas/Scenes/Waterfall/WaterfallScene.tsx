@@ -51,10 +51,10 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   return (
     <>
-      <ClassicCamera ref={camRef} fov={32.6} />
-      {/* <group position={cameraOffset}>
+      {/* <ClassicCamera ref={camRef} fov={32.6} /> */}
+      <group position={cameraOffset}>
         <WaterfallCamera clips={camAnims} ref={camRef} />
-      </group> */}
+      </group>
 
       <CustomSky />
 
