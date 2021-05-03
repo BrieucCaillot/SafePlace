@@ -1,16 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 
 import useAudioStore from '@/stores/useAudioStore'
 
+import useSafeplaceStore from '@/stores/useSafeplaceStore'
+import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import { VoiceoverSafeplace } from '@/constants/enums/Voiceover'
 import AudioStatus from '@/constants/enums/Audio'
-import Instruction from '@/components/Instructions/Instruction'
 import InstructionsList from '@/constants/enums/InstructionsList'
+import Instruction from '@/components/Instructions/Instruction'
 
 const Instructions = () => {
   const router = useRouter()
 
+  const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
   const isVoiceoverSafeplaceArivedPlayed = useAudioStore((s) =>
     s.checkVoiceoverStatus(VoiceoverSafeplace.Arrived, AudioStatus.Played)
   )
@@ -51,6 +54,7 @@ const Instructions = () => {
               text={`Installez-vous confortablement, le dos droit, \n les pieds bien à plat et quand vous serez prêt, \n venez me retrouver dans votre safe place.`}
               onNextStep={() => {
                 router.push('/safeplace')
+                setCurrentPOI(SafeplacePOI.Outside)
               }}
             />
           )}
