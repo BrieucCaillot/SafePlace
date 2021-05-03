@@ -4,12 +4,18 @@ import * as THREE from 'three'
 const Slat = ({
   slatObject,
   slatAnim,
+  onAnimFinished,
 }: {
   slatObject: THREE.Mesh
   slatAnim: THREE.AnimationClip
+  onAnimFinished: (e: THREE.Event) => void
 }) => {
   const slatRef = useRef<THREE.Mesh>(null)
-  useThreeAnimation({ clip: slatAnim, ref: slatRef })
+  useThreeAnimation({
+    clip: slatAnim,
+    ref: slatRef,
+    onFinished: onAnimFinished,
+  })
   return (
     <mesh
       position={slatObject.position}

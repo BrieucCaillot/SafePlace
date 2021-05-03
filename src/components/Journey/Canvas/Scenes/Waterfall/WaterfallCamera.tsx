@@ -15,18 +15,18 @@ const WaterfallCamera = forwardRef(
   (
     {
       clips,
+      onAnimEnd,
     }: {
       clips: THREE.AnimationClip[]
+      onAnimEnd: () => void
     },
     forwardRef: MutableRefObject<THREE.Camera>
   ) => {
     const containerRef = useRef<THREE.Object3D>(null)
 
-    const setSection = useJourneyStore((s) => s.setSection)
     const section = useJourneyStore((s) => s.currentSection)
     const currentClip = useMemo(() => {
       switch (section) {
-        case JourneySection.Bridge:
         case JourneySection.ToBridge:
           return clips[0]
         case JourneySection.Waterfall:
@@ -38,9 +38,9 @@ const WaterfallCamera = forwardRef(
       }
     }, [section])
 
-    const onAnimEnd = useCallback(() => {
-      if (section === JourneySection.ToBridge) setSection(JourneySection.Bridge)
-    }, [section])
+    // const onAnimEnd = useCallback(() => {
+    //   if (section === JourneySection.ToBridge) setSection(JourneySection.Bridge)
+    // }, [section])
 
     const animRef = useThreeAnimation({
       clip: currentClip,
