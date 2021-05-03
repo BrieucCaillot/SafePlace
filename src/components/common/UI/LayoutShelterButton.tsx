@@ -25,20 +25,25 @@ const LayoutShelterButton = ({ place }: { place: Place }) => {
   const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
 
   const onClick = useCallback(() => {
-    setCurrentPOI(SafeplacePOI.Inside)
-    if (place === Place.Journey) router.push('/safeplace')
+    if (place == Place.Safeplace) {
+      router.push('/safeplace')
+      setCurrentPOI(SafeplacePOI.Inside)
+    }
+    if (place === Place.Journey) {
+      router.push('/resource/journey')
+    }
   }, [place])
 
   return (
     <LayoutShapeLink
-      className={`shape-link__shelter ${isAvailable ? 'block' : 'hidden'}`}
+      className={`shape-link__shelter ${isAvailable ? 'fadeIn' : 'hidden'}`}
     >
-      <div
-        className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-auto cursor-pointer'
+      <span
+        className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 block pointer-events-auto cursor-pointer'
         onClick={onClick}
       >
-        <p className='text-white text-xl'>Abri</p>
-      </div>
+        <span className='text-white text-xl'>Abri</span>
+      </span>
     </LayoutShapeLink>
   )
 }

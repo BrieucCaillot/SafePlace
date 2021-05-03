@@ -9,6 +9,8 @@ const DebugNavigation: FC<{ router: NextRouter }> = ({ router }) => {
     about: '/about',
     onboarding: '/onboarding',
     safeplace: '/safeplace',
+    resources: '/resources',
+    resourceFocus: '/resource/journey',
     journey: '/journey',
   }
 

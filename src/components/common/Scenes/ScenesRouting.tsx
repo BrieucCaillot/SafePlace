@@ -44,7 +44,20 @@ const ScenesRouting = ({
       const { setCurrentPOI } = useSafeplaceStore.getState()
       mountScene(SceneName.Safeplace)
       setRenderedScene(SceneName.Safeplace)
-      setCurrentPOI(SafeplacePOI.Outside)
+    }
+
+    if (pathname === '/resources') {
+      const { setCurrentPOI } = useSafeplaceStore.getState()
+      mountScene(SceneName.Safeplace)
+      setRenderedScene(SceneName.Safeplace)
+      setCurrentPOI(SafeplacePOI.Resources)
+    }
+
+    if (pathname === '/resource/journey') {
+      const { setCurrentPOI } = useSafeplaceStore.getState()
+      mountScene(SceneName.Safeplace)
+      setRenderedScene(SceneName.Safeplace)
+      setCurrentPOI(SafeplacePOI.ResourceFocused)
     }
 
     if (pathname === '/journey') {
@@ -71,7 +84,6 @@ const ScenesRouting = ({
         SceneName.JourneyIntro,
         SceneName.Waterfall,
       ])
-      setCurrentPOI(SafeplacePOI.Inside)
     }
   }, [previousPathname, pathname])
 

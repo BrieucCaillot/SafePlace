@@ -8,11 +8,11 @@ const LayoutShapeLink = ({
   className?: string
 }) => {
   return (
-    <div
-      className={`shape shape-link ${className} pointer-events-auto relative cursor-pointer`}
+    <button
+      className={`shape shape-link ${className} pointer-events-auto outline-none focus:outline-none relative cursor-pointer`}
     >
       {children}
-    </div>
+    </button>
   )
 }
 

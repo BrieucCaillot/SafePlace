@@ -34,7 +34,13 @@ const Shelter = ({ object }: { object: THREE.Object3D }) => {
     setCurrentVoiceover(Place.Safeplace, VoiceoverSafeplace.Inside)
   }, [isVoiceoverPlayed, currentPOI, isCameraTravelling])
 
+  const [resources, shelterCams, shelterMesh] = useMemo(
+    () => [...object.children],
+    []
+  )
+
   const [
+    shelterOnBoardingCam,
     shelterResourceFocus,
     shelterResourcesCam,
     shelterInsideCam,
@@ -46,7 +52,7 @@ const Shelter = ({ object }: { object: THREE.Object3D }) => {
     []
   )
 
-  useSavePOIData(SafeplacePOI.OnBoarding, shelterOutsideCam.children[0])
+  useSavePOIData(SafeplacePOI.OnBoarding, shelterOnBoardingCam.children[0])
   useSavePOIData(SafeplacePOI.Outside, shelterOutsideCam.children[0])
   useSavePOIData(SafeplacePOI.Inside, shelterInsideCam.children[0])
   useSavePOIData(SafeplacePOI.Resources, shelterResourcesCam.children[0])
@@ -60,13 +66,15 @@ const Shelter = ({ object }: { object: THREE.Object3D }) => {
   }, [])
 
   return (
-    <primitive object={object}>
-      <ColumnLink
-        show={isCurrentlyAvailable}
-        onColumnClick={onLinkClick}
-        position={shelterLinkPosition}
-      />
-    </primitive>
+    <group position={object.position}>
+      <primitive object={shelterMesh}>
+        <ColumnLink
+          show={isCurrentlyAvailable}
+          onColumnClick={onLinkClick}
+          position={shelterLinkPosition}
+        />
+      </primitive>
+    </group>
   )
 }
 

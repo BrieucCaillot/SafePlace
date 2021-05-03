@@ -2,8 +2,8 @@ import Place from '@/constants/enums/Place'
 
 import PortalUI from '@/components/common/UI/PortalUI'
 import SafeplaceAudio from '@/components/Safeplace/SafeplaceAudio'
-import ResourcesButton from '@/components/Safeplace/UI/ResourcesButton'
 import LayoutShelterButton from '@/components/common/UI/LayoutShelterButton'
+import ResourcesButton from '@/components/Safeplace/UI/ResourcesButton'
 
 const Safeplace = () => {
   return (

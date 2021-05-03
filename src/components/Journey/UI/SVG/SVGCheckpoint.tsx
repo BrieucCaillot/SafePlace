@@ -21,9 +21,9 @@ const SVGCheckpoint = ({
 
   return (
     <svg
-      width='15'
+      width='17'
       height='17'
-      viewBox='0 0 15 17'
+      viewBox='0 0 17 17'
       fill={isActive ? 'white' : 'none'}
       className='pointer-events-auto cursor-pointer'
       onClick={() => onClick()}

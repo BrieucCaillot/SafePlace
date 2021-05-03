@@ -61,7 +61,7 @@ const Instruction = ({
         /> */}
 
         <p
-          className={`text-white tracking-wider text-lg text-center pb-7 whitespace-pre-line`}
+          className={`text-white tracking-wider text-xl text-center pb-7 whitespace-pre-line`}
         >
           {text}
         </p>
