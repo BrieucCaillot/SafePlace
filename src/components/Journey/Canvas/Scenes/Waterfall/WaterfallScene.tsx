@@ -2,10 +2,12 @@ import React, { forwardRef, RefObject, useEffect, useMemo } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 import useJourneyStore from '@/stores/useJourneyStore'
+import useUserStore from '@/stores/useUserStore'
 import useAudioStore from '@/stores/useAudioStore'
 import JourneySection from '@/constants/enums/JourneySection'
 import Place from '@/constants/enums/Place'
 import Ambiants from '@/constants/enums/Ambiant'
+import AudioStatus from '@/constants/enums/Audio'
 import { VoiceoverJourney } from '@/constants/enums/Voiceover'
 
 import Waterfall from '@/components/canvas/Waterfall/Waterfall'
@@ -25,12 +27,33 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     []
   )
 
+  const isVoiceoverWaterfallFinished = useAudioStore((s) =>
+    s.checkVoiceoverStatus(VoiceoverJourney.Waterfall, AudioStatus.Played)
+  )
+
+  const isVoiceoverOutroFinished = useAudioStore((s) =>
+    s.checkVoiceoverStatus(VoiceoverJourney.Outro, AudioStatus.Played)
+  )
+
   const [camAnims, slatAnims] = useMemo(() => {
     const [cam1, cam2, cam3, ...slatsAnims] = gltf.animations
     return [[cam1, cam2, cam3], [...slatsAnims]]
   }, [])
 
   const cameraOffset = useMemo(() => cameras.position.toArray(), [])
+
+  useEffect(() => {
+    if (isVoiceoverWaterfallFinished) {
+      useJourneyStore.getState().setSection(JourneySection.Outro)
+    }
+  }, [isVoiceoverWaterfallFinished])
+
+  useEffect(() => {
+    if (isVoiceoverOutroFinished) {
+      const { setIsJourneyCompleted } = useUserStore.getState()
+      setIsJourneyCompleted(true)
+    }
+  }, [isVoiceoverOutroFinished])
 
   useEffect(() => {
     const { setCurrentAmbiant, setCurrentVoiceover } = useAudioStore.getState()

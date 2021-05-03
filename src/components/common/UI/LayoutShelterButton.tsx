@@ -28,7 +28,6 @@ const LayoutShelterButton = ({ place }: { place: Place }) => {
     [isCurrentlyAvailable, place]
   )
   const isJourneyCompleted = useUserStore((s) => s.isJourneyCompleted)
-  const setIsJourneyCompleted = useUserStore((s) => s.setIsJourneyCompleted)
   const isWaterfallSection = useJourneyStore(
     (s) => s.currentSection == JourneySection.Outro
   )
