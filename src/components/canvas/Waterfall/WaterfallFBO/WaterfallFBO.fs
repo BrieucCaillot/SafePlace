@@ -2,6 +2,7 @@ uniform sampler2D uOrigPosTexture;
 uniform sampler2D uPosTexture;
 
 uniform float uTime;
+uniform float uDelta;
 
 uniform vec3 uMousePos;
 uniform vec3 uSdfOffset;
@@ -113,7 +114,7 @@ vec3 fakeVelocity(float seed, float seed2) {
     sqrt(1.-z*z) * sin(phi),
     z
   ));
-  vec3 coneToZ = normDir * uMovementSpeed;
+  vec3 coneToZ = normDir * uMovementSpeed * uDelta;
   vec4 toBottomQuaternion = vec4(0.7071067811865475, 0., 0., 0.7071067811865475);
   return -rotateVector(toBottomQuaternion, coneToZ);
 }
