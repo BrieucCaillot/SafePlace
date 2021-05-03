@@ -16,12 +16,14 @@ import useWatchableUniform from '@/hooks/uniforms/useWatchableUniform'
 
 const Dandelion = ({
   points,
+  animate = false,
   ...props
-}: GroupProps & { points: THREE.Vector3[] }) => {
+}: GroupProps & { points: THREE.Vector3[]; animate?: boolean }) => {
   const meshRef = useRef<THREE.Mesh>(null)
 
   const animRef = useRef<gsap.core.Tween>()
   const animationProgress = useWatchableRef(0)
+
   const startAnimation = useCallback(() => {
     if (animRef.current) animRef.current.kill()
     animRef.current = gsap.fromTo(
@@ -38,6 +40,11 @@ const Dandelion = ({
     if (animRef.current) animRef.current.kill()
     animationProgress.current = 0
   }, [])
+
+  useEffect(() => {
+    if (animate) startAnimation()
+    else resetAnimation()
+  }, [animate])
 
   const {
     particlesSize,
@@ -56,19 +63,19 @@ const Dandelion = ({
       sizeVariation: 1,
       spreadFactor: { value: 0.015, min: 0, max: 1 },
       alpha: { value: 1, min: 0, max: 1 },
-      startColor: '#f8ffb7',
-      endColor: '#b1b1b1',
+      startColor: '#ffe997',
+      endColor: '#ad7979',
       windDirection: [1, 7, -1],
-      startAnimation: {
-        type: 'BUTTON',
-        onClick: startAnimation,
-        value: false,
-      },
-      resetAnimation: {
-        type: 'BUTTON',
-        onClick: resetAnimation,
-        value: false,
-      },
+      // startAnimation: {
+      //   type: 'BUTTON',
+      //   onClick: startAnimation,
+      //   value: false,
+      // },
+      // resetAnimation: {
+      //   type: 'BUTTON',
+      //   onClick: resetAnimation,
+      //   value: false,
+      // },
     },
     { collapsed: true, render: (s) => s('path') === '/journey' }
   )

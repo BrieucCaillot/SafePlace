@@ -38,7 +38,7 @@ const ColumnLink = ({
       columnLinkRef.current?.getWorldPosition(vec3Ref) as THREE.Vector3
     )
 
-    columnLinkRef.current?.quaternion.copy(camera.quaternion)
+    camera.getWorldQuaternion(columnLinkRef.current?.quaternion)
     columnLinkRef.current?.scale
       .setScalar((height * size) / 200)
       .multiply(scaleRef.current)
