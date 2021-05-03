@@ -28,13 +28,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   )
   const setSection = useJourneyStore((s) => s.setSection)
 
-  const { cameraGroup, camera } = useMemo(() => {
-    const cameraGroup = scene.getObjectByName('camera')
-    return {
-      cameraGroup,
-      camera: cameraGroup.children[0].children[0] as THREE.PerspectiveCamera,
-    }
-  }, [])
+  const cameraGroup = useMemo(() => scene.getObjectByName('camera'), [])
 
   const animRef = useThreeAnimation({
     clip: isCairnSection ? camAnim : null,
@@ -71,7 +65,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       >
         <ClassicCamera
           ref={camRef}
-          fov={camera.fov}
+          fov={54.9}
           rotation-x={-Math.PI / 2}
           position={[0, 0, 0]}
         />
