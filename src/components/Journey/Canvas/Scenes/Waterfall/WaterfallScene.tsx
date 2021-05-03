@@ -11,9 +11,9 @@ import { VoiceoverJourney } from '@/constants/enums/Voiceover'
 import Waterfall from '@/components/canvas/Waterfall/Waterfall'
 import WaterfallCamera from '@/components/Journey/Canvas/Scenes/Waterfall/WaterfallCamera'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
-import JourneySky from '@/components/Journey/Canvas/Decorations/JourneySky'
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import Slats from './Slats'
+import CustomSky from '@/components/canvas/Sky/CustomSky'
 
 const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const gltf = useGLTF('/models/journey/chapter3.glb')
@@ -56,7 +56,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         <WaterfallCamera clips={camAnims} ref={camRef} />
       </group>
 
-      <JourneySky />
+      <CustomSky />
 
       <Slats slatGroup={slats} slatAnims={slatAnims} />
 

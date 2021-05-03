@@ -68,7 +68,7 @@ const ScenesRouting = ({
         SceneName.JourneyIntro,
         SceneName.Waterfall,
       ])
-      setRenderedScene(SceneName.Lake)
+      setRenderedScene(SceneName.JourneyIntro)
       setSection(JourneySection.Intro)
     }
   }, [pathname])

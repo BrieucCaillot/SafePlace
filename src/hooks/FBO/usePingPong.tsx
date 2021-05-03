@@ -51,7 +51,8 @@ const usePingPong = (
   }, [])
 
   useFrame(({ gl }) => {
-    if (!enable) return
+    // TODO: Freeze app on early return
+    // if (!enable) return true
     if (sceneRef.current === null) return
     if (cameraRef.current === null) return
     let oldFbo1 = fbo1 // store A, the penultimate state

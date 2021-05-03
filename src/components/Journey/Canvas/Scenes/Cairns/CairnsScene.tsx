@@ -13,7 +13,7 @@ import Place from '@/constants/enums/Place'
 
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
-import JourneySky from '@/components/Journey/Canvas/Decorations/JourneySky'
+import CustomSky from '@/components/canvas/Sky/CustomSky'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -70,7 +70,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
           position={[0, 0, 0]}
         />
       </group>
-      <JourneySky />
+      <CustomSky />
       <primitive object={scene} />
     </>
   )

@@ -1,10 +1,10 @@
 import { forwardRef, RefObject } from 'react'
 
-import SafeplaceSky from '@/components/Safeplace/Canvas/Decorations/SafeplaceSky'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import SafeplaceDebug from '@/components/Safeplace/Canvas/SafeplaceDebug'
 import SafeplaceModel from '@/components/Safeplace/Canvas/SafeplaceModel'
 import SafeplaceCamera from '@/components/Safeplace/Canvas/SafeplaceCamera'
+import CustomSky from '@/components/canvas/Sky/CustomSky'
 
 const SafeplaceScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   return (
@@ -12,7 +12,7 @@ const SafeplaceScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       <SafeplaceCamera ref={camRef} />
 
       <SafeplaceDebug />
-      <SafeplaceSky />
+      <CustomSky />
       <SafeplaceModel />
     </>
   )
