@@ -10,21 +10,28 @@ import { VoiceoverJourney } from '@/constants/enums/Voiceover'
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
+import AudioStatus from '@/constants/enums/Audio'
 
 const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const isIntroSection = useJourneyStore(
     (s) => s.currentSection === JourneySection.Intro
   )
-  const setCurrentAmbiant = useAudioStore((s) => s.setCurrentAmbiant)
-  const setCurrentVoiceover = useAudioStore((s) => s.setCurrentVoiceover)
+  const isVoiceoverFinished = useAudioStore((s) =>
+    s.checkVoiceoverStatus(VoiceoverJourney.Intro, AudioStatus.Played)
+  )
 
   useEffect(() => {
     if (!isIntroSection) return
+    const { setCurrentAmbiant, setCurrentVoiceover } = useAudioStore.getState()
     // Ambiant
     setCurrentAmbiant(Place.Journey, Ambiants.Intro)
     // Voiceover
     setCurrentVoiceover(Place.Journey, VoiceoverJourney.Intro)
   }, [isIntroSection])
+
+  useEffect(() => {
+    useJourneyStore.getState().setSection(JourneySection.Cairns)
+  }, [isVoiceoverFinished])
 
   return (
     <>

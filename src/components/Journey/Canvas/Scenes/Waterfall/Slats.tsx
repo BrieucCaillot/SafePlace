@@ -14,7 +14,7 @@ const Slats = ({
   const animate = useJourneyStore((s) =>
     [
       JourneySection.Bridge,
-      JourneySection.Bridge,
+      JourneySection.Waterfall,
       JourneySection.Outro,
     ].includes(s.currentSection)
   )
