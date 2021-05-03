@@ -1,9 +1,14 @@
-import Place from '@/constants/enums/Place'
-import LayoutShapeLink from '@/components/common/UI/LayoutShapeLink'
-import useSafeplaceStore from '@/stores/useSafeplaceStore'
-import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import { useCallback, useMemo } from 'react'
 import { useRouter } from 'next/router'
+
+import useUserStore from '@/stores/useUserStore'
+import useSafeplaceStore from '@/stores/useSafeplaceStore'
+import useJourneyStore from '@/stores/useJourneyStore'
+import Place from '@/constants/enums/Place'
+import JourneySection from '@/constants/enums/JourneySection'
+import SafeplacePOI from '@/constants/enums/SafeplacePOI'
+
+import LayoutShapeLink from '@/components/common/UI/LayoutShapeLink'
 
 const LayoutShelterButton = ({ place }: { place: Place }) => {
   const POIsWhereHidden = [
@@ -15,22 +20,35 @@ const LayoutShelterButton = ({ place }: { place: Place }) => {
 
   const router = useRouter()
 
-  const isCurrentlyAvailableSafeplace = useSafeplaceStore(
+  const isCurrentlyAvailable = useSafeplaceStore(
     (state) => !POIsWhereHidden.includes(state.currentPOI)
   )
   const isAvailable = useMemo(
-    () => isCurrentlyAvailableSafeplace || place == Place.Journey,
-    [isCurrentlyAvailableSafeplace, place]
+    () => isCurrentlyAvailable || place == Place.Journey,
+    [isCurrentlyAvailable, place]
   )
+  const isJourneyCompleted = useUserStore((s) => s.isJourneyCompleted)
+  const setIsJourneyCompleted = useUserStore((s) => s.setIsJourneyCompleted)
+  const isWaterfallSection = useJourneyStore(
+    (s) => s.currentSection == JourneySection.Outro
+  )
+
   const setCurrentPOI = useSafeplaceStore((state) => state.setCurrentPOI)
 
   const onClick = useCallback(() => {
-    if (place == Place.Safeplace) {
-      router.push('/safeplace')
-      setCurrentPOI(SafeplacePOI.Inside)
-    }
-    if (place === Place.Journey) {
-      router.push('/resource/journey')
+    switch (place) {
+      case Place.Safeplace:
+        router.push('/safeplace')
+        setCurrentPOI(SafeplacePOI.Inside)
+        break
+      case Place.Journey:
+        if (isJourneyCompleted) {
+          router.push('/resource/journey')
+        } else {
+          router.push('/safeplace')
+          setCurrentPOI(SafeplacePOI.Inside)
+        }
+        break
     }
   }, [place])
 

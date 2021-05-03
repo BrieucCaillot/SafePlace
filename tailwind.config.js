@@ -18,13 +18,15 @@ module.exports = {
       },
     },
     fontFamily: {
-      serif: ['Philosopher', 'Helvetica', 'sans-serif'],
+      sans: ['Inter', 'Arial', 'sans-serif'],
+      serif: ['Philosopher', 'Helvetica', 'serif'],
     },
     colors: {
-      black: colors.black,
+      black: '#282F28',
       white: colors.white,
       primary: 'var(--primary)',
       secondary: 'var(--secondary)',
+      tertiary: 'var(--tertiary)',
       'button-ui': 'var(--button-ui)',
     },
   },

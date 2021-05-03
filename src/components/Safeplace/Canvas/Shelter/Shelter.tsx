@@ -1,18 +1,21 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import * as THREE from 'three'
 
+import useUserStore from '@/stores/useUserStore'
+import useAudioStore from '@/stores/useAudioStore'
+import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import Place from '@/constants/enums/Place'
 import { VoiceoverSafeplace } from '@/constants/enums/Voiceover'
 import AudioStatus from '@/constants/enums/Audio'
-
-import useAudioStore from '@/stores/useAudioStore'
-import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
+import ShelterResources from '@/components/Safeplace/Canvas/Shelter/ShelterResources'
 
 const Shelter = ({ object }: { object: THREE.Object3D }) => {
+  const isJourneyCompleted = useUserStore((s) => s.isJourneyCompleted)
+
   const isCurrentlyAvailable = useSafeplaceStore((s) =>
     s.isCurrentlyAvailable(SafeplacePOI.Inside)
   )
@@ -67,6 +70,7 @@ const Shelter = ({ object }: { object: THREE.Object3D }) => {
 
   return (
     <group position={object.position}>
+      {isJourneyCompleted && <ShelterResources resources={resources} />}
       <primitive object={shelterMesh}>
         <ColumnLink
           show={isCurrentlyAvailable}
