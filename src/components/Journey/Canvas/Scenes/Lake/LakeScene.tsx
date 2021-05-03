@@ -56,7 +56,6 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const isVoiceoverFinished = useAudioStore((s) =>
     s.checkVoiceoverStatus(VoiceoverJourney.Lake1, AudioStatus.Played)
   )
-  console.log(isVoiceoverFinished)
   const isLakeSection = useJourneyStore(
     (s) => s.currentSection === JourneySection.Lake
   )
@@ -68,13 +67,13 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     onFinished: () =>
       useJourneyStore.getState().setSection(JourneySection.ToBridge),
   })
-  // useFrame(
-  //   () =>
-  //     animRef.current != null &&
-  //     !animRef.current.paused &&
-  //     containerRef.current != null &&
-  //     containerRef.current.updateMatrixWorld()
-  // )
+  useFrame(
+    () =>
+      animRef.current != null &&
+      !animRef.current.paused &&
+      containerRef.current != null &&
+      containerRef.current.updateMatrixWorld()
+  )
 
   const dandelionPoints = useMemo(
     () => particules.children.map((o) => o.position),
