@@ -70,7 +70,7 @@ const Dandelion = ({
         value: false,
       },
     },
-    { collapsed: true }
+    { collapsed: true, render: (s) => s('path') === '/journey' }
   )
 
   const bufferSize = useMemo(() => findMinimumTexSize(numPoints), [numPoints])

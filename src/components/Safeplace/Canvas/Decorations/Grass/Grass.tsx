@@ -1,4 +1,4 @@
-import { useControls } from 'leva'
+import { levaStore, useControls } from 'leva'
 import { ReactNode, RefObject, useEffect, useMemo, useRef } from 'react'
 import { GroupProps, useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
@@ -21,22 +21,36 @@ const Grass = ({
   const instancedMeshRef = useRef<THREE.Mesh>(null)
   const { nodes } = useGLTF('/models/safeplace/grass.gltf')
 
+  const textures = useMemo(() => {
+    const loaders = new THREE.TextureLoader()
+    return {
+      grass_1: loaders.load('/img/common/grass_1.png'),
+      grass_2: loaders.load('/img/common/grass_2.png'),
+      grass_3: loaders.load('/img/common/grass_3.png'),
+    }
+  }, [])
+
   const {
     size,
     windSpeed,
     windAmplitude,
     windNoiseSize,
     grassAmount: numPoints,
+    texture,
   } = useControls(
     'grass',
     {
+      texture: { value: textures['grass_2'], options: textures },
       grassAmount: { value: 24576, step: 1 },
       size: 0.4,
       windNoiseSize: { value: 0.2, min: 0, max: 1 },
       windAmplitude: { value: 0.07, min: 0, max: 1 },
       windSpeed: 0.2,
     },
-    { collapsed: true }
+    {
+      collapsed: true,
+      render: (s) => s('path') === '/safeplace',
+    }
   )
 
   const textureSize = useMemo<THREE.Vector2Tuple>(
@@ -99,16 +113,10 @@ const Grass = ({
   }, [numPoints, textureSize[0], textureSize[1]])
 
   // --- UNIFORMS
-
-  const texture = useMemo(
-    () => new THREE.TextureLoader().load('./img/common/grass.png'),
-    []
-  )
-
   const uniforms = useRef<Record<string, THREE.IUniform>>({
     uPositionTexture: { value: null },
     uUvTexture: { value: null },
-    uTexture: { value: texture },
+    uTexture: { value: null },
     uGroundTexture: { value: null },
     uTime: { value: 0 },
     uSize: { value: 1 },
@@ -120,6 +128,9 @@ const Grass = ({
   useNumberUniform(uniforms.current.uWindAmplitude, windAmplitude)
   useNumberUniform(uniforms.current.uWindNoiseSize, windNoiseSize)
   useNumberUniform(uniforms.current.uWindSpeed, windSpeed)
+  useEffect(() => {
+    uniforms.current.uTexture.value = texture
+  }, [texture])
 
   useFrame(({ clock }) => {
     uniforms.current.uTime.value = clock.getElapsedTime()

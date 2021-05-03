@@ -6,6 +6,7 @@ import ColumnLocation from '@/components/Safeplace/Canvas/ColumLocation/ColumnLo
 import Grass from '@/components/Safeplace/Canvas/Decorations/Grass/Grass'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import MountainColumn from './ColumLocation/MountainColum'
+import CustomSky from '@/components/canvas/Sky/CustomSky'
 
 const SafeplaceModel = (): ReactElement => {
   const { scene } = useGLTF('/models/safeplace/safeplace.glb')
@@ -64,6 +65,7 @@ const SafeplaceModel = (): ReactElement => {
       <primitive object={rocks} />
       <primitive object={water_contain} />
       <Grass>{(ref) => <primitive object={ground} ref={ref} />}</Grass>
+      <CustomSky />
     </>
   )
 }

@@ -11,20 +11,14 @@ import { VoiceoverJourney } from '@/constants/enums/Voiceover'
 import Waterfall from '@/components/canvas/Waterfall/Waterfall'
 import WaterfallCamera from '@/components/Journey/Canvas/Scenes/Waterfall/WaterfallCamera'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
-import JourneySky from '@/components/Journey/Canvas/Decorations/JourneySky'
+import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
+import Slats from './Slats'
+import CustomSky from '@/components/canvas/Sky/CustomSky'
 
 const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const gltf = useGLTF('/models/journey/chapter3.glb')
 
-  const isToBridgeSection = useJourneyStore(
-    (s) => s.currentSection === JourneySection.ToBridge
-  )
-  const isWaterfallSection = useJourneyStore(
-    (s) => s.currentSection === JourneySection.Waterfall
-  )
-  const isOutroSection = useJourneyStore(
-    (s) => s.currentSection === JourneySection.Outro
-  )
+  const currentSection = useJourneyStore((s) => s.currentSection)
 
   const [cameras, mountains, rocks, slats, waterfall] = useMemo(
     () => [...gltf.scene.children],
@@ -38,40 +32,36 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   const cameraOffset = useMemo(() => cameras.position.toArray(), [])
 
-  const setCurrentAmbiant = useAudioStore((s) => s.setCurrentAmbiant)
-  const setCurrentVoiceover = useAudioStore((s) => s.setCurrentVoiceover)
-
   useEffect(() => {
-    if (!isToBridgeSection) return
-    // Ambiant
-    setCurrentAmbiant(Place.Journey, Ambiants.Waterfall)
-    // Voiceover
-    setCurrentVoiceover(Place.Journey, VoiceoverJourney.Bridge)
-  }, [isToBridgeSection])
+    const { setCurrentAmbiant, setCurrentVoiceover } = useAudioStore.getState()
 
-  useEffect(() => {
-    if (!isWaterfallSection) return
-    // Voiceover
-    setCurrentVoiceover(Place.Journey, VoiceoverJourney.Waterfall)
-  }, [isWaterfallSection])
-
-  useEffect(() => {
-    if (!isOutroSection) return
-    // Voiceover
-    setCurrentVoiceover(Place.Journey, VoiceoverJourney.Outro)
-  }, [isOutroSection])
+    switch (currentSection) {
+      case JourneySection.ToBridge:
+        setCurrentAmbiant(Place.Journey, Ambiants.Waterfall)
+        setCurrentVoiceover(Place.Journey, VoiceoverJourney.Bridge)
+        break
+      case JourneySection.Waterfall:
+        setCurrentVoiceover(Place.Journey, VoiceoverJourney.Waterfall)
+        break
+      case JourneySection.Outro:
+        setCurrentVoiceover(Place.Journey, VoiceoverJourney.Outro)
+        break
+    }
+  }, [currentSection])
 
   return (
     <>
+      {/* <ClassicCamera ref={camRef} fov={32.6} /> */}
       <group position={cameraOffset}>
         <WaterfallCamera clips={camAnims} ref={camRef} />
       </group>
 
-      <JourneySky />
+      <CustomSky />
+
+      <Slats slatGroup={slats} slatAnims={slatAnims} />
 
       <primitive object={mountains} />
       <primitive object={rocks} />
-      <primitive object={slats} />
       <primitive object={waterfall} />
 
       <Waterfall scale={[7, 7, 7]} position={[-5.5, 0, 0]} />

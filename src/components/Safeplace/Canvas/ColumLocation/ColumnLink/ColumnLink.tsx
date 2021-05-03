@@ -45,7 +45,7 @@ const ColumnLink = ({
   })
 
   const linkTexture = useMemo(
-    () => new THREE.TextureLoader().load('./img/safeplace/link.png'),
+    () => new THREE.TextureLoader().load('/img/safeplace/link.png'),
     []
   )
 

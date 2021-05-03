@@ -10,12 +10,16 @@ const SafeplaceDebug = (): null => {
   /**
    * Debug
    */
-  const [{ currentPOI }, set] = useControls('safeplace', () => ({
-    currentPOI: {
-      value: statePOI,
-      options: SafeplacePOI,
-    },
-  }))
+  const [{ currentPOI }, set] = useControls(
+    'safeplace',
+    () => ({
+      currentPOI: {
+        value: statePOI,
+        options: SafeplacePOI,
+      },
+    }),
+    { render: (s) => s('path') === '/safeplace' }
+  )
 
   useEffect(() => {
     setCurrentPOI(currentPOI)

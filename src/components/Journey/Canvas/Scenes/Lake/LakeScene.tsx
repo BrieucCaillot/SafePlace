@@ -12,9 +12,9 @@ import Ambiants from '@/constants/enums/Ambiant'
 import { VoiceoverJourney } from '@/constants/enums/Voiceover'
 
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
-import JourneySky from '@/components/Journey/Canvas/Decorations/JourneySky'
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import Dandelion from '@/components/canvas/Dandelion/Dandelion'
+import CustomSky from '@/components/canvas/Sky/CustomSky'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -97,7 +97,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
           <meshNormalMaterial />
         </mesh> */}
       </group>
-      <JourneySky />
+      <CustomSky />
       <Dandelion points={dandelionPoints} position={particules.position} />
       <primitive object={ground} />
       <primitive object={lake} />

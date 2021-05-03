@@ -9,7 +9,7 @@ import { VoiceoverJourney } from '@/constants/enums/Voiceover'
 
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
-import JourneySky from '@/components/Journey/Canvas/Decorations/JourneySky'
+import CustomSky from '@/components/canvas/Sky/CustomSky'
 
 const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const isIntroSection = useJourneyStore(
@@ -29,7 +29,7 @@ const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   return (
     <>
       <ClassicCamera ref={camRef} />
-      <JourneySky />
+      <CustomSky />
       <mesh rotation={[Math.PI / 2, Math.PI / 2, 0]}>
         <boxGeometry />
         <meshNormalMaterial />

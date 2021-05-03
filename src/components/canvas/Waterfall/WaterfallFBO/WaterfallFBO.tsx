@@ -31,6 +31,7 @@ const WaterfallFBO = forwardRef(
     },
     ref: RefObject<THREE.Mesh>
   ) => {
+    const clockRef = useRef<THREE.Clock>(new THREE.Clock())
     const {
       baseDirection,
       angleAmplitude,
@@ -58,7 +59,7 @@ const WaterfallFBO = forwardRef(
           lifeTime: { value: 4, label: 'Life Time' },
           sdfOffset: { x: 0.83, y: 3.5, z: -0.26 },
           rounding: { value: 0.66, min: 0, max: 2 },
-          cursorSize: { value: 0.1, min: 0, max: 1 },
+          cursorSize: { value: 0.15, min: 0, max: 1 },
         },
         { collapsed: true }
       ),
@@ -88,8 +89,8 @@ const WaterfallFBO = forwardRef(
     useWatchableUniform(uniforms.current.uOrigPosTexture, initTexture)
     useWatchableUniform(uniforms.current.uMousePos, mousePosRef)
 
-    useFrame(({ clock }) => {
-      uniforms.current.uTime.value = clock.getElapsedTime()
+    useFrame(() => {
+      uniforms.current.uTime.value = clockRef.current.getElapsedTime()
     })
 
     return createPortal(

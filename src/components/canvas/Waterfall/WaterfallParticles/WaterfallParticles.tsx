@@ -34,11 +34,11 @@ const WaterfallParticles = forwardRef(
       {
         'Particle Params': folder(
           {
-            particlesSize: 200,
+            particlesSize: 300,
             sizeVariation: 1,
             alpha: { value: 1, min: 0, max: 1 },
-            startColor: '#3e69e8',
-            endColor: '#18275f',
+            startColor: '#8099e2',
+            endColor: '#30185e',
           },
           { collapsed: true }
         ),
