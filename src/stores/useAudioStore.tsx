@@ -3,7 +3,6 @@ import { Howl } from 'howler'
 
 import Place from '@/constants/enums/Place'
 import InstructionsList from '@/constants/enums/InstructionsList'
-import VOICEOVER_SPRITE from '@/constants/VOICEOVER_SPRITE'
 import AudioStatus from '@/constants/enums/Audio'
 import Ambiants from '@/constants/enums/Ambiant'
 import {
