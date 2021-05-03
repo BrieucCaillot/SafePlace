@@ -17,15 +17,12 @@ const ScenesRouting = ({
 }): ReactElement<any, any> => {
   const previousPathname = usePrevious(pathname)
 
-  const isFirstConnection = useUserStore((state) => state.isFirstConnection)
-
   useEffect(() => {
     const {
       mountScene,
       mountScenes,
       setRenderedScene,
       unmountAllScenes,
-      mountedScenes,
     } = useSceneStore.getState()
 
     if (pathname === '/') {
@@ -41,7 +38,6 @@ const ScenesRouting = ({
     }
 
     if (pathname === '/safeplace') {
-      const { setCurrentPOI } = useSafeplaceStore.getState()
       mountScene(SceneName.Safeplace)
       setRenderedScene(SceneName.Safeplace)
     }
@@ -74,7 +70,6 @@ const ScenesRouting = ({
   }, [pathname])
 
   useEffect(() => {
-    const { setCurrentPOI } = useSafeplaceStore.getState()
     const { unmountScenes } = useSceneStore.getState()
     if (pathname == previousPathname) return
     if (previousPathname === '/journey') {
