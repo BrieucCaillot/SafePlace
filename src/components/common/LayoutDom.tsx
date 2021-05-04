@@ -16,7 +16,7 @@ const LayoutDom = ({ children }: { children: ReactNode }) => {
       <div className='dom font-serif relative h-screen w-screen z-10 pointer-events-none'>
         <LayoutHeader />
         <LayoutBottom />
-        <Leva hidden={true} />
+        {/* <Leva hidden={true} /> */}
         {children}
       </div>
     </>
