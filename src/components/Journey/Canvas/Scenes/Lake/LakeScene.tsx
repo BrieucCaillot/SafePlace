@@ -65,7 +65,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     // clip: null,
     ref: containerRef,
     onFinished: () =>
-      useJourneyStore.getState().setSection(JourneySection.Bridge),
+      useJourneyStore.getState().setSection(JourneySection.Waterfall),
   })
   useFrame(
     () =>

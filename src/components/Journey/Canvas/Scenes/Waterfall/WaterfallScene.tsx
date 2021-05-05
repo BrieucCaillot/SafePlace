@@ -3,15 +3,12 @@ import React, {
   RefObject,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react'
 import { useGLTF } from '@react-three/drei'
 
-import useJourneyStore from '@/stores/useJourneyStore'
 import useUserStore from '@/stores/useUserStore'
 import useAudioStore from '@/stores/useAudioStore'
-import JourneySection from '@/constants/enums/JourneySection'
 import Place from '@/constants/enums/Place'
 import Ambiants from '@/constants/enums/Ambiant'
 import AudioStatus from '@/constants/enums/Audio'
@@ -20,13 +17,11 @@ import { VoiceoverJourney } from '@/constants/enums/Voiceover'
 import Waterfall from '@/components/canvas/Waterfall/Waterfall'
 import WaterfallCamera from '@/components/Journey/Canvas/Scenes/Waterfall/WaterfallCamera'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
-import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import Slats from './Slats'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 import useSceneStore from '@/stores/useSceneStore'
 import SceneName from '@/constants/enums/SceneName'
-import shallow from 'zustand/shallow'
 
 enum WaterfallSequence {
   ToBridge,
@@ -51,13 +46,7 @@ const sequenceCamIndex: { [key in WaterfallSequence]: number } = {
   [WaterfallSequence.Waterfall]: 1,
   [WaterfallSequence.Outro]: 2,
 }
-// setCurrentAmbiant(Place.Journey, Ambiants.Waterfall)
-// setCurrentVoiceover(Place.Journey, VoiceoverJourney.Bridge)
-// setCurrentVoiceover(Place.Journey, VoiceoverJourney.Waterfall)
-// setCurrentVoiceover(Place.Journey, VoiceoverJourney.Outro)
-
 const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
-  // TODO: Rework sequence be using one side section
   // TODO: Waterfall flickers
 
   // GLTF

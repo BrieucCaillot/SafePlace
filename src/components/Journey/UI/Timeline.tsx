@@ -15,8 +15,7 @@ const Timeline = () => {
     JourneySection.Intro,
     JourneySection.Cairns,
     JourneySection.Lake,
-    [JourneySection.Bridge, JourneySection.Bridge],
-    [JourneySection.Waterfall, JourneySection.Outro],
+    JourneySection.Waterfall,
   ]
 
   const currentIndex = useMemo(
