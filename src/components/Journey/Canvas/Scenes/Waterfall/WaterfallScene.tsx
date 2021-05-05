@@ -22,6 +22,7 @@ import CustomSky from '@/components/canvas/Sky/CustomSky'
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 import useSceneStore from '@/stores/useSceneStore'
 import SceneName from '@/constants/enums/SceneName'
+import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 
 enum WaterfallSequence {
   ToBridge,
@@ -47,8 +48,6 @@ const sequenceCamIndex: { [key in WaterfallSequence]: number } = {
   [WaterfallSequence.Outro]: 2,
 }
 const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
-  // TODO: Waterfall flickers
-
   // GLTF
   const gltf = useGLTF('/models/journey/chapter3.glb')
 

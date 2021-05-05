@@ -173,9 +173,9 @@ vec3 calcSceneNormal(vec3 p, float e) {
                     v4 * sdScene(p + v4 * e) );
 }
 
-vec3 sceneVelocity(vec3 pos) {
-  float d = sdScene(pos + uSdfOffset);
-  vec3 normal = calcSceneNormal(pos + uSdfOffset, EPSILON);
+vec3 sceneVelocity(vec3 pos, vec3 v) {
+  float d = sdScene(pos + v + uSdfOffset);
+  vec3 normal = calcSceneNormal(pos + v + uSdfOffset, EPSILON);
 
   return d < 0. ? normal * -d : vec3(0.);
 }
@@ -189,7 +189,7 @@ void main()
 
   vec3 v = fakeVelocity(random2D(vUv + 1.), random2D(vUv + 2.));
   
-  v += sceneVelocity(position);
+  v += sceneVelocity(position, v);
   position += v;
 
   float newLife = mod(uTime + remap(random2D(vUv), 0., 1., 100., 200.), uLifeTime);
