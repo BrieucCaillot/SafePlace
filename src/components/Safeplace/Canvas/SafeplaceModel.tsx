@@ -74,8 +74,7 @@ const SafeplaceModel = (): ReactElement => {
     return mesh
   }, [])
 
-  const columnChildren = useMemo(() => [...columnGroup.children.reverse()], [])
-  const [columnMesh, ...columns] = columnChildren
+  const columnChildren = useMemo(() => [...columnGroup.children], [])
 
   // const shadowTexture = useMemo(() => {
   //   const t = new THREE.TextureLoader().load('/img/common/shadow_safeplace.png')
@@ -88,7 +87,7 @@ const SafeplaceModel = (): ReactElement => {
       <Shelter object={shelter} />
 
       <group position={columnGroup.position}>
-        {columns.map((col) =>
+        {columnChildren.map((col) =>
           columnAssoc[col.name] === SafeplacePOI.MountainColumn ? (
             <MountainColumn columnObj={col} key={col.name} />
           ) : (
@@ -99,7 +98,6 @@ const SafeplaceModel = (): ReactElement => {
             />
           )
         )}
-        <primitive object={columnMesh} />
       </group>
 
       <primitive object={backgrounds} />
