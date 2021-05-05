@@ -28,6 +28,7 @@ const ResourcesButton = () => {
       className={`shape-link__resources ${
         isCurrentlyAvailable ? 'show' : 'hidden'
       }`}
+      route={Routes.Resources}
     >
       <span
         className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 block pointer-events-auto cursor-pointer'

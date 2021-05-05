@@ -1,10 +1,9 @@
-import { ReactElement, ReactNode, useEffect } from 'react'
-import { NextRouter, withRouter } from 'next/router'
+import { ReactElement, useEffect } from 'react'
+import { NextRouter } from 'next/router'
 
 import useJourneyStore from '@/stores/useJourneyStore'
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import useSceneStore from '@/stores/useSceneStore'
-import useUserStore from '@/stores/useUserStore'
 import usePrevious from '@/hooks/usePrevious'
 import SceneName from '@/constants/enums/SceneName'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
@@ -39,8 +38,10 @@ const ScenesRouting = ({
     }
 
     if (pathname === Routes.Safeplace) {
+      const { setCurrentPOI } = useSafeplaceStore.getState()
       mountScene(SceneName.Safeplace)
       setRenderedScene(SceneName.Safeplace)
+      setCurrentPOI(SafeplacePOI.Inside)
     }
 
     if (pathname === Routes.Resources) {
@@ -71,6 +72,7 @@ const ScenesRouting = ({
   }, [pathname])
 
   useEffect(() => {
+    const { setCurrentPOI } = useSafeplaceStore.getState()
     const { unmountScenes } = useSceneStore.getState()
     if (pathname == previousPathname) return
     if (previousPathname === Routes.Journey) {
@@ -80,6 +82,9 @@ const ScenesRouting = ({
         SceneName.JourneyIntro,
         SceneName.Waterfall,
       ])
+    }
+    if (previousPathname === Routes.OnBoarding) {
+      setCurrentPOI(SafeplacePOI.Outside)
     }
   }, [previousPathname, pathname])
 

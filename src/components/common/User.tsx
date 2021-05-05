@@ -22,7 +22,7 @@ const User = (): null => {
     } = useUserStore.getState()
 
     setUserFirstConnection(getUserFirstConnection())
-    setIsJourneyCompleted(getIsJourneyCompleted())
+    // setIsJourneyCompleted(getIsJourneyCompleted())
   }, [])
 
   return null
