@@ -1,6 +1,8 @@
 import { Sky } from '@react-three/drei'
 import { useControls } from 'leva'
 
+import Routes from '@/constants/enums/Routes'
+
 const SafeplaceSky = () => {
   const skyParams = useControls(
     'safeplace_sky',
@@ -38,7 +40,7 @@ const SafeplaceSky = () => {
         max: 1,
       },
     },
-    { collapsed: true, render: (s) => s('path') === '/safeplace' }
+    { collapsed: true, render: (s) => s('path') === Routes.Safeplace }
   )
 
   return (

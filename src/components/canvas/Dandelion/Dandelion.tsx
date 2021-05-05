@@ -1,11 +1,13 @@
-import * as THREE from 'three'
-import { useControls } from 'leva'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { GroupProps, useThree } from 'react-three-fiber'
+import * as THREE from 'three'
+import { useControls } from 'leva'
 import EasingFunctions from 'easing-functions'
 import gsap from 'gsap'
+
 import fragmentShader from './Dandelion.fs'
 import vertexShader from './Dandelion.vs'
+import Routes from '@/constants/enums/Routes'
 import useColorUniform from '@/hooks/uniforms/useColorUniform'
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
 import findMinimumTexSize from '@/utils/FBO/findMinimumTexSize'
@@ -77,7 +79,7 @@ const Dandelion = ({
       //   value: false,
       // },
     },
-    { collapsed: true, render: (s) => s('path') === '/journey' }
+    { collapsed: true, render: (s) => s('path') === Routes.Journey }
   )
 
   const bufferSize = useMemo(() => findMinimumTexSize(numPoints), [numPoints])

@@ -1,13 +1,15 @@
-import { levaStore, useControls } from 'leva'
 import { ReactNode, RefObject, useEffect, useMemo, useRef } from 'react'
+import { useGLTF } from '@react-three/drei'
 import { GroupProps, useFrame } from 'react-three-fiber'
+import { useControls } from 'leva'
 import * as THREE from 'three'
+
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
 import findMinimumTexSize from '@/utils/FBO/findMinimumTexSize'
 import { getPositionTextureFromMesh } from '@/utils/FBO/getPositionTexture'
-import { useGLTF } from '@react-three/drei'
 import fragmentShader from './Grass.fs'
 import vertexShader from './Grass.vs'
+import Routes from '@/constants/enums/Routes'
 
 const Grass = ({
   children,
@@ -49,7 +51,7 @@ const Grass = ({
     },
     {
       collapsed: true,
-      render: (s) => s('path') === '/safeplace',
+      render: (s) => s('path') === Routes.Safeplace,
     }
   )
 

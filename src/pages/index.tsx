@@ -1,13 +1,15 @@
 import React from 'react'
 import Link from 'next/link'
 
+import Routes from '@/constants/enums/Routes'
+
 import PortalUI from '@/components/common/UI/PortalUI'
 
 const Index = () => {
   return (
     <>
       <PortalUI selector='#layout-header-right'>
-        <Link href='about' as='/about'>
+        <Link href={Routes.About} as={Routes.About}>
           <a className='relative button-stonecut tracking-widest text-lg text-secondary'>
             À propos
           </a>
@@ -24,7 +26,7 @@ const Index = () => {
           alt='safeplace-logo'
         />
         <div className='absolute bottom-16 flex justify-center w-full fadeIn'>
-          <Link href='onboarding' as='onboarding'>
+          <Link href={Routes.OnBoarding} as={Routes.OnBoarding}>
             <button className='relative button-stonefull text-secondary text-xl font-bold tracking-widest rounded px-10 py-3 focus:outline-none cursor-pointer pointer-events-auto'>
               Lancer l'experience
             </button>

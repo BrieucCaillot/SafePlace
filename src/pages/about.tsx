@@ -1,13 +1,15 @@
 import React from 'react'
 import Link from 'next/link'
 
+import Routes from '@/constants/enums/Routes'
+
 import PortalUI from '@/components/common/UI/PortalUI'
 
 const About = () => {
   return (
     <>
       <PortalUI selector='#layout-header-right'>
-        <Link href='/' as='/'>
+        <Link href={Routes.Index} as={Routes.Index}>
           <a className='relative button-stonecut tracking-widest text-lg text-secondary'>
             Accueil
           </a>

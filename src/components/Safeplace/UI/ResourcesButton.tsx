@@ -1,7 +1,9 @@
-import LayoutShapeLink from '@/components/common/UI/LayoutShapeLink'
-import useSafeplaceStore from '@/stores/useSafeplaceStore'
+import Routes from '@/constants/enums/Routes'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
+import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import useUserStore from '@/stores/useUserStore'
+
+import LayoutShapeLink from '@/components/common/UI/LayoutShapeLink'
 
 const ResourcesButton = () => {
   const POIsWhereHidden = [
@@ -24,12 +26,12 @@ const ResourcesButton = () => {
   return (
     <LayoutShapeLink
       className={`shape-link__resources ${
-        isCurrentlyAvailable ? 'fadeIn' : 'hidden'
+        isCurrentlyAvailable ? 'show' : 'hidden'
       }`}
     >
       <span
         className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 block pointer-events-auto cursor-pointer'
-        onClick={() => router.push('/resources')}
+        onClick={() => router.push(Routes.Resources)}
       >
         <span className='block text-white text-xl'>Ressources</span>
       </span>

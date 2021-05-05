@@ -6,6 +6,7 @@ import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import useJourneyStore from '@/stores/useJourneyStore'
 import Place from '@/constants/enums/Place'
 import JourneySection from '@/constants/enums/JourneySection'
+import Routes from '@/constants/enums/Routes'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 
 import LayoutShapeLink from '@/components/common/UI/LayoutShapeLink'
@@ -37,14 +38,14 @@ const LayoutShelterButton = ({ place }: { place: Place }) => {
   const onClick = useCallback(() => {
     switch (place) {
       case Place.Safeplace:
-        router.push('/safeplace')
+        router.push(Routes.Safeplace)
         setCurrentPOI(SafeplacePOI.Inside)
         break
       case Place.Journey:
         if (isJourneyCompleted) {
-          router.push('/resource/journey')
+          router.push(Routes.ResourcesFocus)
         } else {
-          router.push('/safeplace')
+          router.push(Routes.Safeplace)
           setCurrentPOI(SafeplacePOI.Inside)
         }
         break

@@ -9,6 +9,7 @@ import usePrevious from '@/hooks/usePrevious'
 import SceneName from '@/constants/enums/SceneName'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import JourneySection from '@/constants/enums/JourneySection'
+import Routes from '@/constants/enums/Routes'
 
 const ScenesRouting = ({
   router: { pathname },
@@ -25,38 +26,38 @@ const ScenesRouting = ({
       unmountAllScenes,
     } = useSceneStore.getState()
 
-    if (pathname === '/') {
+    if (pathname === Routes.Index) {
       unmountAllScenes()
       setRenderedScene(null)
     }
 
-    if (pathname === '/onboarding') {
+    if (pathname === Routes.OnBoarding) {
       const { setCurrentPOI } = useSafeplaceStore.getState()
       mountScene(SceneName.Safeplace)
       setRenderedScene(SceneName.Safeplace)
       setCurrentPOI(SafeplacePOI.OnBoarding)
     }
 
-    if (pathname === '/safeplace') {
+    if (pathname === Routes.Safeplace) {
       mountScene(SceneName.Safeplace)
       setRenderedScene(SceneName.Safeplace)
     }
 
-    if (pathname === '/resources') {
+    if (pathname === Routes.Resources) {
       const { setCurrentPOI } = useSafeplaceStore.getState()
       mountScene(SceneName.Safeplace)
       setRenderedScene(SceneName.Safeplace)
       setCurrentPOI(SafeplacePOI.Resources)
     }
 
-    if (pathname === '/resource/journey') {
+    if (pathname === Routes.ResourcesFocus) {
       const { setCurrentPOI } = useSafeplaceStore.getState()
       mountScene(SceneName.Safeplace)
       setRenderedScene(SceneName.Safeplace)
       setCurrentPOI(SafeplacePOI.ResourceFocused)
     }
 
-    if (pathname === '/journey') {
+    if (pathname === Routes.Journey) {
       const { setSection } = useJourneyStore.getState()
       mountScenes([
         SceneName.Lake,
@@ -72,7 +73,7 @@ const ScenesRouting = ({
   useEffect(() => {
     const { unmountScenes } = useSceneStore.getState()
     if (pathname == previousPathname) return
-    if (previousPathname === '/journey') {
+    if (previousPathname === Routes.Journey) {
       unmountScenes([
         SceneName.Lake,
         SceneName.Cairns,

@@ -6,8 +6,9 @@ import {
   useRef,
 } from 'react'
 import { GroupProps, PointerEvent } from 'react-three-fiber'
-import { useControls } from 'leva'
 import * as THREE from 'three'
+import { useControls } from 'leva'
+
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import WaterfallFBO from './WaterfallFBO/WaterfallFBO'
 import WaterfallParticles from './WaterfallParticles/WaterfallParticles'
@@ -17,6 +18,7 @@ import useWatchableRef from '@/hooks/useWatchableRef'
 import findMinimumTexSize from '@/utils/FBO/findMinimumTexSize'
 import useSceneStore from '@/stores/useSceneStore'
 import SceneName from '@/constants/enums/SceneName'
+import Routes from '@/constants/enums/Routes'
 
 const Waterfall = (props: GroupProps) => {
   const { showDegug, numPoints } = useControls(
@@ -31,7 +33,7 @@ const Waterfall = (props: GroupProps) => {
     },
     {
       collapsed: true,
-      render: (s) => s('path') === '/journey',
+      render: (s) => s('path') === Routes.Journey,
     }
   )
 

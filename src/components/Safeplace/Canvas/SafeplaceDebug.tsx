@@ -1,7 +1,9 @@
+import { useEffect } from 'react'
+import { useControls } from 'leva'
+
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
-import { useControls } from 'leva'
-import { useEffect } from 'react'
+import Routes from '@/constants/enums/Routes'
 
 const SafeplaceDebug = (): null => {
   const statePOI = useSafeplaceStore((state) => state.currentPOI)
@@ -18,7 +20,7 @@ const SafeplaceDebug = (): null => {
         options: SafeplacePOI,
       },
     }),
-    { render: (s) => s('path') === '/safeplace' }
+    { render: (s) => s('path') === Routes.Safeplace }
   )
 
   useEffect(() => {
