@@ -124,7 +124,10 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         s.checkVoiceoverStatus(VoiceoverJourney.Waterfall, AudioStatus.Played)
     )
     const c = useAudioStore.subscribe(
-      (b) => b && useUserStore.getState().setIsJourneyCompleted(true),
+      (b) => {
+        b && useUserStore.getState().setIsJourneyFinished(true)
+        useUserStore.getState().setIsJourneyCompleted(true)
+      },
       (s) => s.checkVoiceoverStatus(VoiceoverJourney.Outro, AudioStatus.Played)
     )
     return () => [a, b, c].forEach((u) => u())

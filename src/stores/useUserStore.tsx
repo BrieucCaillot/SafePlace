@@ -6,6 +6,8 @@ type UserStore = {
   isFirstConnection: boolean
   getUserFirstConnection: () => boolean
   setUserFirstConnection: (status: boolean) => void
+  isJourneyFinished: boolean
+  setIsJourneyFinished: (status: boolean) => void
   isJourneyCompleted: boolean
   getIsJourneyCompleted: () => boolean
   setIsJourneyCompleted: (status: boolean) => void
@@ -20,6 +22,8 @@ const useUserStore = create<UserStore>((set) => ({
     window.localStorage.setItem('isFirstConnection', status.toString())
     set({ isFirstConnection: status })
   },
+  isJourneyFinished: false,
+  setIsJourneyFinished: (status) => set({ isJourneyFinished: status }),
   isJourneyCompleted: false,
   getIsJourneyCompleted: () =>
     window.localStorage.getItem('isJourneyCompleted') == 'true' ? true : false,
