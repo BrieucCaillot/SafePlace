@@ -15,7 +15,7 @@ const Timeline = () => {
     JourneySection.Intro,
     JourneySection.Cairns,
     JourneySection.Lake,
-    [JourneySection.ToBridge, JourneySection.Bridge],
+    [JourneySection.Bridge, JourneySection.Bridge],
     [JourneySection.Waterfall, JourneySection.Outro],
   ]
 
