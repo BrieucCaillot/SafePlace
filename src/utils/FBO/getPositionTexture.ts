@@ -3,14 +3,12 @@ import { MeshSurfaceSampler } from 'three/examples/jsm/math/MeshSurfaceSampler'
 import remap from '../math/remap'
 
 export function getPositionTextureFromMesh(
-  mesh: THREE.Mesh | null,
+  sampler: MeshSurfaceSampler,
   textureSize: THREE.Vector2 | THREE.Vector2Tuple,
-  sampleAmount: number = 0,
-  customSampler: MeshSurfaceSampler | null = null
+  sampleAmount: number = 0
 ): [positionTexture: THREE.DataTexture, uvTexture: THREE.DataTexture] {
   const size = Array.isArray(textureSize) ? textureSize : textureSize.toArray()
 
-  if (mesh === null) throw 'No mesh'
   const amount = sampleAmount || size[0] * size[1]
   const positions = new Float32Array(size[0] * size[1] * 4)
   const uvs = new Float32Array(size[0] * size[1] * 4)
@@ -19,17 +17,6 @@ export function getPositionTextureFromMesh(
   const normal = new THREE.Vector3()
   const color = new THREE.Color()
 
-  const uvAttr = mesh.geometry.getAttribute('uv')
-  const fakeColor = new Float32Array(uvAttr.count * 3)
-
-  for (let index = 0; index < uvAttr.count; index++) {
-    fakeColor[index * 3 + 0] = uvAttr.array[index * uvAttr.itemSize + 0]
-    fakeColor[index * 3 + 1] = uvAttr.array[index * uvAttr.itemSize + 1]
-    fakeColor[index * 3 + 2] = 0
-  }
-  mesh.geometry.setAttribute('color', new THREE.BufferAttribute(fakeColor, 3))
-
-  const sampler = customSampler || new MeshSurfaceSampler(mesh).build()
   for (let index = 0; index < amount; index++) {
     sampler.sample(position, normal, color)
     positions[index * 4 + 0] = position.x
