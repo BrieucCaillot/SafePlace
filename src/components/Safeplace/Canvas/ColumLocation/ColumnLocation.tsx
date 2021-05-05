@@ -1,10 +1,10 @@
-import { ReactNode, useCallback, useEffect, useMemo } from 'react'
+import { ReactNode, useMemo } from 'react'
 import * as THREE from 'three'
 
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
-import Place from '@/constants/enums/Place'
 import AudioStatus from '@/constants/enums/Audio'
 import { VoiceoverSafeplace } from '@/constants/enums/Voiceover'
+import Routes from '@/constants/enums/Routes'
 
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import useAudioStore from '@/stores/useAudioStore'
@@ -25,7 +25,7 @@ const ColumnLocation = ({
   const isCurrentlyAvailable = useSafeplaceStore((s) =>
     s.isCurrentlyAvailable(safeplacePOI)
   )
-  const setCurrentPOI = useSafeplaceStore((s) => s.setCurrentPOI)
+  const router = useUserStore((s) => s.router)
 
   const isVoiceoverInsidePlayed = useAudioStore((s) =>
     s.checkVoiceoverStatus(VoiceoverSafeplace.Inside, AudioStatus.Played)
@@ -48,8 +48,6 @@ const ColumnLocation = ({
       ) as THREE.PerspectiveCamera,
     [camContainer]
   )
-
-  console.log(columnObj)
 
   useSavePOIData(safeplacePOI, camera)
 
@@ -76,7 +74,7 @@ const ColumnLocation = ({
       {children}
       <ColumnLink
         show={isVoiceoverInsidePlayed && isCurrentlyAvailable}
-        onColumnClick={() => setCurrentPOI(safeplacePOI)}
+        onColumnClick={() => router.push(Routes.MountainColumn)}
         position={columnLinkPosition}
       />
     </group>

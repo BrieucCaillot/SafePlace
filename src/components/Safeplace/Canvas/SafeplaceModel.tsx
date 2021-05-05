@@ -2,13 +2,15 @@ import React, { ReactElement, ReactNode, useMemo } from 'react'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 
+import useUserStore from '@/stores/useUserStore'
+import SafeplacePOI from '@/constants/enums/SafeplacePOI'
+
 import Shelter from '@/components/Safeplace/Canvas/Shelter/Shelter'
 import ColumnLocation from '@/components/Safeplace/Canvas/ColumLocation/ColumnLocation'
 import Grass from '@/components/Safeplace/Canvas/Decorations/Grass/Grass'
-import SafeplacePOI from '@/constants/enums/SafeplacePOI'
-import MountainColumn from './ColumLocation/MountainColum'
+import MountainColumn from '@/components/Safeplace/Canvas/ColumLocation/MountainColum'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
-import useUserStore from '@/stores/useUserStore'
+import SafeplaceFlyingRocks from '@/components/Safeplace/Canvas/Decorations/SafeplaceFlyingRocks'
 
 const SafeplaceModel = (): ReactElement => {
   const { scene } = useGLTF('/models/safeplace/safeplace.glb')
@@ -70,7 +72,7 @@ const SafeplaceModel = (): ReactElement => {
     )
     mesh.geometry.setAttribute('color', new THREE.BufferAttribute(fakeColor, 3))
     ;(mesh.material as THREE.MeshBasicMaterial).vertexColors = false
-    console.log((mesh.material as THREE.MeshBasicMaterial).map)
+    // console.log((mesh.material as THREE.MeshBasicMaterial).map)
     return mesh
   }, [])
 
@@ -105,7 +107,9 @@ const SafeplaceModel = (): ReactElement => {
       <primitive object={cairns} />
       <primitive object={ark} />
       <primitive object={trees} />
-      {isJourneyCompleted && <primitive object={flying_rocks} />}
+      {isJourneyCompleted && (
+        <SafeplaceFlyingRocks flyingRocks={flying_rocks} />
+      )}
       <primitive object={rocks} />
       <primitive object={water_contain} />
       <Grass shadowTexture={null}>
