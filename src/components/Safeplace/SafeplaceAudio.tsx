@@ -33,7 +33,7 @@ const SafeplaceAudio = (): null => {
 
   useEffect(() => {
     if (pathname !== '/onboarding') return
-    if (isFirstConnection == 'true') {
+    if (isFirstConnection) {
       setCurrentVoiceover(Place.Safeplace, VoiceoverSafeplace.Arrived)
     } else {
       setVoiceoverStatus(VoiceoverSafeplace.Arrived, AudioStatus.Played)

@@ -15,7 +15,7 @@ const JourneyCompletedButton = () => {
           onClick={() => router.push('/resource/journey')}
         >
           <button className='relative button-stonefull text-secondary text-xl font-bold tracking-widest rounded px-10 py-3 focus:outline-none cursor-pointer pointer-events-auto'>
-            Retour à l'abris
+            Retour à l'abri
           </button>
         </div>
       )}

@@ -7,6 +7,7 @@ import Grass from '@/components/Safeplace/Canvas/Decorations/Grass/Grass'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import MountainColumn from './ColumLocation/MountainColum'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
+import useUserStore from '@/stores/useUserStore'
 
 const SafeplaceModel = (): ReactElement => {
   const { scene } = useGLTF('/models/safeplace/safeplace.glb')
@@ -23,6 +24,8 @@ const SafeplaceModel = (): ReactElement => {
     trees,
     water_contain,
   ] = useMemo(() => [...scene.children[0].children], [])
+
+  const isJourneyCompleted = useUserStore((s) => s.isJourneyCompleted)
 
   const columnAssoc: { [name: string]: SafeplacePOI } = {
     column_1_group: SafeplacePOI.MountainColumn,
@@ -59,9 +62,9 @@ const SafeplaceModel = (): ReactElement => {
       <primitive object={backgrounds} />
       <primitive object={bridge_contain} />
       <primitive object={cairns} />
-      <primitive object={trees} />
       <primitive object={ark} />
-      {/* <primitive object={flying_rocks} /> */}
+      <primitive object={trees} />
+      {isJourneyCompleted && <primitive object={flying_rocks} />}
       <primitive object={rocks} />
       <primitive object={water_contain} />
       <Grass>{(ref) => <primitive object={ground} ref={ref} />}</Grass>
