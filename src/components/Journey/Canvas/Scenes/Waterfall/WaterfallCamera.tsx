@@ -14,36 +14,18 @@ import JourneySection from '@/constants/enums/JourneySection'
 const WaterfallCamera = forwardRef(
   (
     {
-      clips,
+      clip,
       onAnimEnd,
     }: {
-      clips: THREE.AnimationClip[]
+      clip: THREE.AnimationClip
       onAnimEnd: () => void
     },
     forwardRef: MutableRefObject<THREE.Camera>
   ) => {
     const containerRef = useRef<THREE.Object3D>(null)
 
-    const section = useJourneyStore((s) => s.currentSection)
-    const currentClip = useMemo(() => {
-      switch (section) {
-        case JourneySection.ToBridge:
-          return clips[0]
-        case JourneySection.Waterfall:
-          return clips[1]
-        case JourneySection.Outro:
-          return clips[2]
-        default:
-          return null
-      }
-    }, [section])
-
-    // const onAnimEnd = useCallback(() => {
-    //   if (section === JourneySection.ToBridge) setSection(JourneySection.Bridge)
-    // }, [section])
-
     const animRef = useThreeAnimation({
-      clip: currentClip,
+      clip,
       ref: containerRef,
       onFinished: onAnimEnd,
     })

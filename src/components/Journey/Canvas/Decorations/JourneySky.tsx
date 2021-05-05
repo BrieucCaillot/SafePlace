@@ -1,6 +1,8 @@
 import { Sky } from '@react-three/drei'
 import { useControls } from 'leva'
 
+import Routes from '@/constants/enums/Routes'
+
 const JourneySky = () => {
   const skyParams = useControls(
     'journey_sky',
@@ -38,7 +40,7 @@ const JourneySky = () => {
         max: 1,
       },
     },
-    { collapsed: true, render: (s) => s('path') === '/journey' }
+    { collapsed: true, render: (s) => s('path') === Routes.Journey }
   )
 
   return (

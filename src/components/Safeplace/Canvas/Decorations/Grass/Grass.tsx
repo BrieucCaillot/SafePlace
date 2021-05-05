@@ -1,24 +1,30 @@
-import { levaStore, useControls } from 'leva'
 import { ReactNode, RefObject, useEffect, useMemo, useRef } from 'react'
+import { useGLTF } from '@react-three/drei'
 import { GroupProps, useFrame } from 'react-three-fiber'
+import { useControls } from 'leva'
 import * as THREE from 'three'
+
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
 import findMinimumTexSize from '@/utils/FBO/findMinimumTexSize'
 import { getPositionTextureFromMesh } from '@/utils/FBO/getPositionTexture'
-import { useGLTF } from '@react-three/drei'
 import fragmentShader from './Grass.fs'
 import vertexShader from './Grass.vs'
+import Routes from '@/constants/enums/Routes'
+import { MeshSurfaceSampler } from 'three/examples/jsm/math/MeshSurfaceSampler'
 
 const Grass = ({
   children,
+  shadowTexture = null,
   ...props
 }: GroupProps & {
   children: (ref: RefObject<THREE.Mesh>) => ReactNode
+  shadowTexture?: THREE.Texture
 }) => {
   // --- STATE
 
   const targetMeshRef = useRef<THREE.Mesh>(null)
   const instancedMeshRef = useRef<THREE.Mesh>(null)
+  const clockRef = useRef<THREE.Clock>(new THREE.Clock())
   const { nodes } = useGLTF('/models/safeplace/grass.gltf')
 
   const textures = useMemo(() => {
@@ -49,7 +55,7 @@ const Grass = ({
     },
     {
       collapsed: true,
-      render: (s) => s('path') === '/safeplace',
+      render: (s) => s('path') === Routes.Safeplace,
     }
   )
 
@@ -131,22 +137,27 @@ const Grass = ({
   useEffect(() => {
     uniforms.current.uTexture.value = texture
   }, [texture])
+  useEffect(() => {
+    uniforms.current.uGroundTexture.value =
+      shadowTexture ||
+      (targetMeshRef.current.material as THREE.MeshBasicMaterial).map
+  }, [shadowTexture])
 
-  useFrame(({ clock }) => {
-    uniforms.current.uTime.value = clock.getElapsedTime()
+  useFrame(() => {
+    uniforms.current.uTime.value = clockRef.current.getElapsedTime()
   })
 
   useEffect(() => {
     ;(instancedMeshRef.current as THREE.InstancedMesh).count = numPoints
     const [positionTexture, uvTexture] = getPositionTextureFromMesh(
-      targetMeshRef.current,
+      new MeshSurfaceSampler(targetMeshRef.current)
+        .setWeightAttribute('grassWeight')
+        .build(),
       textureSize,
       numPoints
     )
     uniforms.current.uPositionTexture.value = positionTexture
     uniforms.current.uUvTexture.value = uvTexture
-    uniforms.current.uGroundTexture.value = (targetMeshRef.current
-      .material as THREE.MeshBasicMaterial).map
   }, [textureSize[0], textureSize[1], numPoints])
 
   return (

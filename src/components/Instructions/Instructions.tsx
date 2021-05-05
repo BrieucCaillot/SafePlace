@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import useAudioStore from '@/stores/useAudioStore'
 
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
+import Routes from '@/constants/enums/Routes'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import { VoiceoverSafeplace } from '@/constants/enums/Voiceover'
 import AudioStatus from '@/constants/enums/Audio'
@@ -53,7 +54,7 @@ const Instructions = () => {
               instruction={InstructionsList.Instruction3}
               text={`Installez-vous confortablement, le dos droit, \n les pieds bien à plat et quand vous serez prêt, \n venez me retrouver dans votre safe place.`}
               onNextStep={() => {
-                router.push('/safeplace')
+                router.push(Routes.Safeplace)
                 setCurrentPOI(SafeplacePOI.Outside)
               }}
             />

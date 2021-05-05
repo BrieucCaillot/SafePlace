@@ -1,16 +1,15 @@
 import Place from '@/constants/enums/Place'
+import Routes from '@/constants/enums/Routes'
 
 import PortalUI from '@/components/common/UI/PortalUI'
-import SafeplaceAudio from '@/components/Safeplace/SafeplaceAudio'
 import LayoutShelterButton from '@/components/common/UI/LayoutShelterButton'
 import ResourcesButton from '@/components/Safeplace/UI/ResourcesButton'
 
 const Safeplace = () => {
   return (
     <>
-      <SafeplaceAudio />
       <PortalUI selector='#layout-bottom-left'>
-        <LayoutShelterButton place={Place.Safeplace} />
+        <LayoutShelterButton from={Place.Safeplace} to={Routes.Safeplace} />
         <ResourcesButton />
       </PortalUI>
     </>

@@ -1,23 +1,16 @@
-import { useControls } from 'leva'
-import { NextRouter, withRouter } from 'next/router'
 import { FC, useEffect } from 'react'
+import { NextRouter, withRouter } from 'next/router'
+import { useControls } from 'leva'
+
+import Routes from '@/constants/enums/Routes'
 
 const DebugNavigation: FC<{ router: NextRouter }> = ({ router }) => {
   const { pathname } = router
-  const paths = {
-    index: '/',
-    about: '/about',
-    onboarding: '/onboarding',
-    safeplace: '/safeplace',
-    resources: '/resources',
-    resourceFocus: '/resource/journey',
-    journey: '/journey',
-  }
 
   const [{ path }, set] = useControls(() => ({
     path: {
       value: pathname,
-      options: paths,
+      options: Routes,
     },
   }))
 

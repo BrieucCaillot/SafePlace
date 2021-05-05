@@ -31,25 +31,25 @@ const ColumnLocation = ({
     s.checkVoiceoverStatus(VoiceoverSafeplace.Inside, AudioStatus.Played)
   )
 
-  const collider = useMemo(
-    () => columnObj.children.find((obj) => obj.type === 'Mesh') as THREE.Mesh,
+  const [camContainer, rock, column] = useMemo(
+    () => columnObj.children as [THREE.Object3D, THREE.Mesh, THREE.Mesh],
     []
   )
 
   const columnLinkPosition = useMemo(
-    () => new THREE.Vector3(0, 1.9, 0).add(collider.position),
-    [collider]
+    () => new THREE.Vector3(0, 1.9, 0).add(column.position),
+    [column]
   )
 
   const camera = useMemo(
     () =>
-      columnObj.children
-        .find((o) => o.type === 'Object3D')
-        ?.children.find(
-          (o) => o.type === 'PerspectiveCamera'
-        ) as THREE.PerspectiveCamera,
-    []
+      camContainer.children.find(
+        (o) => o.type === 'PerspectiveCamera'
+      ) as THREE.PerspectiveCamera,
+    [camContainer]
   )
+
+  console.log(columnObj)
 
   useSavePOIData(safeplacePOI, camera)
 
@@ -59,12 +59,20 @@ const ColumnLocation = ({
       rotation={columnObj.rotation}
       scale={columnObj.scale}
     >
-      {/* <mesh
-        geometry={collider.geometry}
-        material={collider.material}
-        visible={false}
-        onClick={() => console.log(safeplacePOI)}
-      /> */}
+      <mesh
+        material={column.material}
+        geometry={column.geometry}
+        position={column.position}
+        rotation={column.rotation}
+        scale={column.scale}
+      />
+      <mesh
+        material={rock.material}
+        geometry={rock.geometry}
+        position={rock.position}
+        rotation={rock.rotation}
+        scale={rock.scale}
+      />
       {children}
       <ColumnLink
         show={isVoiceoverInsidePlayed && isCurrentlyAvailable}

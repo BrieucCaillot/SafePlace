@@ -3,15 +3,12 @@ import React, {
   RefObject,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react'
 import { useGLTF } from '@react-three/drei'
 
-import useJourneyStore from '@/stores/useJourneyStore'
 import useUserStore from '@/stores/useUserStore'
 import useAudioStore from '@/stores/useAudioStore'
-import JourneySection from '@/constants/enums/JourneySection'
 import Place from '@/constants/enums/Place'
 import Ambiants from '@/constants/enums/Ambiant'
 import AudioStatus from '@/constants/enums/Audio'
@@ -20,21 +17,40 @@ import { VoiceoverJourney } from '@/constants/enums/Voiceover'
 import Waterfall from '@/components/canvas/Waterfall/Waterfall'
 import WaterfallCamera from '@/components/Journey/Canvas/Scenes/Waterfall/WaterfallCamera'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
-import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import Slats from './Slats'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
+import useSceneStore from '@/stores/useSceneStore'
+import SceneName from '@/constants/enums/SceneName'
 
+enum WaterfallSequence {
+  ToBridge,
+  InFrontOfBridge,
+  BridgeBuilding,
+  Waterfall,
+  Outro,
+}
+
+const sequenceVoices: { [key in WaterfallSequence]: VoiceoverJourney } = {
+  [WaterfallSequence.ToBridge]: VoiceoverJourney.Bridge,
+  [WaterfallSequence.InFrontOfBridge]: null,
+  [WaterfallSequence.BridgeBuilding]: null,
+  [WaterfallSequence.Waterfall]: VoiceoverJourney.Waterfall,
+  [WaterfallSequence.Outro]: VoiceoverJourney.Outro,
+}
+
+const sequenceCamIndex: { [key in WaterfallSequence]: number } = {
+  [WaterfallSequence.ToBridge]: 0,
+  [WaterfallSequence.InFrontOfBridge]: 0,
+  [WaterfallSequence.BridgeBuilding]: 0,
+  [WaterfallSequence.Waterfall]: 1,
+  [WaterfallSequence.Outro]: 2,
+}
 const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
-  // TODO: Rework sequence be using one side section
   // TODO: Waterfall flickers
+
+  // GLTF
   const gltf = useGLTF('/models/journey/chapter3.glb')
-
-  const currentSection = useJourneyStore((s) => s.currentSection)
-
-  const [slatsAnimated, setSlatAnimated] = useState(0)
-  const [buttonClicked, setButtonClicked] = useState(false)
-  const [inFrontOfBridge, setInFrontOfBridge] = useState(false)
 
   const [cameras, mountains, rocks, slats, waterfall] = useMemo(
     () => [...gltf.scene.children],
@@ -48,67 +64,80 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   const cameraOffset = useMemo(() => cameras.position.toArray(), [])
 
-  const isVoiceoverWaterfallFinished = useAudioStore((s) =>
-    s.checkVoiceoverStatus(VoiceoverJourney.Waterfall, AudioStatus.Played)
+  // State
+  const isThisSceneRendered = useSceneStore(
+    (s) => s.renderedScene === SceneName.Waterfall
   )
-  useEffect(() => {
-    if (isVoiceoverWaterfallFinished) {
-      useJourneyStore.getState().setSection(JourneySection.Outro)
-    }
-  }, [isVoiceoverWaterfallFinished])
-
-  const isVoiceoverOutroFinished = useAudioStore((s) =>
-    s.checkVoiceoverStatus(VoiceoverJourney.Outro, AudioStatus.Played)
+  const [sequence, setSequence] = useState<WaterfallSequence>(
+    WaterfallSequence.ToBridge
   )
+
+  // ---
+  // Update state depending on current sequence
+  // ---
+
+  // Play ambiant
   useEffect(() => {
-    if (isVoiceoverOutroFinished) {
-      const { setIsJourneyCompleted } = useUserStore.getState()
-      setIsJourneyCompleted(true)
-    }
-  }, [isVoiceoverOutroFinished])
+    if (isThisSceneRendered)
+      useAudioStore
+        .getState()
+        .setCurrentAmbiant(Place.Journey, Ambiants.Waterfall)
+  }, [isThisSceneRendered])
 
+  // Play Voice
   useEffect(() => {
-    const { setCurrentAmbiant, setCurrentVoiceover } = useAudioStore.getState()
+    if (!isThisSceneRendered) return
+    const { setCurrentVoiceover } = useAudioStore.getState()
+    const voice = sequenceVoices[sequence]
+    if (voice !== null) setCurrentVoiceover(Place.Journey, voice)
+  }, [sequence, isThisSceneRendered])
 
-    switch (currentSection) {
-      case JourneySection.ToBridge:
-        setCurrentAmbiant(Place.Journey, Ambiants.Waterfall)
-        setCurrentVoiceover(Place.Journey, VoiceoverJourney.Bridge)
-        break
-      case JourneySection.Waterfall:
-        setCurrentVoiceover(Place.Journey, VoiceoverJourney.Waterfall)
-        break
-      case JourneySection.Outro:
-        setCurrentVoiceover(Place.Journey, VoiceoverJourney.Outro)
-        break
-    }
-  }, [currentSection])
+  // Cam Anim
+  const camAnim = useMemo(() => {
+    if (!isThisSceneRendered) return null
+    return camAnims[sequenceCamIndex[sequence]]
+  }, [sequence, isThisSceneRendered])
 
-  const animateSlats = useMemo(
+  // Slat anim
+  const slatsAnim = useMemo(
     () =>
       [
-        JourneySection.ToBridge,
-        JourneySection.Bridge,
-        JourneySection.Waterfall,
-        JourneySection.Outro,
-      ].includes(currentSection) && buttonClicked,
-    [currentSection, buttonClicked]
+        WaterfallSequence.BridgeBuilding,
+        WaterfallSequence.Waterfall,
+        WaterfallSequence.Outro,
+      ].includes(sequence),
+    [sequence]
   )
 
+  // ---
+  // Update current sequence
+  // ---
+
   useEffect(() => {
-    if (slatsAnimated !== slatAnims.length) return
-    useJourneyStore.getState().setSection(JourneySection.Waterfall)
-  }, [slatsAnimated, slatAnims])
+    const a = useAudioStore.subscribe(
+      (b) => b && setSequence(WaterfallSequence.InFrontOfBridge),
+      (s) => s.checkVoiceoverStatus(VoiceoverJourney.Bridge, AudioStatus.Played)
+    )
+    const b = useAudioStore.subscribe(
+      (b) => b && setSequence(WaterfallSequence.Outro),
+      (s) =>
+        s.checkVoiceoverStatus(VoiceoverJourney.Waterfall, AudioStatus.Played)
+    )
+    const c = useAudioStore.subscribe(
+      (b) => {
+        b && useUserStore.getState().setIsJourneyFinished(true)
+        useUserStore.getState().setIsJourneyCompleted(true)
+      },
+      (s) => s.checkVoiceoverStatus(VoiceoverJourney.Outro, AudioStatus.Played)
+    )
+    return () => [a, b, c].forEach((u) => u())
+  }, [])
 
   return (
     <>
       {/* <ClassicCamera ref={camRef} fov={32.6} /> */}
       <group position={cameraOffset}>
-        <WaterfallCamera
-          clips={camAnims}
-          ref={camRef}
-          onAnimEnd={() => setInFrontOfBridge(true)}
-        />
+        <WaterfallCamera clip={camAnim} ref={camRef} onAnimEnd={() => {}} />
       </group>
 
       <CustomSky />
@@ -116,8 +145,8 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       <Slats
         slatGroup={slats}
         slatAnims={slatAnims}
-        animate={animateSlats}
-        onAnimFinished={() => setSlatAnimated((p) => p + 1)}
+        animate={slatsAnim}
+        onAnimFinished={() => setSequence(WaterfallSequence.Waterfall)}
       />
 
       <primitive object={mountains} />
@@ -127,8 +156,8 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       <Waterfall scale={[7, 7, 7]} position={[-5.5, 0, 0]} />
 
       <ColumnLink
-        onColumnClick={() => setButtonClicked(true)}
-        show={inFrontOfBridge && !buttonClicked}
+        onColumnClick={() => setSequence(WaterfallSequence.BridgeBuilding)}
+        show={sequence === WaterfallSequence.InFrontOfBridge}
       />
     </>
   )

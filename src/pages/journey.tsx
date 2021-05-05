@@ -1,4 +1,6 @@
 import Place from '@/constants/enums/Place'
+import Routes from '@/constants/enums/Routes'
+
 import PortalUI from '@/components/common/UI/PortalUI'
 import Timeline from '@/components/Journey/UI/Timeline'
 import LayoutShelterButton from '@/components/common/UI/LayoutShelterButton'
@@ -9,7 +11,7 @@ const Journey = () => {
     <>
       <JourneyCompletedButton />
       <PortalUI selector='#layout-bottom-left'>
-        <LayoutShelterButton place={Place.Journey} />
+        <LayoutShelterButton from={Place.Journey} to={Routes.Safeplace} />
       </PortalUI>
       <PortalUI selector='#layout-bottom-middle'>
         <Timeline />
