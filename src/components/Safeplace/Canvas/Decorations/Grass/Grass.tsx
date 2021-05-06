@@ -11,60 +11,54 @@ import fragmentShader from './Grass.fs'
 import vertexShader from './Grass.vs'
 import Routes from '@/constants/enums/Routes'
 import { MeshSurfaceSampler } from 'three/examples/jsm/math/MeshSurfaceSampler'
+import useUniform from '@/hooks/uniforms/useUniform'
+import useSurfaceSampling from '@/hooks/FBO/useSurfaceSampling'
+import useInstancedParticleGeometry from '@/hooks/FBO/useInstancedParticleGeometry'
+import useWatchableUniform from '@/hooks/uniforms/useWatchableUniform'
+
+type GrassParams = {
+  size: number
+  windSpeed: number
+  windAmplitude: number
+  windNoiseSize: number
+  amount: number
+  texture: THREE.Texture
+}
 
 const Grass = ({
   children,
   shadowTexture = null,
-  ...props
-}: GroupProps & {
-  children: (ref: RefObject<THREE.Mesh>) => ReactNode
-  shadowTexture?: THREE.Texture
-}) => {
-  // --- STATE
-
-  const targetMeshRef = useRef<THREE.Mesh>(null)
-  const instancedMeshRef = useRef<THREE.Mesh>(null)
-  const clockRef = useRef<THREE.Clock>(new THREE.Clock())
-  const { nodes } = useGLTF('/models/safeplace/grass.gltf')
-
-  const textures = useMemo(() => {
-    const loaders = new THREE.TextureLoader()
-    return {
-      grass_1: loaders.load('/img/common/grass_1.png'),
-      grass_2: loaders.load('/img/common/grass_2.png'),
-      grass_3: loaders.load('/img/common/grass_3.png'),
-    }
-  }, [])
-
-  const {
+  grassParams: {
     size,
     windSpeed,
     windAmplitude,
     windNoiseSize,
-    grassAmount: numPoints,
+    amount: numPoints,
     texture,
-  } = useControls(
-    'grass',
-    {
-      texture: { value: textures['grass_2'], options: textures },
-      grassAmount: { value: 24576, step: 1 },
-      size: 0.4,
-      windNoiseSize: { value: 0.2, min: 0, max: 1 },
-      windAmplitude: { value: 0.07, min: 0, max: 1 },
-      windSpeed: 0.2,
-    },
-    {
-      collapsed: true,
-      render: (s) => s('path') === Routes.Safeplace,
-    }
-  )
+  },
+  ...props
+}: GroupProps & {
+  children: (ref: RefObject<THREE.Mesh>) => ReactNode
+  grassParams?: GrassParams
+  shadowTexture?: THREE.Texture
+}) => {
+  // --- STATE
+  const instancedMeshRef = useRef<THREE.InstancedMesh>(null)
+  const targetMeshRef = useRef<THREE.Mesh>(null)
+  const clockRef = useRef<THREE.Clock>(new THREE.Clock())
+  const { nodes } = useGLTF('/models/safeplace/grass.gltf')
 
   const textureSize = useMemo<THREE.Vector2Tuple>(
     () => findMinimumTexSize(numPoints),
     [numPoints]
   )
-  // const textureSize = useMemo<THREE.Vector2Tuple>(() => [64, 64], [])
-  // const numPoints = textureSize[0] * textureSize[1]
+
+  const [positionTexture, uvTexture] = useSurfaceSampling(
+    targetMeshRef,
+    textureSize,
+    numPoints,
+    'grassWeight'
+  )
 
   // --- GEOMETRY
 
@@ -74,33 +68,12 @@ const Grass = ({
     return g
   }, [nodes])
 
-  const bufferGeometry = useMemo(() => {
-    const geometry = new THREE.InstancedBufferGeometry()
-
-    Object.keys(origGeometry.attributes).forEach((attributeName) => {
-      geometry.attributes[attributeName] =
-        origGeometry.attributes[attributeName]
-    })
-    geometry.index = origGeometry.index
-
-    const index = new Float32Array(numPoints)
-
-    for (let i = 0; i < numPoints; i++) index[i] = i
-    geometry.setAttribute(
-      'aIndex',
-      new THREE.InstancedBufferAttribute(index, 1, false)
-    )
-
-    const pixelPos = new Float32Array(numPoints * 2)
-    for (let i = 0; i < numPoints; i++) {
-      pixelPos[i * 2] = (i % textureSize[0]) / textureSize[0]
-      pixelPos[i * 2 + 1] = Math.floor(i / textureSize[0]) / textureSize[1]
-    }
-    geometry.setAttribute(
-      'aPixelPosition',
-      new THREE.InstancedBufferAttribute(pixelPos, 2, false)
-    )
-
+  const bufferGeometry = useInstancedParticleGeometry(
+    origGeometry,
+    textureSize,
+    numPoints
+  )
+  const rotatedBufferGeometry = useMemo(() => {
     const rotationArray = new Float32Array(numPoints * 4)
     const q = new THREE.Quaternion()
     for (let i = 0; i < numPoints; i++) {
@@ -110,13 +83,12 @@ const Grass = ({
       rotationArray[i * 4 + 2] = q.z
       rotationArray[i * 4 + 3] = q.w
     }
-    geometry.setAttribute(
+    bufferGeometry.setAttribute(
       'aRotation',
       new THREE.InstancedBufferAttribute(rotationArray, 4, false)
     )
-
-    return geometry
-  }, [numPoints, textureSize[0], textureSize[1]])
+    return bufferGeometry
+  }, [bufferGeometry])
 
   // --- UNIFORMS
   const uniforms = useRef<Record<string, THREE.IUniform>>({
@@ -130,41 +102,32 @@ const Grass = ({
     uWindNoiseSize: { value: 0 },
     uWindSpeed: { value: 0 },
   })
-  useNumberUniform(uniforms.current.uSize, size)
-  useNumberUniform(uniforms.current.uWindAmplitude, windAmplitude)
-  useNumberUniform(uniforms.current.uWindNoiseSize, windNoiseSize)
-  useNumberUniform(uniforms.current.uWindSpeed, windSpeed)
-  useEffect(() => {
-    uniforms.current.uTexture.value = texture
-  }, [texture])
-  useEffect(() => {
-    uniforms.current.uGroundTexture.value =
-      shadowTexture ||
+  useUniform(uniforms.current.uSize, size)
+  useUniform(uniforms.current.uWindAmplitude, windAmplitude)
+  useUniform(uniforms.current.uWindNoiseSize, windNoiseSize)
+  useUniform(uniforms.current.uWindSpeed, windSpeed)
+  useUniform(uniforms.current.uTexture, texture)
+  useWatchableUniform(uniforms.current.uUvTexture, uvTexture)
+  useWatchableUniform(uniforms.current.uPositionTexture, positionTexture)
+  useUniform(
+    uniforms.current.uGroundTexture,
+    shadowTexture ||
       (targetMeshRef.current.material as THREE.MeshBasicMaterial).map
-  }, [shadowTexture])
+  )
+
+  useEffect(() => {
+    instancedMeshRef.current.count = numPoints
+  }, [numPoints])
 
   useFrame(() => {
     uniforms.current.uTime.value = clockRef.current.getElapsedTime()
   })
 
-  useEffect(() => {
-    ;(instancedMeshRef.current as THREE.InstancedMesh).count = numPoints
-    const [positionTexture, uvTexture] = getPositionTextureFromMesh(
-      new MeshSurfaceSampler(targetMeshRef.current)
-        .setWeightAttribute('grassWeight')
-        .build(),
-      textureSize,
-      numPoints
-    )
-    uniforms.current.uPositionTexture.value = positionTexture
-    uniforms.current.uUvTexture.value = uvTexture
-  }, [textureSize[0], textureSize[1], numPoints])
-
   return (
     <group {...props}>
       {children(targetMeshRef)}
       <instancedMesh
-        geometry={bufferGeometry}
+        geometry={rotatedBufferGeometry}
         position-y={size + 0.05}
         ref={instancedMeshRef}
       >

@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode, useMemo } from 'react'
+import React, { ReactElement, useMemo } from 'react'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 
@@ -7,10 +7,11 @@ import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 
 import Shelter from '@/components/Safeplace/Canvas/Shelter/Shelter'
 import ColumnLocation from '@/components/Safeplace/Canvas/ColumLocation/ColumnLocation'
-import Grass from '@/components/Safeplace/Canvas/Decorations/Grass/Grass'
 import MountainColumn from '@/components/Safeplace/Canvas/ColumLocation/MountainColum'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
 import SafeplaceFlyingRocks from '@/components/Safeplace/Canvas/Decorations/SafeplaceFlyingRocks'
+import GrassParams from './Decorations/Grass/GrassParams'
+import Grass from './Decorations/Grass/Grass'
 
 const SafeplaceModel = (): ReactElement => {
   const { scene } = useGLTF('/models/safeplace/safeplace.glb')
@@ -72,17 +73,18 @@ const SafeplaceModel = (): ReactElement => {
     )
     mesh.geometry.setAttribute('color', new THREE.BufferAttribute(fakeColor, 3))
     ;(mesh.material as THREE.MeshBasicMaterial).vertexColors = false
-    // console.log((mesh.material as THREE.MeshBasicMaterial).map)
     return mesh
   }, [])
 
   const columnChildren = useMemo(() => [...columnGroup.children], [])
 
-  // const shadowTexture = useMemo(() => {
-  //   const t = new THREE.TextureLoader().load('/img/common/shadow_safeplace.png')
-  //   t.flipY = false
-  //   return t
-  // }, [])
+  const shadowTexture = useMemo(() => {
+    const t = new THREE.TextureLoader().load(
+      '/img/safeplace/shadow_safeplace.png'
+    )
+    t.flipY = false
+    return t
+  }, [])
 
   return (
     <>
@@ -112,9 +114,9 @@ const SafeplaceModel = (): ReactElement => {
       )}
       <primitive object={rocks} />
       <primitive object={water_contain} />
-      <Grass shadowTexture={null}>
+      <GrassParams shadowTexture={shadowTexture}>
         {(ref) => <primitive object={ground} ref={ref} />}
-      </Grass>
+      </GrassParams>
       <CustomSky />
     </>
   )
