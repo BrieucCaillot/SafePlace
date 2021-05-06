@@ -4,6 +4,7 @@ import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 import FlowersParams from './Decorations/Flowers/FlowerParams'
 import useWatchableRef from '@/hooks/useWatchableRef'
 import GrassParams from './Decorations/Grass/GrassParams'
+import Routes from '@/constants/enums/Routes'
 
 const SafeplaceGround = ({ groundMesh }: { groundMesh: THREE.Mesh }) => {
   const groundMeshRef = useWatchableRef<THREE.Mesh>(null)
@@ -35,7 +36,7 @@ const SafeplaceGround = ({ groundMesh }: { groundMesh: THREE.Mesh }) => {
       new THREE.BufferAttribute(grassWeight, 1)
     )
     groundMesh.geometry.setAttribute(
-      'flowerWeight3',
+      'flowerWeight2',
       new THREE.BufferAttribute(flowerWeight2, 1)
     )
     groundMesh.geometry.setAttribute(
@@ -59,10 +60,27 @@ const SafeplaceGround = ({ groundMesh }: { groundMesh: THREE.Mesh }) => {
       <GrassParams
         shadowTexture={shadowTexture}
         targetMeshRef={groundMeshRef}
+        route={Routes.Safeplace}
       />
       <FlowersParams
-        shadowTexture={shadowTexture}
+        controlsName={'red_flower'}
+        route={Routes.Safeplace}
+        //---
+        textureName={'red_flower'}
+        flowersParams={{ weightAttribute: 'flowerWeight1' }}
+        //---
         targetMeshRef={groundMeshRef}
+        shadowTexture={shadowTexture}
+      />
+      <FlowersParams
+        controlsName={'blue_flower'}
+        route={Routes.Safeplace}
+        //---
+        textureName={'blue_flower'}
+        flowersParams={{ weightAttribute: 'flowerWeight2' }}
+        //---
+        targetMeshRef={groundMeshRef}
+        shadowTexture={shadowTexture}
       />
     </>
   )

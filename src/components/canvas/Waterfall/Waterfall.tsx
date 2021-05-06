@@ -26,7 +26,7 @@ const Waterfall = (props: GroupProps) => {
     {
       showDegug: false,
       numPoints: {
-        value: 16368,
+        value: 16368 * 8,
         step: 1,
         label: 'Particle amount',
       },

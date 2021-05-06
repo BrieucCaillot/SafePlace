@@ -22,7 +22,7 @@ const useSurfaceSampling = (
     )
     uvTextureRef.current = uvTex
     positionTextureRef.current = posTex
-  }, [textureSize[0], textureSize[1], amount])
+  }, [textureSize[0], textureSize[1], amount, weightAttribute])
   return [uvTextureRef, positionTextureRef]
 }
 

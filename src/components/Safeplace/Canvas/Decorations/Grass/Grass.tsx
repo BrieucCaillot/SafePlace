@@ -18,6 +18,7 @@ type GrassParams = {
   windNoiseSize: number
   amount: number
   texture: THREE.Texture
+  weightAttribute: string
 }
 
 const Grass = ({
@@ -30,6 +31,7 @@ const Grass = ({
     windNoiseSize,
     amount: numPoints,
     texture,
+    weightAttribute,
   },
   ...props
 }: Omit<InstancedMeshProps, 'geometry' | 'material' | 'args' | 'count'> & {
@@ -51,7 +53,7 @@ const Grass = ({
     targetMeshRef,
     textureSize,
     numPoints,
-    'grassWeight'
+    weightAttribute
   )
 
   // --- GEOMETRY

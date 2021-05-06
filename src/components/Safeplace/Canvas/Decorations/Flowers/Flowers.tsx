@@ -15,12 +15,13 @@ type FlowersParams = {
   size: number
   amount: number
   texture: THREE.Texture
+  weightAttribute: string
 }
 
 const Flowers = ({
   targetMeshRef,
   shadowTexture = null,
-  flowersParams: { size, amount: numPoints, texture },
+  flowersParams: { size, amount: numPoints, texture, weightAttribute },
   ...props
 }: Omit<InstancedMeshProps, 'geometry' | 'material' | 'args' | 'count'> & {
   targetMeshRef: RefObject<THREE.Mesh>
@@ -40,7 +41,7 @@ const Flowers = ({
     targetMeshRef,
     textureSize,
     numPoints,
-    'flowerWeight1'
+    weightAttribute
   )
 
   // --- GEOMETRY
