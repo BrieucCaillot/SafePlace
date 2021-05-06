@@ -2,18 +2,12 @@ uniform sampler2D uPositionTexture;
 uniform sampler2D uUvTexture;
 uniform sampler2D uGroundTexture;
 uniform float uSize;
-uniform float uTime;
-uniform float uWindNoiseSize;
-uniform float uWindAmplitude;
-uniform float uWindSpeed;
+uniform vec4 uRotation;
 
 attribute vec2 aPixelPosition;
-attribute vec4 aRotation;
 
 varying vec2 vUv;
 varying float vGroundValue;
-
-#pragma glslify: snoise3 = require(glsl-noise/simplex/3d) 
 
 vec3 transform( inout vec3 position, vec3 T, vec4 R, vec3 S ) {
     //applies the scale
@@ -45,17 +39,8 @@ void main()
   vGroundValue = rgb2hsv(groundColor.rgb).z;
 
   vec3 offset = texture2D(uPositionTexture, aPixelPosition).rgb;
-  
   vec3 pos = position;
-
-  transform(pos, offset, aRotation, vec3(uSize));
-
-  vec3 worldPos = (modelMatrix * vec4(pos, 1.)).xyz;
-
-  float windOffsetX = snoise3(vec3(worldPos.xz * uWindNoiseSize, uTime * uWindSpeed));
-  float windOffsetZ = snoise3(vec3(worldPos.xz * uWindNoiseSize, uTime * uWindSpeed + 100000.));
-  pos.x += windOffsetX * uv.y * uWindAmplitude;
-  pos.z += windOffsetZ * uv.y * uWindAmplitude;
+  transform(pos, offset, uRotation, vec3(uSize));
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
 }
