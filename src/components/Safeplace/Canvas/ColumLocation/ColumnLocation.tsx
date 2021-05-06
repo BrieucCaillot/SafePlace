@@ -12,6 +12,7 @@ import useSavePOIData from '@/hooks/POI/useSavePOIData'
 
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 import useUserStore from '@/stores/useUserStore'
+import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 
 const ColumnLocation = ({
   safeplacePOI,
@@ -57,20 +58,8 @@ const ColumnLocation = ({
       rotation={columnObj.rotation}
       scale={columnObj.scale}
     >
-      <mesh
-        material={column.material}
-        geometry={column.geometry}
-        position={column.position}
-        rotation={column.rotation}
-        scale={column.scale}
-      />
-      <mesh
-        material={rock.material}
-        geometry={rock.geometry}
-        position={rock.position}
-        rotation={rock.rotation}
-        scale={rock.scale}
-      />
+      <MeshShorthand object={column} />
+      <MeshShorthand object={rock} />
       {children}
       <ColumnLink
         show={isVoiceoverInsidePlayed && isCurrentlyAvailable}
