@@ -18,17 +18,15 @@ const LayoutAudio = (): null => {
 
   useEffect(() => {
     const {
+      currentAmbiant,
       setCurrentAmbiant,
       currentVoiceover: { voiceover },
       setCurrentVoiceover,
       setVoiceoverStatus,
     } = useAudioStore.getState()
 
-    if (
-      previousPathname === Routes.Index ||
-      previousPathname === Routes.Journey
-    ) {
-      // Ambiant
+    if (pathname === Routes.OnBoarding || pathname === Routes.Resources) {
+      if (currentAmbiant.name === Ambiants.Safeplace) return
       setCurrentAmbiant(Place.Safeplace, Ambiants.Safeplace)
     }
 

@@ -5,6 +5,7 @@ import useAudioStore from '@/stores/useAudioStore'
 import InstructionsList from '@/constants/enums/InstructionsList'
 import Place from '@/constants/enums/Place'
 import AudioStatus from '@/constants/enums/Audio'
+import ButtonStonecut from '../common/UI/Buttons/ButtonStonecut'
 
 const Instruction = ({
   instruction,
@@ -33,7 +34,7 @@ const Instruction = ({
     () =>
       isVoiceoverPlayed
         ? 'cursor-pointer pointer-events-auto fadeIn'
-        : 'opacity-0',
+        : 'cursor-auto opacity-0',
 
     [isVoiceoverPlayed]
   )
@@ -54,23 +55,19 @@ const Instruction = ({
 
   return (
     <CSSTransition in={show} timeout={0} classNames='instruction'>
-      <div className='flex flex-col justify-center'>
-        {/* <img
-          className='m-auto max-w-4xl'
-          src={`/img/Instructions/${Instruction}.png`}
-        /> */}
-
+      <div className='flex flex-col flex-1 justify-center'>
         <p
-          className={`text-white tracking-wider text-xl text-center pb-7 whitespace-pre-line`}
+          className={`text-secondary text-stroke font-sans text-xl leading-loose tracking-wider text-center pb-7 whitespace-pre-line`}
         >
           {text}
         </p>
-        <button
-          onClick={handleClick}
-          className={`relative button-stonecut button-stonecut-white tracking-widest text-lg focus:outline-none text-white w-max m-auto ${buttonActiveClass}`}
+        <ButtonStonecut
+          className={buttonActiveClass}
+          color='tertiary'
+          onClick={onNextStep}
         >
           {isLastStep ? 'Rejoindre la safeplace' : 'Continuer'}
-        </button>
+        </ButtonStonecut>
       </div>
     </CSSTransition>
   )

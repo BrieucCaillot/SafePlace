@@ -1,23 +1,14 @@
 .button {
   &-stonecut {
-    &:before {
-      content: '';
-      background: url('/img/common/stonecut-button.svg') no-repeat center;
-      height: 29px;
-      width: 29px;
+    &:hover svg {
+      transform: scale(1.5) rotate(360deg);
+    }
+    svg {
       position: absolute;
       top: -9px;
-      left: -20px;
-    }
-    &-white {
-      &::before {
-        background: url('/img/common/stonecut-white-button.svg') no-repeat
-          center;
-
-        height: 40px;
-        width: 40px;
-        left: -26px;
-      }
+      left: -24px;
+      transform: scale(1) rotate(0deg);
+      transition: all 1s ease-in-out;
     }
   }
   &-stonefull {

@@ -42,9 +42,9 @@ const Head = () => {
           rel='stylesheet'
         />
         <link
-          href='https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap'
+          href='https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap'
           rel='stylesheet'
-        ></link>
+        />
         <link rel='apple-touch-icon' href='/icons/apple-touch-icon.png' />
         <link
           rel='apple-touch-icon'

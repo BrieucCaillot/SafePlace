@@ -10,7 +10,7 @@ type TransitionKind<RC> = {
   location: string
 }
 
-const TIMEOUT: number = 200
+const TIMEOUT: number = 1
 
 const transitionStyles: { [name: string]: CSSProperties } = {
   entering: {
@@ -18,12 +18,12 @@ const transitionStyles: { [name: string]: CSSProperties } = {
     opacity: 0,
   },
   entered: {
-    transition: `opacity ${TIMEOUT}ms ease-in-out`,
+    transition: `opacity ${TIMEOUT}s ease-in-out`,
     opacity: 1,
     animation: 'blink .3s linear 2',
   },
   exiting: {
-    transition: `opacity ${TIMEOUT}ms ease-in-out`,
+    transition: `opacity ${TIMEOUT}s ease-in-out`,
     opacity: 0,
   },
 }
@@ -43,6 +43,7 @@ const LayoutTransition: React.FC<TransitionKind<ReactChild>> = ({
       >
         {(status) => (
           <div
+            className='h-screen'
             data-transition-status={status}
             style={{
               ...transitionStyles[status],
