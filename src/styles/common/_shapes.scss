@@ -1,18 +1,16 @@
 .shape {
   &-link {
-    background-color: var(--button-ui);
+    background-color: var(--shape-blob-primary);
     animation: shape-link 8s ease-in-out infinite;
     border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
     transition: all 1s ease-in-out;
-    height: 40px;
-    width: 40px;
-    &__shelter {
-      height: 50px;
-      width: 100px;
-    }
-    &__resources {
-      height: 50px;
-      width: 140px;
+    backdrop-filter: blur(2px);
+    // &__shelter {
+    // }
+    // &__resources {
+    // }
+    &__safeplace {
+      background-color: var(--shape-blob-tertiary);
     }
   }
 

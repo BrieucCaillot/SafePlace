@@ -10,11 +10,12 @@ const Index = () => {
   return (
     <>
       <PortalUI selector='#layout-header-right'>
-        <Link href={Routes.About} as={Routes.About}>
-          <ButtonStonecut color='secondary' className='cursor-pointer'>
-            A propos
-          </ButtonStonecut>
-        </Link>
+        <ButtonStonecut
+          className='text-primary cursor-pointer'
+          route={Routes.About}
+        >
+          A propos
+        </ButtonStonecut>
       </PortalUI>
 
       <div

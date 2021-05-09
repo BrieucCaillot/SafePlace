@@ -57,13 +57,12 @@ const Instruction = ({
     <CSSTransition in={show} timeout={0} classNames='instruction'>
       <div className='flex flex-col flex-1 justify-center'>
         <p
-          className={`text-secondary text-stroke font-sans text-xl leading-loose tracking-wider text-center pb-7 whitespace-pre-line`}
+          className={`text-primary text-stroke font-sans text-xl leading-loose tracking-wider text-center pb-7 whitespace-pre-line`}
         >
           {text}
         </p>
         <ButtonStonecut
-          className={buttonActiveClass}
-          color='tertiary'
+          className={`${buttonActiveClass} text-tertiary`}
           onClick={onNextStep}
         >
           {isLastStep ? 'Rejoindre la safeplace' : 'Continuer'}

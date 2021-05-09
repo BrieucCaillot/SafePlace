@@ -18,7 +18,9 @@ const Journey = () => {
         <Timeline />
       </PortalUI>
       <PortalUI selector='#layout-bottom-right'>
-        <TimelineStatusButton />
+        <div className='pl-3'>
+          <TimelineStatusButton />
+        </div>
       </PortalUI>
     </>
   )
