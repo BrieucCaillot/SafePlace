@@ -14,27 +14,46 @@ import Place from '@/constants/enums/Place'
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
+import prepareAttributeForSample from '@/utils/geometry/prepareAttributesForSample'
+import GrassParams from '@/components/Safeplace/Canvas/Decorations/Grass/GrassParams'
+import FlowersParams from '@/components/Safeplace/Canvas/Decorations/Flowers/FlowerParams'
+import Routes from '@/constants/enums/Routes'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
-  const {
-    scene,
-    animations: [camAnim],
-  } = useGLTF('/models/journey/chapter1.glb')
-
-  const containerRef = useRef<THREE.Group>()
-
   const isCairnSection = useJourneyStore(
     (s) => s.currentSection === JourneySection.Cairns
   )
 
-  const cameraGroup = useMemo(() => scene.getObjectByName('camera'), [])
+  const {
+    scene,
+    animations: [camAnim],
+    nodes,
+  } = useGLTF('/models/journey/chapter1.glb')
 
+  const groundMesh = useMemo(() => {
+    const m = nodes['ground_mesh'] as THREE.Mesh
+    prepareAttributeForSample(m.geometry)
+    ;(m.material as THREE.MeshBasicMaterial).vertexColors = false
+    return m
+  }, [])
+  const groundMeshRef = useRef<THREE.Mesh>(groundMesh)
+
+  const cameraGroup = useMemo(() => scene.getObjectByName('camera'), [])
+  const containerRef = useRef<THREE.Group>()
   const animRef = useThreeAnimation({
     clip: isCairnSection ? camAnim : null,
     ref: containerRef,
     onFinished: () =>
       useJourneyStore.getState().setSection(JourneySection.Lake),
   })
+
+  useFrame(
+    () =>
+      animRef.current != null &&
+      !animRef.current.paused &&
+      containerRef.current != null &&
+      containerRef.current.updateMatrixWorld()
+  )
 
   useEffect(() => {
     if (!isCairnSection) return
@@ -44,14 +63,6 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     // Voiceover
     setCurrentVoiceover(Place.Journey, VoiceoverJourney.Cairns)
   }, [isCairnSection])
-
-  useFrame(
-    () =>
-      animRef.current != null &&
-      !animRef.current.paused &&
-      containerRef.current != null &&
-      containerRef.current.updateMatrixWorld()
-  )
 
   return (
     <>
@@ -70,6 +81,22 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       </group>
       <CustomSky />
       <primitive object={scene} />
+      <GrassParams
+        targetMeshRef={groundMeshRef}
+        folderName={'cairn_greenery'}
+        controlsName={'grass'}
+        route={Routes.Journey}
+        grassParams={{ weightAttribute: 'grassWeight', amount: 24576 }}
+        position={new THREE.Vector3(0, 0.4, 0).add(groundMesh.position)}
+      />
+      <FlowersParams
+        targetMeshRef={groundMeshRef}
+        folderName={'cairn_greenery'}
+        controlsName={'flowers'}
+        route={Routes.Journey}
+        flowersParams={{ weightAttribute: 'flowerWeight1', amount: 1024 }}
+        position={groundMesh.position}
+      />
     </>
   )
 })

@@ -79,12 +79,13 @@ const Flowers = ({
     instancedMeshRef.current.count = numPoints
   }, [numPoints])
 
-  const upVector = useMemo(() => new THREE.Vector3(0, 1, 0), [])
+  const o = useMemo(() => new THREE.Object3D(), [])
+  const v = useMemo(() => new THREE.Vector3(), [])
   useFrame(({ camera }) => {
-    ;(uniforms.current.uRotation.value as THREE.Quaternion).setFromAxisAngle(
-      upVector,
-      camera.rotation.y
-    )
+    camera.getWorldDirection(v)
+    v.y = 0
+    o.lookAt(v)
+    ;(uniforms.current.uRotation.value as THREE.Quaternion).copy(o.quaternion)
   })
 
   return (

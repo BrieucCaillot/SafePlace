@@ -42,7 +42,7 @@ const Grass = ({
   // --- STATE
   const instancedMeshRef = useRef<THREE.InstancedMesh>(null)
   const clockRef = useRef<THREE.Clock>(new THREE.Clock())
-  const { nodes } = useGLTF('/models/greenery/grass.gltf')
+  const { nodes } = useGLTF('/models/greenery/grass.glb')
 
   const textureSize = useMemo<THREE.Vector2Tuple>(
     () => findMinimumTexSize(numPoints),
@@ -58,11 +58,10 @@ const Grass = ({
 
   // --- GEOMETRY
 
-  const origGeometry = useMemo(() => {
-    const g = (nodes['herbe_grp_3003'] as THREE.Mesh).geometry
-    g.rotateX(-Math.PI / 2)
-    return g
-  }, [nodes])
+  const origGeometry = useMemo(
+    () => (nodes['herbe_grp_3003'] as THREE.Mesh).geometry,
+    [nodes]
+  )
 
   const bufferGeometry = useInstancedParticleGeometry(
     origGeometry,
@@ -124,7 +123,7 @@ const Grass = ({
     <instancedMesh
       {...props}
       geometry={rotatedBufferGeometry}
-      position-y={size + 0.05}
+      position-y={size}
       ref={instancedMeshRef}
     >
       <shaderMaterial
