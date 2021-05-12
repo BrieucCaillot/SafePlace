@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 const LayoutHeader = () => (
   // TODO: Should be replaced with a leva panel
   <header className='pointer-events-auto absolute top-0 w-screen flex align-center justify-between p-10 z-10'>

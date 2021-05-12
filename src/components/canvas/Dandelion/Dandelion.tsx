@@ -60,7 +60,7 @@ const Dandelion = ({
   } = useControls(
     'dandelion',
     {
-      particlesSize: 30,
+      particlesSize: 150,
       particleAmount: { value: 16 * 62, step: 1 },
       sizeVariation: 1,
       spreadFactor: { value: 0.015, min: 0, max: 1 },

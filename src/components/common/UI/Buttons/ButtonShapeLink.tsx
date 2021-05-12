@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import Routes from '@/constants/enums/Routes'
 
-const LayoutShapeLink = ({
+const ButtonShapeLink = ({
   children,
   className,
   route = Routes.Resources,
@@ -14,15 +14,13 @@ const LayoutShapeLink = ({
 }) => {
   return (
     <Link href={route} as={route}>
-      <div className='fadeIn'>
-        <button
-          className={`shape shape-link ${className} pointer-events-auto outline-none focus:outline-none relative cursor-pointer`}
-        >
-          {children}
-        </button>
-      </div>
+      <button
+        className={`shape shape-link ${className} fadeIn pointer-events-auto outline-none focus:outline-none relative cursor-pointer`}
+      >
+        <span className='block w-full text-xl'>{children}</span>
+      </button>
     </Link>
   )
 }
 
-export default LayoutShapeLink
+export default ButtonShapeLink

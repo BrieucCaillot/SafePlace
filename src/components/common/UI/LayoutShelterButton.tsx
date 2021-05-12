@@ -1,11 +1,12 @@
 import { useMemo } from 'react'
 
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
+import useUserStore from '@/stores/useUserStore'
 import Place from '@/constants/enums/Place'
 import Routes from '@/constants/enums/Routes'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 
-import LayoutShapeLink from '@/components/common/UI/LayoutShapeLink'
+import ButtonShapeLink from '@/components/common/UI/Buttons/ButtonShapeLink'
 
 const LayoutShelterButton = ({ from, to }: { from: Place; to: Routes }) => {
   const POIsWhereHidden = [
@@ -18,20 +19,22 @@ const LayoutShelterButton = ({ from, to }: { from: Place; to: Routes }) => {
   const isCurrentlyAvailable = useSafeplaceStore(
     (state) => !POIsWhereHidden.includes(state.currentPOI)
   )
+  const isJourneyFinished = useUserStore((s) => s.isJourneyFinished)
+
   const isAvailable = useMemo(
-    () => isCurrentlyAvailable || from == Place.Journey,
-    [isCurrentlyAvailable]
+    () => isCurrentlyAvailable || (from == Place.Journey && !isJourneyFinished),
+    [isCurrentlyAvailable, isJourneyFinished]
   )
 
   return (
-    <LayoutShapeLink
-      className={`shape-link__shelter ${isAvailable ? 'fadeIn' : 'hidden'}`}
+    <ButtonShapeLink
+      className={`shape-link__shelter py-1.5 px-5 text-white ${
+        isAvailable ? 'fadeIn' : from == Place.Journey ? 'opacity-0' : 'hidden'
+      }`}
       route={to}
     >
-      <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 block pointer-events-auto cursor-pointer'>
-        <span className='text-white text-xl'>Abri</span>
-      </span>
-    </LayoutShapeLink>
+      Abri
+    </ButtonShapeLink>
   )
 }
 

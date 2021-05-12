@@ -1,10 +1,10 @@
-import { ReactNode, useCallback, useEffect, useMemo } from 'react'
+import { ReactNode, useMemo } from 'react'
 import * as THREE from 'three'
 
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
-import Place from '@/constants/enums/Place'
 import AudioStatus from '@/constants/enums/Audio'
 import { VoiceoverSafeplace } from '@/constants/enums/Voiceover'
+import Routes from '@/constants/enums/Routes'
 
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import useAudioStore from '@/stores/useAudioStore'
@@ -12,6 +12,7 @@ import useSavePOIData from '@/hooks/POI/useSavePOIData'
 
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 import useUserStore from '@/stores/useUserStore'
+import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 
 const ColumnLocation = ({
   safeplacePOI,
@@ -25,7 +26,7 @@ const ColumnLocation = ({
   const isCurrentlyAvailable = useSafeplaceStore((s) =>
     s.isCurrentlyAvailable(safeplacePOI)
   )
-  const setCurrentPOI = useSafeplaceStore((s) => s.setCurrentPOI)
+  const router = useUserStore((s) => s.router)
 
   const isVoiceoverInsidePlayed = useAudioStore((s) =>
     s.checkVoiceoverStatus(VoiceoverSafeplace.Inside, AudioStatus.Played)
@@ -49,8 +50,6 @@ const ColumnLocation = ({
     [camContainer]
   )
 
-  console.log(columnObj)
-
   useSavePOIData(safeplacePOI, camera)
 
   return (
@@ -59,24 +58,12 @@ const ColumnLocation = ({
       rotation={columnObj.rotation}
       scale={columnObj.scale}
     >
-      <mesh
-        material={column.material}
-        geometry={column.geometry}
-        position={column.position}
-        rotation={column.rotation}
-        scale={column.scale}
-      />
-      <mesh
-        material={rock.material}
-        geometry={rock.geometry}
-        position={rock.position}
-        rotation={rock.rotation}
-        scale={rock.scale}
-      />
+      <MeshShorthand object={column} />
+      <MeshShorthand object={rock} />
       {children}
       <ColumnLink
         show={isVoiceoverInsidePlayed && isCurrentlyAvailable}
-        onColumnClick={() => setCurrentPOI(safeplacePOI)}
+        onColumnClick={() => router.push(Routes.MountainColumn)}
         position={columnLinkPosition}
       />
     </group>

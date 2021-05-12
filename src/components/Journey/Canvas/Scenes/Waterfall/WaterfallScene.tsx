@@ -9,10 +9,14 @@ import { useGLTF } from '@react-three/drei'
 
 import useUserStore from '@/stores/useUserStore'
 import useAudioStore from '@/stores/useAudioStore'
+import useJourneyStore from '@/stores/useJourneyStore'
+import useSceneStore from '@/stores/useSceneStore'
 import Place from '@/constants/enums/Place'
 import Ambiants from '@/constants/enums/Ambiant'
 import AudioStatus from '@/constants/enums/Audio'
 import { VoiceoverJourney } from '@/constants/enums/Voiceover'
+import JourneySection from '@/constants/enums/JourneySection'
+import SceneName from '@/constants/enums/SceneName'
 
 import Waterfall from '@/components/canvas/Waterfall/Waterfall'
 import WaterfallCamera from '@/components/Journey/Canvas/Scenes/Waterfall/WaterfallCamera'
@@ -20,8 +24,7 @@ import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import Slats from './Slats'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
-import useSceneStore from '@/stores/useSceneStore'
-import SceneName from '@/constants/enums/SceneName'
+import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 
 enum WaterfallSequence {
   ToBridge,
@@ -47,8 +50,6 @@ const sequenceCamIndex: { [key in WaterfallSequence]: number } = {
   [WaterfallSequence.Outro]: 2,
 }
 const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
-  // TODO: Waterfall flickers
-
   // GLTF
   const gltf = useGLTF('/models/journey/chapter3.glb')
 
@@ -65,6 +66,10 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const cameraOffset = useMemo(() => cameras.position.toArray(), [])
 
   // State
+  const isWaterfallSection = useJourneyStore(
+    (s) => s.currentSection === JourneySection.Waterfall
+  )
+
   const isThisSceneRendered = useSceneStore(
     (s) => s.renderedScene === SceneName.Waterfall
   )
@@ -75,6 +80,13 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   // ---
   // Update state depending on current sequence
   // ---
+
+  // Reset journey finished when changing section
+  useEffect(() => {
+    if (isWaterfallSection) return
+    const setIsJourneyFinished = useUserStore.getState().setIsJourneyFinished
+    setIsJourneyFinished(false)
+  }, [isWaterfallSection])
 
   // Play ambiant
   useEffect(() => {

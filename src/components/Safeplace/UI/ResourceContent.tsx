@@ -13,9 +13,9 @@ const ResourceContent = () => {
   return (
     <>
       {!isCameraTravelling && (
-        <main
+        <div
           id='resource'
-          className='bg-primary fadeIn pointer-events-auto px-10 md:px-14 py-5 md:py-7 rounded-2xl w-full max-w-md md:max-w-xl h-full max-h-96 md:max-h-80 absolute top-1/2 left-20 transform -translate-y-1/2'
+          className='bg-secondary fadeIn flex-1 pointer-events-auto px-10 md:px-14 py-5 md:py-7 ml-24 lg:ml-80 rounded-2xl w-full max-w-md md:max-w-xl max-h-96 md:max-h-80'
         >
           <nav className='pb-7 font-sans'>
             <ul className='flex justify-center text-sm'>
@@ -97,7 +97,7 @@ const ResourceContent = () => {
               </p>
             </div>
           )}
-        </main>
+        </div>
       )}
     </>
   )

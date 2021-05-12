@@ -7,7 +7,9 @@ import ResourcesButton from '@/components/Safeplace/UI/ResourcesButton'
 const ResourceJourney = () => {
   return (
     <>
-      <ResourceContent />
+      <div className='flex flex-col h-full justify-center'>
+        <ResourceContent />
+      </div>
       <PortalUI selector='#layout-bottom-left'>
         <ResourcesButton />
       </PortalUI>

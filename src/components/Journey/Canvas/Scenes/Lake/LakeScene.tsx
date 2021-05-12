@@ -24,6 +24,11 @@ import Dandelion from '@/components/canvas/Dandelion/Dandelion'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
 import AudioStatus from '@/constants/enums/Audio'
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
+import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
+import Grass from '@/components/Safeplace/Canvas/Decorations/Grass/Grass'
+import GrassParams from '@/components/Safeplace/Canvas/Decorations/Grass/GrassParams'
+import Routes from '@/constants/enums/Routes'
+import LakeGround from './LakeGround'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -32,22 +37,17 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   } = useGLTF('/models/journey/chapter2.glb')
 
   const containerRef = useRef<THREE.Group>()
-
-  const [
-    camGroup,
-    ground,
-    lake,
-    trees,
-    dandelion,
-    rocks,
-    _1,
-    _2,
-    _3,
-    particules,
-  ] = useMemo(() => [...scene.children], [])
-
-  const camera = useMemo(
-    () => camGroup.children[0] as THREE.PerspectiveCamera,
+  const [camGroup, particules, lake, dandelion, rocks, ground, trees] = useMemo(
+    () =>
+      [
+        'camera',
+        'particules',
+        'lake',
+        'dandelions',
+        'rocks',
+        'ground',
+        'trees',
+      ].map((n) => scene.children.find((o) => o.name === n)),
     []
   )
 
@@ -91,6 +91,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   return (
     <>
+      {/* <ClassicCamera ref={camRef} name='Lake cam' /> */}
       <group
         ref={containerRef}
         position={camGroup.position}
@@ -98,30 +99,28 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       >
         <ClassicCamera
           ref={camRef}
-          fov={camera.fov}
+          fov={(camGroup.children[0] as THREE.PerspectiveCamera).fov}
           rotation-x={-Math.PI / 2}
           position={[0, 0, 0]}
         />
-        {/* <mesh>
-          <boxBufferGeometry />
-          <meshNormalMaterial />
-        </mesh> */}
       </group>
       <CustomSky />
       <ColumnLink
         onColumnClick={() => animateDandelion(true)}
         show={isVoiceoverFinished && !areDandelionAnimated}
-        position={[16, 0.5, 3]}
+        position={[-16, 0.5, 3]}
       />
       <Dandelion
         points={dandelionPoints}
         position={particules.position}
+        rotation={particules.rotation}
+        scale={particules.scale}
         animate={areDandelionAnimated}
       />
-      <primitive object={ground} />
-      <primitive object={lake} />
+      <MeshShorthand object={lake.children[0] as THREE.Mesh} />
+      <MeshShorthand object={dandelion.children[0] as THREE.Mesh} />
+      <LakeGround object={ground} />
       <primitive object={trees} />
-      <primitive object={dandelion} />
       <primitive object={rocks} />
     </>
   )

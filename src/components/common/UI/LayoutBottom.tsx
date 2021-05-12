@@ -13,13 +13,8 @@ const LayoutBottom = () => {
         id='layout-bottom-middle'
         className='flex-grow px-10 sm:px-16 md:px-32 lg:px-40 xl:px-52'
       ></div>
-      <div
-        id='layout-bottom-right'
-        className='flex items-center flex-row-reverse'
-      >
-        <div>
-          <LayoutSoundButton />
-        </div>
+      <div id='layout-bottom-right' className='flex items-center flex-row'>
+        <LayoutSoundButton />
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 import useAudioStore from '@/stores/useAudioStore'
@@ -27,14 +27,11 @@ const Instructions = () => {
   return (
     <>
       {isVoiceoverSafeplaceArivedPlayed && (
-        <div
-          id='instructions'
-          className='absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full fadeIn'
-        >
+        <div id='instructions' className='fadeIn flex flex-col h-screen w-full'>
           {currentInstruction == InstructionsList.Instruction1 && (
             <Instruction
               instruction={InstructionsList.Instruction1}
-              text={`Pour une expérience plus riche, je vous recommande de prendre \n un casque et de désactiver vos \n notifications.`}
+              text={`Pour une expérience plus riche, je vous recommande de \n prendre un casque et de désactiver vos notifications.`}
               onNextStep={() =>
                 setCurrentInstruction(InstructionsList.Instruction2)
               }

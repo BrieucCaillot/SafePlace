@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-const LayoutBlob = ({
+const ButtonBlob = ({
   children,
   onClick,
 }: {
@@ -21,4 +21,4 @@ const LayoutBlob = ({
   )
 }
 
-export default LayoutBlob
+export default ButtonBlob

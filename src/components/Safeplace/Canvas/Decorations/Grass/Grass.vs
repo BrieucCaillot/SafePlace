@@ -13,8 +13,6 @@ attribute vec4 aRotation;
 varying vec2 vUv;
 varying float vGroundValue;
 
-#define PI 3.14159265359
-
 #pragma glslify: snoise3 = require(glsl-noise/simplex/3d) 
 
 vec3 transform( inout vec3 position, vec3 T, vec4 R, vec3 S ) {
@@ -37,10 +35,6 @@ vec3 rgb2hsv(vec3 c)
     float d = q.x - min(q.w, q.y);
     float e = 1.0e-10;
     return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
-}
-
-float rand(vec2 n) { 
-	return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
 }
 
 void main()
