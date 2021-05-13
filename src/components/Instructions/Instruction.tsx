@@ -14,7 +14,7 @@ const Instruction = ({
 }: {
   instruction: InstructionsList
   text: string
-  onNextStep: Function
+  onNextStep: () => void
 }) => {
   const [show, setShow] = useState(false)
 
@@ -23,9 +23,6 @@ const Instruction = ({
     []
   )
 
-  const setCurrentVoiceover = useAudioStore(
-    (state) => state.setCurrentVoiceover
-  )
   const isVoiceoverPlayed = useAudioStore((state) =>
     state.checkVoiceoverStatus(instruction, AudioStatus.Played)
   )
@@ -39,18 +36,11 @@ const Instruction = ({
     [isVoiceoverPlayed]
   )
 
-  const handleClick = () => {
-    onNextStep()
-  }
-
   useEffect(() => {
     setShow(true)
+    useAudioStore.getState().setCurrentVoiceover(Place.Safeplace, instruction)
 
-    setCurrentVoiceover(Place.Safeplace, instruction)
-
-    return () => {
-      setShow(false)
-    }
+    return () => setShow(false)
   }, [])
 
   return (
