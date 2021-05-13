@@ -88,18 +88,18 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   return (
     <>
-      <ClassicCamera ref={camRef} name='Lake cam' />
+      {/* <ClassicCamera ref={camRef} name='Lake cam' /> */}
       <group
         ref={containerRef}
         position={camGroup.position}
         quaternion={camGroup.quaternion}
       >
-        {/* <ClassicCamera
+        <ClassicCamera
           ref={camRef}
           fov={(camGroup.children[0] as THREE.PerspectiveCamera).fov}
           rotation-x={-Math.PI / 2}
           position={[0, 0, 0]}
-        /> */}
+        />
       </group>
       <CustomSky />
       <ColumnLink
