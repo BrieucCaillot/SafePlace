@@ -29,6 +29,11 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     animations: [camAnim],
     nodes,
   } = useGLTF('/models/journey/chapter1.glb')
+  const shadowTex = useMemo(() => {
+    const t = new THREE.TextureLoader().load('/img/journey/shadow_chap2.png')
+    t.flipY = false
+    return t
+  }, [])
 
   const groundMesh = useMemo(() => {
     const m = nodes['ground_mesh'] as THREE.Mesh
@@ -88,6 +93,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         route={Routes.Journey}
         grassParams={{ weightAttribute: 'grassWeight', amount: 24576 }}
         position={new THREE.Vector3(0, 0.4, 0).add(groundMesh.position)}
+        shadowTexture={shadowTex}
       />
       <FlowersParams
         targetMeshRef={groundMeshRef}
@@ -96,6 +102,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         route={Routes.Journey}
         flowersParams={{ weightAttribute: 'flowerWeight1', amount: 1024 }}
         position={groundMesh.position}
+        shadowTexture={shadowTex}
       />
     </>
   )

@@ -71,7 +71,9 @@ const Flowers = ({
   useUniform(
     uniforms.current.uGroundTexture,
     shadowTexture ||
-      (targetMeshRef.current.material as THREE.MeshBasicMaterial).map
+      (targetMeshRef.current
+        ? (targetMeshRef.current.material as THREE.MeshBasicMaterial).map
+        : null)
   )
   useUniform(uniforms.current.uSize, size)
 
