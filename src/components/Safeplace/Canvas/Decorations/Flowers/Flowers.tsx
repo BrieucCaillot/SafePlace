@@ -70,9 +70,10 @@ const Flowers = ({
   useWatchableUniform(uniforms.current.uUvTexture, uvTexture)
   useUniform(
     uniforms.current.uGroundTexture,
-    shadowTexture || targetMeshRef.current
-      ? (targetMeshRef.current.material as THREE.MeshBasicMaterial).map
-      : null
+    shadowTexture ||
+      (targetMeshRef.current
+        ? (targetMeshRef.current.material as THREE.MeshBasicMaterial).map
+        : null)
   )
   useUniform(uniforms.current.uSize, size)
 

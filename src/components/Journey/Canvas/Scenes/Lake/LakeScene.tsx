@@ -25,9 +25,6 @@ import CustomSky from '@/components/canvas/Sky/CustomSky'
 import AudioStatus from '@/constants/enums/Audio'
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
-import Grass from '@/components/Safeplace/Canvas/Decorations/Grass/Grass'
-import GrassParams from '@/components/Safeplace/Canvas/Decorations/Grass/GrassParams'
-import Routes from '@/constants/enums/Routes'
 import LakeGround from './LakeGround'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
@@ -91,18 +88,18 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   return (
     <>
-      {/* <ClassicCamera ref={camRef} name='Lake cam' /> */}
+      <ClassicCamera ref={camRef} name='Lake cam' />
       <group
         ref={containerRef}
         position={camGroup.position}
         quaternion={camGroup.quaternion}
       >
-        <ClassicCamera
+        {/* <ClassicCamera
           ref={camRef}
           fov={(camGroup.children[0] as THREE.PerspectiveCamera).fov}
           rotation-x={-Math.PI / 2}
           position={[0, 0, 0]}
-        />
+        /> */}
       </group>
       <CustomSky />
       <ColumnLink

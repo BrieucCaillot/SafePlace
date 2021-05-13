@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import * as THREE from 'three'
 
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
@@ -6,7 +6,6 @@ import GrassParams from '@/components/Safeplace/Canvas/Decorations/Grass/GrassPa
 import Routes from '@/constants/enums/Routes'
 import FlowersParams from '@/components/Safeplace/Canvas/Decorations/Flowers/FlowerParams'
 import prepareAttributeForSample from '@/utils/geometry/prepareAttributesForSample'
-import { useControls } from 'leva'
 
 const LakeGround = ({ object }: { object: THREE.Object3D }) => {
   const groundRef = useRef<THREE.Mesh>()
@@ -17,10 +16,15 @@ const LakeGround = ({ object }: { object: THREE.Object3D }) => {
     ;(mesh.material as THREE.MeshBasicMaterial).vertexColors = false
     return mesh
   }, [object])
+  const shadowTex = useMemo(() => {
+    const t = new THREE.TextureLoader().load('/img/journey/shadow_chap2.png')
+    t.flipY = false
+    return t
+  }, [])
 
   return (
     <>
-      <MeshShorthand object={groundMesh} ref={groundRef} />
+      <MeshShorthand object={groundMesh} ref={groundRef} visible={true} />
       <GrassParams
         targetMeshRef={groundRef}
         folderName={'lake_greenery'}
@@ -28,6 +32,7 @@ const LakeGround = ({ object }: { object: THREE.Object3D }) => {
         route={Routes.Journey}
         grassParams={{ weightAttribute: 'grassWeight', amount: 4096 }}
         position={new THREE.Vector3(0, 0.4, 0).add(groundMesh.position)}
+        shadowTexture={shadowTex}
       />
       <FlowersParams
         targetMeshRef={groundRef}
@@ -36,6 +41,7 @@ const LakeGround = ({ object }: { object: THREE.Object3D }) => {
         route={Routes.Journey}
         flowersParams={{ weightAttribute: 'flowerWeight1', amount: 1024 }}
         position={groundMesh.position}
+        shadowTexture={shadowTex}
       />
     </>
   )

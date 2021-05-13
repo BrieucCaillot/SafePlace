@@ -107,9 +107,10 @@ const Grass = ({
   useWatchableUniform(uniforms.current.uPositionTexture, positionTexture)
   useUniform(
     uniforms.current.uGroundTexture,
-    shadowTexture || targetMeshRef.current
-      ? (targetMeshRef.current.material as THREE.MeshBasicMaterial).map
-      : null
+    shadowTexture ||
+      (targetMeshRef.current
+        ? (targetMeshRef.current.material as THREE.MeshBasicMaterial).map
+        : null)
   )
 
   useEffect(() => {
