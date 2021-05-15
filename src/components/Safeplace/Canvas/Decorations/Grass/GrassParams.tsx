@@ -24,6 +24,7 @@ const GrassParams = ({
       grass_1: loaders.load('/img/common/greenery/grass_1.png'),
       grass_2: loaders.load('/img/common/greenery/grass_2.png'),
       grass_3: loaders.load('/img/common/greenery/grass_3.png'),
+      grass_4: loaders.load('/img/common/greenery/grass_4.png'),
     }
   }, [])
 
@@ -32,7 +33,7 @@ const GrassParams = ({
       {
         texture: {
           value:
-            grassParams.texture || textures[textureName] || textures['grass_2'],
+            grassParams.texture || textures[textureName] || textures['grass_4'],
           options: textures,
         },
         amount: { value: grassParams.amount || 24576, step: 1 },

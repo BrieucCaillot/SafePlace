@@ -9,13 +9,7 @@ import ScenesRouting from './Scenes/ScenesRouting'
 // enable shader editor
 // import { MaterialEditor, useEditorComposer } from '@three-material-editor/react'
 
-const LayoutCanvas = ({
-  router,
-  children,
-}: {
-  router: NextRouter
-  children: ReactNode
-}) => {
+const LayoutCanvas = ({ router }: { router: NextRouter }) => {
   const { orbitControls: enableOrbitControls, showPerf } = useControls({
     orbitControls: false,
     showPerf: false,
@@ -38,7 +32,6 @@ const LayoutCanvas = ({
       {showPerf && (
         <Perf openByDefault trackGPU={true} position={'bottom-right'} />
       )}
-      {children}
       {/* <MaterialEditor /> */}
       {/* <EffectComposer ref={useEditorComposer()}> */}
       {/* <EffectComposer>
