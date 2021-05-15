@@ -5,15 +5,11 @@ const ButtonBlob = ({
   onClick,
 }: {
   children: ReactNode
-  onClick: Function
+  onClick?: Function
 }) => {
-  const handleOnClick = () => {
-    onClick()
-  }
-
   return (
     <div
-      onClick={handleOnClick}
+      onClick={onClick ? () => onClick() : null}
       className='shape shape-blob pointer-events-auto relative cursor-pointer'
     >
       {children}

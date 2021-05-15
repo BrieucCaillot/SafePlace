@@ -13,11 +13,7 @@ const LayoutSoundButton = () => {
 
   return (
     <ButtonBlob onClick={onClick}>
-      {isAudioMuted ? (
-        <SVGSoundOff className='absolute top-2/3 left-1/2 transform -translate-y-1/2 -translate-x-1/2' />
-      ) : (
-        <SVGSoundOn className='absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2' />
-      )}
+      {isAudioMuted ? <SVGSoundOff /> : <SVGSoundOn />}
     </ButtonBlob>
   )
 }

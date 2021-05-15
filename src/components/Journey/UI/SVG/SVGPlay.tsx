@@ -1,9 +1,9 @@
-const SVGPlay = ({ className }: { className: string }) => {
+const SVGPlay = ({ className }: { className?: string }) => {
   return (
     <svg
-      className={`text-white transform scale-125 ${className}`}
-      width='15'
-      height='15'
+      className={`text-white transform-gpu scale-150 ${className}`}
+      width='10'
+      height='12'
       viewBox='0 0 15 15'
       fill='none'
     >

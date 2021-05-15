@@ -15,7 +15,7 @@ const ButtonShapeLink = ({
   return (
     <Link href={route} as={route}>
       <button
-        className={`shape shape-link ${className} fadeIn pointer-events-auto outline-none focus:outline-none relative cursor-pointer`}
+        className={`shape shape-link ${className} pointer-events-auto outline-none focus:outline-none relative cursor-pointer`}
       >
         <span className='block w-full text-xl'>{children}</span>
       </button>

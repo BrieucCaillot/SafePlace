@@ -23,4 +23,9 @@
       transform: translate3d(-50%, -50%, 0);
     }
   }
+  &-close {
+    &:hover {
+      transform: rotate(90deg);
+    }
+  }
 }

@@ -2,15 +2,15 @@ import Place from '@/constants/enums/Place'
 import Routes from '@/constants/enums/Routes'
 
 import PortalUI from '@/components/common/UI/PortalUI'
+import ButtonJourneyCompleted from '@/components/Journey/UI/Buttons/ButtonJourneyCompleted'
 import Timeline from '@/components/Journey/UI/Timeline'
-import LayoutShelterButton from '@/components/common/UI/LayoutShelterButton'
-import JourneyCompletedButton from '@/components/Journey/UI/JourneyCompletedButton'
 import TimelineStatusButton from '@/components/Journey/UI/TimelineStatusButton'
+import LayoutShelterButton from '@/components/common/UI/LayoutShelterButton'
 
 const Journey = () => {
   return (
     <>
-      <JourneyCompletedButton />
+      <ButtonJourneyCompleted />
       <PortalUI selector='#layout-bottom-left'>
         <LayoutShelterButton from={Place.Journey} to={Routes.Safeplace} />
       </PortalUI>
