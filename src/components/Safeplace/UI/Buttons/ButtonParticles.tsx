@@ -36,7 +36,7 @@ const ButtonParticles = ({ direction }: { direction: 'left' | 'right' }) => {
     >
       <div className='relative h-full w-full'>
         {Array(count)
-          .fill()
+          .fill(null)
           .map((elem, index) => (
             <div
               key={index}
