@@ -36,7 +36,7 @@ const MountainColumn = ({ columnObj }: { columnObj: THREE.Object3D }) => {
         .setCurrentVoiceover(Place.Safeplace, VoiceoverSafeplace.MountainColumn)
   }, [onMountainPOI, isCameraTravelling, isVoiceoverPlayable])
 
-  const journeyLinkPos = useMemo(() => new THREE.Vector3(0.1, 1.7, 0), [])
+  const journeyLinkPos = useMemo(() => new THREE.Vector3(0, 1, 0), [])
 
   return (
     <ColumnLocation
@@ -46,7 +46,7 @@ const MountainColumn = ({ columnObj }: { columnObj: THREE.Object3D }) => {
       <ColumnLink
         onColumnClick={() => router.push(Routes.Journey)}
         show={onMountainPOI && isVoiceoverPlayed && !isCameraTravelling}
-        size={2}
+        size={5}
         position={journeyLinkPos}
       />
     </ColumnLocation>

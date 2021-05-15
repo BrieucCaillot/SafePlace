@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import Link from 'next/link'
 
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import ResourceSteps from '@/constants/enums/ResourceSteps'
+import Routes from '@/constants/enums/Routes'
+import SVGCross from '@/components/common/UI/SVG/SVGCross'
 
 const ResourceContent = () => {
   const isCameraTravelling = useSafeplaceStore((s) => s.isCameraTravelling)
@@ -15,7 +18,7 @@ const ResourceContent = () => {
       {!isCameraTravelling && (
         <div
           id='resource'
-          className='bg-secondary fadeIn flex-1 pointer-events-auto px-10 md:px-14 py-5 md:py-7 ml-24 lg:ml-80 rounded-2xl w-full max-w-md md:max-w-xl max-h-96 md:max-h-80'
+          className='relative bg-secondary fadeIn flex-1 pointer-events-auto px-10 md:px-14 py-5 md:py-7 ml-24 lg:ml-80 rounded-2xl w-full max-w-md md:max-w-xl max-h-96 md:max-h-80'
         >
           <nav className='pb-7 font-sans'>
             <ul className='flex justify-center text-sm'>
@@ -34,12 +37,17 @@ const ResourceContent = () => {
               ))}
             </ul>
           </nav>
+          <Link href={Routes.Resources} as={Routes.Resources}>
+            <div className='button-close absolute top-7 right-8 h-4 w-4 transition-all duration-500 cursor-pointer'>
+              <SVGCross className='text-tertiary' />
+            </div>
+          </Link>
           {currentStep == ResourceSteps.Summary && (
             <div className='fadeIn'>
               <h2 className='text-tertiary text-4xl font-thin pb-4'>
                 La balade en montagne
               </h2>
-              <p className='font-sans text-black'>
+              <p className='font-sans text-black text-stroke-4'>
                 La méditation de la montagne est une visualisation qui nous
                 permet de nous ancrer et de nous apaiser. <br /> Elle vous
                 emmènera, au grès de la musique, dans paysages harmonieux.{' '}
@@ -53,7 +61,7 @@ const ResourceContent = () => {
               <h2 className='text-tertiary text-4xl font-thin pb-4'>
                 Un conseil pour la route
               </h2>
-              <p className='font-sans text-black'>
+              <p className='font-sans text-black text-stroke-4'>
                 Quotidiennement, posez-vous pendant 3 à 5 minutes. Fermez les
                 yeux pour vous reconnecter à votre souffle et votre état
                 intérieur. Pour vous aidez, portez votre attention sur chacun de
@@ -63,14 +71,14 @@ const ResourceContent = () => {
           )}
           {currentStep == ResourceSteps.Poem && (
             <div className='fadeIn'>
-              <p className='font-sans text-black italic pr-24'>
+              <p className='font-sans text-black text-stroke-4 italic pr-24'>
                 «Les oiseaux ont disparu dans le ciel, <br />
                 Le dernier nuage s’est <br />
                 évanoui. Nous sommes assis ensemble, <br />
                 La montagne et moi, <br />
                 Jusqu’à ce que, seule, la montagne demeure.»
               </p>
-              <span className='block font-sans text-black italic text-right pt-4'>
+              <span className='block font-sans text-black text-stroke-4 italic text-right pt-4'>
                 Li Po (701-762), s.d.
               </span>
             </div>
@@ -80,13 +88,13 @@ const ResourceContent = () => {
               <h2 className='text-tertiary text-4xl font-thin pb-4'>
                 Les ressources externes
               </h2>
-              <p className='font-sans text-black'>
+              <p className='font-sans text-black text-stroke-4'>
                 <span className='block text-white'>La méditation Guidée :</span>
                 <span className='block'>
                   JonKabat-Zinn par Bernard Giraudeau
                 </span>
               </p>
-              <p className='font-sans text-black pt-4'>
+              <p className='font-sans text-black text-stroke-4 pt-4'>
                 <span className='block text-white'>Les livres :</span>
                 <span className='block'>
                   - L'incroyable pouvoir du souffle, Stéphanie Brillant

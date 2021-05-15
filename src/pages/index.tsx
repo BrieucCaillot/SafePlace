@@ -24,7 +24,7 @@ const Index = () => {
       >
         {/* <div className='home'></div> */}
         <img
-          className='absolute top-40 left-1/2 transform -translate-x-1/2 ml-9 fadeIn'
+          className='absolute top-40 left-1/2 transform-gpu -translate-x-1/2 ml-9 fadeIn'
           src='/img/index/logo.png'
           alt='safeplace-logo'
         />

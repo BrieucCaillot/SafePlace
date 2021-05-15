@@ -3,53 +3,33 @@ import {
   Transition as ReactTransition,
 } from 'react-transition-group'
 
-import { CSSProperties, ReactChild } from 'react'
+import { cloneElement, ReactChild, ReactElement } from 'react'
 
 type TransitionKind<RC> = {
   children: RC
   location: string
 }
 
-const TIMEOUT: number = 1
-
-const transitionStyles: { [name: string]: CSSProperties } = {
-  entering: {
-    position: `absolute`,
-    opacity: 0,
-  },
-  entered: {
-    transition: `opacity ${TIMEOUT}s ease-in-out`,
-    opacity: 1,
-    animation: 'blink .3s linear 2',
-  },
-  exiting: {
-    transition: `opacity ${TIMEOUT}s ease-in-out`,
-    opacity: 0,
-  },
-}
+const TIMEOUT: number = 2000
 
 const LayoutTransition: React.FC<TransitionKind<ReactChild>> = ({
   children,
   location,
 }) => {
   return (
-    <TransitionGroup style={{ position: 'relative', pointerEvents: 'none' }}>
+    <TransitionGroup className='absolute top-0 h-screen w-full pointer-events-none'>
       <ReactTransition
         key={location}
+        mountOnEnter
+        unmountOnExit
         timeout={{
           enter: TIMEOUT,
           exit: TIMEOUT,
         }}
       >
         {(status) => (
-          <div
-            className='h-screen'
-            data-transition-status={status}
-            style={{
-              ...transitionStyles[status],
-            }}
-          >
-            {children}
+          <div className='h-full w-full' data-transition-status={status}>
+            {cloneElement(children as ReactElement, { status })}
           </div>
         )}
       </ReactTransition>

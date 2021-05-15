@@ -1,17 +1,15 @@
-import Place from '@/constants/enums/Place'
-import Routes from '@/constants/enums/Routes'
+import { TransitionStatus } from 'react-transition-group'
 
-import PortalUI from '@/components/common/UI/PortalUI'
-import LayoutShelterButton from '@/components/common/UI/LayoutShelterButton'
-import ResourcesButton from '@/components/Safeplace/UI/ResourcesButton'
+import useTransitionStatus from '@/hooks/useTransitionStatus'
 
-const Resources = () => {
+import ButtonShelterSafeplace from '@/components/Safeplace/UI/Buttons/ButtonShelterSafeplace'
+
+const Resources = ({ status }: { status: TransitionStatus }) => {
+  const show = useTransitionStatus(status)
+
   return (
     <>
-      <PortalUI selector='#layout-bottom-left'>
-        <LayoutShelterButton from={Place.Safeplace} to={Routes.Safeplace} />
-        <ResourcesButton />
-      </PortalUI>
+      <ButtonShelterSafeplace show={show} direction='right' />
     </>
   )
 }

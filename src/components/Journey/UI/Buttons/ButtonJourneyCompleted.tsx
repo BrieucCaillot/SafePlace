@@ -4,7 +4,7 @@ import Routes from '@/constants/enums/Routes'
 import useUserStore from '@/stores/useUserStore'
 import ButtonShapeLink from '@/components/common/UI/Buttons/ButtonShapeLink'
 
-const JourneyCompletedButton = () => {
+const ButtonJourneyCompleted = () => {
   const isJourneyFinished = useUserStore((s) => s.isJourneyFinished)
 
   useEffect(() => {
@@ -24,4 +24,4 @@ const JourneyCompletedButton = () => {
   ) : null
 }
 
-export default JourneyCompletedButton
+export default ButtonJourneyCompleted

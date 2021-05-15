@@ -64,8 +64,8 @@ const Shelter = ({ object }: { object: THREE.Object3D }) => {
   const onLinkClick = useCallback(() => setCurrentPOI(SafeplacePOI.Inside), [])
 
   const shelterLinkPosition = useMemo(() => {
-    const { x, z } = shelterInsideCam.position
-    return new THREE.Vector3(x, -2, z)
+    const { x, y, z } = shelterInsideCam.position
+    return new THREE.Vector3(x - 1, -1, z)
   }, [])
 
   return (

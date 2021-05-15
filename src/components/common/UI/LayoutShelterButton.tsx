@@ -1,30 +1,17 @@
 import { useMemo } from 'react'
 
-import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import useUserStore from '@/stores/useUserStore'
 import Place from '@/constants/enums/Place'
 import Routes from '@/constants/enums/Routes'
-import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 
 import ButtonShapeLink from '@/components/common/UI/Buttons/ButtonShapeLink'
 
 const LayoutShelterButton = ({ from, to }: { from: Place; to: Routes }) => {
-  const POIsWhereHidden = [
-    SafeplacePOI.Outside,
-    SafeplacePOI.OnBoarding,
-    SafeplacePOI.Inside,
-    SafeplacePOI.ResourceFocused,
-  ]
-
-  const isCurrentlyAvailable = useSafeplaceStore(
-    (state) => !POIsWhereHidden.includes(state.currentPOI)
-  )
   const isJourneyFinished = useUserStore((s) => s.isJourneyFinished)
 
-  const isAvailable = useMemo(
-    () => isCurrentlyAvailable || (from == Place.Journey && !isJourneyFinished),
-    [isCurrentlyAvailable, isJourneyFinished]
-  )
+  const isAvailable = useMemo(() => Place.Journey && !isJourneyFinished, [
+    isJourneyFinished,
+  ])
 
   return (
     <ButtonShapeLink

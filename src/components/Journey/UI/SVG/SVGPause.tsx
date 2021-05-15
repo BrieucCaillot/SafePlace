@@ -1,7 +1,7 @@
-const SVGPause = ({ className }: { className: string }) => {
+const SVGPause = ({ className }: { className?: string }) => {
   return (
     <svg
-      className={`text-white transform scale-125 ${className}`}
+      className={`text-white transform-gpu scale-125 ${className}`}
       width='8'
       height='12'
       viewBox='0 0 8 12'

@@ -1,7 +1,7 @@
-const SVGSoundOn = ({ className }: { className: string }) => {
+const SVGSoundOn = ({ className }: { className?: string }) => {
   return (
     <svg
-      className={`text-white transform scale-150 ${className}`}
+      className={`text-white transform-gpu scale-150 ${className}`}
       width='18'
       height='12'
       viewBox='0 0 18 12'

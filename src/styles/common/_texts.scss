@@ -1,5 +1,10 @@
 .text-stroke {
-  -webkit-text-stroke-width: 0.6px;
+  &-4 {
+    -webkit-text-stroke-width: 0.4px;
+  }
+  &-6 {
+    -webkit-text-stroke-width: 0.6px;
+  }
 }
 
 .text-shadow {

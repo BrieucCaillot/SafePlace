@@ -29,6 +29,15 @@ module.exports = {
       tertiary: 'var(--tertiary)',
       'button-ui': 'var(--button-ui)',
     },
+    extend: {
+      transitionDuration: {
+        2000: '2000ms',
+      },
+      scale: {
+        '-1': '-1',
+        1: '1',
+      },
+    },
   },
   variants: {
     extend: {},
