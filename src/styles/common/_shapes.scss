@@ -1,9 +1,9 @@
 .shape {
   &-link {
     background-color: var(--shape-blob-primary);
-    animation: shape-link 8s ease-in-out infinite;
+    animation: shape-link 5s ease-in-out infinite;
     border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-    transition: all 1s ease-in-out;
+    // transition: all 1s ease-in-out;
     backdrop-filter: blur(2px);
     // &__shelter {
     // }
@@ -15,12 +15,143 @@
   }
 
   &-blob {
-    animation: morph 8s ease-in-out infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: morph 7s ease-in-out infinite;
     border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
     height: 40px;
-    transition: all 1s ease-in-out;
     width: 40px;
     backdrop-filter: blur(2px);
+  }
+
+  &-shelter {
+    &-arrow {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: morph 5s ease-in-out infinite;
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      height: 45px;
+      width: 55px;
+      backdrop-filter: blur(2px);
+      &:before {
+        content: '';
+        pointer-events: none;
+        cursor: none;
+        position: absolute;
+        border-radius: 85px;
+        height: 180px;
+        width: 130px;
+        background: linear-gradient(
+          352.17deg,
+          rgba(75, 54, 67, 0.33) 59.79%,
+          rgba(188, 161, 174, 0) 93.68%
+        );
+      }
+      &__left {
+        &:before {
+          left: -113px;
+          transform: rotate(90deg);
+        }
+      }
+      &__right {
+        &:before {
+          right: -113px;
+          transform: rotate(-90deg);
+        }
+      }
+    }
+  }
+
+  &-particles {
+    width: 100px;
+    height: 180px;
+  }
+  &-particle {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    &-0 {
+      height: 18px;
+      width: 17px;
+      bottom: 84%;
+      right: 62%;
+    }
+    &-1 {
+      height: 18px;
+      width: 17px;
+      bottom: 75%;
+      right: 0%;
+    }
+    &-2 {
+      height: 11px;
+      width: 11px;
+      bottom: 13%;
+      right: 2%;
+    }
+    &-3 {
+      height: 21px;
+      width: 23px;
+      bottom: 44%;
+      right: 52%;
+    }
+    &-4 {
+      height: 18px;
+      width: 17px;
+      bottom: 72%;
+      right: 32%;
+    }
+    &-5 {
+      height: 21px;
+      width: 21px;
+      bottom: 64%;
+      right: 80%;
+    }
+    &-6 {
+      height: 24px;
+      width: 22px;
+      bottom: 57%;
+      right: 0%;
+    }
+    &-7 {
+      height: 21px;
+      width: 19px;
+      bottom: 44%;
+      right: 21%;
+    }
+    &-8 {
+      height: 11px;
+      width: 11px;
+      bottom: 34%;
+      right: 32%;
+    }
+    &-9 {
+      height: 23px;
+      width: 21px;
+      bottom: 24%;
+      right: 0%;
+    }
+    &-10 {
+      height: 18px;
+      width: 17px;
+      bottom: 21%;
+      right: 50%;
+    }
+    &-11 {
+      height: 18px;
+      width: 17px;
+      bottom: 10%;
+      right: 30%;
+    }
+    &-12 {
+      height: 12px;
+      width: 13px;
+      bottom: 0;
+      right: 0;
+    }
   }
 
   @keyframes shape-link {

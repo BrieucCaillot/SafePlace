@@ -39,7 +39,7 @@ const Timeline = () => {
     <div className='relative flex items-center w-full'>
       <div
         ref={timelineProgressRef}
-        className={`absolute top-1/2 transform -translate-y-1/2 bg-white h-1 rounded-full`}
+        className={`absolute top-1/2 transform-gpu -translate-y-1/2 bg-white h-1 rounded-full`}
       ></div>
       {steps.map((s, i, a) => (
         <div
