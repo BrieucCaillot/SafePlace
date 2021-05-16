@@ -7,6 +7,7 @@ import {
   PropsWithoutRef,
   RefAttributes,
   ForwardRefExoticComponent,
+  MutableRefObject,
 } from 'react'
 import * as THREE from 'three'
 import { WithScenePortalProps } from '@/components/common/Scenes/withScenePortal'
@@ -24,12 +25,14 @@ export type SceneData = {
     PropsWithoutRef<WithScenePortalProps> & RefAttributes<THREE.Camera>
   >
   scene: THREE.Scene
-  cameraRef: RefObject<THREE.Camera | undefined>
+  cameraRef: MutableRefObject<THREE.Camera | undefined>
+  isLoaded: boolean
 }
 
 type SceneStore = {
   mountedScenes: SceneName[]
   renderedScene: SceneName | null
+  setSceneLoaded: (sceneName: SceneName) => void
   mountScene: (sceneName: SceneName) => void
   mountScenes: (sceneNames: SceneName[]) => void
   unmountScene: (sceneName: SceneName) => void
@@ -42,6 +45,11 @@ type SceneStore = {
 const useSceneStore = create<SceneStore>((set, get) => ({
   mountedScenes: [],
   renderedScene: null,
+  setSceneLoaded: (sceneName: SceneName) => {
+    const { scenesData } = get()
+    scenesData[sceneName].isLoaded = true
+    set({ scenesData })
+  },
   mountScene: (sceneName: SceneName) => {
     const { mountedScenes } = get()
     if (mountedScenes.includes(sceneName)) return
@@ -83,26 +91,31 @@ const useSceneStore = create<SceneStore>((set, get) => ({
     [SceneName.Safeplace]: {
       Component: SafeplaceScene,
       scene: new THREE.Scene(),
+      isLoaded: false,
       cameraRef: createRef(),
     },
     [SceneName.JourneyIntro]: {
       Component: IntroScene,
       scene: new THREE.Scene(),
+      isLoaded: false,
       cameraRef: createRef(),
     },
     [SceneName.Cairns]: {
       Component: CairnsScene,
       scene: new THREE.Scene(),
+      isLoaded: false,
       cameraRef: createRef(),
     },
     [SceneName.Lake]: {
       Component: LakeScene,
       scene: new THREE.Scene(),
+      isLoaded: false,
       cameraRef: createRef(),
     },
     [SceneName.Waterfall]: {
       Component: WaterfallScene,
       scene: new THREE.Scene(),
+      isLoaded: false,
       cameraRef: createRef(),
     },
   },

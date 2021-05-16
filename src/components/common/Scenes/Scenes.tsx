@@ -14,6 +14,7 @@ import Easing from 'easing-functions'
 import useSceneStore, { SceneData } from '@/stores/useSceneStore'
 import useWatchableRef from '@/hooks/useWatchableRef'
 import TransitionScene from './TransitionScene'
+import SceneName from '@/constants/enums/SceneName'
 
 const Scenes = () => {
   const { size } = useThree()
@@ -28,9 +29,14 @@ const Scenes = () => {
   )
 
   const mountedSceneData = useSceneStore(
-    (s) => s.mountedScenes.map((name) => s.scenesData[name]),
+    (s) =>
+      Object.fromEntries(
+        s.mountedScenes.map((name) => [name, s.scenesData[name]])
+      ),
     shallow
   )
+  console.log(storeRenderedSceneData?.isLoaded)
+  const setSceneLoaded = useSceneStore((s) => s.setSceneLoaded)
 
   // Transition params
   const transitionScene = useMemo(() => new THREE.Scene(), [])
@@ -97,13 +103,21 @@ const Scenes = () => {
 
   return (
     <>
-      {mountedSceneData.map(({ Component, scene, cameraRef }, i) => (
-        <Fragment key={scene.uuid}>
-          <Suspense fallback={'loading'}>
-            <Component scene={scene} ref={cameraRef} />
-          </Suspense>
-        </Fragment>
-      ))}
+      {Object.entries(mountedSceneData).map(
+        ([name, { Component, scene, cameraRef }]) => (
+          <Fragment key={scene.uuid}>
+            <Suspense fallback={'loading'}>
+              <Component
+                scene={scene}
+                ref={(ref: THREE.Camera) => {
+                  cameraRef.current = ref
+                  setSceneLoaded(name as SceneName)
+                }}
+              />
+            </Suspense>
+          </Fragment>
+        )
+      )}
       <TransitionScene
         scene={transitionScene}
         ref={transitionCam}
