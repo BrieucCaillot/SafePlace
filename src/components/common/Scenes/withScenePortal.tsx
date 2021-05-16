@@ -1,15 +1,11 @@
-import {
-  Component,
+import React, {
   ComponentType,
-  FC,
   forwardRef,
   PropsWithoutRef,
   ReactElement,
-  ReactNode,
   RefObject,
 } from 'react'
 import { createPortal } from 'react-three-fiber'
-import LayoutCanvas from '../LayoutCanvas'
 
 export interface WithScenePortalProps {
   scene: THREE.Scene
@@ -18,12 +14,14 @@ export interface WithScenePortalProps {
 const withScenePortal = <P extends PropsWithoutRef<object>>(
   Component: ComponentType<P>
 ) => {
-  return forwardRef(
-    (props: P & WithScenePortalProps, ref: RefObject<THREE.Camera>) =>
-      createPortal(
-        <Component {...props} ref={ref} />,
-        props.scene
-      ) as ReactElement<P & WithScenePortalProps>
+  return React.memo(
+    forwardRef(
+      (props: P & WithScenePortalProps, ref: RefObject<THREE.Camera>) =>
+        createPortal(
+          <Component {...props} ref={ref} />,
+          props.scene
+        ) as ReactElement<P & WithScenePortalProps>
+    )
   )
 }
 
