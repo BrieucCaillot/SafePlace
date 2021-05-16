@@ -35,7 +35,17 @@ module.exports = {
       },
       scale: {
         '-1': '-1',
-        1: '1',
+        200: '2',
+        250: '2.5',
+        300: '3',
+      },
+      rotate: {
+        360: '360',
+      },
+      animation: {
+        'spin-cloud-slow': 'spin 50s linear infinite',
+        'spin-cloud-medium': 'spin 25s linear infinite',
+        'spin-cloud-fast': 'spin 15s linear infinite',
       },
     },
   },

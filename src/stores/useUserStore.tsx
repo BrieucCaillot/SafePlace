@@ -1,6 +1,8 @@
 import { Router } from 'next/router'
 import create from 'zustand'
 
+import AnimationStatus from '@/constants/enums/AnimationStatus'
+
 type UserStore = {
   router: Router
   isFirstConnection: boolean
@@ -11,6 +13,8 @@ type UserStore = {
   isJourneyCompleted: boolean
   getIsJourneyCompleted: () => boolean
   setIsJourneyCompleted: (status: boolean) => void
+  cloudsTransitionStatus: AnimationStatus
+  setCloudsTransitionStatus: (status: AnimationStatus) => void
 }
 
 const useUserStore = create<UserStore>((set) => ({
@@ -22,6 +26,7 @@ const useUserStore = create<UserStore>((set) => ({
     window.localStorage.setItem('isFirstConnection', status.toString())
     set({ isFirstConnection: status })
   },
+  // @TODO Find a new name
   isJourneyFinished: false,
   setIsJourneyFinished: (status) => set({ isJourneyFinished: status }),
   isJourneyCompleted: false,
@@ -31,6 +36,11 @@ const useUserStore = create<UserStore>((set) => ({
     window.localStorage.setItem('isJourneyCompleted', status.toString())
     set({ isJourneyCompleted: status })
   },
+  // CLOUDS TRANSITION
+  // @TODO (MAYBE MOVE TO ANOTHER STORE)
+  cloudsTransitionStatus: AnimationStatus.Paused,
+  setCloudsTransitionStatus: (status) =>
+    set({ cloudsTransitionStatus: status }),
 }))
 
 export default useUserStore

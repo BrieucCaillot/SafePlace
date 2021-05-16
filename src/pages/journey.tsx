@@ -1,3 +1,6 @@
+import { useEffect } from 'react'
+
+import useUserStore from '@/stores/useUserStore'
 import Place from '@/constants/enums/Place'
 import Routes from '@/constants/enums/Routes'
 
@@ -8,9 +11,16 @@ import TimelineStatusButton from '@/components/Journey/UI/TimelineStatusButton'
 import LayoutShelterButton from '@/components/common/UI/LayoutShelterButton'
 
 const Journey = () => {
+  const isJourneyFinished = useUserStore((s) => s.isJourneyFinished)
+
+  useEffect(() => {
+    const { setIsJourneyFinished } = useUserStore.getState()
+    setIsJourneyFinished(false)
+  }, [])
+
   return (
     <>
-      <ButtonJourneyCompleted />
+      {isJourneyFinished && <ButtonJourneyCompleted />}
       <PortalUI selector='#layout-bottom-left'>
         <LayoutShelterButton from={Place.Journey} to={Routes.Safeplace} />
       </PortalUI>

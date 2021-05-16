@@ -11,20 +11,22 @@ import * as THREE from 'three'
 
 import useJourneyStore from '@/stores/useJourneyStore'
 import useAudioStore from '@/stores/useAudioStore'
+import useUserStore from '@/stores/useUserStore'
 import JourneySection from '@/constants/enums/JourneySection'
 import Place from '@/constants/enums/Place'
 import Ambiants from '@/constants/enums/Ambiant'
 import { VoiceoverJourney } from '@/constants/enums/Voiceover'
+import AudioStatus from '@/constants/enums/Audio'
+import AnimationStatus from '@/constants/enums/AnimationStatus'
 
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
-import AudioStatus from '@/constants/enums/Audio'
 
 const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const [sizeTex, setSizeTex] = useState({ width: 0, height: 0 })
 
-  const introTexure = useMemo(
+  const introTexture = useMemo(
     () =>
       new THREE.TextureLoader().load('/img/journey/chapter0.jpg', (t) => {
         const { width, height } = t.image
@@ -54,6 +56,10 @@ const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     }
   }, [sizeTex, size, camera])
 
+  const reverseCompletedCloudsTransition = useUserStore(
+    (s) => s.cloudsTransitionStatus === AnimationStatus.ReverseCompleted
+  )
+
   const isIntroSection = useJourneyStore(
     (s) => s.currentSection === JourneySection.Intro
   )
@@ -62,13 +68,13 @@ const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   )
 
   useEffect(() => {
-    if (!isIntroSection) return
+    if (!isIntroSection || !reverseCompletedCloudsTransition) return
     const { setCurrentAmbiant, setCurrentVoiceover } = useAudioStore.getState()
     // Ambiant
     setCurrentAmbiant(Place.Journey, Ambiants.Intro)
     // Voiceover
     setCurrentVoiceover(Place.Journey, VoiceoverJourney.Intro)
-  }, [isIntroSection])
+  }, [isIntroSection, reverseCompletedCloudsTransition])
 
   useEffect(() => {
     if (isVoiceoverFinished)
@@ -81,7 +87,7 @@ const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       <CustomSky />
       <mesh ref={planeRef}>
         <planeGeometry />
-        <meshBasicMaterial map={introTexure} />
+        <meshBasicMaterial map={introTexture} />
       </mesh>
     </>
   )
