@@ -4,14 +4,15 @@ import { useControls } from 'leva'
 import useUserStore from '@/stores/useUserStore'
 
 const User = (): null => {
-  const [{ clearLocalStorage }, set] = useControls(() => ({
-    clearLocalStorage: false,
-  }))
-
-  useEffect(() => {
-    if (!clearLocalStorage) return
-    window.localStorage.clear()
-  }, [clearLocalStorage])
+  useControls({
+    clearStorage: {
+      type: 'BUTTON',
+      value: false,
+      onClick: () => {
+        window.localStorage.clear()
+      },
+    },
+  })
 
   useEffect(() => {
     const {

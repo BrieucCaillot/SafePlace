@@ -17,7 +17,6 @@ import Place from '@/constants/enums/Place'
 import Ambiants from '@/constants/enums/Ambiant'
 import { VoiceoverJourney } from '@/constants/enums/Voiceover'
 import AudioStatus from '@/constants/enums/Audio'
-import AnimationStatus from '@/constants/enums/AnimationStatus'
 
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
@@ -56,10 +55,6 @@ const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     }
   }, [sizeTex, size, camera])
 
-  const reverseCompletedCloudsTransition = useUserStore(
-    (s) => s.cloudsTransitionStatus === AnimationStatus.ReverseCompleted
-  )
-
   const isIntroSection = useJourneyStore(
     (s) => s.currentSection === JourneySection.Intro
   )
@@ -68,13 +63,13 @@ const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   )
 
   useEffect(() => {
-    if (!isIntroSection || !reverseCompletedCloudsTransition) return
+    if (!isIntroSection) return
     const { setCurrentAmbiant, setCurrentVoiceover } = useAudioStore.getState()
     // Ambiant
     setCurrentAmbiant(Place.Journey, Ambiants.Intro)
     // Voiceover
     setCurrentVoiceover(Place.Journey, VoiceoverJourney.Intro)
-  }, [isIntroSection, reverseCompletedCloudsTransition])
+  }, [isIntroSection])
 
   useEffect(() => {
     if (isVoiceoverFinished)

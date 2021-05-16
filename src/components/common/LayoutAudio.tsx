@@ -8,16 +8,12 @@ import Place from '@/constants/enums/Place'
 import { VoiceoverSafeplace } from '@/constants/enums/Voiceover'
 import AudioStatus from '@/constants/enums/Audio'
 import Ambiants from '@/constants/enums/Ambiant'
-import AnimationStatus from '@/constants/enums/AnimationStatus'
 
 const LayoutAudio = (): null => {
   const isFirstConnection = useUserStore((s) => s.isFirstConnection)
 
   const { pathname } = useUserStore((s) => s.router)
   const previousPathname = usePrevious(pathname)
-  const reverseCompletedCloudsTransition = useUserStore(
-    (s) => s.cloudsTransitionStatus === AnimationStatus.ReverseCompleted
-  )
 
   useEffect(() => {
     const {
@@ -28,16 +24,8 @@ const LayoutAudio = (): null => {
       setVoiceoverStatus,
     } = useAudioStore.getState()
 
-    if (
-      [Routes.OnBoarding, Routes.Safeplace, Routes.Resources].includes(
-        pathname as Routes
-      )
-    ) {
-      if (
-        currentAmbiant.name === Ambiants.Safeplace ||
-        !reverseCompletedCloudsTransition
-      )
-        return
+    if (pathname === Routes.OnBoarding || pathname === Routes.Resources) {
+      if (currentAmbiant.name === Ambiants.Safeplace) return
       setCurrentAmbiant(Place.Safeplace, Ambiants.Safeplace)
     }
 
@@ -53,7 +41,7 @@ const LayoutAudio = (): null => {
       if (!voiceover) return
       voiceover.fade(voiceover.volume(), 0, 1000)
     }
-  }, [pathname, isFirstConnection, reverseCompletedCloudsTransition])
+  }, [pathname, isFirstConnection])
 
   return null
 }

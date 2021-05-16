@@ -1,14 +1,9 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 
-import useUserStore from '@/stores/useUserStore'
-import AnimationStatus from '@/constants/enums/AnimationStatus'
-
 const offset = 300
 
 const TransitionClouds = () => {
-  const cloudsTransitionStatus = useUserStore((s) => s.cloudsTransitionStatus)
-
   const timelineRef = useRef<GSAPTimeline>()
 
   const cloudsContainer = useRef<HTMLDivElement>(null)
@@ -23,18 +18,6 @@ const TransitionClouds = () => {
       defaults: {
         duration: 3,
         ease: 'power3.out',
-      },
-      onStart: () => {
-        const { setCloudsTransitionStatus } = useUserStore.getState()
-        setCloudsTransitionStatus(AnimationStatus.Started)
-      },
-      onComplete: () => {
-        const { setCloudsTransitionStatus } = useUserStore.getState()
-        setCloudsTransitionStatus(AnimationStatus.Completed)
-      },
-      onReverseComplete: () => {
-        const { setCloudsTransitionStatus } = useUserStore.getState()
-        setCloudsTransitionStatus(AnimationStatus.ReverseCompleted)
       },
     })
     tl.from(cloudsContainer.current, {

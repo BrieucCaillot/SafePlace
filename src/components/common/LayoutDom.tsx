@@ -1,9 +1,6 @@
 import React, { ReactNode, useMemo } from 'react'
 import { useRouter } from 'next/router'
-import { Leva } from 'leva'
 
-import useUserStore from '@/stores/useUserStore'
-import AnimationStatus from '@/constants/enums/AnimationStatus'
 import Routes from '@/constants/enums/Routes'
 
 import User from '@/components/common/User'
@@ -11,22 +8,15 @@ import DebugNavigation from '@/components/common/DebugNavigation'
 import LayoutHeader from '@/components/common/UI/LayoutHeader'
 import LayoutBottom from '@/components/common/UI/LayoutBottom'
 import LayoutAudio from '@/components/common/LayoutAudio'
-import TransitionClouds from '@/components/common/UI/TransitionClouds'
 
 const LayoutDom = ({ children }: { children: ReactNode }) => {
   const { pathname } = useRouter()
 
   const windowAvailable = useMemo(() => typeof window !== 'undefined', [])
 
-  const reverseCompletedCloudsTransition = useUserStore(
-    (s) => s.cloudsTransitionStatus === AnimationStatus.ReverseCompleted
-  )
-
   const isLayoutBottomAvailable = useMemo(
-    () =>
-      ![Routes.Index, Routes.About].includes(pathname as Routes) &&
-      reverseCompletedCloudsTransition,
-    [pathname, reverseCompletedCloudsTransition]
+    () => ![Routes.Index, Routes.About].includes(pathname as Routes),
+    [pathname]
   )
 
   return (
@@ -38,7 +28,6 @@ const LayoutDom = ({ children }: { children: ReactNode }) => {
         <LayoutHeader />
         <LayoutBottom show={isLayoutBottomAvailable} />
         {/* <Leva hidden={true} /> */}
-        <TransitionClouds />
         {children}
       </main>
     </>
