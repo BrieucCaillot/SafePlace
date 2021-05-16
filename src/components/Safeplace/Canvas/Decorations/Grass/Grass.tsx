@@ -125,7 +125,7 @@ const Grass = ({
     <instancedMesh
       {...props}
       geometry={rotatedBufferGeometry}
-      position-y={size}
+      position-y={size + 0.05}
       ref={instancedMeshRef}
     >
       <shaderMaterial

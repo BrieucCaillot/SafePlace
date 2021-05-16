@@ -35,7 +35,6 @@ const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   const planeRef = useRef<THREE.Mesh>()
   const vec3Ref = useMemo(() => new THREE.Vector3(), [])
-  const scaleRef = useRef<THREE.Vector3>(new THREE.Vector3(1000))
 
   const { camera, viewport, size } = useThree()
 
@@ -53,7 +52,7 @@ const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     } else {
       planeRef.current?.scale.set(width, width / texRatio, 1)
     }
-  }, [sizeTex, size])
+  }, [sizeTex, size, camera])
 
   const isIntroSection = useJourneyStore(
     (s) => s.currentSection === JourneySection.Intro
