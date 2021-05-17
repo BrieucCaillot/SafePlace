@@ -1,34 +1,20 @@
 import * as THREE from 'three'
 import shallow from 'zustand/shallow'
-import React, {
-  Fragment,
-  Suspense,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { Fragment, Suspense, useEffect, useMemo, useRef } from 'react'
 import { Camera, useFrame, useThree } from 'react-three-fiber'
-import gsap from 'gsap'
 import useSceneStore, { SceneData } from '@/stores/useSceneStore'
-import useWatchableRef from '@/hooks/useWatchableRef'
 import TransitionScene from './TransitionScene/TransitionScene'
 import SceneName from '@/constants/enums/SceneName'
-import useNonInitialEffect from '@/hooks/useNonInitialEffect'
+import useSceneTransition from './useSceneTransition'
 
 const Scenes = () => {
-  const { size } = useThree()
+  const { size, gl } = useThree()
 
   const inTransition = useSceneStore((s) => s.inTransition)
-  const setInTransition = useSceneStore((s) => s.setInTransition)
-  const [waitForSceneLoad, setWaitForSceneLoad] = useState(false)
+  const transitionScene = useMemo(() => new THREE.Scene(), [])
+  const transitionCam = useRef<THREE.Camera>(null)
 
-  const storeRenderedSceneData = useSceneStore((s) =>
-    s.renderedScene ? s.scenesData[s.renderedScene] : null
-  )
-  const [renderedSceneData, setRenderedSceneData] = useState<SceneData>(
-    storeRenderedSceneData
-  )
+  const { renderedSceneData, inProgress, outProgress } = useSceneTransition()
 
   const mountedSceneData = useSceneStore(
     (s) =>
@@ -39,59 +25,35 @@ const Scenes = () => {
   )
   const setSceneLoaded = useSceneStore((s) => s.setSceneLoaded)
 
-  // Transition params
-  const transitionScene = useMemo(() => new THREE.Scene(), [])
-  const transitionCam = useRef<THREE.Camera>(null)
   const transitionTarget = useRef(
     new THREE.WebGLRenderTarget(size.width, size.height, {
       encoding: THREE.sRGBEncoding,
     })
   )
-  const transitionAnimParams = useMemo<gsap.TweenVars>(
-    () => ({
-      ease: 'power3.out',
-      duration: 2.5,
-    }),
-    []
-  )
   useEffect(() => transitionTarget.current.setSize(size.width, size.height), [
     size,
   ])
 
-  // Out anim
-  const outProgress = useWatchableRef<number>(0)
-  useNonInitialEffect(() => {
-    setInTransition(true)
-    const anim = gsap.to(outProgress, {
-      current: 1,
-      ...transitionAnimParams,
-      onComplete: () => {
-        setWaitForSceneLoad(true)
-      },
-    })
-    return () => anim.kill()
-  }, [storeRenderedSceneData])
-
-  useNonInitialEffect(() => {
-    if (!waitForSceneLoad || !storeRenderedSceneData?.isLoaded) return
-    setRenderedSceneData(storeRenderedSceneData)
-    setWaitForSceneLoad(false)
-  }, [waitForSceneLoad, storeRenderedSceneData])
-
-  // In anim
-  const inProgress = useWatchableRef<number>(0)
-  useNonInitialEffect(() => {
-    const anim = gsap.to(inProgress, {
-      current: 1,
-      ...transitionAnimParams,
-      onComplete: () => {
-        inProgress.current = 0
-        outProgress.current = 0
-        setInTransition(false)
-      },
-    })
-    return () => anim.kill()
-  }, [renderedSceneData])
+  // Prerender a scene when it loads to avoid transition flicker
+  // useEffect(() => {
+  //   let lastLoadedScenes: SceneData[] = []
+  //   let nullRenderTarget = new THREE.WebGLRenderTarget(
+  //     window.innerWidth,
+  //     window.innerHeight
+  //   )
+  //   return useSceneStore.subscribe(
+  //     (scenes: SceneData[]) => {
+  //       for (const s of scenes) {
+  //         if (lastLoadedScenes.includes(s)) return
+  //         gl.setRenderTarget(nullRenderTarget)
+  //         gl.render(s.scene, s.cameraRef.current)
+  //         gl.setRenderTarget(null)
+  //       }
+  //     },
+  //     (s) => Object.values(s.scenesData).filter((s) => s.isLoaded),
+  //     shallow
+  //   )
+  // })
 
   useFrame(({ gl, camera, setDefaultCamera }) => {
     if (
