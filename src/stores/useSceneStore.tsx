@@ -40,6 +40,8 @@ type SceneStore = {
   unmountAllScenes: () => void
   setRenderedScene: (sceneName: SceneName | null) => void
   scenesData: Record<SceneName, SceneData>
+  inTransition: boolean
+  setInTransition: (b: boolean) => void
 }
 
 const useSceneStore = create<SceneStore>((set, get) => ({
@@ -119,6 +121,8 @@ const useSceneStore = create<SceneStore>((set, get) => ({
       cameraRef: createRef(),
     },
   },
+  inTransition: false,
+  setInTransition: (b: boolean) => set({ inTransition: b }),
 }))
 
 export default useSceneStore

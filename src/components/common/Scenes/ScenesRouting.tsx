@@ -27,6 +27,7 @@ const ScenesRouting = ({
 
     if (pathname === Routes.Index) {
       unmountAllScenes()
+      mountScene(SceneName.Safeplace)
       setRenderedScene(null)
     }
 
