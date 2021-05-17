@@ -8,15 +8,19 @@ import DebugNavigation from '@/components/common/DebugNavigation'
 import LayoutHeader from '@/components/common/UI/LayoutHeader'
 import LayoutBottom from '@/components/common/UI/LayoutBottom'
 import LayoutAudio from '@/components/common/LayoutAudio'
+import useSceneStore from '@/stores/useSceneStore'
 
 const LayoutDom = ({ children }: { children: ReactNode }) => {
   const { pathname } = useRouter()
 
   const windowAvailable = useMemo(() => typeof window !== 'undefined', [])
+  const inTransition = useSceneStore((s) => s.inTransition)
 
   const isLayoutBottomAvailable = useMemo(
-    () => ![Routes.Index, Routes.About].includes(pathname as Routes),
-    [pathname]
+    () =>
+      ![Routes.Index, Routes.About].includes(pathname as Routes) &&
+      !inTransition,
+    [pathname, inTransition]
   )
 
   return (

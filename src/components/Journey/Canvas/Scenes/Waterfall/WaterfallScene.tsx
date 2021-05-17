@@ -25,6 +25,7 @@ import Slats from './Slats'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
+import useNonInitialEffect from '@/hooks/useNonInitialEffect'
 
 enum WaterfallSequence {
   ToBridge,
@@ -69,17 +70,21 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const isWaterfallSection = useJourneyStore(
     (s) => s.currentSection === JourneySection.Waterfall
   )
+  const isSceneInTransition = useSceneStore((s) => s.inTransition)
 
   const isThisSceneRendered = useSceneStore(
     (s) => s.renderedScene === SceneName.Waterfall
   )
-  const [sequence, setSequence] = useState<WaterfallSequence>(
-    WaterfallSequence.ToBridge
-  )
+  const [sequence, setSequence] = useState<WaterfallSequence>(null)
 
   // ---
   // Update state depending on current sequence
   // ---
+
+  useNonInitialEffect(() => {
+    if (!isWaterfallSection || isSceneInTransition) return
+    setSequence(WaterfallSequence.ToBridge)
+  }, [isWaterfallSection, isSceneInTransition])
 
   // Reset journey finished when changing section
   useEffect(() => {
@@ -98,7 +103,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   // Play Voice
   useEffect(() => {
-    if (!isThisSceneRendered) return
+    if (!isThisSceneRendered || sequence === null) return
     const { setCurrentVoiceover } = useAudioStore.getState()
     const voice = sequenceVoices[sequence]
     if (voice !== null) setCurrentVoiceover(Place.Journey, voice)
@@ -106,7 +111,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   // Cam Anim
   const camAnim = useMemo(() => {
-    if (!isThisSceneRendered) return null
+    if (!isThisSceneRendered || sequence === null) return null
     return camAnims[sequenceCamIndex[sequence]]
   }, [sequence, isThisSceneRendered])
 

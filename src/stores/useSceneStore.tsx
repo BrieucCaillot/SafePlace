@@ -32,7 +32,7 @@ export type SceneData = {
 type SceneStore = {
   mountedScenes: SceneName[]
   renderedScene: SceneName | null
-  setSceneLoaded: (sceneName: SceneName) => void
+  setSceneLoaded: (sceneName: SceneName, boolean: boolean) => void
   mountScene: (sceneName: SceneName) => void
   mountScenes: (sceneNames: SceneName[]) => void
   unmountScene: (sceneName: SceneName) => void
@@ -47,9 +47,9 @@ type SceneStore = {
 const useSceneStore = create<SceneStore>((set, get) => ({
   mountedScenes: [],
   renderedScene: null,
-  setSceneLoaded: (sceneName: SceneName) => {
+  setSceneLoaded: (sceneName: SceneName, boolean: boolean) => {
     const { scenesData } = get()
-    scenesData[sceneName].isLoaded = true
+    scenesData[sceneName].isLoaded = boolean
     set({ scenesData })
   },
   mountScene: (sceneName: SceneName) => {

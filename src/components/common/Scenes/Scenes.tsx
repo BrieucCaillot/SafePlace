@@ -82,7 +82,7 @@ const Scenes = () => {
                 scene={scene}
                 ref={(ref: THREE.Camera) => {
                   cameraRef.current = ref
-                  setSceneLoaded(name as SceneName)
+                  setSceneLoaded(name as SceneName, cameraRef.current !== null)
                 }}
               />
             </Suspense>

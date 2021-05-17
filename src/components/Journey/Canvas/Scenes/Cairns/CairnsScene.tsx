@@ -18,8 +18,11 @@ import prepareAttributeForSample from '@/utils/geometry/prepareAttributesForSamp
 import GrassParams from '@/components/Safeplace/Canvas/Decorations/Grass/GrassParams'
 import FlowersParams from '@/components/Safeplace/Canvas/Decorations/Flowers/FlowerParams'
 import Routes from '@/constants/enums/Routes'
+import useSceneStore from '@/stores/useSceneStore'
+import useNonInitialEffect from '@/hooks/useNonInitialEffect'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
+  const isSceneInTransition = useSceneStore((s) => s.inTransition)
   const isCairnSection = useJourneyStore(
     (s) => s.currentSection === JourneySection.Cairns
   )
@@ -60,14 +63,14 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       containerRef.current.updateMatrixWorld()
   )
 
-  useEffect(() => {
-    if (!isCairnSection) return
+  useNonInitialEffect(() => {
+    if (!isCairnSection || isSceneInTransition) return
     const { setCurrentAmbiant, setCurrentVoiceover } = useAudioStore.getState()
     // Ambiant
     setCurrentAmbiant(Place.Journey, Ambiants.Cairns)
     // Voiceover
     setCurrentVoiceover(Place.Journey, VoiceoverJourney.Cairns)
-  }, [isCairnSection])
+  }, [isCairnSection, isSceneInTransition])
 
   return (
     <>
