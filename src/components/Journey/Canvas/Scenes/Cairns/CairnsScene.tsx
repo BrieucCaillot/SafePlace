@@ -30,7 +30,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     nodes,
   } = useGLTF('/models/journey/chapter1.glb')
   const shadowTex = useMemo(() => {
-    const t = new THREE.TextureLoader().load('/img/journey/shadow_chap2.png')
+    const t = new THREE.TextureLoader().load('/img/journey/shadow_chap1.png')
     t.flipY = false
     return t
   }, [])
