@@ -28,6 +28,8 @@ const useSceneTransition = () => {
   const outProgress = useWatchableRef<number>(0)
   useNonInitialEffect(() => {
     setInTransition(true)
+    outProgress.current = 0
+    inProgress.current = 0
     const anim = gsap.to(outProgress, {
       current: 1,
       ...transitionAnimParams,
@@ -49,6 +51,7 @@ const useSceneTransition = () => {
   useNonInitialEffect(() => {
     const anim = gsap.to(inProgress, {
       current: 1,
+      delay: 0.5,
       ...transitionAnimParams,
       onComplete: () => {
         inProgress.current = 0

@@ -81,6 +81,8 @@ const TransitionScene = forwardRef(
             key={offset}
             scale={[height * 1.5, height * 1.5, 1]}
             texture={cloudTexture}
+            inProg={inProgress}
+            outProg={outProgress}
             prog={prog}
             startPos={[
               ...polarCoordinates(Math.PI / 4 + offset, width * 1.2),

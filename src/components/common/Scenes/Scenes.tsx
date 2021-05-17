@@ -35,25 +35,25 @@ const Scenes = () => {
   ])
 
   // Prerender a scene when it loads to avoid transition flicker
-  // useEffect(() => {
-  //   let lastLoadedScenes: SceneData[] = []
-  //   let nullRenderTarget = new THREE.WebGLRenderTarget(
-  //     window.innerWidth,
-  //     window.innerHeight
-  //   )
-  //   return useSceneStore.subscribe(
-  //     (scenes: SceneData[]) => {
-  //       for (const s of scenes) {
-  //         if (lastLoadedScenes.includes(s)) return
-  //         gl.setRenderTarget(nullRenderTarget)
-  //         gl.render(s.scene, s.cameraRef.current)
-  //         gl.setRenderTarget(null)
-  //       }
-  //     },
-  //     (s) => Object.values(s.scenesData).filter((s) => s.isLoaded),
-  //     shallow
-  //   )
-  // })
+  useEffect(() => {
+    let lastLoadedScenes: SceneData[] = []
+    let nullRenderTarget = new THREE.WebGLRenderTarget(
+      window.innerWidth,
+      window.innerHeight
+    )
+    return useSceneStore.subscribe(
+      (scenes: SceneData[]) => {
+        for (const s of scenes) {
+          if (lastLoadedScenes.includes(s)) return
+          gl.setRenderTarget(nullRenderTarget)
+          gl.render(s.scene, s.cameraRef.current)
+          gl.setRenderTarget(null)
+        }
+      },
+      (s) => Object.values(s.scenesData).filter((s) => s.isLoaded),
+      shallow
+    )
+  })
 
   useFrame(({ gl, camera, setDefaultCamera }) => {
     if (
