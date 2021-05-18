@@ -21,7 +21,7 @@ const ButtonStonecut = ({
       className={`relative button-stonecut pointer-events-auto tracking-widest text-lg focus:outline-none w-max ml-auto mr-auto ${className}`}
     >
       <SVGStonecut />
-      <span className='text-shadow'>{children}</span>
+      <span>{children}</span>
     </button>
   )
 

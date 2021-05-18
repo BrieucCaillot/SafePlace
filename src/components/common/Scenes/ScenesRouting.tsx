@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from 'react'
+import { ReactElement, useEffect, useRef } from 'react'
 import { NextRouter } from 'next/router'
 
 import useJourneyStore from '@/stores/useJourneyStore'
@@ -16,17 +16,19 @@ const ScenesRouting = ({
   router: NextRouter
 }): ReactElement<any, any> => {
   const previousPathname = usePrevious(pathname)
+  const inTransition = useSceneStore((s) => s.inTransition)
+
+  const scenesToUnmounts = useRef<SceneName[]>([])
 
   useEffect(() => {
     const {
       mountScene,
       mountScenes,
       setRenderedScene,
-      unmountAllScenes,
     } = useSceneStore.getState()
 
     if (pathname === Routes.Index) {
-      unmountAllScenes()
+      mountScene(SceneName.Safeplace)
       setRenderedScene(null)
     }
 
@@ -80,20 +82,26 @@ const ScenesRouting = ({
 
   useEffect(() => {
     const { setCurrentPOI } = useSafeplaceStore.getState()
-    const { unmountScenes } = useSceneStore.getState()
     if (pathname == previousPathname) return
     if (previousPathname === Routes.Journey) {
-      unmountScenes([
+      scenesToUnmounts.current.push(
         SceneName.Lake,
         SceneName.Cairns,
         SceneName.JourneyIntro,
-        SceneName.Waterfall,
-      ])
+        SceneName.Waterfall
+      )
     }
     if (previousPathname === Routes.OnBoarding) {
       setCurrentPOI(SafeplacePOI.Outside)
     }
   }, [previousPathname, pathname])
+
+  useEffect(() => {
+    if (inTransition) return
+    const { unmountScenes } = useSceneStore.getState()
+    unmountScenes(scenesToUnmounts.current)
+    scenesToUnmounts.current = []
+  }, [inTransition])
 
   return null
 }

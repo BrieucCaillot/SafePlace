@@ -26,6 +26,7 @@ import AudioStatus from '@/constants/enums/Audio'
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 import LakeGround from './LakeGround'
+import useSceneStore from '@/stores/useSceneStore'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -56,6 +57,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const isLakeSection = useJourneyStore(
     (s) => s.currentSection === JourneySection.Lake
   )
+  const inSceneTransition = useSceneStore((s) => s.inTransition)
 
   const animRef = useThreeAnimation({
     clip: areDandelionAnimated ? camAnim : null,
@@ -78,13 +80,13 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   )
 
   useEffect(() => {
-    if (!isLakeSection) return
+    if (!isLakeSection || inSceneTransition) return
     const { setCurrentAmbiant, setCurrentVoiceover } = useAudioStore.getState()
     // Ambiant
     setCurrentAmbiant(Place.Journey, Ambiants.Lake)
     // Voiceover
     setCurrentVoiceover(Place.Journey, VoiceoverJourney.Lake1)
-  }, [isLakeSection])
+  }, [isLakeSection, inSceneTransition])
 
   return (
     <>

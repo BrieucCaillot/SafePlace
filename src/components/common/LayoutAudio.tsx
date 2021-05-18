@@ -2,13 +2,12 @@ import { useEffect } from 'react'
 
 import useAudioStore from '@/stores/useAudioStore'
 import useUserStore from '@/stores/useUserStore'
-
+import usePrevious from '@/hooks/usePrevious'
 import Routes from '@/constants/enums/Routes'
 import Place from '@/constants/enums/Place'
 import { VoiceoverSafeplace } from '@/constants/enums/Voiceover'
 import AudioStatus from '@/constants/enums/Audio'
 import Ambiants from '@/constants/enums/Ambiant'
-import usePrevious from '@/hooks/usePrevious'
 
 const LayoutAudio = (): null => {
   const isFirstConnection = useUserStore((s) => s.isFirstConnection)

@@ -1,19 +1,6 @@
-.elem {
-  &-fade {
-    opacity: 0;
-    &-enter {
-      opacity: 0;
-    }
-    &-enter-active {
-      opacity: 1;
-      transition: opacity 1000ms;
-    }
-    &-exit {
-      opacity: 1;
-    }
-    &-exit-active {
-      opacity: 0;
-      transition: opacity 1000ms;
-    }
-  }
+#transition-clouds {
+  background: linear-gradient(#7b7dd8 16%, #c090ad 57%);
+}
+.cloud-img {
+  background: url('/img/common/cloud.png') no-repeat center/contain;
 }

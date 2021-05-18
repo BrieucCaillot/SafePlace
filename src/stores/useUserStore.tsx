@@ -17,16 +17,17 @@ const useUserStore = create<UserStore>((set) => ({
   router: {} as Router,
   isFirstConnection: false,
   getUserFirstConnection: () =>
-    window.localStorage.getItem('isFirstConnection') == null ? true : false,
+    window.localStorage.getItem('isFirstConnection') == null,
   setUserFirstConnection: (status: boolean) => {
     window.localStorage.setItem('isFirstConnection', status.toString())
     set({ isFirstConnection: status })
   },
+  // @TODO Find a new name
   isJourneyFinished: false,
   setIsJourneyFinished: (status) => set({ isJourneyFinished: status }),
   isJourneyCompleted: false,
   getIsJourneyCompleted: () =>
-    window.localStorage.getItem('isJourneyCompleted') == 'true' ? true : false,
+    window.localStorage.getItem('isJourneyCompleted') == 'true',
   setIsJourneyCompleted: (status) => {
     window.localStorage.setItem('isJourneyCompleted', status.toString())
     set({ isJourneyCompleted: status })

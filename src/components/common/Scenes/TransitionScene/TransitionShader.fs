@@ -6,5 +6,6 @@ uniform float uOutProgress;
 void main()
 {
   vec4 t = texture2D(uTexture, vUv);
-  gl_FragColor = mix(t, vec4(1.), uOutProgress - uInProgress);
+  // gl_FragColor = mix(t, vec4(1.), uOutProgress - uInProgress);
+  gl_FragColor = t;
 }
