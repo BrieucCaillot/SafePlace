@@ -10,12 +10,14 @@ import ColumnLocation from '@/components/Safeplace/Canvas/ColumLocation/ColumnLo
 import MountainColumn from '@/components/Safeplace/Canvas/ColumLocation/MountainColum'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
 import SafeplaceFlyingRocks from '@/components/Safeplace/Canvas/Decorations/SafeplaceFlyingRocks'
-import GrassParams from './Decorations/Grass/GrassParams'
-import Grass from './Decorations/Grass/Grass'
 import SafeplaceGround from './SafeplaceGround'
+import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
+import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
+import Water from './Decorations/Water/Water'
 
 const SafeplaceModel = (): ReactElement => {
   const { scene } = useGLTF('/models/safeplace/safeplace.glb')
+
   const [
     backgrounds,
     bridge_contain,
@@ -28,7 +30,23 @@ const SafeplaceModel = (): ReactElement => {
     shelter,
     trees,
     water_contain,
-  ] = useMemo(() => [...scene.children[0].children], [])
+  ] = useMemo(
+    () =>
+      [
+        'backgrounds',
+        'bridge_contain',
+        'cairns',
+        'columns',
+        'ark',
+        'flying_rocks',
+        'ground_contain',
+        'rocks',
+        'shelter',
+        'trees',
+        'water_contain',
+      ].map((n) => scene.children[0].children.find((o) => o.name === n)),
+    []
+  )
 
   const isJourneyCompleted = useUserStore((s) => s.isJourneyCompleted)
 
@@ -46,7 +64,7 @@ const SafeplaceModel = (): ReactElement => {
     <>
       <Shelter object={shelter} />
 
-      <group position={columnGroup.position}>
+      <GroupShorthand object={columnGroup}>
         {columnChildren.map((col) =>
           columnAssoc[col.name] === SafeplacePOI.MountainColumn ? (
             <MountainColumn columnObj={col} key={col.name} />
@@ -58,20 +76,57 @@ const SafeplaceModel = (): ReactElement => {
             />
           )
         )}
-      </group>
+      </GroupShorthand>
 
-      <primitive object={backgrounds} />
-      <primitive object={bridge_contain} />
-      <primitive object={cairns} />
-      <primitive object={ark} />
-      <primitive object={trees} />
+      <CustomSky />
+      <SafeplaceGround groundMesh={ground_contain.children[0] as THREE.Mesh} />
+
+      <GroupShorthand object={backgrounds}>
+        {isJourneyCompleted ? (
+          <MeshShorthand object={backgrounds.children[1] as THREE.Mesh} />
+        ) : (
+          <MeshShorthand object={backgrounds.children[0] as THREE.Mesh} />
+        )}
+      </GroupShorthand>
       {isJourneyCompleted && (
         <SafeplaceFlyingRocks flyingRocks={flying_rocks} />
       )}
-      <primitive object={rocks} />
-      <primitive object={water_contain} />
-      <CustomSky />
-      <SafeplaceGround groundMesh={ground_contain.children[0] as THREE.Mesh} />
+
+      <GroupShorthand object={bridge_contain}>
+        <MeshShorthand object={bridge_contain.children[0] as THREE.Mesh} />
+      </GroupShorthand>
+
+      <GroupShorthand object={cairns}>
+        <GroupShorthand object={cairns.children[0]}>
+          {cairns.children[0].children.map((child) => (
+            <MeshShorthand object={child as THREE.Mesh} key={child.uuid} />
+          ))}
+        </GroupShorthand>
+      </GroupShorthand>
+
+      <GroupShorthand object={ark}>
+        <MeshShorthand object={ark.children[0] as THREE.Mesh} />
+      </GroupShorthand>
+
+      <GroupShorthand object={trees}>
+        <GroupShorthand object={trees.children[0]}>
+          {trees.children[0].children.map((child) => (
+            <MeshShorthand object={child as THREE.Mesh} key={child.uuid} />
+          ))}
+        </GroupShorthand>
+      </GroupShorthand>
+
+      <GroupShorthand object={rocks}>
+        <GroupShorthand object={rocks.children[0]}>
+          {rocks.children[0].children.map((child) => (
+            <MeshShorthand object={child as THREE.Mesh} key={child.uuid} />
+          ))}
+        </GroupShorthand>
+      </GroupShorthand>
+
+      <GroupShorthand object={water_contain}>
+        <Water targetMesh={water_contain.children[0] as THREE.Mesh} />
+      </GroupShorthand>
     </>
   )
 }
