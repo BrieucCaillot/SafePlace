@@ -1,14 +1,19 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 import FlowersParams from './Decorations/Flowers/FlowerParams'
-import useWatchableRef from '@/hooks/useWatchableRef'
 import GrassParams from './Decorations/Grass/GrassParams'
 import Routes from '@/constants/enums/Routes'
 import prepareAttributeForSample from '@/utils/geometry/prepareAttributesForSample'
 
-const SafeplaceGround = ({ groundMesh }: { groundMesh: THREE.Mesh }) => {
-  const groundMeshRef = useWatchableRef<THREE.Mesh>(null)
+const SafeplaceGround = ({
+  groundMesh,
+  journeyIsComplete,
+}: {
+  groundMesh: THREE.Mesh
+  journeyIsComplete: boolean
+}) => {
+  const groundMeshRef = useRef<THREE.Mesh>(null)
 
   const ground = useMemo(() => {
     prepareAttributeForSample(groundMesh.geometry)
@@ -24,10 +29,26 @@ const SafeplaceGround = ({ groundMesh }: { groundMesh: THREE.Mesh }) => {
     return t
   }, [])
 
+  const [mountainBaking, emptyBaking] = useMemo(
+    () => [
+      (groundMesh.material as THREE.MeshBasicMaterial).map,
+      new THREE.TextureLoader().load(
+        '/img/safeplace/sol_baking_before.jpg',
+        (t) => ((t.flipY = false), (t.encoding = THREE.sRGBEncoding))
+      ),
+    ],
+    []
+  )
+  useEffect(() => {
+    ;(groundMesh.material as THREE.MeshBasicMaterial).map = journeyIsComplete
+      ? mountainBaking
+      : emptyBaking
+  }, [journeyIsComplete])
+
   return (
     <>
       <MeshShorthand object={ground} ref={groundMeshRef} />
-      <GrassParams
+      {/* <GrassParams
         shadowTexture={shadowTexture}
         targetMeshRef={groundMeshRef}
         route={Routes.Safeplace}
@@ -51,7 +72,7 @@ const SafeplaceGround = ({ groundMesh }: { groundMesh: THREE.Mesh }) => {
         //---
         targetMeshRef={groundMeshRef}
         shadowTexture={shadowTexture}
-      />
+      /> */}
     </>
   )
 }
