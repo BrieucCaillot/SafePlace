@@ -82,7 +82,7 @@ const SafeplaceModel = (): ReactElement => {
 
       <SafeplaceGround
         groundMesh={ground_contain.children[0] as THREE.Mesh}
-        journeyIsComplete={false}
+        journeyIsComplete={isJourneyCompleted}
       />
 
       <GroupShorthand object={backgrounds}>
