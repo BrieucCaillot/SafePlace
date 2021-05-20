@@ -59,16 +59,16 @@ const TransitionClouds = () => {
     timelineRef.current = tl
   }, [])
 
-  useEffect(() => {
-    switch (cloudsTransitionStatus) {
-      case AnimationStatus.Start:
-        timelineRef.current.play()
-        break
-      case AnimationStatus.Reverse:
-        timelineRef.current.reverse(0)
-        break
-    }
-  }, [cloudsTransitionStatus])
+  // useEffect(() => {
+  //   switch (cloudsTransitionStatus) {
+  //     case AnimationStatus.Start:
+  //       timelineRef.current.play()
+  //       break
+  //     case AnimationStatus.Reverse:
+  //       timelineRef.current.reverse(0)
+  //       break
+  //   }
+  // }, [cloudsTransitionStatus])
 
   return (
     <div
