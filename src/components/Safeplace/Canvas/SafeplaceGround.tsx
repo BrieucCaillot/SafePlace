@@ -48,7 +48,7 @@ const SafeplaceGround = ({
   return (
     <>
       <MeshShorthand object={ground} ref={groundMeshRef} />
-      {/* <GrassParams
+      <GrassParams
         shadowTexture={shadowTexture}
         targetMeshRef={groundMeshRef}
         route={Routes.Safeplace}
@@ -72,7 +72,7 @@ const SafeplaceGround = ({
         //---
         targetMeshRef={groundMeshRef}
         shadowTexture={shadowTexture}
-      /> */}
+      />
     </>
   )
 }
