@@ -3,6 +3,7 @@ uniform sampler2D uBackground;
 uniform sampler2D uLevel1;
 uniform sampler2D uLevel2;
 
+uniform float uUseShadow;
 uniform float uTime;
 uniform float uFlowIntensity;
 uniform float uFlowSpeed;
@@ -28,13 +29,14 @@ void main()
   vec4 background = texture2D(uBackground, uv);
   vec4 level1 = texture2D(uLevel1, uv);
   vec4 level2 = texture2D(uLevel2, uv);
-  vec4 shadow = texture2D(uShadowTexture, vUv);
+  vec3 shadow = (uUseShadow > 0.5 ? texture2D(uShadowTexture, vUv).rgb : vec3(1.));
 
   vec3 color = background.rgb;
   color = mix(color, level1.rgb, level1.a);
   color = mix(color, level2.rgb, level2.a);
 
-  vec3 hsv = rgb2hsv(color) * uHslTransform;
+  color = rgb2hsv(color) * uHslTransform;
+  color = hsv2rgb(color) * shadow;
 
-  gl_FragColor = vec4(hsv2rgb(hsv) * shadow.rgb, 1.);
+  gl_FragColor = vec4(color, 1.);
 }

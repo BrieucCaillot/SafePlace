@@ -15,6 +15,7 @@ import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
 import Water from './Decorations/Water/Water'
 import WaterParams from './Decorations/Water/WaterParams'
+import Routes from '@/constants/enums/Routes'
 
 const SafeplaceModel = (): ReactElement => {
   const { scene } = useGLTF('/models/safeplace/safeplace.glb')
@@ -143,6 +144,7 @@ const SafeplaceModel = (): ReactElement => {
         <WaterParams
           targetMesh={water_contain.children[0] as THREE.Mesh}
           shadowTexture={waterShadowTexture}
+          route={Routes.Safeplace}
         />
       </GroupShorthand>
     </>

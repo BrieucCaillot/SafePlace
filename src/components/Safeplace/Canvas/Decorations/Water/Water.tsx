@@ -18,11 +18,11 @@ type WaterParams = {
 const Water = ({
   targetMesh,
   waterParams,
-  shadowTexture,
+  shadowTexture = null,
 }: {
   targetMesh: THREE.Mesh
   waterParams: WaterParams
-  shadowTexture: THREE.Texture
+  shadowTexture?: THREE.Texture
 }) => {
   const clock = useMemo(() => new THREE.Clock(), [])
 
@@ -40,6 +40,7 @@ const Water = ({
 
   const uniforms = useRef<{ [name: string]: THREE.IUniform }>({
     uShadowTexture: { value: shadowTexture },
+    uUseShadow: { value: shadowTexture === null ? 0 : 1 },
     uBackground: { value: bg },
     uLevel1: { value: level_1 },
     uLevel2: { value: level_2 },
