@@ -23,7 +23,7 @@ void main()
     sin(ot.y + 0.2) + sin(1.8 * ot.y + 4.3) + sin(2.7 * ot.y + 0.93) + sin(5. * ot.y + 8.94)
   ) * uFlowIntensity;
 
-  vec2 uv = vWorldUv + offset;
+  vec2 uv = vWorldUv + offset - uTime * 0.005;
 
   vec4 background = texture2D(uBackground, uv);
   vec4 level1 = texture2D(uLevel1, uv);

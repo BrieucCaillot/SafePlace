@@ -30,6 +30,7 @@ const Water = ({ targetMesh }: { targetMesh: THREE.Mesh }) => {
         loader.load(`/img/common/water/${n}`, (t) => {
           t.wrapS = THREE.RepeatWrapping
           t.wrapT = THREE.RepeatWrapping
+          t.minFilter = THREE.NearestFilter
         })
     )
   }, [])
