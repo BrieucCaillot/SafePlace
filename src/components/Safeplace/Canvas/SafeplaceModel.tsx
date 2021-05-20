@@ -79,7 +79,11 @@ const SafeplaceModel = (): ReactElement => {
       </GroupShorthand>
 
       <CustomSky />
-      <SafeplaceGround groundMesh={ground_contain.children[0] as THREE.Mesh} />
+
+      <SafeplaceGround
+        groundMesh={ground_contain.children[0] as THREE.Mesh}
+        journeyIsComplete={false}
+      />
 
       <GroupShorthand object={backgrounds}>
         {isJourneyCompleted ? (
@@ -88,26 +92,27 @@ const SafeplaceModel = (): ReactElement => {
           <MeshShorthand object={backgrounds.children[0] as THREE.Mesh} />
         )}
       </GroupShorthand>
+
       {isJourneyCompleted && (
-        <SafeplaceFlyingRocks flyingRocks={flying_rocks} />
+        <>
+          <SafeplaceFlyingRocks flyingRocks={flying_rocks} />
+          <GroupShorthand object={ark}>
+            <MeshShorthand object={ark.children[0] as THREE.Mesh} />
+          </GroupShorthand>
+
+          <GroupShorthand object={cairns}>
+            <GroupShorthand object={cairns.children[0]}>
+              {cairns.children[0].children.map((child) => (
+                <MeshShorthand object={child as THREE.Mesh} key={child.uuid} />
+              ))}
+            </GroupShorthand>
+          </GroupShorthand>
+        </>
       )}
 
       <GroupShorthand object={bridge_contain}>
         <MeshShorthand object={bridge_contain.children[0] as THREE.Mesh} />
       </GroupShorthand>
-
-      <GroupShorthand object={cairns}>
-        <GroupShorthand object={cairns.children[0]}>
-          {cairns.children[0].children.map((child) => (
-            <MeshShorthand object={child as THREE.Mesh} key={child.uuid} />
-          ))}
-        </GroupShorthand>
-      </GroupShorthand>
-
-      <GroupShorthand object={ark}>
-        <MeshShorthand object={ark.children[0] as THREE.Mesh} />
-      </GroupShorthand>
-
       <GroupShorthand object={trees}>
         <GroupShorthand object={trees.children[0]}>
           {trees.children[0].children.map((child) => (

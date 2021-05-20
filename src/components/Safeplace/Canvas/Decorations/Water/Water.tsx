@@ -15,10 +15,10 @@ const Water = ({ targetMesh }: { targetMesh: THREE.Mesh }) => {
     'water',
     {
       textureScale: 3.2,
-      flowSpeed: 0.04,
+      flowSpeed: 0.05,
       flowDirection: { value: 0.2, min: 0, max: Math.PI },
-      flowIntensity: 0.03,
-      hslTransform: { value: { x: 1.06, y: 0.5, z: 1.06 } },
+      flowIntensity: 0.04,
+      hslTransform: { value: { x: 1.06, y: 0.6, z: 1.06 } },
     },
     { collapsed: true }
   )
