@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { gsap } from 'gsap'
+import gsap from 'gsap'
 import useSceneStore, { SceneData } from '@/stores/useSceneStore'
 import useWatchableRef from '@/hooks/useWatchableRef'
 import useNonInitialEffect from '@/hooks/useNonInitialEffect'
