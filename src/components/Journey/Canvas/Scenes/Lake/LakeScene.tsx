@@ -27,6 +27,9 @@ import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/C
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 import LakeGround from './LakeGround'
 import useSceneStore from '@/stores/useSceneStore'
+import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
+import WaterParams from '@/components/Safeplace/Canvas/Decorations/Water/WaterParams'
+import Routes from '@/constants/enums/Routes'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -35,6 +38,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   } = useGLTF('/models/journey/chapter2.glb')
 
   const containerRef = useRef<THREE.Group>()
+
   const [camGroup, particules, lake, dandelion, rocks, ground, trees] = useMemo(
     () =>
       [
@@ -103,6 +107,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
           position={[0, 0, 0]}
         />
       </group>
+
       <CustomSky />
       <ColumnLink
         onColumnClick={() => animateDandelion(true)}
@@ -116,11 +121,25 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         scale={particules.scale}
         animate={areDandelionAnimated}
       />
-      <MeshShorthand object={lake.children[0] as THREE.Mesh} />
+      <WaterParams
+        route={Routes.Journey}
+        targetMesh={lake.children[0] as THREE.Mesh}
+      />
       <MeshShorthand object={dandelion.children[0] as THREE.Mesh} />
+
       <LakeGround object={ground} />
-      <primitive object={trees} />
-      <primitive object={rocks} />
+
+      <GroupShorthand object={trees}>
+        <GroupShorthand object={trees.children[0]}>
+          {trees.children[0].children.map((o) => (
+            <MeshShorthand object={o as THREE.Mesh} key={o.uuid} />
+          ))}
+        </GroupShorthand>
+      </GroupShorthand>
+
+      <GroupShorthand object={rocks}>
+        <MeshShorthand object={rocks.children[0] as THREE.Mesh} />
+      </GroupShorthand>
     </>
   )
 })

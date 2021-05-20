@@ -20,6 +20,8 @@ import FlowersParams from '@/components/Safeplace/Canvas/Decorations/Flowers/Flo
 import Routes from '@/constants/enums/Routes'
 import useSceneStore from '@/stores/useSceneStore'
 import useNonInitialEffect from '@/hooks/useNonInitialEffect'
+import SceneShorthand from '@/components/common/Canvas/SceneShorthand'
+import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const isSceneInTransition = useSceneStore((s) => s.inTransition)
@@ -38,6 +40,8 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     return t
   }, [])
 
+  console.log(scene)
+
   const groundMesh = useMemo(() => {
     const m = nodes['ground_mesh'] as THREE.Mesh
     prepareAttributeForSample(m.geometry)
@@ -51,8 +55,8 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const animRef = useThreeAnimation({
     clip: isCairnSection ? camAnim : null,
     ref: containerRef,
-    onFinished: () =>
-      useJourneyStore.getState().setSection(JourneySection.Lake),
+    // onFinished: () =>
+    //   useJourneyStore.getState().setSection(JourneySection.Lake),
   })
 
   useFrame(
@@ -74,39 +78,55 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   return (
     <>
-      {/* <ClassicCamera ref={camRef} /> */}
+      <ClassicCamera ref={camRef} />
       <group
         ref={containerRef}
         position={cameraGroup.position}
         quaternion={cameraGroup.quaternion}
       >
-        <ClassicCamera
+        {/* <ClassicCamera
           ref={camRef}
           fov={54.9}
           rotation-x={-Math.PI / 2}
           position={[0, 0, 0]}
-        />
+        /> */}
       </group>
       <CustomSky />
-      <primitive object={scene} />
-      <GrassParams
-        targetMeshRef={groundMeshRef}
-        folderName={'cairn_greenery'}
-        controlsName={'grass'}
-        route={Routes.Journey}
-        grassParams={{ weightAttribute: 'grassWeight', amount: 24576 }}
-        position={new THREE.Vector3(0, 0.4, 0).add(groundMesh.position)}
-        shadowTexture={shadowTex}
-      />
-      <FlowersParams
-        targetMeshRef={groundMeshRef}
-        folderName={'cairn_greenery'}
-        controlsName={'flowers'}
-        route={Routes.Journey}
-        flowersParams={{ weightAttribute: 'flowerWeight1', amount: 1024 }}
-        position={groundMesh.position}
-        shadowTexture={shadowTex}
-      />
+      {/* <primitive object={scene} /> */}
+
+      <SceneShorthand object={scene} />
+
+      <GroupShorthand object={scene.children.find((o) => o.name === 'ground')}>
+        <GroupShorthand object={groundMesh}>
+          <GrassParams
+            targetMeshRef={groundMeshRef}
+            folderName={'cairn_greenery'}
+            controlsName={'grass'}
+            route={Routes.Journey}
+            grassParams={{
+              weightAttribute: 'grassWeight',
+              amount: 24576,
+              windAmplitude: 0.007,
+              size: 0.04,
+            }}
+            position={new THREE.Vector3(0, 0.223, 0).add(groundMesh.position)}
+            shadowTexture={shadowTex}
+          />
+          <FlowersParams
+            targetMeshRef={groundMeshRef}
+            folderName={'cairn_greenery'}
+            controlsName={'flowers'}
+            route={Routes.Journey}
+            flowersParams={{
+              weightAttribute: 'flowerWeight1',
+              amount: 1024,
+              size: 0.3,
+            }}
+            position={new THREE.Vector3(0, 0.18, 0).add(groundMesh.position)}
+            shadowTexture={shadowTex}
+          />
+        </GroupShorthand>
+      </GroupShorthand>
     </>
   )
 })

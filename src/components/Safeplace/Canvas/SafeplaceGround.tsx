@@ -33,7 +33,7 @@ const SafeplaceGround = ({
     () => [
       (groundMesh.material as THREE.MeshBasicMaterial).map,
       new THREE.TextureLoader().load(
-        '/img/safeplace/sol_baking_before.jpg',
+        '/img/safeplace/sol_bake_before.jpg',
         (t) => ((t.flipY = false), (t.encoding = THREE.sRGBEncoding))
       ),
     ],

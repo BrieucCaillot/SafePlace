@@ -1,7 +1,9 @@
-varying vec2 vWorldUv;
-varying vec2 vFlowUv;
 uniform float uScale;
 uniform float uFlowDirection;
+
+varying vec2 vWorldUv;
+varying vec2 vUv;
+varying vec2 vFlowUv;
 
 vec2 rotateUV(vec2 uv, float rotation)
 {
@@ -14,6 +16,7 @@ vec2 rotateUV(vec2 uv, float rotation)
 
 void main()
 {
+  vUv = uv;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   vWorldUv = (modelMatrix * vec4(position, 1.)).xz * (1. / uScale);
   vFlowUv = rotateUV(vWorldUv, uFlowDirection);
