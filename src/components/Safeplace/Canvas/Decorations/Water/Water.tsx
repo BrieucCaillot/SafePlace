@@ -34,7 +34,17 @@ const Water = ({ targetMesh }: { targetMesh: THREE.Mesh }) => {
     )
   }, [])
 
+  const shadowTexture = useMemo(
+    () =>
+      new THREE.TextureLoader().load(
+        '/img/safeplace/water_bake_shadow.png',
+        (t) => (t.flipY = false)
+      ),
+    []
+  )
+
   const uniforms = useRef<{ [name: string]: THREE.IUniform }>({
+    uShadowTexture: { value: shadowTexture },
     uBackground: { value: bg },
     uLevel1: { value: level_1 },
     uLevel2: { value: level_2 },

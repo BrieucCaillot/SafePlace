@@ -1,3 +1,4 @@
+uniform sampler2D uShadowTexture;
 uniform sampler2D uBackground;
 uniform sampler2D uLevel1;
 uniform sampler2D uLevel2;
@@ -27,6 +28,7 @@ void main()
   vec4 background = texture2D(uBackground, uv);
   vec4 level1 = texture2D(uLevel1, uv);
   vec4 level2 = texture2D(uLevel2, uv);
+  vec4 shadow = texture2D(uShadowTexture, vUv);
 
   vec3 color = background.rgb;
   color = mix(color, level1.rgb, level1.a);
@@ -34,5 +36,5 @@ void main()
 
   vec3 hsv = rgb2hsv(color) * uHslTransform;
 
-  gl_FragColor = vec4(hsv2rgb(hsv), 1.);
+  gl_FragColor = vec4(hsv2rgb(hsv) * shadow.rgb, 1.);
 }
