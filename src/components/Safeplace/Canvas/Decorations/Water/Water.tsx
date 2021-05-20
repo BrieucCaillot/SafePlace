@@ -3,25 +3,28 @@ import { useMemo, useRef } from 'react'
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 import fragmentShader from './Water.fs'
 import vertexShader from './Water.vs'
-import { useControls } from 'leva'
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
 import { useFrame } from 'react-three-fiber'
-import useColorUniform from '@/hooks/uniforms/useColorUniform'
 import useVector3Uniform from '@/hooks/uniforms/useVector3Uniform'
 
-const Water = ({ targetMesh }: { targetMesh: THREE.Mesh }) => {
+type WaterParams = {
+  textureScale: number
+  flowSpeed: number
+  flowDirection: number
+  flowIntensity: number
+  hslTransform: { x: number; y: number; z: number }
+}
+
+const Water = ({
+  targetMesh,
+  waterParams,
+  shadowTexture,
+}: {
+  targetMesh: THREE.Mesh
+  waterParams: WaterParams
+  shadowTexture: THREE.Texture
+}) => {
   const clock = useMemo(() => new THREE.Clock(), [])
-  const controls = useControls(
-    'water',
-    {
-      textureScale: 3.2,
-      flowSpeed: 0.05,
-      flowDirection: { value: 0.2, min: 0, max: Math.PI },
-      flowIntensity: 0.04,
-      hslTransform: { value: { x: 1.06, y: 0.6, z: 1.06 } },
-    },
-    { collapsed: true }
-  )
 
   const [bg, level_1, level_2] = useMemo(() => {
     const loader = new THREE.TextureLoader()
@@ -35,15 +38,6 @@ const Water = ({ targetMesh }: { targetMesh: THREE.Mesh }) => {
     )
   }, [])
 
-  const shadowTexture = useMemo(
-    () =>
-      new THREE.TextureLoader().load(
-        '/img/safeplace/water_bake_shadow.png',
-        (t) => (t.flipY = false)
-      ),
-    []
-  )
-
   const uniforms = useRef<{ [name: string]: THREE.IUniform }>({
     uShadowTexture: { value: shadowTexture },
     uBackground: { value: bg },
@@ -56,11 +50,11 @@ const Water = ({ targetMesh }: { targetMesh: THREE.Mesh }) => {
     uHslTransform: { value: new THREE.Vector3() },
     uTime: { value: 0 },
   })
-  useNumberUniform(uniforms.current.uScale, controls.textureScale)
-  useNumberUniform(uniforms.current.uFlowSpeed, controls.flowSpeed)
-  useNumberUniform(uniforms.current.uFlowDirection, controls.flowDirection)
-  useNumberUniform(uniforms.current.uFlowIntensity, controls.flowIntensity)
-  useVector3Uniform(uniforms.current.uHslTransform, controls.hslTransform)
+  useNumberUniform(uniforms.current.uScale, waterParams.textureScale)
+  useNumberUniform(uniforms.current.uFlowSpeed, waterParams.flowSpeed)
+  useNumberUniform(uniforms.current.uFlowDirection, waterParams.flowDirection)
+  useNumberUniform(uniforms.current.uFlowIntensity, waterParams.flowIntensity)
+  useVector3Uniform(uniforms.current.uHslTransform, waterParams.hslTransform)
   useFrame(() => (uniforms.current.uTime.value = clock.getElapsedTime()))
 
   return (

@@ -14,9 +14,19 @@ import SafeplaceGround from './SafeplaceGround'
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
 import Water from './Decorations/Water/Water'
+import WaterParams from './Decorations/Water/WaterParams'
 
 const SafeplaceModel = (): ReactElement => {
   const { scene } = useGLTF('/models/safeplace/safeplace.glb')
+
+  const waterShadowTexture = useMemo(
+    () =>
+      new THREE.TextureLoader().load(
+        '/img/safeplace/water_bake_shadow.png',
+        (t) => (t.flipY = false)
+      ),
+    []
+  )
 
   const [
     backgrounds,
@@ -130,7 +140,10 @@ const SafeplaceModel = (): ReactElement => {
       </GroupShorthand>
 
       <GroupShorthand object={water_contain}>
-        <Water targetMesh={water_contain.children[0] as THREE.Mesh} />
+        <WaterParams
+          targetMesh={water_contain.children[0] as THREE.Mesh}
+          shadowTexture={waterShadowTexture}
+        />
       </GroupShorthand>
     </>
   )
