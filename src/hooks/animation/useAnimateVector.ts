@@ -3,7 +3,7 @@ import gsap from 'gsap'
 import { MutableRefObject, useEffect } from 'react'
 
 export type Target =
-  | MutableRefObject<THREE.Vector3 | undefined>
+  | MutableRefObject<THREE.Vector3 | THREE.Euler | undefined>
   | THREE.IUniform
   | {
       ref: MutableRefObject<THREE.Object3D | undefined>
