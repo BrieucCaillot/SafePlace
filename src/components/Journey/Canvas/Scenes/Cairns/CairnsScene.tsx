@@ -78,18 +78,18 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   return (
     <>
-      <ClassicCamera ref={camRef} />
+      {/* <ClassicCamera ref={camRef} /> */}
       <group
         ref={containerRef}
         position={cameraGroup.position}
         quaternion={cameraGroup.quaternion}
       >
-        {/* <ClassicCamera
+        <ClassicCamera
           ref={camRef}
           fov={54.9}
           rotation-x={-Math.PI / 2}
           position={[0, 0, 0]}
-        /> */}
+        />
       </group>
       <CustomSky />
       {/* <primitive object={scene} /> */}

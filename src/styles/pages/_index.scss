@@ -2,20 +2,3 @@
   background-image: url('/img/index/home.png'),
     linear-gradient(#7b7dd8 16%, #c090ad 57%);
 }
-
-.instruction {
-  &-enter {
-    opacity: 0;
-  }
-  &-enter-done {
-    opacity: 1;
-    transition: opacity 200ms;
-  }
-  &-exit {
-    opacity: 1;
-  }
-  &-exit-active {
-    opacity: 0;
-    transition: opacity 200ms;
-  }
-}

@@ -8,7 +8,7 @@ const useTransitionStatus = (status: TransitionStatus) => {
   useEffect(() => {
     if (status === prevStatus.current) return
     prevStatus.current = status
-    if (['entering', 'entered'].includes(status)) {
+    if (['entered'].includes(status)) {
       setShow(true)
     }
     if (['exiting', 'exited'].includes(status)) {

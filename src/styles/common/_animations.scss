@@ -71,6 +71,7 @@
     }
     &-enter-done {
       opacity: 1;
+      pointer-events: auto;
     }
     &-exit {
       opacity: 1;
@@ -78,9 +79,11 @@
     &-exit-active {
       opacity: 0;
       transition: opacity 1000ms;
+      pointer-events: none;
     }
     &-exit-done {
       opacity: 0;
+      display: none;
     }
   }
 }
