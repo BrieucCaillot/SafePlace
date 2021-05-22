@@ -1,4 +1,4 @@
-const SVGSoundOff = ({ className }: { className?: string }) => {
+const SVGSoundOff = ({ className = '' }: { className?: string }) => {
   return (
     <svg
       className={`text-white transform-gpu scale-150 ${className}`}

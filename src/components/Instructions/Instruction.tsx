@@ -49,6 +49,7 @@ const Instruction = ({
       timeout={TIMEOUT}
       classNames='elem-fade'
       mountOnEnter
+      unmountOnExit
       onExited={onNextStep}
       appear
     >
@@ -59,8 +60,8 @@ const Instruction = ({
           {text}
         </p>
         <ButtonStonecut
-          show={show}
-          className={`${buttonActiveClass} text-tertiary`}
+          show={show && !hide && isVoiceoverPlayed}
+          className='text-tertiary opacity-0 pointer-events-none'
           onClick={() => setHide(true)}
         >
           {isLastStep ? 'Rejoindre la safeplace' : 'Continuer'}

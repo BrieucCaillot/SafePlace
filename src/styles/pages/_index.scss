@@ -1,4 +1,5 @@
-.bg-home {
-  background-image: url('/img/index/home.png'),
-    linear-gradient(#7b7dd8 16%, #c090ad 57%);
+.home {
+  &-safeplace {
+    background: url('/img/index/home.png') no-repeat center/cover;
+  }
 }
