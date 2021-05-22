@@ -10,6 +10,7 @@ const About = () => {
     <>
       <PortalUI selector='#layout-header-right'>
         <ButtonStonecut
+          show={true}
           className='text-primary cursor-pointer'
           route={Routes.Index}
         >
