@@ -24,32 +24,21 @@ const ButtonStonecut = ({
       className={`relative button-stonecut tracking-widest text-lg focus:outline-none w-max ml-auto mr-auto ${className}`}
     >
       <SVGStonecut />
-      <span>{children}</span>
+      <span className='text-stroke-4'>{children}</span>
     </button>
   )
 
   return (
     <>
-      {route ? (
-        <CSSTransition
-          in={show}
-          timeout={{
-            appear: 2000,
-            enter: 2000,
-            exit: 0,
-          }}
-          exit={false}
-          classNames='elem-fade'
-          mountOnEnter
-          appear
-        >
+      <CSSTransition in={show} timeout={2000} classNames='elem-fade' appear>
+        {route ? (
           <Link href={route} as={route}>
             {content}
           </Link>
-        </CSSTransition>
-      ) : (
-        content
-      )}
+        ) : (
+          content
+        )}
+      </CSSTransition>
     </>
   )
 }
