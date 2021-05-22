@@ -1,15 +1,18 @@
-import React, { forwardRef, MouseEventHandler, ReactNode } from 'react'
+import React, { MouseEventHandler, ReactNode } from 'react'
+import { CSSTransition } from 'react-transition-group'
 import Link from 'next/link'
 
 import SVGStonecut from '@/components/common/UI/SVG/SVGStonecut'
 import Routes from '@/constants/enums/Routes'
 
 const ButtonStonecut = ({
+  show,
   children,
   className,
   onClick,
   route,
 }: {
+  show: boolean
   children: ReactNode
   className?: string
   onClick?: MouseEventHandler<HTMLButtonElement>
@@ -18,7 +21,7 @@ const ButtonStonecut = ({
   const content = (
     <button
       onClick={onClick}
-      className={`relative button-stonecut pointer-events-auto tracking-widest text-lg focus:outline-none w-max ml-auto mr-auto ${className}`}
+      className={`relative button-stonecut tracking-widest text-lg focus:outline-none w-max ml-auto mr-auto ${className}`}
     >
       <SVGStonecut />
       <span>{children}</span>
@@ -28,9 +31,22 @@ const ButtonStonecut = ({
   return (
     <>
       {route ? (
-        <Link href={route} as={route}>
-          {content}
-        </Link>
+        <CSSTransition
+          in={show}
+          timeout={{
+            appear: 2000,
+            enter: 2000,
+            exit: 0,
+          }}
+          exit={false}
+          classNames='elem-fade'
+          mountOnEnter
+          appear
+        >
+          <Link href={route} as={route}>
+            {content}
+          </Link>
+        </CSSTransition>
       ) : (
         content
       )}

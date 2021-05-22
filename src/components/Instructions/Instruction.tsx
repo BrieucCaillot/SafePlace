@@ -7,21 +7,25 @@ import Place from '@/constants/enums/Place'
 import AudioStatus from '@/constants/enums/Audio'
 import ButtonStonecut from '../common/UI/Buttons/ButtonStonecut'
 
+const TIMEOUT = 2000
+
 const Instruction = ({
+  show,
   instruction,
   text,
   onNextStep,
 }: {
+  show: boolean
   instruction: InstructionsList
   text: string
   onNextStep: () => void
 }) => {
-  const [show, setShow] = useState(false)
-
   const isLastStep = useMemo(
     () => instruction == InstructionsList.Instruction3,
     []
   )
+
+  const [hide, setHide] = useState(false)
 
   const isVoiceoverPlayed = useAudioStore((state) =>
     state.checkVoiceoverStatus(instruction, AudioStatus.Played)
@@ -29,22 +33,25 @@ const Instruction = ({
 
   const buttonActiveClass = useMemo(
     () =>
-      isVoiceoverPlayed
-        ? 'cursor-pointer pointer-events-auto fadeIn'
-        : 'cursor-auto opacity-0',
+      isVoiceoverPlayed ? 'cursor-pointer fadeIn' : 'cursor-auto opacity-0',
 
     [isVoiceoverPlayed]
   )
 
   useEffect(() => {
-    setShow(true)
+    if (!show) return
     useAudioStore.getState().setCurrentVoiceover(Place.Safeplace, instruction)
-
-    return () => setShow(false)
-  }, [])
+  }, [show])
 
   return (
-    <CSSTransition in={show} timeout={0} classNames='instruction'>
+    <CSSTransition
+      in={show && !hide}
+      timeout={TIMEOUT}
+      classNames='elem-fade'
+      mountOnEnter
+      onExited={onNextStep}
+      appear
+    >
       <div className='flex flex-col flex-1 justify-center'>
         <p
           className={`text-primary text-stroke-6 font-sans text-xl leading-loose tracking-wider text-center pb-7 whitespace-pre-line`}
@@ -52,8 +59,9 @@ const Instruction = ({
           {text}
         </p>
         <ButtonStonecut
+          show={show}
           className={`${buttonActiveClass} text-tertiary`}
-          onClick={onNextStep}
+          onClick={() => setHide(true)}
         >
           {isLastStep ? 'Rejoindre la safeplace' : 'Continuer'}
         </ButtonStonecut>
