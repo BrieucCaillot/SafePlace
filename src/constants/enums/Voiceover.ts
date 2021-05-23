@@ -3,13 +3,13 @@ enum VoiceoverSafeplace {
   OnBoarding = 'OnBoarding',
   Inside = 'Inside',
   MountainColumn = 'MountainColumn',
+  BackFromJourney = 'BackFromJourney',
 }
 
 enum VoiceoverJourney {
   Intro = 'Intro',
   Cairns = 'Cairns',
-  Lake1 = 'Lake1',
-  Lake2 = 'Lake2',
+  Lake = 'Lake',
   Bridge = 'Bridge',
   Waterfall = 'Waterfall',
   Outro = 'Outro',
