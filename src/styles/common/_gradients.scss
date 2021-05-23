@@ -1,11 +1,11 @@
 .gradient {
   &-main {
-    background: rgb(192, 144, 173);
+    background: rgb(217, 167, 190);
     background: linear-gradient(
       0deg,
-      rgba(192, 144, 173, 1) 0%,
-      rgba(123, 125, 216, 1) 50%,
-      rgba(192, 144, 173, 1) 100%
+      rgba(217, 167, 190, 1) 0%,
+      rgba(163, 153, 210, 1) 40%,
+      rgba(98, 99, 163, 1) 100%
     );
   }
 }
