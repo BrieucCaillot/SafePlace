@@ -40,8 +40,6 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     return t
   }, [])
 
-  console.log(scene)
-
   const groundMesh = useMemo(() => {
     const m = nodes['ground_mesh'] as THREE.Mesh
     prepareAttributeForSample(m.geometry)
