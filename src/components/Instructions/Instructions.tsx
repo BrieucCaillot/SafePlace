@@ -27,13 +27,13 @@ const Instructions = ({ show }: { show: boolean }) => {
       <Instruction
         show={show && currentInstruction == InstructionsList.Instruction2}
         instruction={InstructionsList.Instruction2}
-        text={`Détendez-vous, respirez profondément, \n faites le calme autour de vous.`}
+        text={`Installez-vous confortablement, le dos droit, les pieds bien à plat.`}
         onNextStep={() => setCurrentInstruction(InstructionsList.Instruction3)}
       />
       <Instruction
         show={show && currentInstruction == InstructionsList.Instruction3}
         instruction={InstructionsList.Instruction3}
-        text={`Installez-vous confortablement, le dos droit, \n les pieds bien à plat et quand vous serez prêt, \n venez me retrouver dans votre safe place.`}
+        text={`Respirez profondément, détendez-vous, faites le calme autour de vous, \n et quand vous serez prêt, venez me retrouver dans votre safeplace.`}
         onNextStep={() => {
           router.push(Routes.Safeplace)
           const { setCurrentPOI } = useSafeplaceStore.getState()
