@@ -11,6 +11,8 @@ import Ambiants from '@/constants/enums/Ambiant'
 
 const LayoutAudio = (): null => {
   const isFirstConnection = useUserStore((s) => s.isFirstConnection)
+  const isJourneyFinished = useUserStore((s) => s.isJourneyFinished)
+  const isJourneyCompleted = useUserStore((s) => s.isJourneyCompleted)
 
   const { pathname } = useUserStore((s) => s.router)
   const previousPathname = usePrevious(pathname)
@@ -40,8 +42,13 @@ const LayoutAudio = (): null => {
     if (previousPathname === Routes.Journey) {
       if (!voiceover) return
       voiceover.fade(voiceover.volume(), 0, 1000)
+
+      if (pathname === Routes.Resources) {
+        if (isJourneyCompleted && !isJourneyFinished) return
+        setCurrentVoiceover(Place.Safeplace, VoiceoverSafeplace.BackFromJourney)
+      }
     }
-  }, [pathname, isFirstConnection])
+  }, [pathname, isFirstConnection, isJourneyFinished])
 
   return null
 }

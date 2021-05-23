@@ -1,21 +1,42 @@
-import { useState } from 'react'
-import Link from 'next/link'
+import { useCallback, useEffect, useState } from 'react'
+import { CSSTransition } from 'react-transition-group'
 
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
+import useUserStore from '@/stores/useUserStore'
 import ResourceSteps from '@/constants/enums/ResourceSteps'
 import Routes from '@/constants/enums/Routes'
+
 import SVGCross from '@/components/common/UI/SVG/SVGCross'
 
-const ResourceContent = () => {
+const ResourceContent = (show: { show: boolean }) => {
   const isCameraTravelling = useSafeplaceStore((s) => s.isCameraTravelling)
+  const router = useUserStore((s) => s.router)
+
+  const [hide, setHide] = useState(true)
 
   const [currentStep, setCurrentStep] = useState<ResourceSteps>(
     ResourceSteps.Summary
   )
 
+  useEffect(() => {
+    setTimeout(() => setHide(false), 1000)
+  }, [])
+
+  const onCloseButtonClick = useCallback(() => {
+    setHide(true)
+    setTimeout(() => router.push(Routes.Resources), 1200)
+  }, [router])
+
   return (
     <>
-      {!isCameraTravelling && (
+      <CSSTransition
+        in={show && !hide && !isCameraTravelling}
+        timeout={2000}
+        classNames='elem-fade'
+        mountOnEnter
+        unmountOnExit
+        appear
+      >
         <div
           id='resource'
           className='relative bg-secondary fadeIn flex-1 pointer-events-auto px-10 md:px-14 py-5 md:py-7 ml-24 lg:ml-80 rounded-2xl w-full max-w-md md:max-w-xl max-h-96 md:max-h-80'
@@ -37,11 +58,12 @@ const ResourceContent = () => {
               ))}
             </ul>
           </nav>
-          <Link href={Routes.Resources} as={Routes.Resources}>
-            <div className='button-close absolute top-7 right-8 h-4 w-4 transition-all duration-500 cursor-pointer'>
-              <SVGCross className='text-tertiary' />
-            </div>
-          </Link>
+          <div
+            className='button-close absolute top-7 right-8 h-4 w-4 transition-all duration-500 cursor-pointer'
+            onClick={onCloseButtonClick}
+          >
+            <SVGCross className='text-tertiary' />
+          </div>
           {currentStep == ResourceSteps.Summary && (
             <div className='fadeIn'>
               <h2 className='text-tertiary text-4xl font-thin pb-4'>
@@ -106,7 +128,7 @@ const ResourceContent = () => {
             </div>
           )}
         </div>
-      )}
+      </CSSTransition>
     </>
   )
 }

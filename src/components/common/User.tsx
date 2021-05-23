@@ -22,8 +22,11 @@ const User = (): null => {
       setIsJourneyCompleted,
     } = useUserStore.getState()
 
-    setUserFirstConnection(getUserFirstConnection())
-    setIsJourneyCompleted(getIsJourneyCompleted())
+    setUserFirstConnection(true)
+    setIsJourneyCompleted(true)
+    // COMMENT FOR THE DEMO
+    // setUserFirstConnection(getUserFirstConnection())
+    // setIsJourneyCompleted(getIsJourneyCompleted())
   }, [])
 
   return null

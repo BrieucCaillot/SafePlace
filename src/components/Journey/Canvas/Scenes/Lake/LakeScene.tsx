@@ -56,7 +56,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const [areDandelionAnimated, animateDandelion] = useState<boolean>(false)
 
   const isVoiceoverFinished = useAudioStore((s) =>
-    s.checkVoiceoverStatus(VoiceoverJourney.Lake1, AudioStatus.Played)
+    s.checkVoiceoverStatus(VoiceoverJourney.Lake, AudioStatus.Played)
   )
   const isLakeSection = useJourneyStore(
     (s) => s.currentSection === JourneySection.Lake
@@ -89,7 +89,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     // Ambiant
     setCurrentAmbiant(Place.Journey, Ambiants.Lake)
     // Voiceover
-    setCurrentVoiceover(Place.Journey, VoiceoverJourney.Lake1)
+    setCurrentVoiceover(Place.Journey, VoiceoverJourney.Lake)
   }, [isLakeSection, inSceneTransition])
 
   return (
