@@ -57,6 +57,11 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     //   useJourneyStore.getState().setSection(JourneySection.Lake),
   })
 
+  useEffect(() => {
+    if (!isCairnSection && animRef.current === null) return
+    animRef.current.timeScale = 0.7
+  }, [animRef, isCairnSection])
+
   useFrame(
     () =>
       animRef.current != null &&
