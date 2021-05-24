@@ -46,7 +46,7 @@ const Index = ({ status }: { status: TransitionStatus }) => {
       <PortalUI selector='#layout-header-right'>
         <ButtonStonecut
           show={show && !hide}
-          className='text-primary cursor-pointer pointer-events-auto'
+          className='text-primary cursor-pointer pointer-events-none opacity-0'
           onClick={onAboutButtonClick}
         >
           A propos
