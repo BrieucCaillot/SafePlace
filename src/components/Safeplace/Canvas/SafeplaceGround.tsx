@@ -55,7 +55,7 @@ const SafeplaceGround = ({
         targetMeshRef={groundMeshRef}
         shadowTexture={shadowTexture}
       />
-      {/* <FlowersParams
+      <FlowersParams
         controlsName={'red_flower'}
         route={Routes.Safeplace}
         //---
@@ -74,7 +74,7 @@ const SafeplaceGround = ({
         //---
         targetMeshRef={groundMeshRef}
         shadowTexture={shadowTexture}
-      /> */}
+      />
     </>
   )
 }

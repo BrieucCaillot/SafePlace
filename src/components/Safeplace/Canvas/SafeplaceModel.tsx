@@ -89,8 +89,6 @@ const SafeplaceModel = (): ReactElement => {
         )}
       </GroupShorthand>
 
-      <CustomSky />
-
       <SafeplaceGround
         groundMesh={ground_contain.children[0] as THREE.Mesh}
         journeyIsComplete={isJourneyCompleted}
