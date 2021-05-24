@@ -66,7 +66,7 @@ const Index = ({ status }: { status: TransitionStatus }) => {
           appear
         >
           <img
-            className='absolute top-64 left-1/2 transform-gpu -translate-x-1/2 ml-9 max-w-xs md:max-w-full'
+            className='absolute top-1/2 left-1/2 transform-gpu -translate-x-1/2 -translate-y-1/2 -mt-24 max-w-xs md:max-w-full'
             src='/img/index/logo.png'
             alt='safeplace-logo'
           />
