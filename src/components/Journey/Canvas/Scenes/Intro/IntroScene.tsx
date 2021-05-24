@@ -11,12 +11,10 @@ import * as THREE from 'three'
 
 import useJourneyStore from '@/stores/useJourneyStore'
 import useAudioStore from '@/stores/useAudioStore'
-import useUserStore from '@/stores/useUserStore'
 import JourneySection from '@/constants/enums/JourneySection'
 import Place from '@/constants/enums/Place'
 import Ambiants from '@/constants/enums/Ambiant'
 import { VoiceoverJourney } from '@/constants/enums/Voiceover'
-import AudioStatus from '@/constants/enums/Audio'
 
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
@@ -61,9 +59,6 @@ const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     (s) => s.currentSection === JourneySection.Intro
   )
   const isSceneInTransition = useSceneStore((s) => s.inTransition)
-  const isVoiceoverFinished = useAudioStore((s) =>
-    s.checkVoiceoverStatus(VoiceoverJourney.Intro, AudioStatus.Played)
-  )
 
   useNonInitialEffect(() => {
     if (!isIntroSection || isSceneInTransition) return
@@ -73,11 +68,6 @@ const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     // Voiceover
     setCurrentVoiceover(Place.Journey, VoiceoverJourney.Intro)
   }, [isIntroSection, isSceneInTransition])
-
-  useEffect(() => {
-    if (isVoiceoverFinished)
-      useJourneyStore.getState().setSection(JourneySection.Cairns)
-  }, [isVoiceoverFinished])
 
   return (
     <>
