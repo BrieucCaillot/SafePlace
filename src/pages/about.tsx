@@ -18,14 +18,14 @@ const About = ({ status }: { status: TransitionStatus }) => {
   const onHomeButtonClick = useCallback(() => {
     setHide(true)
     setTimeout(() => router.push(Routes.Index), 2000)
-  }, [])
+  }, [router])
 
   return (
     <>
       <PortalUI selector='#layout-header-right'>
         <ButtonStonecut
           show={show && !hide}
-          className='text-primary cursor-pointer pointer-events-auto'
+          className='text-primary cursor-pointer pointer-events-none opacity-0'
           onClick={onHomeButtonClick}
         >
           Accueil

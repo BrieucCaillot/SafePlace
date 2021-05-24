@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import gsap from 'gsap'
 
 const colors = ['#fae7e7', '#e7c7c7', '#d2a7a7']
-const count = 13
+const count = 24
 
 const ButtonParticles = ({ direction }: { direction: 'left' | 'right' }) => {
   const particles = useRef<HTMLDivElement>()
@@ -17,14 +17,15 @@ const ButtonParticles = ({ direction }: { direction: 'left' | 'right' }) => {
     gsap.fromTo(
       particles.current,
       {
-        x: isLeft ? -100 : 100,
-        y: isLeft ? 50 : 50,
+        x: isLeft ? -170 : 170,
+        y: 70,
       },
       {
-        y: 0,
+        y: -20,
         x: 0,
-        duration: 4,
+        duration: 8,
         autoAlpha: 0,
+        ease: 'sine.in',
       }
     )
   }, [])

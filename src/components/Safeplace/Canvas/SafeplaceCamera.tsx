@@ -6,6 +6,7 @@ import useAnimateVector from '@/hooks/animation/useAnimateVector'
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import { useFrame } from 'react-three-fiber'
 import { useControls } from 'leva'
+import bezier from 'bezier-easing'
 
 const SafeplaceCamera = forwardRef(
   (_, forwardedRef: MutableRefObject<THREE.Camera>) => {
@@ -16,7 +17,7 @@ const SafeplaceCamera = forwardRef(
 
     const { amplitude, easing } = useControls('camera', {
       easing: { min: 0, max: 1, value: 0.02 },
-      amplitude: { min: 0, max: Math.PI / 2, value: 0.05 },
+      amplitude: { min: 0, max: Math.PI / 2, value: 0.02 },
     })
     const currentPOIData = useSafeplaceStore((s) => s.getPOIData(s.currentPOI))
 
@@ -50,7 +51,8 @@ const SafeplaceCamera = forwardRef(
         rotation: [0, 0, 0],
         scale: [1, 1, 1],
         params: {
-          duration: 2,
+          ease: bezier(0.45, 0, 0.49, 1),
+          duration: 2.5,
           onComplete: () => setIsCameraTravelling(false),
         },
       }

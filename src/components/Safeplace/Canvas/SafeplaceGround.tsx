@@ -47,11 +47,13 @@ const SafeplaceGround = ({
 
   return (
     <>
-      <MeshShorthand object={ground} ref={groundMeshRef} />
+      <MeshShorthand object={ground} ref={groundMeshRef} visible={false} />
       <GrassParams
-        shadowTexture={shadowTexture}
-        targetMeshRef={groundMeshRef}
+        controlsName={'safeplace_grass'}
         route={Routes.Safeplace}
+        //---
+        targetMeshRef={groundMeshRef}
+        shadowTexture={shadowTexture}
       />
       <FlowersParams
         controlsName={'red_flower'}
@@ -68,7 +70,7 @@ const SafeplaceGround = ({
         route={Routes.Safeplace}
         //---
         textureName={'blue_flower'}
-        flowersParams={{ weightAttribute: 'flowerWeight2' }}
+        flowersParams={{ weightAttribute: 'flowerWeight2', amount: 600 }}
         //---
         targetMeshRef={groundMeshRef}
         shadowTexture={shadowTexture}
