@@ -110,12 +110,6 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     if (voice !== null) setCurrentVoiceover(Place.Journey, voice)
   }, [sequence, isThisSceneRendered])
 
-  // Cam Anim
-  const camAnim = useMemo(() => {
-    if (!isThisSceneRendered || sequence === null) return null
-    return camAnims[sequenceCamIndex[sequence]]
-  }, [sequence, isThisSceneRendered])
-
   // Slat anim
   const slatsAnim = useMemo(
     () =>
@@ -155,7 +149,14 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     <>
       {/* <ClassicCamera ref={camRef} fov={32.6} /> */}
       <group position={cameraOffset}>
-        <WaterfallCamera clip={camAnim} ref={camRef} onAnimEnd={() => {}} />
+        <WaterfallCamera
+          clip={
+            !isThisSceneRendered || sequence === null
+              ? null
+              : camAnims[sequenceCamIndex[sequence]]
+          }
+          ref={camRef}
+        />
       </group>
 
       <CustomSky />
