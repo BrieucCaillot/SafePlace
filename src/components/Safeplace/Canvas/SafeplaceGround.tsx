@@ -47,7 +47,7 @@ const SafeplaceGround = ({
 
   return (
     <>
-      <MeshShorthand object={ground} ref={groundMeshRef} visible={false} />
+      <MeshShorthand object={ground} ref={groundMeshRef} />
       <GrassParams
         controlsName={'safeplace_grass'}
         route={Routes.Safeplace}

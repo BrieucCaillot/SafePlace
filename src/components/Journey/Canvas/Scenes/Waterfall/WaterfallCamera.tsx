@@ -1,24 +1,14 @@
-import {
-  forwardRef,
-  MutableRefObject,
-  useCallback,
-  useMemo,
-  useRef,
-} from 'react'
+import { forwardRef, MutableRefObject, useRef } from 'react'
 import * as THREE from 'three'
 import { useFrame } from 'react-three-fiber'
 import useThreeAnimation from '@/hooks/animation/useThreeAnimation'
-import useJourneyStore from '@/stores/useJourneyStore'
-import JourneySection from '@/constants/enums/JourneySection'
 
 const WaterfallCamera = forwardRef(
   (
     {
       clip,
-      onAnimEnd,
     }: {
       clip: THREE.AnimationClip
-      onAnimEnd: () => void
     },
     forwardRef: MutableRefObject<THREE.Camera>
   ) => {
@@ -27,7 +17,6 @@ const WaterfallCamera = forwardRef(
     const animRef = useThreeAnimation({
       clip,
       ref: containerRef,
-      onFinished: onAnimEnd,
     })
 
     useFrame(
