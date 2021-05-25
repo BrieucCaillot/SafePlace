@@ -37,8 +37,8 @@ const SafeplaceCamera = forwardRef(
         rotation: [0, 0, 0],
         scale: [1, 1, 1],
         params: {
-          ease: bezier(0.45, 0, 0.49, 1),
-          duration: 2.5,
+          ease: bezier(0.49, 0.01, 0.24, 0.99),
+          duration: 3.5,
           onComplete: () => setIsCameraTravelling(false),
         },
       }
