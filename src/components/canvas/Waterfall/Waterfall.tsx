@@ -5,7 +5,7 @@ import {
   useMemo,
   useRef,
 } from 'react'
-import { GroupProps, PointerEvent } from 'react-three-fiber'
+import { GroupProps, PointerEvent, useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
 import { useControls } from 'leva'
 
@@ -42,32 +42,40 @@ const Waterfall = (props: GroupProps) => {
     [numPoints]
   )
 
+  const isSceneRendered = useSceneStore(
+    (s) => s.renderedScene === SceneName.Waterfall
+  )
+
   const sceneRef = useRef<THREE.Scene>(new THREE.Scene())
   const cameraRef = useRef<THREE.Camera>(
     new THREE.OrthographicCamera(-0.5, 0.5, 0.5, -0.5)
   )
 
   const targetMeshRef = useRef<THREE.Mesh>(null)
-  const cubeRef = useRef<THREE.Mesh>(null)
 
   const feedbackRef = useRef<THREE.Mesh>(null)
   const particleRef = useRef<THREE.Mesh>(null)
+  const raycastPlane = useRef<THREE.Mesh>(null)
 
   const quadTexture = useWatchableRef<THREE.Texture | null>(null)
   const particleTexture = useWatchableRef<THREE.Texture | null>(null)
   const initTextureRef = useWatchableRef<THREE.Texture | null>(null)
 
-  const mousePosRef = useWatchableRef<THREE.Vector3>(
+  const windowMouseRef = useRef<THREE.Vector2>(new THREE.Vector2())
+  const doesIntersectRef = useWatchableRef<boolean>(false)
+  const raycastedMouseRef = useWatchableRef<THREE.Vector3>(
     new THREE.Vector3(-10, -10, -10)
   )
 
   useEffect(
     () =>
-      particleTexture.onChange((t) => {
-        if (t && feedbackRef.current)
-          (feedbackRef.current?.material as THREE.MeshBasicMaterial).map = t
-      }),
-    []
+      showDegug
+        ? particleTexture.onChange((t) => {
+            if (t && feedbackRef.current)
+              (feedbackRef.current?.material as THREE.MeshBasicMaterial).map = t
+          })
+        : null,
+    [showDegug]
   )
 
   useEffect(() => {
@@ -85,18 +93,32 @@ const Waterfall = (props: GroupProps) => {
     )
   }, [])
 
-  useEffect(
-    () =>
-      mousePosRef.onChange((v) => {
-        if (cubeRef.current == null) return
-        cubeRef.current.position.copy(v)
-      }),
-    []
-  )
+  useEffect(() => {
+    if (!isSceneRendered) return
+    const handleMouse = (e: MouseEvent) => {
+      windowMouseRef.current.set(
+        (e.clientX / window.innerWidth) * 2 - 1,
+        -(e.clientY / window.innerHeight) * 2 + 1
+      )
+    }
+    window.addEventListener('mousemove', handleMouse)
+    return () => window.removeEventListener('mousemove', handleMouse)
+  }, [isSceneRendered])
 
-  const isSceneRendered = useSceneStore(
-    (s) => s.renderedScene === SceneName.Waterfall
-  )
+  useFrame(({ camera, raycaster }) => {
+    if (!isSceneRendered) return
+    raycaster.setFromCamera(windowMouseRef.current, camera)
+    const intersections = raycaster.intersectObject(raycastPlane.current)
+
+    const newDoesIntersect = intersections.length > 0
+    if (newDoesIntersect !== doesIntersectRef.current)
+      doesIntersectRef.current = newDoesIntersect
+
+    if (intersections.length > 0)
+      raycastedMouseRef.current = particleRef.current?.worldToLocal(
+        intersections[0].point
+      )
+  })
   usePingPong(bufferSize, {
     particleTexture,
     quadTexture,
@@ -105,10 +127,6 @@ const Waterfall = (props: GroupProps) => {
     cameraRef,
     enable: isSceneRendered,
   })
-
-  const onPointerMove = useCallback<(e: PointerEvent) => void>(({ point }) => {
-    mousePosRef.current = particleRef.current?.worldToLocal(point)
-  }, [])
 
   return (
     <group {...props}>
@@ -128,7 +146,7 @@ const Waterfall = (props: GroupProps) => {
         </mesh>
         <mesh
           name='RaycastPlane'
-          onPointerMove={onPointerMove}
+          ref={raycastPlane}
           position-z={-0.85}
           rotation-x={-0.1}
           position-y={1.8}
@@ -152,7 +170,8 @@ const Waterfall = (props: GroupProps) => {
         scene={sceneRef}
         quadTexture={quadTexture}
         initTexture={initTextureRef}
-        mousePosRef={mousePosRef}
+        mousePosRef={raycastedMouseRef}
+        doesIntersectRef={doesIntersectRef}
       />
     </group>
   )

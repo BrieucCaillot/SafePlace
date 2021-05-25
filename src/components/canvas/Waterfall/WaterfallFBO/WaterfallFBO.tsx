@@ -23,11 +23,13 @@ const WaterfallFBO = forwardRef(
       quadTexture,
       initTexture,
       mousePosRef,
+      doesIntersectRef,
     }: {
       scene: RefObject<THREE.Scene>
       quadTexture: WatchableRefObject<THREE.Texture>
       initTexture: WatchableRefObject<THREE.Texture>
       mousePosRef: WatchableRefObject<THREE.Vector3>
+      doesIntersectRef: WatchableRefObject<boolean>
     },
     ref: RefObject<THREE.Mesh>
   ) => {
@@ -69,6 +71,7 @@ const WaterfallFBO = forwardRef(
       uOrigPosTexture: { value: null },
       uPosTexture: { value: null },
       uMousePos: { value: new THREE.Vector3() },
+      uDoesIntersect: { value: false },
       uTime: { value: 0 },
       uDelta: { value: 0 },
       uBaseDirection: { value: 0 },
@@ -89,6 +92,7 @@ const WaterfallFBO = forwardRef(
     useWatchableUniform(uniforms.current.uPosTexture, quadTexture)
     useWatchableUniform(uniforms.current.uOrigPosTexture, initTexture)
     useWatchableUniform(uniforms.current.uMousePos, mousePosRef)
+    useWatchableUniform(uniforms.current.uDoesIntersect, doesIntersectRef)
 
     useFrame(() => {
       uniforms.current.uTime.value = clockRef.current.elapsedTime
