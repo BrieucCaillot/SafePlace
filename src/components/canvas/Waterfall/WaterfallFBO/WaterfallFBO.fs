@@ -12,6 +12,7 @@ uniform float uAngleAmplitude;
 uniform float uMovementSpeed;
 uniform float uLifeTime;
 uniform float uRounding;
+uniform bool uDoesIntersect;
 uniform float uCursorSize;
 
 varying vec2 vUv;
@@ -156,7 +157,7 @@ float sdScene(vec3 pos) {
   vec3 s5 = vec3(0.5431517258286476, 5.5155038237571716, 2.3606477677822113);
   d = min(sdBox(rotateVector(q5, p5 - pos), s5), d);
   // Mouse
-  d = min(sdCylinder(uMousePos + uSdfOffset - pos, vec3(0., 0., uCursorSize)), d);
+  d = min(sdCylinder(uMousePos + uSdfOffset - pos, vec3(0., 0., uDoesIntersect ? uCursorSize : 0.)), d);
 
   return d;
 }

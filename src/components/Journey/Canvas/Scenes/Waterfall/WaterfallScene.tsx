@@ -26,6 +26,7 @@ import CustomSky from '@/components/canvas/Sky/CustomSky'
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import useNonInitialEffect from '@/hooks/useNonInitialEffect'
+import SceneShorthand from '@/components/common/Canvas/SceneShorthand'
 
 enum WaterfallSequence {
   ToBridge,
@@ -166,9 +167,9 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         onAnimFinished={() => setSequence(WaterfallSequence.Waterfall)}
       />
 
-      <primitive object={mountains} />
-      <primitive object={rocks} />
-      <primitive object={waterfall} />
+      <SceneShorthand object={mountains} />
+      <SceneShorthand object={rocks} />
+      <SceneShorthand object={waterfall} />
 
       <Waterfall scale={[7, 7, 7]} position={[-5.5, 0, 0]} />
 

@@ -59,7 +59,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   useEffect(() => {
     if (!isCairnSection && animRef.current === null) return
-    animRef.current.timeScale = 0.7
+    animRef.current.setEffectiveTimeScale(0.7)
   }, [animRef, isCairnSection])
 
   useFrame(
