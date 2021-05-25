@@ -36,7 +36,7 @@ const LayoutDom = ({ children }: { children: ReactNode }) => {
         {isHomeOrAboutPage && <LayoutGradient pathname={pathname} />}
         <LayoutHeader />
         <LayoutBottom show={isLayoutBottomAvailable} />
-        {/* <Leva hidden={true} /> */}
+        <Leva hidden={true} />
         {children}
       </main>
     </>
