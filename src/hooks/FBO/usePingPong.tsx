@@ -52,12 +52,10 @@ const usePingPong = (
 
   useFrame(({ gl }) => {
     // TODO: Freeze app on early return
-    // if (!enable) return true
+    if (!enable) return
     if (sceneRef.current === null) return
     if (cameraRef.current === null) return
-    let oldFbo1 = fbo1 // store A, the penultimate state
-    fbo1 = fbo2 // advance A to the updated state
-    fbo2 = oldFbo1
+    ;[fbo2, fbo1] = [fbo1, fbo2] // Intervert fbos
     quadTexture.current = fbo1.texture
 
     gl.setRenderTarget(fbo2)

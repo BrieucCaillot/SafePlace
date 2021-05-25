@@ -12,7 +12,7 @@ const WaterParams = ({
     flowSpeed: 0.05,
     flowDirection: 0.2,
     flowIntensity: 0.04,
-    hslTransform: { x: 1.06, y: 0.6, z: 1.06 },
+    hslTransform: { x: 1.06, y: 0.5, z: 1.06 },
   },
   textureName = '',
   ...props
