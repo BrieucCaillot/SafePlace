@@ -30,6 +30,8 @@ import useSceneStore from '@/stores/useSceneStore'
 import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
 import WaterParams from '@/components/Safeplace/Canvas/Decorations/Water/WaterParams'
 import Routes from '@/constants/enums/Routes'
+import useMouseRotation from '@/hooks/animation/useMouseRotation'
+import mergeRefs from 'react-merge-refs'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -38,6 +40,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   } = useGLTF('/models/journey/chapter2.glb')
 
   const containerRef = useRef<THREE.Group>()
+  const localCamRef = useRef<THREE.Camera>()
 
   const [camGroup, particules, lake, dandelion, rocks, ground, trees] = useMemo(
     () =>
@@ -63,6 +66,11 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   )
   const inSceneTransition = useSceneStore((s) => s.inTransition)
 
+  useMouseRotation(localCamRef, {
+    offset: [-Math.PI / 2, 0, 0],
+    amplitude: 0.02,
+    easing: 0.02,
+  })
   const animRef = useThreeAnimation({
     clip: areDandelionAnimated ? camAnim : null,
     // clip: null,
@@ -100,11 +108,11 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         position={camGroup.position}
         quaternion={camGroup.quaternion}
       >
-        <ClassicCamera
-          ref={camRef}
+        <perspectiveCamera
+          ref={mergeRefs([localCamRef, camRef])}
           fov={(camGroup.children[0] as THREE.PerspectiveCamera).fov}
-          rotation-x={-Math.PI / 2}
-          position={[0, 0, 0]}
+          near={0.1}
+          far={1000}
         />
       </group>
 

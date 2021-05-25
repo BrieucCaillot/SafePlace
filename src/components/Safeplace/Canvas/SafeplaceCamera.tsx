@@ -7,10 +7,12 @@ import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import { useFrame } from 'react-three-fiber'
 import { useControls } from 'leva'
 import bezier from 'bezier-easing'
+import useMouseRotation from '@/hooks/animation/useMouseRotation'
 
 const SafeplaceCamera = forwardRef(
   (_, forwardedRef: MutableRefObject<THREE.Camera>) => {
     const camRef = useRef<THREE.Camera>()
+    const groupRef = useRef<THREE.Camera>()
     const setIsCameraTravelling = useSafeplaceStore(
       (state) => state.setIsCameraTravelling
     )
@@ -20,22 +22,6 @@ const SafeplaceCamera = forwardRef(
       amplitude: { min: 0, max: Math.PI / 2, value: 0.02 },
     })
     const currentPOIData = useSafeplaceStore((s) => s.getPOIData(s.currentPOI))
-
-    const poiEulerRef = useRef(new THREE.Euler())
-    const newMousePos = useRef(new THREE.Vector2())
-
-    useEffect(() => {
-      const handleMouse = (e: MouseEvent) => {
-        newMousePos.current
-          .set(
-            -((e.clientY / window.innerHeight) * 2 - 1),
-            -((e.clientX / window.innerWidth) * 2 - 1)
-          )
-          .multiplyScalar(amplitude)
-      }
-      window.addEventListener('mousemove', handleMouse)
-      return () => window.removeEventListener('mousemove', handleMouse)
-    }, [amplitude])
 
     /**
      * GET NEW CAMERA PARAMS
@@ -74,53 +60,27 @@ const SafeplaceCamera = forwardRef(
      */
     useAnimateVector(
       {
-        ref: camRef,
+        ref: groupRef,
         target: 'position',
       },
       position,
       { ...params, onUpdate: () => camRef.current?.updateMatrixWorld() }
     )
-    useAnimateVector(poiEulerRef, rotation, params)
-    useAnimateVector(
-      {
-        ref: camRef,
-        target: 'scale',
-      },
-      scale,
-      params
-    )
+    useAnimateVector({ ref: groupRef, target: 'rotation' }, rotation, params)
+    useAnimateVector({ ref: groupRef, target: 'scale' }, scale, params)
 
-    const mouseEulerRef = useRef(new THREE.Euler())
-    const lastMousePos = useRef(new THREE.Vector2())
-    const rotationMatricesRef = useRef([
-      new THREE.Matrix4(),
-      new THREE.Matrix4(),
-    ])
-    useFrame(() => {
-      lastMousePos.current.lerp(newMousePos.current, easing)
-      mouseEulerRef.current.set(
-        lastMousePos.current.x,
-        lastMousePos.current.y,
-        0
-      )
-
-      // https://www.gamedev.net/forums/topic/540243-combine-euler-angle-rotation/
-      const [m1, m2] = rotationMatricesRef.current
-      ;(window as any).euler = poiEulerRef.current.toArray()
-      m1.makeRotationFromEuler(poiEulerRef.current)
-      m2.makeRotationFromEuler(mouseEulerRef.current)
-      m1.multiply(m2)
-      camRef.current.quaternion.setFromRotationMatrix(m1)
-    })
+    useMouseRotation(camRef, { amplitude, easing })
 
     return (
-      <perspectiveCamera
-        name={'Safeplace Cam'}
-        ref={mergeRefs([forwardedRef, camRef])}
-        near={0.1}
-        far={1000}
-        fov={22.9}
-      />
+      <group ref={groupRef}>
+        <perspectiveCamera
+          name={'Safeplace Cam'}
+          ref={mergeRefs([forwardedRef, camRef])}
+          near={0.1}
+          far={1000}
+          fov={22.9}
+        />
+      </group>
     )
   }
 )

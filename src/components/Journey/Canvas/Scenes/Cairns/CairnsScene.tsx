@@ -22,6 +22,8 @@ import useSceneStore from '@/stores/useSceneStore'
 import useNonInitialEffect from '@/hooks/useNonInitialEffect'
 import SceneShorthand from '@/components/common/Canvas/SceneShorthand'
 import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
+import mergeRefs from 'react-merge-refs'
+import useMouseRotation from '@/hooks/animation/useMouseRotation'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const isSceneInTransition = useSceneStore((s) => s.inTransition)
@@ -49,6 +51,8 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const groundMeshRef = useRef<THREE.Mesh>(groundMesh)
 
   const cameraGroup = useMemo(() => scene.getObjectByName('camera'), [])
+
+  const localCamRef = useRef<THREE.Camera>()
   const containerRef = useRef<THREE.Group>()
   const animRef = useThreeAnimation({
     clip: isCairnSection ? camAnim : null,
@@ -70,6 +74,12 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       containerRef.current.updateMatrixWorld()
   )
 
+  useMouseRotation(localCamRef, {
+    offset: [-Math.PI / 2, 0, 0],
+    amplitude: 0.2,
+    easing: 0.01,
+  })
+
   useNonInitialEffect(() => {
     if (!isCairnSection || isSceneInTransition) return
     const { setCurrentAmbiant, setCurrentVoiceover } = useAudioStore.getState()
@@ -87,11 +97,11 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         position={cameraGroup.position}
         quaternion={cameraGroup.quaternion}
       >
-        <ClassicCamera
-          ref={camRef}
+        <perspectiveCamera
+          ref={mergeRefs([camRef, localCamRef])}
+          near={0.1}
+          far={1000}
           fov={54.9}
-          rotation-x={-Math.PI / 2}
-          position={[0, 0, 0]}
         />
       </group>
       <CustomSky />
