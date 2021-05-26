@@ -29,7 +29,7 @@ const Scenes = () => {
   const setSceneLoaded = useSceneStore((s) => s.setSceneLoaded)
 
   const transitionTarget = useRef(
-    new THREE.WebGLMultisampleRenderTarget(size.width, size.height, {
+    new THREE.WebGLRenderTarget(size.width, size.height, {
       encoding: THREE.sRGBEncoding,
     })
   )
@@ -40,7 +40,7 @@ const Scenes = () => {
   // Prerender a scene when it loads to avoid transition flicker
   useEffect(() => {
     let lastLoadedScenes: SceneData[] = []
-    let nullRenderTarget = new THREE.WebGLMultisampleRenderTarget(
+    let nullRenderTarget = new THREE.WebGLRenderTarget(
       window.innerWidth,
       window.innerHeight
     )
