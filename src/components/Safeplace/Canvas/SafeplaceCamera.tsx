@@ -1,12 +1,11 @@
-import { useRef, useMemo, forwardRef, MutableRefObject, useEffect } from 'react'
+import { useRef, useMemo, forwardRef, MutableRefObject } from 'react'
 import * as THREE from 'three'
 import mergeRefs from 'react-merge-refs'
+import { useControls } from 'leva'
+import bezier from 'bezier-easing'
 
 import useAnimateVector from '@/hooks/animation/useAnimateVector'
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
-import { useFrame } from 'react-three-fiber'
-import { useControls } from 'leva'
-import bezier from 'bezier-easing'
 import useMouseRotation from '@/hooks/animation/useMouseRotation'
 
 const SafeplaceCamera = forwardRef(
@@ -17,10 +16,14 @@ const SafeplaceCamera = forwardRef(
       (state) => state.setIsCameraTravelling
     )
 
-    const { amplitude, easing } = useControls('camera', {
-      easing: { min: 0, max: 1, value: 0.02 },
-      amplitude: { min: 0, max: Math.PI / 2, value: 0.02 },
-    })
+    const { amplitude, easing } = useControls(
+      'camera',
+      {
+        easing: { min: 0, max: 1, value: 0.02 },
+        amplitude: { min: 0, max: Math.PI / 2, value: 0.02 },
+      },
+      { collapsed: true }
+    )
     const currentPOIData = useSafeplaceStore((s) => s.getPOIData(s.currentPOI))
 
     /**

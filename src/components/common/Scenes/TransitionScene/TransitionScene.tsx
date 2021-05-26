@@ -9,6 +9,7 @@ import useWatchableRef, { WatchableRefObject } from '@/hooks/useWatchableRef'
 import useWatchableUniform from '@/hooks/uniforms/useWatchableUniform'
 import Cloud from './Cloud'
 import polarCoordinates from '@/utils/math/polarCoordinates'
+import { useControls } from 'leva'
 
 const TransitionScene = forwardRef(
   (
@@ -62,6 +63,19 @@ const TransitionScene = forwardRef(
       return () => unsubs.forEach((u) => u())
     }, [])
 
+    const { amount, globalOffset, distance, scale } = useControls(
+      'transition',
+      {
+        amount: { value: 8, step: 1 },
+        globalOffset: { min: 0, max: Math.PI * 2, value: 0 },
+        distance: { min: 0, max: 1, value: 0.39 },
+        scale: 1.8,
+      },
+      { render: () => false }
+    )
+
+    const individualOffset = (Math.PI * 2) / amount
+
     return (
       <>
         <orthographicCamera
@@ -76,19 +90,28 @@ const TransitionScene = forwardRef(
             uniforms={uniforms.current}
           />
         </mesh>
-        {[0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2].map((offset) => (
+        {new Array(amount).fill(null).map((_, i, a) => (
           <Cloud
-            key={offset}
-            scale={[height * 1.5, height * 1.5, 1]}
+            key={i}
+            scale={[height * scale, height * scale, 1]}
             texture={cloudTexture}
             inProg={inProgress}
             outProg={outProgress}
             prog={prog}
             startPos={[
-              ...polarCoordinates(Math.PI / 4 + offset, width * 1.2),
+              ...polarCoordinates(
+                globalOffset + i * individualOffset,
+                width * 1.2
+              ),
               0,
             ]}
-            endPos={[...polarCoordinates(Math.PI / 4 + offset, width / 3), 0]}
+            endPos={[
+              ...polarCoordinates(
+                globalOffset + i * individualOffset,
+                width * distance
+              ),
+              0,
+            ]}
           />
         ))}
       </>
