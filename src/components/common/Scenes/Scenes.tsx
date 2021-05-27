@@ -15,8 +15,6 @@ const Scenes = () => {
   const transitionScene = useMemo(() => new THREE.Scene(), [])
   const transitionCam = useRef<THREE.Camera>(null)
 
-  const { forceTransition } = useControls({ forceTransition: false })
-
   const { renderedSceneData, inProgress, outProgress } = useSceneTransition()
 
   const mountedSceneData = useSceneStore(
@@ -66,12 +64,10 @@ const Scenes = () => {
       setDefaultCamera(renderedSceneData.cameraRef.current as Camera)
 
     gl.autoClear = true
-    gl.setRenderTarget(
-      inTransition || forceTransition ? transitionTarget.current : null
-    )
+    gl.setRenderTarget(inTransition ? transitionTarget.current : null)
     if (renderedSceneData !== null)
       gl.render(renderedSceneData.scene, renderedSceneData.cameraRef.current)
-    if (inTransition || forceTransition) {
+    if (inTransition) {
       gl.setRenderTarget(null)
       gl.render(transitionScene, transitionCam.current)
     }

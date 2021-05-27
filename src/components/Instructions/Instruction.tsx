@@ -1,71 +1,66 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 
-import useAudioStore from '@/stores/useAudioStore'
-import InstructionsList from '@/constants/enums/InstructionsList'
-import Place from '@/constants/enums/Place'
-import AudioStatus from '@/constants/enums/Audio'
 import ButtonStonecut from '../common/UI/Buttons/ButtonStonecut'
+import VOICEOVER from '@/constants/VOICEOVER'
+import useDropPromise from '@/hooks/promise/useDropPromise'
+import useAudioStore from '@/stores/useAudioStore'
+import usePlayAudio from '@/hooks/audio/usePlayAudio'
 
 const TIMEOUT = 2000
 
 const Instruction = ({
-  show,
+  show: parentShow,
   instruction,
+  currentInstruction,
   text,
+  buttonText,
   onNextStep,
 }: {
   show: boolean
-  instruction: InstructionsList
+  instruction: number
+  currentInstruction: number
   text: string
+  buttonText: string
   onNextStep: () => void
 }) => {
-  const isLastStep = useMemo(
-    () => instruction == InstructionsList.Instruction3,
-    []
-  )
+  const show = currentInstruction === instruction && parentShow
 
   const [hide, setHide] = useState(false)
+  const [isVoiceoverPlayed, setIsVoiceoverPlayed] = useState(false)
 
-  const isVoiceoverPlayed = useAudioStore((state) =>
-    state.checkVoiceoverStatus(instruction, AudioStatus.Played)
+  usePlayAudio(
+    VOICEOVER.SAFEPLACE.INSTRUCTIONS[instruction], //---
+    show, //---
+    () => setIsVoiceoverPlayed(true) //---
   )
-
-  const buttonActiveClass = useMemo(
-    () =>
-      isVoiceoverPlayed ? 'cursor-pointer fadeIn' : 'cursor-auto opacity-0',
-
-    [isVoiceoverPlayed]
-  )
-
-  useEffect(() => {
-    if (!show) return
-    useAudioStore.getState().setCurrentVoiceover(Place.Safeplace, instruction)
-  }, [show])
 
   return (
     <CSSTransition
       in={show && !hide}
       timeout={TIMEOUT}
       classNames='elem-fade'
-      mountOnEnter
-      unmountOnExit
+      mountOnEnter={true}
+      unmountOnExit={true}
       onExited={onNextStep}
-      appear
+      appear={true}
     >
-      <div className='flex flex-col flex-1 justify-center'>
-        <p
-          className={`text-primary text-stroke-6 font-sans text-xl leading-loose tracking-wider text-center pb-7 whitespace-pre-line`}
-        >
-          {text}
-        </p>
-        <ButtonStonecut
-          show={show && !hide && isVoiceoverPlayed}
-          className='text-tertiary opacity-0 pointer-events-none'
-          onClick={() => setHide(true)}
-        >
-          {isLastStep ? 'Rejoindre la safeplace' : 'Continuer'}
-        </ButtonStonecut>
+      <div
+        className='absolute transform-gpu -translate-x-1/2 -translate-y-1/2'
+        style={{ left: '50vw', top: '50vh' }}
+      >
+        <div className='w-screen'>
+          <p className='text-primary text-stroke-6 font-sans text-xl leading-loose tracking-wider text-center pb-7 whitespace-pre-line'>
+            {text}
+          </p>
+          <ButtonStonecut
+            show={show && !hide && isVoiceoverPlayed}
+            className='text-tertiary opacity-0 pointer-events-none block'
+            onClick={() => setHide(true)}
+          >
+            {buttonText}
+          </ButtonStonecut>
+        </div>
       </div>
     </CSSTransition>
   )

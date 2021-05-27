@@ -32,7 +32,7 @@ const About = ({ status }: { status: TransitionStatus }) => {
         </ButtonStonecut>
       </PortalUI>
 
-      <div className='relative pointer-events-auto h-screen'>
+      <div className='relative pointer-events-auto h-screen w-screen'>
         <div className='container h-full'>
           <CSSTransition
             in={show && !hide}

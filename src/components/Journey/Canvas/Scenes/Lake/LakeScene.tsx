@@ -32,6 +32,9 @@ import WaterParams from '@/components/Safeplace/Canvas/Decorations/Water/WaterPa
 import Routes from '@/constants/enums/Routes'
 import useMouseRotation from '@/hooks/animation/useMouseRotation'
 import mergeRefs from 'react-merge-refs'
+import { Howler } from 'howler'
+import VOICEOVER from '@/constants/VOICEOVER'
+import wait from '@/utils/promise/wait'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -58,9 +61,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   const [areDandelionAnimated, animateDandelion] = useState<boolean>(false)
 
-  const isVoiceoverFinished = useAudioStore((s) =>
-    s.checkVoiceoverStatus(VoiceoverJourney.Lake, AudioStatus.Played)
-  )
+  const isVoiceoverFinished = false
   const isLakeSection = useJourneyStore(
     (s) => s.currentSection === JourneySection.Lake
   )
@@ -93,11 +94,8 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   useEffect(() => {
     if (!isLakeSection || inSceneTransition) return
-    const { setCurrentAmbiant, setCurrentVoiceover } = useAudioStore.getState()
-    // Ambiant
-    setCurrentAmbiant(Place.Journey, Ambiants.Lake)
     // Voiceover
-    setCurrentVoiceover(Place.Journey, VoiceoverJourney.Lake)
+    // setCurrentVoiceover(Place.Journey, VoiceoverJourney.Lake)
   }, [isLakeSection, inSceneTransition])
 
   return (

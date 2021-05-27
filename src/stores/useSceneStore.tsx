@@ -32,21 +32,56 @@ export type SceneData = {
 type SceneStore = {
   mountedScenes: SceneName[]
   renderedScene: SceneName | null
+  nextScene: SceneName | null
+  inTransition: boolean
+  scenesData: Record<SceneName, SceneData>
   setSceneLoaded: (sceneName: SceneName, boolean: boolean) => void
   mountScene: (sceneName: SceneName) => void
   mountScenes: (sceneNames: SceneName[]) => void
   unmountScene: (sceneName: SceneName) => void
   unmountScenes: (sceneNames: SceneName[]) => void
   unmountAllScenes: () => void
-  setRenderedScene: (sceneName: SceneName | null) => void
-  scenesData: Record<SceneName, SceneData>
-  inTransition: boolean
-  setInTransition: (b: boolean) => void
+  setRenderedScene: (sceneName: SceneName | null, transition?: boolean) => void
+  endTransition: () => void
 }
 
 const useSceneStore = create<SceneStore>((set, get) => ({
+  scenesData: {
+    [SceneName.Safeplace]: {
+      Component: SafeplaceScene,
+      scene: new THREE.Scene(),
+      isLoaded: false,
+      cameraRef: createRef(),
+    },
+    [SceneName.JourneyIntro]: {
+      Component: IntroScene,
+      scene: new THREE.Scene(),
+      isLoaded: false,
+      cameraRef: createRef(),
+    },
+    [SceneName.Cairns]: {
+      Component: CairnsScene,
+      scene: new THREE.Scene(),
+      isLoaded: false,
+      cameraRef: createRef(),
+    },
+    [SceneName.Lake]: {
+      Component: LakeScene,
+      scene: new THREE.Scene(),
+      isLoaded: false,
+      cameraRef: createRef(),
+    },
+    [SceneName.Waterfall]: {
+      Component: WaterfallScene,
+      scene: new THREE.Scene(),
+      isLoaded: false,
+      cameraRef: createRef(),
+    },
+  },
   mountedScenes: [],
   renderedScene: null,
+  nextScene: null,
+  inTransition: false,
   setSceneLoaded: (sceneName: SceneName, boolean: boolean) => {
     const { scenesData } = get()
     scenesData[sceneName].isLoaded = boolean
@@ -83,46 +118,23 @@ const useSceneStore = create<SceneStore>((set, get) => ({
   unmountAllScenes: () => {
     set({ mountedScenes: [] })
   },
-  setRenderedScene: (sceneName: SceneName | null) => {
-    const { mountedScenes } = get()
+  setRenderedScene: (
+    sceneName: SceneName | null,
+    transition: boolean = true
+  ) => {
+    const { mountedScenes, renderedScene } = get()
     if (sceneName !== null && !mountedScenes.includes(sceneName))
       throw `${sceneName} : Cannot set a scene as rendered scene if it's not mounted`
-    set({ renderedScene: sceneName })
+    if (transition && sceneName !== renderedScene)
+      set({ nextScene: sceneName, inTransition: transition })
+    else set({ renderedScene: sceneName })
   },
-  scenesData: {
-    [SceneName.Safeplace]: {
-      Component: SafeplaceScene,
-      scene: new THREE.Scene(),
-      isLoaded: false,
-      cameraRef: createRef(),
-    },
-    [SceneName.JourneyIntro]: {
-      Component: IntroScene,
-      scene: new THREE.Scene(),
-      isLoaded: false,
-      cameraRef: createRef(),
-    },
-    [SceneName.Cairns]: {
-      Component: CairnsScene,
-      scene: new THREE.Scene(),
-      isLoaded: false,
-      cameraRef: createRef(),
-    },
-    [SceneName.Lake]: {
-      Component: LakeScene,
-      scene: new THREE.Scene(),
-      isLoaded: false,
-      cameraRef: createRef(),
-    },
-    [SceneName.Waterfall]: {
-      Component: WaterfallScene,
-      scene: new THREE.Scene(),
-      isLoaded: false,
-      cameraRef: createRef(),
-    },
-  },
-  inTransition: false,
-  setInTransition: (b: boolean) => set({ inTransition: b }),
+  endTransition: () =>
+    set({
+      inTransition: false,
+      nextScene: null,
+      renderedScene: get().nextScene,
+    }),
 }))
 
 export default useSceneStore

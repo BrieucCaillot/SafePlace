@@ -20,23 +20,7 @@ const Shelter = ({ object }: { object: THREE.Object3D }) => {
   const isCurrentlyAvailable = useSafeplaceStore((s) =>
     s.isCurrentlyAvailable(SafeplacePOI.Inside)
   )
-  const currentPOI = useSafeplaceStore((s) => s.currentPOI)
   const setCurrentPOI = useSafeplaceStore((s) => s.setCurrentPOI)
-  const isCameraTravelling = useSafeplaceStore((s) => s.isCameraTravelling)
-  const setCurrentVoiceover = useAudioStore((s) => s.setCurrentVoiceover)
-  const isVoiceoverPlayed = useAudioStore((s) =>
-    s.checkVoiceoverStatus(VoiceoverSafeplace.Inside, AudioStatus.Played)
-  )
-
-  useEffect(() => {
-    if (
-      isVoiceoverPlayed ||
-      currentPOI != SafeplacePOI.Inside ||
-      isCameraTravelling
-    )
-      return
-    setCurrentVoiceover(Place.Safeplace, VoiceoverSafeplace.Inside)
-  }, [isVoiceoverPlayed, currentPOI, isCameraTravelling])
 
   const [resources, shelterCams, shelterMesh] = useMemo(
     () => [...object.children],

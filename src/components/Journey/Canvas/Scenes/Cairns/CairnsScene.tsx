@@ -82,11 +82,8 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   useNonInitialEffect(() => {
     if (!isCairnSection || isSceneInTransition) return
-    const { setCurrentAmbiant, setCurrentVoiceover } = useAudioStore.getState()
-    // Ambiant
-    setCurrentAmbiant(Place.Journey, Ambiants.Cairns)
     // Voiceover
-    setCurrentVoiceover(Place.Journey, VoiceoverJourney.Cairns)
+    // setCurrentVoiceover(Place.Journey, VoiceoverJourney.Cairns)
   }, [isCairnSection, isSceneInTransition])
 
   return (
