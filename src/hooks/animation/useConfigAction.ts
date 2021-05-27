@@ -17,7 +17,7 @@ const useConfigAction = (
     const action = actions[name]
     action.clampWhenFinished = clampedWhenFinished
     action.setLoop(...loop)
-    action.play()
+    action.reset().play()
 
     action.paused = true
     return () => void (action.paused = true)
