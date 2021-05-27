@@ -27,7 +27,7 @@ const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       await wrap(play(VOICEOVER.JOURNEY.INTRO))
       setSection(JourneySection.Cairns)
     },
-    () => {},
+    () => void useAudioStore.getState().stop(VOICEOVER.JOURNEY.INTRO),
     [isSettledInScene]
   )
 

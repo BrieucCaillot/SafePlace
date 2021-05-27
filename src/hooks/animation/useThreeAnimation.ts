@@ -41,32 +41,11 @@ const useThreeAnimation = ({
   useEffect(() => {
     if (mixerRef.current == null || onFinished == null) return
     mixerRef.current.addEventListener('finished', onFinished)
+    mixerRef.current.addEventListener('finished', console.log)
     return () => mixerRef.current.removeEventListener('finished', onFinished)
   }, [onFinished])
 
   return actionRef
 }
-
-// const useThreeAnimation2 = ({
-//   clips,
-//   current,
-//   ref,
-//   duration,
-// }: {
-//   clips: THREE.AnimationClip[],
-//   current: string,
-//   ref: RefObject<THREE.Object3D>
-//   duration
-// }) => {
-//   const { actions, mixer } = useAnimations(clips, ref)
-//   const t = useRef(0)
-//   const clock = useMemo(() => new THREE.Clock(), [])
-//   useEffect(() => void actions[current] && actions[current].play(), [])
-//   useFrame(() => {
-//     if (!actions[current]) return
-//     t.current = THREE.MathUtils.lerp(t.current, actions["CameraAction.005"].getClip().duration, 0.05)
-//     mixer.setTime()
-//   })
-// }
 
 export default useThreeAnimation
