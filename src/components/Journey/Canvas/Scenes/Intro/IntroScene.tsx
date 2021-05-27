@@ -6,7 +6,8 @@ import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
 import useSceneStore from '@/stores/useSceneStore'
 import SceneName from '@/constants/enums/SceneName'
-import MountainPlane from './MountainPlane'
+import MountainPlane from '@/components/Journey/Canvas/Scenes/Intro/Mountain/MountainPlane'
+import CloudsPlane from '@/components/Journey/Canvas/Scenes/Intro/Clouds/CloudsPlane'
 import useAsyncEffect from '@/hooks/promise/useAsyncEffect'
 import useAudioStore from '@/stores/useAudioStore'
 import VOICEOVER from '@/constants/VOICEOVER'
@@ -36,6 +37,7 @@ const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       <ClassicCamera ref={camRef} />
       <CustomSky />
       <MountainPlane />
+      <CloudsPlane />
     </>
   )
 })
