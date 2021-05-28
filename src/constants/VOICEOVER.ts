@@ -8,15 +8,15 @@ const VOICEOVER = {
     OUTRO: '/audios/voiceover/Journey/Outro.mp3',
   },
   SAFEPLACE: {
-    ARRIVED: '/audios/voiceover/safeplace/Arrived.mp3',
+    ARRIVED: '/audios/voiceover/Safeplace/Arrived.mp3',
     INSTRUCTIONS: [
-      '/audios/voiceover/safeplace/Instruction1.mp3',
-      '/audios/voiceover/safeplace/Instruction2.mp3',
-      '/audios/voiceover/safeplace/Instruction3.mp3',
+      '/audios/voiceover/Safeplace/Instruction1.mp3',
+      '/audios/voiceover/Safeplace/Instruction2.mp3',
+      '/audios/voiceover/Safeplace/Instruction3.mp3',
     ],
-    INSIDE: '/audios/voiceover/safeplace/Inside.mp3',
-    MOUTAIN_COLUMN: '/audios/voiceover/safeplace/MountainColumn.mp3',
-    BACK_FROM_JOURNEY: '/audios/voiceover/safeplace/BackFromJourney.mp3',
+    INSIDE: '/audios/voiceover/Safeplace/Inside.mp3',
+    MOUTAIN_COLUMN: '/audios/voiceover/Safeplace/MountainColumn.mp3',
+    BACK_FROM_JOURNEY: '/audios/voiceover/Safeplace/BackFromJourney.mp3',
   },
   // JOURNEY: {
   //   INTRO: '/fart-with-reverb.mp3',
