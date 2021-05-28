@@ -1,11 +1,15 @@
 precision mediump float;
 
 uniform sampler2D uTexture;
+uniform float uDisplacementAmount;
+uniform sampler2D uDepthMap;
+uniform vec2 uMousePos;
 
 varying vec2 vUv;
 
 void main() {
-  vec4 textureColor = texture2D(uTexture, vUv);
+  float depth = texture2D(uDepthMap, vUv).r;
+  vec4 textureColor = texture2D(uTexture, vUv + uMousePos * uDisplacementAmount * depth);
 
   gl_FragColor = vec4(textureColor);
 }
