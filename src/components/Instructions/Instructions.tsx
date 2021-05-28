@@ -11,29 +11,32 @@ import Instruction from '@/components/Instructions/Instruction'
 const Instructions = ({ show }: { show: boolean }) => {
   const router = useRouter()
 
-  const [
-    currentInstruction,
-    setCurrentInstruction,
-  ] = useState<InstructionsList>(InstructionsList.Instruction1)
+  const [currentInstruction, setCurrentInstruction] = useState(0)
 
   return (
-    <div id='instructions' className='flex flex-col h-full w-full'>
+    <div id='instructions'>
       <Instruction
-        show={show && currentInstruction == InstructionsList.Instruction1}
-        instruction={InstructionsList.Instruction1}
+        show={show}
+        instruction={0}
+        currentInstruction={currentInstruction}
         text={`Pour une expérience plus riche, je vous recommande de \n prendre un casque et de désactiver vos notifications.`}
-        onNextStep={() => setCurrentInstruction(InstructionsList.Instruction2)}
+        buttonText={'Continuer'}
+        onNextStep={() => setCurrentInstruction(1)}
       />
       <Instruction
-        show={show && currentInstruction == InstructionsList.Instruction2}
-        instruction={InstructionsList.Instruction2}
+        show={show}
+        instruction={1}
+        currentInstruction={currentInstruction}
         text={`Installez-vous confortablement, le dos droit, les pieds bien à plat.`}
-        onNextStep={() => setCurrentInstruction(InstructionsList.Instruction3)}
+        buttonText={'Continuer'}
+        onNextStep={() => setCurrentInstruction(2)}
       />
       <Instruction
-        show={show && currentInstruction == InstructionsList.Instruction3}
-        instruction={InstructionsList.Instruction3}
+        show={show}
+        instruction={2}
+        currentInstruction={currentInstruction}
         text={`Respirez profondément, détendez-vous, faites le calme autour de vous, \n et quand vous serez prêt, venez me retrouver dans votre safeplace.`}
+        buttonText={'Rejoindre la safeplace'}
         onNextStep={() => {
           router.push(Routes.Safeplace)
           const { setCurrentPOI } = useSafeplaceStore.getState()

@@ -30,7 +30,8 @@ const ButtonShelterSafeplace = ({
       appear
     >
       <div
-        className={`absolute ${position} top-1/2 transform-gpu translate-y-1/2 text-tertiary duration-2000`}
+        className={`absolute ${position} transform-gpu translate-y-1/2 text-tertiary duration-2000`}
+        style={{ top: '50vh' }}
       >
         <div className='relative'>
           <ButtonParticles direction={direction} />

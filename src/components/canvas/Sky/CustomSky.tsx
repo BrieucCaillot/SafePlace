@@ -12,11 +12,15 @@ const CustomSky = () => {
     nodes: { sky },
   } = useGLTF('/models/sky.glb')
 
-  const { zenithColor, horizonColor, easePoint } = useControls('custom_sky', {
-    zenithColor: '#7594cb',
-    horizonColor: '#e8b7cb',
-    easePoint: { x: 0.1, y: 0.5 },
-  })
+  const { zenithColor, horizonColor, easePoint } = useControls(
+    'custom_sky',
+    {
+      zenithColor: '#7594cb',
+      horizonColor: '#e8b7cb',
+      easePoint: { x: 0.1, y: 0.5 },
+    },
+    { collapsed: true }
+  )
 
   const uniforms = useRef<{ [name: string]: THREE.IUniform }>({
     uHorizonColor: { value: new THREE.Color() },

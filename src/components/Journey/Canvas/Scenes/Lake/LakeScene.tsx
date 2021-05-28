@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import { useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
-import { useGLTF } from '@react-three/drei'
+import { useAnimations, useGLTF } from '@react-three/drei'
 
 import useJourneyStore from '@/stores/useJourneyStore'
 import useAudioStore from '@/stores/useAudioStore'
@@ -30,6 +30,16 @@ import useSceneStore from '@/stores/useSceneStore'
 import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
 import WaterParams from '@/components/Safeplace/Canvas/Decorations/Water/WaterParams'
 import Routes from '@/constants/enums/Routes'
+import useMouseRotation from '@/hooks/animation/useMouseRotation'
+import mergeRefs from 'react-merge-refs'
+import { Howler } from 'howler'
+import VOICEOVER from '@/constants/VOICEOVER'
+import wait from '@/utils/promise/wait'
+import SceneName from '@/constants/enums/SceneName'
+import useAsyncEffect from '@/hooks/promise/useAsyncEffect'
+import useConfigAction from '@/hooks/animation/useConfigAction'
+import promisifyAction from '@/utils/promise/promisifyAction'
+import { useControls } from 'leva'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -38,6 +48,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   } = useGLTF('/models/journey/chapter2.glb')
 
   const containerRef = useRef<THREE.Group>()
+  const localCamRef = useRef<THREE.Camera>()
 
   const [camGroup, particules, lake, dandelion, rocks, ground, trees] = useMemo(
     () =>
@@ -53,44 +64,49 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     []
   )
 
-  const [areDandelionAnimated, animateDandelion] = useState<boolean>(false)
-
-  const isVoiceoverFinished = useAudioStore((s) =>
-    s.checkVoiceoverStatus(VoiceoverJourney.Lake, AudioStatus.Played)
+  const [animatedDandelion, setAnimatedDandelion] = useState<number>(0)
+  const isSettledInScene = useSceneStore(
+    (s) => !s.inTransition && s.renderedScene === SceneName.Lake
   )
-  const isLakeSection = useJourneyStore(
-    (s) => s.currentSection === JourneySection.Lake
-  )
-  const inSceneTransition = useSceneStore((s) => s.inTransition)
 
-  const animRef = useThreeAnimation({
-    clip: areDandelionAnimated ? camAnim : null,
-    // clip: null,
-    ref: containerRef,
-    onFinished: () =>
-      useJourneyStore.getState().setSection(JourneySection.Waterfall),
+  const { actions, mixer } = useAnimations([camAnim], containerRef)
+  useConfigAction(actions, 'Action.001')
+
+  // Sequence
+  useAsyncEffect(
+    async (wrap) => {
+      if (!isSettledInScene) return
+      const { play } = useAudioStore.getState()
+      const { setSection } = useJourneyStore.getState()
+
+      setAnimatedDandelion(0)
+      const action = actions['Action.001']
+      action.paused = false
+
+      wrap(wait(3000)).then(() => setAnimatedDandelion(1))
+      wrap(wait(9000)).then(() => setAnimatedDandelion(2))
+      wrap(wait(15000)).then(() => setAnimatedDandelion(3))
+      wrap(wait(20000)).then(() => setAnimatedDandelion(4))
+
+      await wrap(
+        Promise.all([
+          promisifyAction(mixer, action),
+          play(VOICEOVER.JOURNEY.LAKE),
+        ])
+      )
+      await wrap(wait(5000))
+
+      setSection(JourneySection.Waterfall)
+    },
+    () => void useAudioStore.getState().stop(VOICEOVER.JOURNEY.LAKE),
+    [isSettledInScene]
+  )
+
+  useMouseRotation(localCamRef, {
+    offset: [-Math.PI / 2, 0, 0],
+    amplitude: 0.02,
+    easing: 0.02,
   })
-  useFrame(
-    () =>
-      animRef.current != null &&
-      !animRef.current.paused &&
-      containerRef.current != null &&
-      containerRef.current.updateMatrixWorld()
-  )
-
-  const dandelionPoints = useMemo(
-    () => particules.children.map((o) => o.position),
-    []
-  )
-
-  useEffect(() => {
-    if (!isLakeSection || inSceneTransition) return
-    const { setCurrentAmbiant, setCurrentVoiceover } = useAudioStore.getState()
-    // Ambiant
-    setCurrentAmbiant(Place.Journey, Ambiants.Lake)
-    // Voiceover
-    setCurrentVoiceover(Place.Journey, VoiceoverJourney.Lake)
-  }, [isLakeSection, inSceneTransition])
 
   return (
     <>
@@ -100,26 +116,21 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         position={camGroup.position}
         quaternion={camGroup.quaternion}
       >
-        <ClassicCamera
-          ref={camRef}
+        <perspectiveCamera
+          ref={mergeRefs([localCamRef, camRef])}
           fov={(camGroup.children[0] as THREE.PerspectiveCamera).fov}
-          rotation-x={-Math.PI / 2}
-          position={[0, 0, 0]}
+          near={0.1}
+          far={1000}
         />
       </group>
 
       <CustomSky />
-      <ColumnLink
-        onColumnClick={() => animateDandelion(true)}
-        show={isVoiceoverFinished && !areDandelionAnimated}
-        position={[-16, 0.5, 3]}
-      />
       <Dandelion
-        points={dandelionPoints}
+        points={particules.children}
         position={particules.position}
         rotation={particules.rotation}
         scale={particules.scale}
-        animate={areDandelionAnimated}
+        sequence={animatedDandelion}
       />
       <WaterParams
         route={Routes.Journey}

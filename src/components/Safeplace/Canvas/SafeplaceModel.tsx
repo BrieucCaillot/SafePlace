@@ -1,4 +1,4 @@
-import React, { ReactElement, useMemo } from 'react'
+import React, { ReactElement, useEffect, useMemo } from 'react'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 
@@ -8,12 +8,10 @@ import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import Shelter from '@/components/Safeplace/Canvas/Shelter/Shelter'
 import ColumnLocation from '@/components/Safeplace/Canvas/ColumLocation/ColumnLocation'
 import MountainColumn from '@/components/Safeplace/Canvas/ColumLocation/MountainColum'
-import CustomSky from '@/components/canvas/Sky/CustomSky'
 import SafeplaceFlyingRocks from '@/components/Safeplace/Canvas/Decorations/SafeplaceFlyingRocks'
 import SafeplaceGround from './SafeplaceGround'
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
-import Water from './Decorations/Water/Water'
 import WaterParams from './Decorations/Water/WaterParams'
 import Routes from '@/constants/enums/Routes'
 

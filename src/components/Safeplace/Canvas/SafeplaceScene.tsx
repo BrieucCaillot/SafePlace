@@ -1,4 +1,4 @@
-import { forwardRef, RefObject } from 'react'
+import { forwardRef, RefObject, useEffect } from 'react'
 
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import SafeplaceDebug from '@/components/Safeplace/Canvas/SafeplaceDebug'

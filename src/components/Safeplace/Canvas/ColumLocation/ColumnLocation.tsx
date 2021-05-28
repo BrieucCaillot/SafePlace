@@ -28,9 +28,7 @@ const ColumnLocation = ({
   )
   const router = useUserStore((s) => s.router)
 
-  const isVoiceoverInsidePlayed = useAudioStore((s) =>
-    s.checkVoiceoverStatus(VoiceoverSafeplace.Inside, AudioStatus.Played)
-  )
+  const isVoiceoverPlayed = useUserStore((s) => s.userData.voiceover.inside)
 
   const [camContainer, rock, column] = useMemo(
     () => columnObj.children as [THREE.Object3D, THREE.Mesh, THREE.Mesh],
@@ -62,7 +60,7 @@ const ColumnLocation = ({
       <MeshShorthand object={rock} />
       {children}
       <ColumnLink
-        show={isVoiceoverInsidePlayed && isCurrentlyAvailable}
+        show={isVoiceoverPlayed && isCurrentlyAvailable}
         onColumnClick={() => router.push(Routes.MountainColumn)}
         position={columnLinkPosition}
       />

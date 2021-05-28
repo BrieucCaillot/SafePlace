@@ -19,22 +19,10 @@ const MountainColumn = ({ columnObj }: { columnObj: THREE.Object3D }) => {
     (s) => SafeplacePOI.MountainColumn === s.currentPOI
   )
   const isCameraTravelling = useSafeplaceStore((s) => s.isCameraTravelling)
-  const isVoiceoverPlayable = useAudioStore((s) =>
-    s.isVoiceoverPlayable(VoiceoverSafeplace.MountainColumn)
-  )
-  const isVoiceoverPlayed = useAudioStore((s) =>
-    s.checkVoiceoverStatus(
-      VoiceoverSafeplace.MountainColumn,
-      AudioStatus.Played
-    )
-  )
 
-  useEffect(() => {
-    if (onMountainPOI && isVoiceoverPlayable && !isCameraTravelling)
-      useAudioStore
-        .getState()
-        .setCurrentVoiceover(Place.Safeplace, VoiceoverSafeplace.MountainColumn)
-  }, [onMountainPOI, isCameraTravelling, isVoiceoverPlayable])
+  const isVoiceoverPlayed = useUserStore(
+    (s) => s.userData.voiceover.mountainColumn
+  )
 
   const journeyLinkPos = useMemo(() => new THREE.Vector3(0, 1, 0), [])
 

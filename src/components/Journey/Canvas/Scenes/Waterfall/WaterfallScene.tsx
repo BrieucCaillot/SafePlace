@@ -94,20 +94,11 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     setIsJourneyFinished(false)
   }, [isWaterfallSection])
 
-  // Play ambiant
-  useEffect(() => {
-    if (isThisSceneRendered)
-      useAudioStore
-        .getState()
-        .setCurrentAmbiant(Place.Journey, Ambiants.Waterfall)
-  }, [isThisSceneRendered])
-
   // Play Voice
   useEffect(() => {
     if (!isThisSceneRendered || sequence === null) return
-    const { setCurrentVoiceover } = useAudioStore.getState()
-    const voice = sequenceVoices[sequence]
-    if (voice !== null) setCurrentVoiceover(Place.Journey, voice)
+    // const voice = sequenceVoices[sequence]
+    // if (voice !== null) setCurrentVoiceover(Place.Journey, voice)
   }, [sequence, isThisSceneRendered])
 
   // Slat anim
@@ -125,25 +116,25 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   // Update current sequence
   // ---
 
-  useEffect(() => {
-    const a = useAudioStore.subscribe(
-      (b) => b && setSequence(WaterfallSequence.InFrontOfBridge),
-      (s) => s.checkVoiceoverStatus(VoiceoverJourney.Bridge, AudioStatus.Played)
-    )
-    const b = useAudioStore.subscribe(
-      (b) => b && setSequence(WaterfallSequence.Outro),
-      (s) =>
-        s.checkVoiceoverStatus(VoiceoverJourney.Waterfall, AudioStatus.Played)
-    )
-    const c = useAudioStore.subscribe(
-      (b) => {
-        b && useUserStore.getState().setIsJourneyFinished(true)
-        useUserStore.getState().setIsJourneyCompleted(true)
-      },
-      (s) => s.checkVoiceoverStatus(VoiceoverJourney.Outro, AudioStatus.Played)
-    )
-    return () => [a, b, c].forEach((u) => u())
-  }, [])
+  // useEffect(() => {
+  //   const a = useAudioStore.subscribe(
+  //     (b) => b && setSequence(WaterfallSequence.InFrontOfBridge),
+  //     (s) => s.checkVoiceoverStatus(VoiceoverJourney.Bridge, AudioStatus.Played)
+  //   )
+  //   const b = useAudioStore.subscribe(
+  //     (b) => b && setSequence(WaterfallSequence.Outro),
+  //     (s) =>
+  //       s.checkVoiceoverStatus(VoiceoverJourney.Waterfall, AudioStatus.Played)
+  //   )
+  //   const c = useAudioStore.subscribe(
+  //     (b) => {
+  //       b && useUserStore.getState().setIsJourneyFinished(true)
+  //       useUserStore.getState().setIsJourneyCompleted(true)
+  //     },
+  //     (s) => s.checkVoiceoverStatus(VoiceoverJourney.Outro, AudioStatus.Played)
+  //   )
+  //   return () => [a, b, c].forEach((u) => u())
+  // }, [])
 
   return (
     <>

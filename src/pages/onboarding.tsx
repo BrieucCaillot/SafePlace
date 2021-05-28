@@ -1,28 +1,35 @@
 import { CSSTransition, TransitionStatus } from 'react-transition-group'
-
-import useAudioStore from '@/stores/useAudioStore'
 import useTransitionStatus from '@/hooks/useTransitionStatus'
-import { VoiceoverSafeplace } from '@/constants/enums/Voiceover'
-import AudioStatus from '@/constants/enums/Audio'
 
 import Instructions from '@/components/Instructions/Instructions'
+import useSceneStore from '@/stores/useSceneStore'
+import VOICEOVER from '@/constants/VOICEOVER'
+import useUserStore from '@/stores/useUserStore'
+import usePlayAudio from '@/hooks/audio/usePlayAudio'
 
 const OnBoarding = ({ status }: { status: TransitionStatus }) => {
-  const show = useTransitionStatus(status)
+  const voiceOverIsPlayed = useUserStore((s) => s.userData.voiceover.arrived)
+  const isPageTransitionFinished = useTransitionStatus(status)
+  const inSceneTransition = useSceneStore((s) => s.inTransition)
 
-  const isVoiceoverSafeplaceArrivedPlayed = useAudioStore((s) =>
-    s.checkVoiceoverStatus(VoiceoverSafeplace.Arrived, AudioStatus.Played)
+  usePlayAudio(
+    VOICEOVER.SAFEPLACE.ARRIVED,
+    !inSceneTransition && !voiceOverIsPlayed,
+    () => useUserStore.getState().setVoiceoverStatus({ arrived: true })
   )
+
+  const showInstructions =
+    !inSceneTransition && voiceOverIsPlayed && isPageTransitionFinished
 
   return (
     <CSSTransition
-      in={show && isVoiceoverSafeplaceArrivedPlayed}
+      in={showInstructions}
       timeout={2000}
       classNames='elem-fade'
       mountOnEnter
       appear
     >
-      <Instructions show={show && isVoiceoverSafeplaceArrivedPlayed} />
+      <Instructions show={showInstructions} />
     </CSSTransition>
   )
 }

@@ -53,10 +53,8 @@ const Index = ({ status }: { status: TransitionStatus }) => {
         </ButtonStonecut>
       </PortalUI>
 
-      <div id='home' className='relative h-screen'>
-        <div
-          className={`home-safeplace h-full w-full ${safeplaceImgClass}`}
-        ></div>
+      <div id='home' className='relative h-screen w-screen'>
+        <div className={`home-safeplace h-full w-full ${safeplaceImgClass}`} />
         <CSSTransition
           in={show && !hide}
           timeout={2000}

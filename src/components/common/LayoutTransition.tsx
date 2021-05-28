@@ -17,7 +17,7 @@ const LayoutTransition: React.FC<TransitionKind<ReactChild>> = ({
   location,
 }) => {
   return (
-    <TransitionGroup className='absolute top-0 h-screen w-full pointer-events-none'>
+    <TransitionGroup className='absolute top-0 pointer-events-none'>
       <ReactTransition
         key={location}
         mountOnEnter
@@ -28,7 +28,7 @@ const LayoutTransition: React.FC<TransitionKind<ReactChild>> = ({
         }}
       >
         {(status) => (
-          <div className='h-full w-full' data-transition-status={status}>
+          <div data-transition-status={status}>
             {cloneElement(children as ReactElement, { status })}
           </div>
         )}

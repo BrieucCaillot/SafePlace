@@ -1,83 +1,83 @@
 import React, { forwardRef, RefObject, useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
-import { useGLTF } from '@react-three/drei'
-import { useFrame } from 'react-three-fiber'
+import { useAnimations, useGLTF } from '@react-three/drei'
+import mergeRefs from 'react-merge-refs'
+
+import promisifyAction from '@/utils/promise/promisifyAction'
 
 import useJourneyStore from '@/stores/useJourneyStore'
 import useAudioStore from '@/stores/useAudioStore'
-import useThreeAnimation from '@/hooks/animation/useThreeAnimation'
-import { VoiceoverJourney } from '@/constants/enums/Voiceover'
-import JourneySection from '@/constants/enums/JourneySection'
-import Ambiants from '@/constants/enums/Ambiant'
-import Place from '@/constants/enums/Place'
+import useSceneStore from '@/stores/useSceneStore'
 
-import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
+import useMouseRotation from '@/hooks/animation/useMouseRotation'
+import useAsyncEffect from '@/hooks/promise/useAsyncEffect'
+
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
-import prepareAttributeForSample from '@/utils/geometry/prepareAttributesForSample'
-import GrassParams from '@/components/Safeplace/Canvas/Decorations/Grass/GrassParams'
-import FlowersParams from '@/components/Safeplace/Canvas/Decorations/Flowers/FlowerParams'
-import Routes from '@/constants/enums/Routes'
-import useSceneStore from '@/stores/useSceneStore'
-import useNonInitialEffect from '@/hooks/useNonInitialEffect'
 import SceneShorthand from '@/components/common/Canvas/SceneShorthand'
-import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
+
+import SceneName from '@/constants/enums/SceneName'
+import JourneySection from '@/constants/enums/JourneySection'
+import VOICEOVER from '@/constants/VOICEOVER'
+
+import CairnGround from './CairnGround'
+import wait from '@/utils/promise/wait'
+import useConfigAction from '@/hooks/animation/useConfigAction'
+import useSetActionDurationFromAudioDuration from '@/hooks/animation/useSetActionDurationFromAudioDuration'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
-  const isSceneInTransition = useSceneStore((s) => s.inTransition)
-  const isCairnSection = useJourneyStore(
-    (s) => s.currentSection === JourneySection.Cairns
-  )
-
   const {
     scene,
     animations: [camAnim],
     nodes,
   } = useGLTF('/models/journey/chapter1.glb')
-  const shadowTex = useMemo(() => {
-    const t = new THREE.TextureLoader().load('/img/journey/shadow_chap1.png')
-    t.flipY = false
-    return t
-  }, [])
-
-  const groundMesh = useMemo(() => {
-    const m = nodes['ground_mesh'] as THREE.Mesh
-    prepareAttributeForSample(m.geometry)
-    ;(m.material as THREE.MeshBasicMaterial).vertexColors = false
-    return m
-  }, [])
-  const groundMeshRef = useRef<THREE.Mesh>(groundMesh)
-
   const cameraGroup = useMemo(() => scene.getObjectByName('camera'), [])
+
+  const localCamRef = useRef<THREE.Camera>()
   const containerRef = useRef<THREE.Group>()
-  const animRef = useThreeAnimation({
-    clip: isCairnSection ? camAnim : null,
-    ref: containerRef,
-    // onFinished: () =>
-    //   useJourneyStore.getState().setSection(JourneySection.Lake),
-  })
 
-  useEffect(() => {
-    if (!isCairnSection && animRef.current === null) return
-    animRef.current.setEffectiveTimeScale(0.7)
-  }, [animRef, isCairnSection])
-
-  useFrame(
-    () =>
-      animRef.current != null &&
-      !animRef.current.paused &&
-      containerRef.current != null &&
-      containerRef.current.updateMatrixWorld()
+  const isSettledInScene = useSceneStore(
+    (s) => !s.inTransition && s.renderedScene === SceneName.Cairns
   )
 
-  useNonInitialEffect(() => {
-    if (!isCairnSection || isSceneInTransition) return
-    const { setCurrentAmbiant, setCurrentVoiceover } = useAudioStore.getState()
-    // Ambiant
-    setCurrentAmbiant(Place.Journey, Ambiants.Cairns)
-    // Voiceover
-    setCurrentVoiceover(Place.Journey, VoiceoverJourney.Cairns)
-  }, [isCairnSection, isSceneInTransition])
+  // Animation
+  const { actions, mixer } = useAnimations([camAnim], containerRef)
+  useConfigAction(actions, 'Action.003')
+  useSetActionDurationFromAudioDuration(
+    actions,
+    'Action.003',
+    VOICEOVER.JOURNEY.CAIRNS
+  )
+
+  // Sequence
+  useAsyncEffect(
+    async (wrap) => {
+      if (!isSettledInScene) return
+      const { play } = useAudioStore.getState()
+      const { setSection } = useJourneyStore.getState()
+
+      const action = actions['Action.003']
+      action.paused = false
+
+      await wrap(
+        Promise.all([
+          promisifyAction(mixer, action),
+          play(VOICEOVER.JOURNEY.CAIRNS),
+        ])
+      )
+      await wrap(wait(5000))
+
+      setSection(JourneySection.Lake)
+    },
+    () => void useAudioStore.getState().stop(VOICEOVER.JOURNEY.CAIRNS),
+    [isSettledInScene]
+  )
+
+  useMouseRotation(localCamRef, {
+    offset: [-Math.PI / 2, 0, 0],
+    amplitude: 0.2,
+    easing: 0.01,
+  })
 
   return (
     <>
@@ -87,11 +87,11 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         position={cameraGroup.position}
         quaternion={cameraGroup.quaternion}
       >
-        <ClassicCamera
-          ref={camRef}
+        <perspectiveCamera
+          ref={mergeRefs([camRef, localCamRef])}
+          near={0.1}
+          far={1000}
           fov={54.9}
-          rotation-x={-Math.PI / 2}
-          position={[0, 0, 0]}
         />
       </group>
       <CustomSky />
@@ -99,37 +99,10 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
       <SceneShorthand object={scene} />
 
-      <GroupShorthand object={scene.children.find((o) => o.name === 'ground')}>
-        <GroupShorthand object={groundMesh}>
-          <GrassParams
-            targetMeshRef={groundMeshRef}
-            folderName={'cairn_greenery'}
-            controlsName={'grass'}
-            route={Routes.Journey}
-            grassParams={{
-              weightAttribute: 'grassWeight',
-              amount: 24576,
-              windAmplitude: 0.007,
-              size: 0.04,
-            }}
-            position={new THREE.Vector3(0, 0.223, 0).add(groundMesh.position)}
-            shadowTexture={shadowTex}
-          />
-          <FlowersParams
-            targetMeshRef={groundMeshRef}
-            folderName={'cairn_greenery'}
-            controlsName={'flowers'}
-            route={Routes.Journey}
-            flowersParams={{
-              weightAttribute: 'flowerWeight1',
-              amount: 1024,
-              size: 0.3,
-            }}
-            position={new THREE.Vector3(0, 0.18, 0).add(groundMesh.position)}
-            shadowTexture={shadowTex}
-          />
-        </GroupShorthand>
-      </GroupShorthand>
+      <CairnGround
+        group={scene.children.find((o) => o.name === 'ground') as THREE.Group}
+        mesh={nodes['ground_mesh'] as THREE.Mesh}
+      />
     </>
   )
 })

@@ -6,6 +6,7 @@ import useSceneStore, { SceneData } from '@/stores/useSceneStore'
 import TransitionScene from './TransitionScene/TransitionScene'
 import SceneName from '@/constants/enums/SceneName'
 import useSceneTransition from './useSceneTransition'
+import { useControls } from 'leva'
 
 const Scenes = () => {
   const { size, gl } = useThree()
@@ -26,7 +27,7 @@ const Scenes = () => {
   const setSceneLoaded = useSceneStore((s) => s.setSceneLoaded)
 
   const transitionTarget = useRef(
-    new THREE.WebGLRenderTarget(size.width, size.height, {
+    new THREE.WebGLMultisampleRenderTarget(size.width, size.height, {
       encoding: THREE.sRGBEncoding,
     })
   )
@@ -37,9 +38,9 @@ const Scenes = () => {
   // Prerender a scene when it loads to avoid transition flicker
   useEffect(() => {
     let lastLoadedScenes: SceneData[] = []
-    let nullRenderTarget = new THREE.WebGLRenderTarget(
-      window.innerWidth,
-      window.innerHeight
+    let nullRenderTarget = new THREE.WebGLMultisampleRenderTarget(
+      size.width,
+      size.height
     )
     return useSceneStore.subscribe(
       (scenes: SceneData[]) => {

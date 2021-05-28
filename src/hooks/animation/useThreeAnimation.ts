@@ -1,4 +1,5 @@
-import { RefObject, useEffect, useRef } from 'react'
+import { useAnimations } from '@react-three/drei'
+import { RefObject, useEffect, useMemo, useRef } from 'react'
 import { useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
 
@@ -40,6 +41,7 @@ const useThreeAnimation = ({
   useEffect(() => {
     if (mixerRef.current == null || onFinished == null) return
     mixerRef.current.addEventListener('finished', onFinished)
+    mixerRef.current.addEventListener('finished', console.log)
     return () => mixerRef.current.removeEventListener('finished', onFinished)
   }, [onFinished])
 
