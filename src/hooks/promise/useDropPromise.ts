@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 const useDropPromise = () => {
-  const id = useRef(uuidv4())
+  const id = useRef<string>(uuidv4())
 
   const drop = useCallback(() => {
     id.current = uuidv4()
