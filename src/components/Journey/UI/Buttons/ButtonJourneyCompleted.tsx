@@ -1,17 +1,21 @@
 import React from 'react'
 
-import Routes from '@/constants/enums/Routes'
-import ButtonShapeLink from '@/components/common/UI/Buttons/ButtonShapeLink'
-
-const ButtonJourneyCompleted = () => {
+const ButtonJourneyCompleted = ({ onClick }: { onClick: () => void }) => {
   return (
-    <div className='absolute bottom-36 flex justify-center w-full fadeIn'>
-      <ButtonShapeLink
-        className={`shape-link__safeplace px-6 py-3 text-primary`}
-        route={Routes.Resources}
+    <div
+      style={{
+        position: 'absolute',
+        top: '75vh',
+        left: '50vw',
+        transform: 'translate(-50%, 0)',
+      }}
+    >
+      <button
+        onClick={onClick}
+        className='shape shape-link shape-link__safeplace whitespace-nowrap px-6 py-3 text-primary pointer-events-auto outline-none focus:outline-none relative cursor-pointer'
       >
-        Retour à l'abris
-      </ButtonShapeLink>
+        <span className='block w-full text-xl'>Retour à l'abris</span>
+      </button>
     </div>
   )
 }

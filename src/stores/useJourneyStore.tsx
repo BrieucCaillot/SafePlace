@@ -8,6 +8,8 @@ import JourneySection from '@/constants/enums/JourneySection'
 type JourneyStore = {
   currentSection: JourneySection
   setSection: (section: JourneySection) => void
+  endButtonCallback: () => void | null
+  setEndButtonCallback: (newVal: () => void | null) => void
 }
 
 const useJourneyStore = create<JourneyStore>((set, get, state) => ({
@@ -18,6 +20,9 @@ const useJourneyStore = create<JourneyStore>((set, get, state) => ({
     setRenderedScene(JOURNEY_SECTION_SCENES[section])
     set({ currentSection: section })
   },
+  endButtonCallback: null,
+  setEndButtonCallback: (newVal: () => void | null) =>
+    set({ endButtonCallback: newVal }),
 }))
 
 export default useJourneyStore

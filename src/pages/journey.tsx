@@ -9,18 +9,16 @@ import ButtonJourneyCompleted from '@/components/Journey/UI/Buttons/ButtonJourne
 import Timeline from '@/components/Journey/UI/Timeline'
 import TimelineStatusButton from '@/components/Journey/UI/TimelineStatusButton'
 import LayoutShelterButton from '@/components/common/UI/LayoutShelterButton'
+import useJourneyStore from '@/stores/useJourneyStore'
 
 const Journey = () => {
-  const isJourneyFinished = useUserStore((s) => s.isJourneyFinished)
-
-  useEffect(() => {
-    const { setIsJourneyFinished } = useUserStore.getState()
-    setIsJourneyFinished(false)
-  }, [])
+  const buttonCallback = useJourneyStore((s) => s.endButtonCallback)
 
   return (
     <>
-      {isJourneyFinished && <ButtonJourneyCompleted />}
+      {buttonCallback !== null && (
+        <ButtonJourneyCompleted onClick={buttonCallback} />
+      )}
       <PortalUI selector='#layout-bottom-left'>
         <LayoutShelterButton from={Place.Journey} to={Routes.Safeplace} />
       </PortalUI>

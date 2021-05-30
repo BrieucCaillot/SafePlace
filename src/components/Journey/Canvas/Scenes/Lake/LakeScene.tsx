@@ -37,9 +37,10 @@ import VOICEOVER from '@/constants/VOICEOVER'
 import wait from '@/utils/promise/wait'
 import SceneName from '@/constants/enums/SceneName'
 import useAsyncEffect from '@/hooks/promise/useAsyncEffect'
-import useConfigAction from '@/hooks/animation/useConfigAction'
+import useConfigActions from '@/hooks/animation/useConfigActions'
 import promisifyAction from '@/utils/promise/promisifyAction'
 import { useControls } from 'leva'
+import useInitAnimation from '@/hooks/animation/useInitAnimation'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -70,7 +71,8 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   )
 
   const { actions, mixer } = useAnimations([camAnim], containerRef)
-  useConfigAction(actions, 'Action.001')
+  useConfigActions(actions, 'Action.001')
+  useInitAnimation(actions, 'Action.001')
 
   // Sequence
   useAsyncEffect(

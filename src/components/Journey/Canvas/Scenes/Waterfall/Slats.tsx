@@ -1,57 +1,52 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
+import {
+  createRef,
+  ForwardedRef,
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useMemo,
+} from 'react'
 import Slat from './Slat'
 
-const Slats = ({
-  slatGroup,
-  slatAnims,
-  animate = false,
-  onAnimFinished = () => {},
-}: {
-  slatGroup: THREE.Object3D
-  slatAnims: THREE.AnimationClip[]
-  animate?: boolean
-  onAnimFinished: Function
-}) => {
-  const slats = useMemo(() => [...slatGroup.children] as THREE.Mesh[], [])
-
-  const animationProgress = useRef<Map<THREE.AnimationClip, boolean>>()
-  useEffect(() => {
-    animationProgress.current = new Map(slatAnims.map((s) => [s, false]))
-  }, [animate])
-
-  const getAnim = useCallback(
-    (animName: string) => slatAnims.find((a) => a.name.includes(animName)),
-    [slatAnims]
-  )
-
-  const animCallback = useCallback(
-    (anim: THREE.AnimationClip) => {
-      animationProgress.current.set(anim, true)
-      const finished = [...animationProgress.current.values()].reduce(
-        (acc, curr) => curr && acc,
-        true
-      )
-      if (finished) onAnimFinished()
+const Slats = forwardRef(
+  (
+    {
+      group,
+      anims,
+    }: {
+      group: THREE.Object3D
+      anims: THREE.AnimationClip[]
     },
-    [onAnimFinished]
-  )
+    ref: ForwardedRef<{ play: () => Promise<any> }>
+  ) => {
+    const slats = useMemo(() => [...group.children] as THREE.Mesh[], [])
 
-  return (
-    <group
-      position={slatGroup.position}
-      rotation={slatGroup.rotation}
-      scale={slatGroup.scale}
-    >
-      {slats.map((s, i) => (
-        <Slat
-          slatObject={s}
-          slatAnim={animate ? getAnim(s.name) : null}
-          onAnimFinished={() => animCallback(getAnim(s.name))}
-          key={i}
-        />
-      ))}
-    </group>
-  )
-}
+    const slatRefs = useMemo(
+      () =>
+        new Array(slats.length)
+          .fill(null)
+          .map((_) => createRef<{ play: () => Promise<any> }>()),
+      []
+    )
+
+    const getAnim = useCallback(
+      (animName: string) => anims.find((a) => a.name.includes(animName)),
+      [anims]
+    )
+
+    useImperativeHandle(ref, () => ({
+      play: () => Promise.all(slatRefs.map((r) => r.current.play())),
+    }))
+
+    return (
+      <GroupShorthand object={group}>
+        {slats.map((s, i) => (
+          <Slat object={s} anim={getAnim(s.name)} ref={slatRefs[i]} key={i} />
+        ))}
+      </GroupShorthand>
+    )
+  }
+)
 
 export default Slats

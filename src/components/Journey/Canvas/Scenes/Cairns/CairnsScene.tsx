@@ -22,8 +22,9 @@ import VOICEOVER from '@/constants/VOICEOVER'
 
 import CairnGround from './CairnGround'
 import wait from '@/utils/promise/wait'
-import useConfigAction from '@/hooks/animation/useConfigAction'
+import useConfigActions from '@/hooks/animation/useConfigActions'
 import useSetActionDurationFromAudioDuration from '@/hooks/animation/useSetActionDurationFromAudioDuration'
+import useInitAnimation from '@/hooks/animation/useInitAnimation'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -42,7 +43,8 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   // Animation
   const { actions, mixer } = useAnimations([camAnim], containerRef)
-  useConfigAction(actions, 'Action.003')
+  useConfigActions(actions, 'Action.003')
+  useInitAnimation(actions, 'Action.003')
   useSetActionDurationFromAudioDuration(
     actions,
     'Action.003',
