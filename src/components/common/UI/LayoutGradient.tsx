@@ -30,7 +30,8 @@ const LayoutGradient = ({ pathname }: { pathname: string }) => {
   return (
     <div
       ref={gradientRef}
-      className='gradient-main absolute bottom-0 h-full w-full'
+      id='gradient'
+      className='fixed bottom-0 h-full w-full gradient-main '
     ></div>
   )
 }

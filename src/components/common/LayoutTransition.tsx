@@ -17,7 +17,10 @@ const LayoutTransition: React.FC<TransitionKind<ReactChild>> = ({
   location,
 }) => {
   return (
-    <TransitionGroup className='absolute top-0 pointer-events-none'>
+    <TransitionGroup
+      id='transition-group'
+      className='absolute top-0 pointer-events-none z-10'
+    >
       <ReactTransition
         key={location}
         mountOnEnter

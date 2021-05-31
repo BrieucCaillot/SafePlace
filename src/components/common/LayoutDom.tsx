@@ -32,12 +32,13 @@ const LayoutDom = ({ children }: { children: ReactNode }) => {
       {windowAvailable && <User />}
       <DebugNavigation />
       <LayoutAudio />
-      <main className='dom font-serif relative h-screen w-screen z-10 pointer-events-none'>
+      <LayoutHeader />
+
+      <main className='dom font-serif relative pointer-events-none'>
         {isHomeOrAboutPage && <LayoutGradient pathname={pathname} />}
-        <LayoutHeader />
-        <LayoutBottom show={isLayoutBottomAvailable} />
         {/* <Leva hidden={true} /> */}
         {children}
+        <LayoutBottom show={isLayoutBottomAvailable} />
       </main>
     </>
   )
