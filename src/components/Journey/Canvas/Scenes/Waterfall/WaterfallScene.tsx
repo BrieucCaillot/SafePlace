@@ -73,7 +73,10 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       if (!isSettledInScene) return
 
       const { setJourneyStatus, router } = useUserStore.getState()
-      const { setEndButtonCallback } = useJourneyStore.getState()
+      const {
+        setEndButtonCallback,
+        setShowShelterButton,
+      } = useJourneyStore.getState()
 
       const waitEndButton = () =>
         new Promise<void>((res) =>
@@ -97,6 +100,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
           audio.play(VOICEOVER.JOURNEY.WATERFALL), //---
         ])
       )
+      setShowShelterButton(false)
       await wrap(waitEndButton())
       setJourneyStatus(true)
       await wrap(
@@ -105,10 +109,15 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
           audio.play(VOICEOVER.JOURNEY.OUTRO), //---
         ])
       )
-      router.push(Routes.Safeplace)
+      router.push(Routes.Resources)
     },
     () => {
-      useJourneyStore.getState().setEndButtonCallback(null)
+      const {
+        setEndButtonCallback,
+        setShowShelterButton,
+      } = useJourneyStore.getState()
+      setEndButtonCallback(null)
+      setShowShelterButton(true)
       audio.stop()
     },
     [isSettledInScene]

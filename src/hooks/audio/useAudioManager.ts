@@ -31,7 +31,7 @@ const useAudioManager = (url: string | string[]) => {
       const s = 'pannerAttr' in sounds ? (sounds as Howl) : sounds[u]
       currentSound.current = s
       if (!useUserStore.getState().isPaused) s.play()
-      return promisifyHowl(s, 'end')
+      return promisifyHowl(s, 'end').then(() => (currentSound.current = null))
     },
     [sounds]
   )

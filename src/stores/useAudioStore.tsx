@@ -3,12 +3,13 @@ import { Howl } from 'howler'
 
 import SCENES_AMBIANTS from '@/constants/SCENES_AMBIANT'
 import SceneName from '@/constants/enums/SceneName'
-import promisifyHowl from '@/utils/promise/promisifyHowl'
 
 type AudioStore = {
   ambiantHowlMap: Map<SceneName, Howl>
   onceAudioMap: Map<string, Howl>
   initAudio: (url: string) => Howl
+  isMuted: boolean
+  setMuted: (b: boolean) => void
 }
 
 const useAudioStore = create<AudioStore>((set, get) => ({
@@ -31,6 +32,8 @@ const useAudioStore = create<AudioStore>((set, get) => ({
 
     return howl
   },
+  isMuted: false,
+  setMuted: (b: boolean) => set({ isMuted: b }),
 }))
 
 // const HELPER_OBJECT = {

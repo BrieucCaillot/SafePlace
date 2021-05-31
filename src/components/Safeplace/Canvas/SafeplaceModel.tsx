@@ -57,7 +57,7 @@ const SafeplaceModel = (): ReactElement => {
     []
   )
 
-  const isJourneyCompleted = useUserStore((s) => s.isJourneyCompleted)
+  const isJourneyCompleted = useUserStore((s) => s.userData.journey)
 
   const columnAssoc: { [name: string]: SafeplacePOI } = {
     column_1_group: SafeplacePOI.MountainColumn,

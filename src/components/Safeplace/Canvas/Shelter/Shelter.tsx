@@ -15,7 +15,7 @@ import ShelterResources from '@/components/Safeplace/Canvas/Shelter/ShelterResou
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 
 const Shelter = ({ object }: { object: THREE.Object3D }) => {
-  const isJourneyCompleted = useUserStore((s) => s.isJourneyCompleted)
+  const isJourneyCompleted = useUserStore((s) => s.userData.journey)
 
   const isCurrentlyAvailable = useSafeplaceStore((s) =>
     s.isCurrentlyAvailable(SafeplacePOI.Inside)

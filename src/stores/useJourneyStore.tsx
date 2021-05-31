@@ -10,6 +10,8 @@ type JourneyStore = {
   setSection: (section: JourneySection) => void
   endButtonCallback: () => void | null
   setEndButtonCallback: (newVal: () => void | null) => void
+  showShelterButton: boolean
+  setShowShelterButton: (newVal: boolean) => void
 }
 
 const useJourneyStore = create<JourneyStore>((set, get, state) => ({
@@ -23,6 +25,8 @@ const useJourneyStore = create<JourneyStore>((set, get, state) => ({
   endButtonCallback: null,
   setEndButtonCallback: (newVal: () => void | null) =>
     set({ endButtonCallback: newVal }),
+  showShelterButton: true,
+  setShowShelterButton: (newVal: boolean) => set({ showShelterButton: newVal }),
 }))
 
 export default useJourneyStore

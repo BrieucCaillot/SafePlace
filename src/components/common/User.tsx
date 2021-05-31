@@ -1,7 +1,4 @@
-import { useEffect } from 'react'
 import { useControls } from 'leva'
-
-import useUserStore from '@/stores/useUserStore'
 
 const User = (): null => {
   useControls({
@@ -13,21 +10,6 @@ const User = (): null => {
       },
     },
   })
-
-  useEffect(() => {
-    const {
-      getUserFirstConnection,
-      setUserFirstConnection,
-      getIsJourneyCompleted,
-      setIsJourneyCompleted,
-    } = useUserStore.getState()
-
-    setUserFirstConnection(true)
-    setIsJourneyCompleted(true)
-    // COMMENT FOR THE DEMO
-    // setUserFirstConnection(getUserFirstConnection())
-    // setIsJourneyCompleted(getIsJourneyCompleted())
-  }, [])
 
   return null
 }

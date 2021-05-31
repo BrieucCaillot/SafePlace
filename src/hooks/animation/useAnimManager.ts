@@ -30,7 +30,9 @@ const useAnimManager = (
       currentAnim.current.reset()
       currentAnim.current.play()
       currentAnim.current.paused = useUserStore.getState().isPaused
-      return promisifyAction(mixer, currentAnim.current)
+      return promisifyAction(mixer, currentAnim.current).then(
+        () => (currentAnim.current = null)
+      )
     },
     [getAction]
   )
