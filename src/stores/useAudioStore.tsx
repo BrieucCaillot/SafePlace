@@ -9,8 +9,6 @@ type AudioStore = {
   ambiantHowlMap: Map<SceneName, Howl>
   onceAudioMap: Map<string, Howl>
   initAudio: (url: string) => Howl
-  play: (url: string) => Promise<void>
-  stop: (url: string) => void
 }
 
 const useAudioStore = create<AudioStore>((set, get) => ({
@@ -32,18 +30,6 @@ const useAudioStore = create<AudioStore>((set, get) => ({
     set({ onceAudioMap })
 
     return howl
-  },
-  play: (url: string) => {
-    const { initAudio } = get()
-    let howl = initAudio(url)
-    howl.play()
-    return promisifyHowl(howl, 'end')
-  },
-  stop: (url: string) => {
-    const { onceAudioMap } = get()
-    let howl = onceAudioMap.get(url)
-    if (howl === undefined) return
-    howl.stop()
   },
 }))
 

@@ -1,4 +1,4 @@
-import React, { forwardRef, RefObject, useMemo, useRef } from 'react'
+import React, { forwardRef, RefObject, useEffect, useMemo, useRef } from 'react'
 import { useAnimations, useGLTF } from '@react-three/drei'
 
 import useAudioStore from '@/stores/useAudioStore'
@@ -19,14 +19,14 @@ import Slats from './Slats'
 
 import useConfigActions from '@/hooks/animation/useConfigActions'
 import useAsyncEffect from '@/hooks/promise/useAsyncEffect'
-import useInitAnimation from '@/hooks/animation/useInitAnimation'
+import useAnimManager from '@/hooks/animation/useAnimManager'
 import useBooleanPromise from '@/hooks/promise/useBooleanPromise'
 
-import promisifyAction from '@/utils/promise/promisifyAction'
 import Routes from '@/constants/enums/Routes'
+import useAudioManager from '@/hooks/audio/useAudioManager'
 
 const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
-  // GLTF
+  // REFS
   const gltf = useGLTF('/models/journey/chapter3.glb')
 
   const [cameras, mountains, rocks, slats, waterfall] = useMemo(
@@ -43,30 +43,37 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const camContainer = useRef<THREE.Group>()
   const slatRef = useRef<{ play: () => Promise<void> }>()
 
+  // --- STATE
   const isSettledInScene = useSceneStore(
     (s) => !s.inTransition && s.renderedScene === SceneName.Waterfall
   )
+  const willPlay = useSceneStore((s) => s.nextScene === SceneName.Waterfall)
+  const bridgeButtonPromise = useBooleanPromise()
 
-  const onScene = useSceneStore((s) => s.renderedScene === SceneName.Waterfall)
+  const audio = useAudioManager([
+    VOICEOVER.JOURNEY.BRIDGE,
+    VOICEOVER.JOURNEY.WATERFALL,
+    VOICEOVER.JOURNEY.OUTRO,
+  ])
 
+  // --- ANIMATIONS
   const { actions, mixer } = useAnimations(camAnims, camContainer)
-  useInitAnimation(actions, 'Camera_1', onScene)
+
+  const anim = useAnimManager(actions, mixer)
   useConfigActions(actions)
 
-  const bridgeButtonPromise = useBooleanPromise()
+  useEffect(() => {
+    if (!willPlay) return
+    anim.init('Camera_1')
+    return anim.stop
+  }, [willPlay])
 
   useAsyncEffect(
     async (wrap) => {
       if (!isSettledInScene) return
 
-      const { play } = useAudioStore.getState()
       const { setJourneyStatus, router } = useUserStore.getState()
       const { setEndButtonCallback } = useJourneyStore.getState()
-      const {
-        ['Camera_1']: cam1,
-        ['Camera_2']: cam2,
-        ['Camera_3']: cam3,
-      } = actions
 
       const waitEndButton = () =>
         new Promise<void>((res) =>
@@ -76,42 +83,33 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
           })
         )
 
-      const playAnim = (action: THREE.AnimationAction) => {
-        action.play()
-        action.paused = false
-        return promisifyAction(mixer, action)
-      }
-
       await wrap(
         Promise.all([
-          playAnim(cam1), //---
-          play(VOICEOVER.JOURNEY.BRIDGE), //---
+          anim.play('Camera_1'), //---
+          audio.play(VOICEOVER.JOURNEY.BRIDGE), //---
         ])
       )
       await wrap(slatRef.current.play())
       await wrap(bridgeButtonPromise.wait())
       await wrap(
         Promise.all([
-          playAnim(cam2), //---
-          play(VOICEOVER.JOURNEY.WATERFALL), //---
+          anim.play('Camera_2'), //---
+          audio.play(VOICEOVER.JOURNEY.WATERFALL), //---
         ])
       )
       await wrap(waitEndButton())
       setJourneyStatus(true)
       await wrap(
         Promise.all([
-          playAnim(cam3), //---
-          play(VOICEOVER.JOURNEY.OUTRO), //---
+          anim.play('Camera_3'), //---
+          audio.play(VOICEOVER.JOURNEY.OUTRO), //---
         ])
       )
       router.push(Routes.Safeplace)
     },
     () => {
       useJourneyStore.getState().setEndButtonCallback(null)
-      const { stop } = useAudioStore.getState()
-      stop(VOICEOVER.JOURNEY.BRIDGE)
-      stop(VOICEOVER.JOURNEY.WATERFALL)
-      stop(VOICEOVER.JOURNEY.OUTRO)
+      audio.stop()
     },
     [isSettledInScene]
   )

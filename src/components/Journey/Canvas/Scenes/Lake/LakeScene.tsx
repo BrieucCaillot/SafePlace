@@ -40,7 +40,8 @@ import useAsyncEffect from '@/hooks/promise/useAsyncEffect'
 import useConfigActions from '@/hooks/animation/useConfigActions'
 import promisifyAction from '@/utils/promise/promisifyAction'
 import { useControls } from 'leva'
-import useInitAnimation from '@/hooks/animation/useInitAnimation'
+import useAnimManager from '@/hooks/animation/useAnimManager'
+import useAudioManager from '@/hooks/audio/useAudioManager'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -69,38 +70,38 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const isSettledInScene = useSceneStore(
     (s) => !s.inTransition && s.renderedScene === SceneName.Lake
   )
+  const willPlay = useSceneStore((s) => s.nextScene === SceneName.Lake)
+
+  const audio = useAudioManager(VOICEOVER.JOURNEY.LAKE)
 
   const { actions, mixer } = useAnimations([camAnim], containerRef)
   useConfigActions(actions, 'Action.001')
-  useInitAnimation(actions, 'Action.001')
+  const anim = useAnimManager(actions, mixer, 'Action.001')
+
+  useEffect(() => {
+    if (!willPlay) return
+    anim.init()
+    setAnimatedDandelion(0)
+    return anim.stop
+  }, [willPlay])
 
   // Sequence
   useAsyncEffect(
     async (wrap) => {
       if (!isSettledInScene) return
-      const { play } = useAudioStore.getState()
       const { setSection } = useJourneyStore.getState()
-
-      setAnimatedDandelion(0)
-      const action = actions['Action.001']
-      action.paused = false
 
       wrap(wait(3000)).then(() => setAnimatedDandelion(1))
       wrap(wait(9000)).then(() => setAnimatedDandelion(2))
       wrap(wait(15000)).then(() => setAnimatedDandelion(3))
       wrap(wait(20000)).then(() => setAnimatedDandelion(4))
 
-      await wrap(
-        Promise.all([
-          promisifyAction(mixer, action),
-          play(VOICEOVER.JOURNEY.LAKE),
-        ])
-      )
+      await wrap(Promise.all([anim.play(), audio.play()]))
       await wrap(wait(5000))
 
       setSection(JourneySection.Waterfall)
     },
-    () => void useAudioStore.getState().stop(VOICEOVER.JOURNEY.LAKE),
+    () => audio.stop(),
     [isSettledInScene]
   )
 

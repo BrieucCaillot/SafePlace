@@ -33,6 +33,8 @@ type UserStore = {
   saveUserData: () => void
   setVoiceoverStatus: (v: Partial<UserData['voiceover']>) => void
   setJourneyStatus: (b: boolean) => void
+  isPaused: boolean
+  setPause: (b: boolean) => void
 }
 
 const useUserStore = create<UserStore>((set, get) => ({
@@ -82,6 +84,8 @@ const useUserStore = create<UserStore>((set, get) => ({
     set({ userData })
     saveUserData()
   },
+  isPaused: false,
+  setPause: (b) => set({ isPaused: b }),
 }))
 
 export default useUserStore

@@ -1,11 +1,17 @@
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 import SceneName from '@/constants/enums/SceneName'
 import useConfigActions from '@/hooks/animation/useConfigActions'
-import useInitAnimation from '@/hooks/animation/useInitAnimation'
+import useAnimManager from '@/hooks/animation/useAnimManager'
 import useSceneStore from '@/stores/useSceneStore'
 import promisifyAction from '@/utils/promise/promisifyAction'
 import { useAnimations } from '@react-three/drei'
-import { ForwardedRef, forwardRef, useImperativeHandle, useRef } from 'react'
+import {
+  ForwardedRef,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react'
 import * as THREE from 'three'
 const Slat = forwardRef(
   (
@@ -19,21 +25,20 @@ const Slat = forwardRef(
     ref: ForwardedRef<{ play: () => Promise<any> }>
   ) => {
     const slatRef = useRef<THREE.Mesh>(null)
-    const { actions, mixer } = useAnimations([anim], slatRef)
-    const onScene = useSceneStore(
-      (s) => s.renderedScene === SceneName.Waterfall
-    )
+    const willPlay = useSceneStore((s) => s.nextScene === SceneName.Waterfall)
 
+    const { actions, mixer } = useAnimations([anim], slatRef)
     useConfigActions(actions)
-    useInitAnimation(actions, null, onScene)
+    const animation = useAnimManager(actions, mixer)
+
+    useEffect(() => {
+      if (!willPlay) return
+      animation.init(Object.keys(actions)[0])
+      return animation.stop
+    }, [willPlay])
 
     useImperativeHandle(ref, () => ({
-      play: () => {
-        const action = Object.values(actions)[0]
-        action.play()
-        action.paused = false
-        return promisifyAction(mixer, action)
-      },
+      play: () => animation.play(Object.keys(actions)[0]),
     }))
 
     return <MeshShorthand object={object} ref={slatRef} />

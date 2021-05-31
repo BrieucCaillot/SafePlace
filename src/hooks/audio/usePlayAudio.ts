@@ -1,6 +1,7 @@
 import useAudioStore from '@/stores/useAudioStore'
 import { useEffect } from 'react'
 import useDropPromise from '../promise/useDropPromise'
+import useAudioManager from './useAudioManager'
 
 const usePlayAudio = (
   url: string,
@@ -8,15 +9,15 @@ const usePlayAudio = (
   onAudioEnd: () => void = () => {}
 ) => {
   const { wrap, drop } = useDropPromise()
+  const audio = useAudioManager(url)
 
   useEffect(() => {
     if (!shouldPlay) return
-    const { play, stop } = useAudioStore.getState()
-    wrap(play(url)).then(onAudioEnd)
+    wrap(audio.play()).then(onAudioEnd)
 
     return () => {
       drop()
-      stop(url)
+      audio.stop()
     }
   }, [url, shouldPlay])
 }

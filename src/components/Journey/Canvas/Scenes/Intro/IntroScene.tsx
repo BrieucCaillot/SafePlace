@@ -3,7 +3,6 @@ import * as THREE from 'three'
 import { useControls } from 'leva'
 
 import useSceneStore from '@/stores/useSceneStore'
-import useAudioStore from '@/stores/useAudioStore'
 import useJourneyStore from '@/stores/useJourneyStore'
 import useAsyncEffect from '@/hooks/promise/useAsyncEffect'
 import SceneName from '@/constants/enums/SceneName'
@@ -16,6 +15,7 @@ import CustomSky from '@/components/canvas/Sky/CustomSky'
 import MountainPlane from '@/components/Journey/Canvas/Scenes/Intro/Mountain/MountainPlane'
 import CloudPlane from '@/components/Journey/Canvas/Scenes/Intro/Clouds/CloudPlane'
 import FogPlane from '@/components/Journey/Canvas/Scenes/Intro/Fog/FogPlane'
+import useAudioManager from '@/hooks/audio/useAudioManager'
 
 const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const isSettledInScene = useSceneStore(
@@ -49,16 +49,17 @@ const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     }
   )
 
+  const audio = useAudioManager(VOICEOVER.JOURNEY.INTRO)
+
   useAsyncEffect(
     async (wrap) => {
       if (!isSettledInScene) return
-      const { play } = useAudioStore.getState()
       const { setSection } = useJourneyStore.getState()
 
-      await wrap(play(VOICEOVER.JOURNEY.INTRO))
+      await wrap(audio.play())
       setSection(JourneySection.Cairns)
     },
-    () => void useAudioStore.getState().stop(VOICEOVER.JOURNEY.INTRO),
+    () => audio.stop(),
     [isSettledInScene]
   )
 

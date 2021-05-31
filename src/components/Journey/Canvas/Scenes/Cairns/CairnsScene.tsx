@@ -24,7 +24,8 @@ import CairnGround from './CairnGround'
 import wait from '@/utils/promise/wait'
 import useConfigActions from '@/hooks/animation/useConfigActions'
 import useSetActionDurationFromAudioDuration from '@/hooks/animation/useSetActionDurationFromAudioDuration'
-import useInitAnimation from '@/hooks/animation/useInitAnimation'
+import useAnimManager from '@/hooks/animation/useAnimManager'
+import useAudioManager from '@/hooks/audio/useAudioManager'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -40,38 +41,38 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const isSettledInScene = useSceneStore(
     (s) => !s.inTransition && s.renderedScene === SceneName.Cairns
   )
+  const willPlay = useSceneStore((s) => s.nextScene === SceneName.Cairns)
+
+  const audio = useAudioManager(VOICEOVER.JOURNEY.CAIRNS)
 
   // Animation
   const { actions, mixer } = useAnimations([camAnim], containerRef)
+  const anim = useAnimManager(actions, mixer, 'Action.003')
   useConfigActions(actions, 'Action.003')
-  useInitAnimation(actions, 'Action.003')
   useSetActionDurationFromAudioDuration(
     actions,
     'Action.003',
     VOICEOVER.JOURNEY.CAIRNS
   )
 
+  useEffect(() => {
+    if (!willPlay) return
+    anim.init()
+    return anim.stop
+  }, [willPlay])
+
   // Sequence
   useAsyncEffect(
     async (wrap) => {
       if (!isSettledInScene) return
-      const { play } = useAudioStore.getState()
       const { setSection } = useJourneyStore.getState()
 
-      const action = actions['Action.003']
-      action.paused = false
-
-      await wrap(
-        Promise.all([
-          promisifyAction(mixer, action),
-          play(VOICEOVER.JOURNEY.CAIRNS),
-        ])
-      )
+      await wrap(Promise.all([anim.play(), audio.play()]))
       await wrap(wait(5000))
 
       setSection(JourneySection.Lake)
     },
-    () => void useAudioStore.getState().stop(VOICEOVER.JOURNEY.CAIRNS),
+    () => audio.stop(),
     [isSettledInScene]
   )
 
