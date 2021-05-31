@@ -42,6 +42,7 @@ import promisifyAction from '@/utils/promise/promisifyAction'
 import { useControls } from 'leva'
 import useAnimManager from '@/hooks/animation/useAnimManager'
 import useAudioManager from '@/hooks/audio/useAudioManager'
+import SceneShorthand from '@/components/common/Canvas/SceneShorthand'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -52,7 +53,16 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const containerRef = useRef<THREE.Group>()
   const localCamRef = useRef<THREE.Camera>()
 
-  const [camGroup, particules, lake, dandelion, rocks, ground, trees] = useMemo(
+  const [
+    camGroup,
+    particules,
+    lake,
+    dandelion,
+    rocks,
+    ground,
+    trees,
+    waterlilies,
+  ] = useMemo(
     () =>
       [
         'camera',
@@ -62,6 +72,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         'rocks',
         'ground',
         'trees',
+        'waterlilies',
       ].map((n) => scene.children.find((o) => o.name === n)),
     []
   )
@@ -151,9 +162,8 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         </GroupShorthand>
       </GroupShorthand>
 
-      <GroupShorthand object={rocks}>
-        <MeshShorthand object={rocks.children[0] as THREE.Mesh} />
-      </GroupShorthand>
+      <SceneShorthand object={rocks} />
+      <SceneShorthand object={waterlilies} />
     </>
   )
 })
