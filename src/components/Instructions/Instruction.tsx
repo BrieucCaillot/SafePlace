@@ -45,22 +45,17 @@ const Instruction = ({
       onExited={onNextStep}
       appear={true}
     >
-      <div
-        className='absolute transform-gpu -translate-x-1/2 -translate-y-1/2'
-        style={{ left: '50vw', top: '50vh' }}
-      >
-        <div className='w-screen'>
-          <p className='text-primary text-stroke-6 font-sans text-xl leading-loose tracking-wider text-center pb-7 whitespace-pre-line'>
-            {text}
-          </p>
-          <ButtonStonecut
-            show={show && !hide && isVoiceoverPlayed}
-            className='text-tertiary opacity-0 pointer-events-none block'
-            onClick={() => setHide(true)}
-          >
-            {buttonText}
-          </ButtonStonecut>
-        </div>
+      <div className='w-screen'>
+        <p className='text-primary text-stroke-6 font-sans text-xl leading-loose tracking-wider text-center pb-7 whitespace-pre-line'>
+          {text}
+        </p>
+        <ButtonStonecut
+          show={show && !hide && isVoiceoverPlayed}
+          className='text-tertiary opacity-0 pointer-events-none block'
+          onClick={() => setHide(true)}
+        >
+          {buttonText}
+        </ButtonStonecut>
       </div>
     </CSSTransition>
   )

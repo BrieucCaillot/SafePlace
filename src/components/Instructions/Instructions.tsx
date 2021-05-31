@@ -14,7 +14,11 @@ const Instructions = ({ show }: { show: boolean }) => {
   const [currentInstruction, setCurrentInstruction] = useState(0)
 
   return (
-    <div id='instructions'>
+    <div
+      id='instructions'
+      className='absolute transform-gpu -translate-x-1/2 -translate-y-1/2'
+      style={{ left: '50vw', top: '50vh' }}
+    >
       <Instruction
         show={show}
         instruction={0}
