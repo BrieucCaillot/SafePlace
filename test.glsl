@@ -70,7 +70,7 @@ void main() {
   float posterizedAngle = remap(polar.y, -PI, PI, 0., 1.);
   posterizedAngle = floor(posterizedAngle * 18.) / 18.;
   
-  float offsetAngle = remap(posterizedAngle, 0., 1., -PI, PI);
+  float offsetAngle = remap(posterizedAngle + 1. / 36., 0., 1., -PI, PI);
   vec2 offsetDir = polar2cart(vec2(1., offsetAngle));
   
   float offsetAmount = snoise(vec2(rand(posterizedAngle) * 1000., u_time / 10.)) * 0.1;

@@ -26,6 +26,7 @@ const GrassParams = ({
       grass_3: loaders.load('/img/common/greenery/grass_3.png'),
       grass_4: loaders.load('/img/common/greenery/grass_4.png'),
       grass_5: loaders.load('/img/common/greenery/grass_5.png'),
+      grass_chapter_1: loaders.load('/img/common/greenery/grass_chapter_1.png'),
     }
   }, [])
 

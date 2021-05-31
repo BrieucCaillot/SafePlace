@@ -75,8 +75,8 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const audio = useAudioManager(VOICEOVER.JOURNEY.LAKE)
 
   const { actions, mixer } = useAnimations([camAnim], containerRef)
-  useConfigActions(actions, 'Action.001')
-  const anim = useAnimManager(actions, mixer, 'Action.001')
+  useConfigActions(actions, 'Action.006')
+  const anim = useAnimManager(actions, mixer, 'Action.006')
 
   useEffect(() => {
     if (!willPlay) return

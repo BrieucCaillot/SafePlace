@@ -13,6 +13,7 @@ import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 import ShelterResources from '@/components/Safeplace/Canvas/Shelter/ShelterResources'
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
+import SceneShorthand from '@/components/common/Canvas/SceneShorthand'
 
 const Shelter = ({ object }: { object: THREE.Object3D }) => {
   const isJourneyCompleted = useUserStore((s) => s.userData.journey)
@@ -51,7 +52,7 @@ const Shelter = ({ object }: { object: THREE.Object3D }) => {
   return (
     <group position={object.position}>
       {isJourneyCompleted && <ShelterResources resources={resources} />}
-      <MeshShorthand object={shelterMesh as THREE.Mesh} />
+      <SceneShorthand object={shelterMesh} />
       <ColumnLink
         show={isCurrentlyAvailable}
         onColumnClick={onLinkClick}

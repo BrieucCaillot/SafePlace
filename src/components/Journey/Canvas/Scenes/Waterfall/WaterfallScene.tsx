@@ -1,7 +1,6 @@
 import React, { forwardRef, RefObject, useEffect, useMemo, useRef } from 'react'
 import { useAnimations, useGLTF } from '@react-three/drei'
 
-import useAudioStore from '@/stores/useAudioStore'
 import useSceneStore from '@/stores/useSceneStore'
 import useJourneyStore from '@/stores/useJourneyStore'
 import useUserStore from '@/stores/useUserStore'
@@ -14,7 +13,6 @@ import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
 import SceneShorthand from '@/components/common/Canvas/SceneShorthand'
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
-import PortalUI from '@/components/common/UI/PortalUI'
 import Slats from './Slats'
 
 import useConfigActions from '@/hooks/animation/useConfigActions'
@@ -24,13 +22,19 @@ import useBooleanPromise from '@/hooks/promise/useBooleanPromise'
 
 import Routes from '@/constants/enums/Routes'
 import useAudioManager from '@/hooks/audio/useAudioManager'
+import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
+import WaterfallGround from './WaterfallGround'
+import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 
 const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   // REFS
   const gltf = useGLTF('/models/journey/chapter3.glb')
 
-  const [cameras, mountains, rocks, slats, waterfall] = useMemo(
-    () => [...gltf.scene.children],
+  const [slats, rocks, waterfall, cameras, background] = useMemo(
+    () =>
+      ['slats', 'rocks', 'waterfall', 'cameras', 'background'].map((n) =>
+        gltf.scene.children.find((o) => o.name === n)
+      ),
     []
   )
 
@@ -64,7 +68,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   useEffect(() => {
     if (!willPlay) return
-    anim.init('Camera_1')
+    anim.init('camera_1')
     return anim.stop
   }, [willPlay])
 
@@ -88,7 +92,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
       await wrap(
         Promise.all([
-          anim.play('Camera_1'), //---
+          anim.play('camera_1'), //---
           audio.play(VOICEOVER.JOURNEY.BRIDGE), //---
         ])
       )
@@ -96,7 +100,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       await wrap(bridgeButtonPromise.wait())
       await wrap(
         Promise.all([
-          anim.play('Camera_2'), //---
+          anim.play('camera_2'), //---
           audio.play(VOICEOVER.JOURNEY.WATERFALL), //---
         ])
       )
@@ -105,7 +109,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       setJourneyStatus(true)
       await wrap(
         Promise.all([
-          anim.play('Camera_3'), //---
+          anim.play('camera_3'), //---
           audio.play(VOICEOVER.JOURNEY.OUTRO), //---
         ])
       )
@@ -125,7 +129,6 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   return (
     <>
-      {/* <ClassicCamera ref={camRef} fov={32.6} /> */}
       <group position={cameraOffset}>
         <group ref={camContainer}>
           <perspectiveCamera
@@ -144,9 +147,12 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
       <CustomSky />
 
-      <SceneShorthand object={mountains} />
+      <SceneShorthand object={background} />
       <SceneShorthand object={rocks} />
-      <SceneShorthand object={waterfall} />
+      <GroupShorthand object={waterfall}>
+        <SceneShorthand object={waterfall.children[0]} />
+        <WaterfallGround object={waterfall.children[1] as THREE.Mesh} />
+      </GroupShorthand>
 
       <Waterfall scale={[7, 7, 7]} position={[-5.5, 0, 0]} />
 

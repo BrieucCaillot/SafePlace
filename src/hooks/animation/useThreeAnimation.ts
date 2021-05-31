@@ -41,7 +41,6 @@ const useThreeAnimation = ({
   useEffect(() => {
     if (mixerRef.current == null || onFinished == null) return
     mixerRef.current.addEventListener('finished', onFinished)
-    mixerRef.current.addEventListener('finished', console.log)
     return () => mixerRef.current.removeEventListener('finished', onFinished)
   }, [onFinished])
 

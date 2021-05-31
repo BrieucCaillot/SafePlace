@@ -34,6 +34,7 @@ const CairnGround = ({
           folderName={'cairn_greenery'}
           controlsName={'grass'}
           route={Routes.Journey}
+          textureName={'grass_chapter_1'}
           grassParams={{
             weightAttribute: 'grassWeight',
             amount: 24576,

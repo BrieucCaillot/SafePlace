@@ -49,11 +49,6 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const { actions, mixer } = useAnimations([camAnim], containerRef)
   const anim = useAnimManager(actions, mixer, 'Action.003')
   useConfigActions(actions, 'Action.003')
-  useSetActionDurationFromAudioDuration(
-    actions,
-    'Action.003',
-    VOICEOVER.JOURNEY.CAIRNS
-  )
 
   useEffect(() => {
     if (!willPlay) return

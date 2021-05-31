@@ -31,7 +31,12 @@ const Slats = forwardRef(
     )
 
     const getAnim = useCallback(
-      (animName: string) => anims.find((a) => a.name.includes(animName)),
+      (animName: string) =>
+        anims.find(
+          (a) =>
+            a.name.substring(a.name.length - 1) ===
+            animName.substring(animName.length - 1)
+        ),
       [anims]
     )
 
