@@ -19,7 +19,7 @@ const LayoutTransition: React.FC<TransitionKind<ReactChild>> = ({
   return (
     <TransitionGroup
       id='transition-group'
-      className='absolute top-0 pointer-events-none z-10'
+      className='fixed top-0 pointer-events-none z-10'
     >
       <ReactTransition
         key={location}

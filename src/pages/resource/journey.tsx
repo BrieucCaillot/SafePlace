@@ -10,7 +10,7 @@ const ResourceJourney = ({ status }: { status: TransitionStatus }) => {
 
   return (
     <>
-      <div className='flex flex-col h-full justify-center'>
+      <div className='fixed top-screen-h/2 transform-gpu -translate-y-1/2 flex items-center h-full'>
         <ResourceContent show={show} />
       </div>
     </>
