@@ -8,4 +8,15 @@
       rgba(98, 99, 163, 1) 100%
     );
   }
+  &-layout {
+    &__bottom {
+      background: rgba(0, 0, 0, 0.007);
+      background: linear-gradient(
+        0deg,
+        #0000004f 0%,
+        #0a0a0a1f 45%,
+        rgba(0, 0, 0, 0) 80%
+      );
+    }
+  }
 }

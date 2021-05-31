@@ -23,7 +23,9 @@ const ButtonStonecut = ({
       onClick={onClick}
       className={`relative button-stonecut tracking-widest text-lg focus:outline-none w-max ml-auto mr-auto ${className}`}
     >
-      <SVGStonecut />
+      <div className='button-stonecut__wrapper'>
+        <SVGStonecut />
+      </div>
       <span className='text-stroke-4'>{children}</span>
     </button>
   )

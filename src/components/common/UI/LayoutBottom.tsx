@@ -8,9 +8,9 @@ const LayoutBottom = ({ show }: { show: boolean }) => {
     <CSSTransition in={show} timeout={1000} classNames='elem-fade' appear>
       <div
         id='layout-bottom'
-        className={`absolute bottom-0 left-0 z-10 w-full px-5 md:px-14 mb-5 flex items-center justify-between ${
+        className={`fixed bottom-0 left-0 z-10 w-full px-5 md:px-14 pb-5 flex items-center justify-between ${
           show ? 'visible' : 'invisible'
-        }`}
+        } gradient-layout__bottom`}
       >
         <div id='layout-bottom-left'></div>
         <div
