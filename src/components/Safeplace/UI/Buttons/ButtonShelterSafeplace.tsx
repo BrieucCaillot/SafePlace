@@ -15,10 +15,7 @@ const ButtonShelterSafeplace = ({
   show: boolean
   direction: 'left' | 'right'
 }) => {
-  const position = useMemo(
-    () => (direction === 'left' ? 'left-5' : 'right-5'),
-    []
-  )
+  const position = useMemo(() => (direction === 'left' ? 'ml-5' : 'mr-5'), [])
 
   return (
     <CSSTransition
@@ -29,10 +26,7 @@ const ButtonShelterSafeplace = ({
       unmountOnExit
       appear
     >
-      <div
-        className={`absolute ${position} transform-gpu translate-y-1/2 text-tertiary duration-2000`}
-        style={{ top: '50vh' }}
-      >
+      <div className={`${position} text-tertiary duration-2000`}>
         <div className='relative'>
           <ButtonParticles direction={direction} />
 

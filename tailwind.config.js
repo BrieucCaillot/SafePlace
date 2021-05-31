@@ -30,6 +30,10 @@ module.exports = {
       'button-ui': 'var(--button-ui)',
     },
     extend: {
+      spacing: {
+        'screen-h/2': '50vh',
+        'screen-w/2': '50vw',
+      },
       transitionDuration: {
         2000: '2000ms',
       },

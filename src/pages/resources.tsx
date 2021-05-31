@@ -8,9 +8,9 @@ const Resources = ({ status }: { status: TransitionStatus }) => {
   const show = useTransitionStatus(status)
 
   return (
-    <>
+    <div className={`fixed top-screen-h/2 flex justify-end w-full `}>
       <ButtonShelterSafeplace show={show} direction='right' />
-    </>
+    </div>
   )
 }
 

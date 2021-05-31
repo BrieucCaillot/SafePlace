@@ -16,8 +16,7 @@ const Instructions = ({ show }: { show: boolean }) => {
   return (
     <div
       id='instructions'
-      className='absolute transform-gpu -translate-x-1/2 -translate-y-1/2'
-      style={{ left: '50vw', top: '50vh' }}
+      className='absolute transform-gpu -translate-x-1/2 -translate-y-1/2 top-screen-h/2 left-screen-w/2'
     >
       <Instruction
         show={show}

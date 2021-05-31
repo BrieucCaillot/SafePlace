@@ -28,7 +28,9 @@ const MountainColumn = ({ status }: { status: TransitionStatus }) => {
 
   return (
     <>
-      <ButtonShelterSafeplace show={show} direction='left' />
+      <div className={`fixed top-screen-h/2 flex justify-start w-full `}>
+        <ButtonShelterSafeplace show={show} direction='left' />
+      </div>
     </>
   )
 }
