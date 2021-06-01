@@ -83,7 +83,10 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   )
   const willPlay = useSceneStore((s) => s.nextScene === SceneName.Lake)
 
-  const audio = useAudioManager(VOICEOVER.JOURNEY.LAKE)
+  const audio = useAudioManager([
+    VOICEOVER.JOURNEY.LAKE1,
+    VOICEOVER.JOURNEY.LAKE2,
+  ])
 
   const { actions, mixer } = useAnimations([camAnim], containerRef)
   useConfigActions(actions, 'Action.006')
@@ -107,7 +110,17 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       wrap(wait(15000)).then(() => setAnimatedDandelion(3))
       wrap(wait(20000)).then(() => setAnimatedDandelion(4))
 
-      await wrap(Promise.all([anim.play(), audio.play()]))
+      await wrap(
+        Promise.all([
+          anim.play(),
+          (async () => {
+            await wait(2000)
+            await audio.play(VOICEOVER.JOURNEY.LAKE1)
+            await wait(5000)
+            await audio.play(VOICEOVER.JOURNEY.LAKE2)
+          })(),
+        ])
+      )
       await wrap(wait(5000))
 
       setSection(JourneySection.Waterfall)
