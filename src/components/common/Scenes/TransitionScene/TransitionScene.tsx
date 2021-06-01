@@ -68,8 +68,8 @@ const TransitionScene = forwardRef(
       {
         amount: { value: 8, step: 1 },
         globalOffset: { min: 0, max: Math.PI * 2, value: 0 },
-        distance: { min: 0, max: 1, value: 0.39 },
-        scale: 1.8,
+        distance: { min: 0, max: 1, value: 0.38 },
+        scale: 2,
       },
       { render: () => false }
     )
