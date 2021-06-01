@@ -38,7 +38,7 @@ const FogPlane = ({
     uSpeed: { value: 0 },
   })
 
-  useNumberUniform(uniforms.current.uSpeed, speed)
+  useNumberUniform(uniforms.current.uSpeed, speed / 10)
 
   useFrame(() => {
     uniforms.current.uTime.value = clockRef.current.getElapsedTime()

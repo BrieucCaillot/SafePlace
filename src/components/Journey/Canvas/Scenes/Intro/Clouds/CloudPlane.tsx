@@ -38,7 +38,7 @@ const CloudPlane = ({
     uSpeed: { value: 0 },
   })
 
-  useNumberUniform(uniforms.current.uSpeed, scrollSpeed)
+  useNumberUniform(uniforms.current.uSpeed, scrollSpeed / 100)
 
   useFrame(() => {
     uniforms.current.uTime.value = clockRef.current.getElapsedTime()
