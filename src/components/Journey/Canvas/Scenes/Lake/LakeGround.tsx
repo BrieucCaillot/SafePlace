@@ -31,6 +31,7 @@ const LakeGround = ({ object }: { object: THREE.Object3D }) => {
         controlsName={'grass'}
         route={Routes.Journey}
         grassParams={{ weightAttribute: 'grassWeight', amount: 4096 }}
+        textureName={'grass_chapter_1'}
         position={new THREE.Vector3(0, 0.4, 0).add(groundMesh.position)}
         shadowTexture={shadowTex}
       />
