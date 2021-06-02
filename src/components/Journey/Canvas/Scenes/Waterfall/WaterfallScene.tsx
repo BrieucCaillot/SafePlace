@@ -46,7 +46,10 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   const cameraOffset = useMemo(() => cameras.position.toArray(), [])
   const camContainer = useRef<THREE.Group>()
-  const slatRef = useRef<{ play: () => Promise<void> }>()
+  const slatRef = useRef<{
+    play: () => Promise<void>
+    getGroup: () => RefObject<THREE.Group>
+  }>()
 
   // --- STATE
   const isSettledInScene = useSceneStore(
@@ -156,7 +159,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         <WaterfallGround object={waterfall.children[1] as THREE.Mesh} />
       </GroupShorthand>
 
-      <Waterfall position-y={0} slats={slats} />
+      <Waterfall position-y={0} slats={slatRef} />
 
       <ColumnLink
         onColumnClick={bridgeButtonPromise.resolve}
