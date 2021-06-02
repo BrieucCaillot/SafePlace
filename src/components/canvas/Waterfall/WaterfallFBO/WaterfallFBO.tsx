@@ -3,6 +3,7 @@ import {
   RefObject,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
 } from 'react'
 import { createPortal, useFrame } from 'react-three-fiber'
@@ -24,12 +25,14 @@ const WaterfallFBO = forwardRef(
       initTexture,
       mousePosRef,
       doesIntersectRef,
+      sdfScene,
     }: {
       scene: RefObject<THREE.Scene>
       quadTexture: WatchableRefObject<THREE.Texture>
       initTexture: WatchableRefObject<THREE.Texture>
       mousePosRef: WatchableRefObject<THREE.Vector3>
       doesIntersectRef: WatchableRefObject<boolean>
+      sdfScene: THREE.Object3D
     },
     ref: RefObject<THREE.Mesh>
   ) => {
@@ -53,15 +56,15 @@ const WaterfallFBO = forwardRef(
           },
           angleAmplitude: { value: 0.2, min: 0, max: Math.PI, label: 'Angle' },
           movementSpeed: {
-            value: 1.17,
+            value: 11.7,
             min: 0,
-            max: 3,
+            max: 30,
             label: 'Speed',
           },
           lifeTime: { value: 7, label: 'Life Time' },
-          sdfOffset: { x: 0.83, y: 3.5, z: -0.26 },
-          rounding: { value: 0.66, min: 0, max: 2 },
-          cursorSize: { value: 0.15, min: 0, max: 1 },
+          sdfOffset: { x: 0, y: 0, z: 0 },
+          rounding: { value: 6.6, min: 0, max: 20 },
+          cursorSize: { value: 1.5, min: 0, max: 10 },
         },
         { collapsed: true }
       ),
@@ -99,12 +102,71 @@ const WaterfallFBO = forwardRef(
       uniforms.current.uDelta.value = clockRef.current.getDelta()
     })
 
+    const frag = useMemo(() => {
+      const format = (o: THREE.Vector3 | THREE.Quaternion) =>
+        o
+          .toArray()
+          .map((n) => n.toFixed(3))
+          .toString()
+      const lines: Array<string> = []
+
+      const genLine = (o: THREE.Object3D) => {
+        const q = `vec4(${format(o.quaternion)})`
+        const p = `vec3(${format(o.position)})`
+        const s = `vec3(${format(o.scale)})`
+        switch (o.name.match(/^(.*)_/)[1]) {
+          case 'ellipsoid':
+            return lines.push(`d = min(sdEllipsoid(${p} - pos, ${s}), d);`)
+          case 'sphere':
+            return lines.push(`d = min(sdSphere(${p} - pos, ${o.scale.x}), d);`)
+          case 'rounded_box':
+            const rounding = 3
+            const sr = format(o.scale.clone().subScalar(rounding))
+            const r = rounding.toFixed(3)
+            return lines.push(
+              `d = min(sdRoundBox(rotateVector(${q}, ${p} - pos), vec3(${sr}), ${r}), d);`
+            )
+          default:
+            return lines.push(
+              `d = min(sdBox(rotateVector(${q}, ${p} - pos), ${s}), d);`
+            )
+          // sdRoundBox
+        }
+      }
+
+      const b1 = sdfScene.children.find((o) => o.name === 'box_1')
+      const q1 = `vec4(${format(b1.quaternion)})`
+      const p1 = `vec3(${format(b1.position)})`
+      const s1 = `vec3(${format(b1.scale)})`
+      lines.push(`float d1 = sdBox(rotateVector(${q1}, ${p1} - pos), ${s1});`)
+      const rb1 = sdfScene.children.find((o) => o.name === 'rounded_box_1')
+      const rounding = 4
+      const r = rounding.toFixed(3)
+      const rq1 = `vec4(${format(rb1.quaternion)})`
+      const rp1 = `vec3(${format(rb1.position)})`
+      const rs1 = `vec3(${format(rb1.scale.clone().subScalar(rounding))})`
+      lines.push(
+        `float rd1 = sdRoundBox(rotateVector(${rq1}, ${rp1} - pos), vec3(${rs1}), ${r});`,
+        'd = opSmoothUnion(rd1, d1, uRounding);'
+        // 'float du = min(d1, rd1);',
+        // 'd = min(d, du);'
+      )
+
+      for (const o of sdfScene.children) {
+        if (o.name === 'box_1') continue
+        if (o.name === 'rounded_box_1') continue
+        genLine(o)
+      }
+      // const sdfString = ''
+      return fragmentShader.replace('// Insert here', lines.join('\n'))
+    }, [])
+
     return createPortal(
       <mesh scale={[1, 1, 1]} ref={ref}>
         <planeGeometry />
         <shaderMaterial
           uniforms={uniforms.current}
-          fragmentShader={fragmentShader}
+          fragmentShader={frag}
           vertexShader={vertexShader}
         />
       </mesh>,
