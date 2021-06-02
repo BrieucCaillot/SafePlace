@@ -6,6 +6,7 @@ uniform float uDelta;
 
 uniform vec3 uMousePos;
 uniform vec3 uSdfOffset;
+uniform float uSlatOffset;
 uniform vec3 uSlatsPos[5];
 
 uniform float uAngleAmplitude;

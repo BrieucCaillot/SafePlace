@@ -164,6 +164,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       <ColumnLink
         onColumnClick={bridgeButtonPromise.resolve}
         show={bridgeButtonPromise.isWaiting}
+        position={[-10, 5, 0]}
       />
 
       <Slats group={slats} anims={slatAnims} ref={slatRef} />

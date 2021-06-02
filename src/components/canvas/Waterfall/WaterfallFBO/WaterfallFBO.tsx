@@ -46,6 +46,7 @@ const WaterfallFBO = forwardRef(
       sdfOffset,
       rounding,
       cursorSize,
+      slatOffset,
     } = useControls('particles', {
       'Simulator Params': folder(
         {
@@ -60,6 +61,7 @@ const WaterfallFBO = forwardRef(
           sdfOffset: { x: 0, y: 0, z: 0 },
           rounding: { value: 6.6, min: 0, max: 20 },
           cursorSize: { value: 1.5, min: 0, max: 10 },
+          slatOffset: 3.8,
         },
         { collapsed: true }
       ),
@@ -81,6 +83,7 @@ const WaterfallFBO = forwardRef(
       uSlatsPos: {
         value: new Array(5).fill(null).map(() => new THREE.Vector3()),
       },
+      uSlatOffset: { value: 0 },
     })
     useNumberUniform(uniforms.current.uAngleAmplitude, angleAmplitude)
     useNumberUniform(uniforms.current.uMovementSpeed, movementSpeed)
@@ -88,6 +91,7 @@ const WaterfallFBO = forwardRef(
     useNumberUniform(uniforms.current.uRounding, rounding)
     useNumberUniform(uniforms.current.uCursorSize, cursorSize)
     useVector3Uniform(uniforms.current.uSdfOffset, sdfOffset)
+    useNumberUniform(uniforms.current.uSlatOffset, slatOffset)
     useWatchableUniform(uniforms.current.uPosTexture, quadTexture)
     useWatchableUniform(uniforms.current.uOrigPosTexture, initTexture)
     useWatchableUniform(uniforms.current.uMousePos, mousePosRef)
@@ -96,6 +100,7 @@ const WaterfallFBO = forwardRef(
     useFrame(() => {
       uniforms.current.uTime.value = clockRef.current.elapsedTime
       uniforms.current.uDelta.value = clockRef.current.getDelta()
+      if (slats.current === null) return
       ;(uniforms.current.uSlatsPos.value as THREE.Vector3[]).map((v, i) =>
         slats.current.getGroup().current.children[i].getWorldPosition(v)
       )
@@ -119,8 +124,9 @@ const WaterfallFBO = forwardRef(
           case 'slat':
             const ns = o.name.substr(o.name.length - 1)
             const ni = Number.parseInt(ns) - 1
+            // const c = (o.scale.z / 2).toFixed(3)
             return lines.push(
-              `d = min(sdBox(rotateVector(${q}, uSlatsPos[${ni}] - pos), ${s}), d);`
+              `d = min(sdBox(rotateVector(${q}, uSlatsPos[${ni}] + vec3(0.,0., uSlatOffset) - pos ), ${s}), d);`
             )
           case 'sphere':
             return lines.push(`d = min(sdSphere(${p} - pos, ${o.scale.x}), d);`)
