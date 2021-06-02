@@ -129,6 +129,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   return (
     <>
+      {/* <ClassicCamera ref={camRef} /> */}
       <group position={cameraOffset}>
         <group ref={camContainer}>
           <perspectiveCamera
@@ -154,7 +155,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         <WaterfallGround object={waterfall.children[1] as THREE.Mesh} />
       </GroupShorthand>
 
-      <Waterfall scale={[7, 7, 7]} position={[-5.5, 0, 0]} />
+      <Waterfall position-y={0} />
 
       <ColumnLink
         onColumnClick={bridgeButtonPromise.resolve}

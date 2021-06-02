@@ -19,6 +19,8 @@ import findMinimumTexSize from '@/utils/FBO/findMinimumTexSize'
 import useSceneStore from '@/stores/useSceneStore'
 import SceneName from '@/constants/enums/SceneName'
 import Routes from '@/constants/enums/Routes'
+import { useGLTF } from '@react-three/drei'
+import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 
 const Waterfall = (props: GroupProps) => {
   const { showDegug, numPoints } = useControls(
@@ -37,6 +39,8 @@ const Waterfall = (props: GroupProps) => {
     }
   )
 
+  const { nodes } = useGLTF('/models/journey/waterfall_sdf.glb')
+
   const bufferSize = useMemo<THREE.Vector2Tuple>(
     () => findMinimumTexSize(numPoints),
     [numPoints]
@@ -50,8 +54,6 @@ const Waterfall = (props: GroupProps) => {
   const cameraRef = useRef<THREE.Camera>(
     new THREE.OrthographicCamera(-0.5, 0.5, 0.5, -0.5)
   )
-
-  const targetMeshRef = useRef<THREE.Mesh>(null)
 
   const feedbackRef = useRef<THREE.Mesh>(null)
   const particleRef = useRef<THREE.Mesh>(null)
@@ -81,11 +83,14 @@ const Waterfall = (props: GroupProps) => {
   useEffect(() => {
     cameraRef.current.position.setZ(6)
 
-    if (!targetMeshRef.current?.geometry) return
-    targetMeshRef.current.geometry.computeBoundingBox()
-    targetMeshRef.current.updateMatrix()
-    const boundingBox = targetMeshRef.current.geometry.boundingBox?.clone()
-    boundingBox?.applyMatrix4(targetMeshRef.current.matrix)
+    const targetMesh = nodes['spawn'] as THREE.Mesh
+
+    if (!targetMesh.geometry) return
+    const geom = targetMesh.geometry
+    geom.computeBoundingBox()
+    targetMesh.updateMatrix()
+    const boundingBox = geom.boundingBox.clone()
+    boundingBox?.applyMatrix4(targetMesh.matrix)
 
     initTextureRef.current = getPositionTextureFromBox(
       bufferSize,
@@ -135,29 +140,17 @@ const Waterfall = (props: GroupProps) => {
           <planeGeometry />
           <meshBasicMaterial />
         </mesh>
-        <mesh
-          name='SpawnBox'
-          ref={targetMeshRef}
-          scale={[4, 0.3, 0.3]}
-          position={[0, 3.25, -0.95]}
-        >
-          <boxBufferGeometry />
-          <meshBasicMaterial color={'blue'} wireframe={true} />
-        </mesh>
-        <mesh
+        <MeshShorthand
           name='RaycastPlane'
           ref={raycastPlane}
-          position-z={-0.85}
-          rotation-x={-0.1}
-          position-y={1.8}
+          object={nodes['raycast'] as THREE.Mesh}
         >
-          <planeGeometry args={[3.8, 2.3, 1]} />
           <meshBasicMaterial
             color={'green'}
             wireframe={false}
             depthTest={true}
           />
-        </mesh>
+        </MeshShorthand>
       </group>
 
       <WaterfallParticles
@@ -172,6 +165,7 @@ const Waterfall = (props: GroupProps) => {
         initTexture={initTextureRef}
         mousePosRef={raycastedMouseRef}
         doesIntersectRef={doesIntersectRef}
+        sdfScene={nodes['sdf']}
       />
     </group>
   )
