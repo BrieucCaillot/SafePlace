@@ -32,6 +32,7 @@ import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
 import WaterParams from '@/components/Safeplace/Canvas/Decorations/Water/WaterParams'
 import SceneShorthand from '@/components/common/Canvas/SceneShorthand'
 import TreeParams from '@/components/common/Canvas/Decorations/Trees/TreeParams'
+import LakeLilies from './LakeLilies'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -165,7 +166,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       </GroupShorthand>
 
       <SceneShorthand object={rocks} />
-      <SceneShorthand object={waterlilies} />
+      <LakeLilies object={waterlilies} />
     </>
   )
 })
