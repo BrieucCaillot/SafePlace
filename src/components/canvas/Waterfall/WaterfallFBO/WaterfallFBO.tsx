@@ -26,6 +26,7 @@ const WaterfallFBO = forwardRef(
       mousePosRef,
       doesIntersectRef,
       sdfScene,
+      slats,
     }: {
       scene: RefObject<THREE.Scene>
       quadTexture: WatchableRefObject<THREE.Texture>
@@ -33,12 +34,12 @@ const WaterfallFBO = forwardRef(
       mousePosRef: WatchableRefObject<THREE.Vector3>
       doesIntersectRef: WatchableRefObject<boolean>
       sdfScene: THREE.Object3D
+      slats: THREE.Object3D
     },
     ref: RefObject<THREE.Mesh>
   ) => {
     const clockRef = useRef<THREE.Clock>(new THREE.Clock())
     const {
-      baseDirection,
       angleAmplitude,
       movementSpeed,
       lifeTime,
@@ -48,12 +49,6 @@ const WaterfallFBO = forwardRef(
     } = useControls('particles', {
       'Simulator Params': folder(
         {
-          baseDirection: {
-            value: Math.PI,
-            min: 0,
-            max: Math.PI * 2,
-            label: 'Direction',
-          },
           angleAmplitude: { value: 0.2, min: 0, max: Math.PI, label: 'Angle' },
           movementSpeed: {
             value: 11.7,
@@ -77,15 +72,14 @@ const WaterfallFBO = forwardRef(
       uDoesIntersect: { value: false },
       uTime: { value: 0 },
       uDelta: { value: 0 },
-      uBaseDirection: { value: 0 },
       uAngleAmplitude: { value: 0 },
       uMovementSpeed: { value: 0 },
       uLifeTime: { value: 0 },
       uSdfOffset: { value: new THREE.Vector3() },
       uRounding: { value: 0 },
       uCursorSize: { value: 0 },
+      uSlatsPos: { value: slats.children.map(() => new THREE.Vector3()) },
     })
-    useNumberUniform(uniforms.current.uBaseDirection, baseDirection)
     useNumberUniform(uniforms.current.uAngleAmplitude, angleAmplitude)
     useNumberUniform(uniforms.current.uMovementSpeed, movementSpeed)
     useNumberUniform(uniforms.current.uLifeTime, lifeTime)
@@ -100,6 +94,9 @@ const WaterfallFBO = forwardRef(
     useFrame(() => {
       uniforms.current.uTime.value = clockRef.current.elapsedTime
       uniforms.current.uDelta.value = clockRef.current.getDelta()
+      ;(uniforms.current.uSlatsPos.value as THREE.Vector3[]).map((v, i) =>
+        slats.children[i].getWorldPosition(v)
+      )
     })
 
     const frag = useMemo(() => {
@@ -117,10 +114,17 @@ const WaterfallFBO = forwardRef(
         switch (o.name.match(/^(.*)_/)[1]) {
           case 'ellipsoid':
             return lines.push(`d = min(sdEllipsoid(${p} - pos, ${s}), d);`)
+          case 'slat':
+            const ns = o.name.substr(o.name.length - 1)
+            const ni = Number.parseInt(ns) - 1
+            return lines.push(
+              `d = min(sdBox(rotateVector(${q}, uSlatsPos[${ni}] - pos), ${s}), d);`
+            )
           case 'sphere':
             return lines.push(`d = min(sdSphere(${p} - pos, ${o.scale.x}), d);`)
           case 'rounded_box':
-            const rounding = 3
+            const n = o.name.substr(o.name.length - 1)
+            const rounding = n === '3' ? 1 : 3
             const sr = format(o.scale.clone().subScalar(rounding))
             const r = rounding.toFixed(3)
             return lines.push(
@@ -148,8 +152,6 @@ const WaterfallFBO = forwardRef(
       lines.push(
         `float rd1 = sdRoundBox(rotateVector(${rq1}, ${rp1} - pos), vec3(${rs1}), ${r});`,
         'd = opSmoothUnion(rd1, d1, uRounding);'
-        // 'float du = min(d1, rd1);',
-        // 'd = min(d, du);'
       )
 
       for (const o of sdfScene.children) {

@@ -25,6 +25,7 @@ import useAudioManager from '@/hooks/audio/useAudioManager'
 import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
 import WaterfallGround from './WaterfallGround'
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
+import { useFrame } from 'react-three-fiber'
 
 const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   // REFS
@@ -155,7 +156,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         <WaterfallGround object={waterfall.children[1] as THREE.Mesh} />
       </GroupShorthand>
 
-      <Waterfall position-y={0} />
+      <Waterfall position-y={0} slats={slats} />
 
       <ColumnLink
         onColumnClick={bridgeButtonPromise.resolve}

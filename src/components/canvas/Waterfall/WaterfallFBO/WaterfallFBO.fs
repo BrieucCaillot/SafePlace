@@ -6,8 +6,8 @@ uniform float uDelta;
 
 uniform vec3 uMousePos;
 uniform vec3 uSdfOffset;
+uniform vec3 uSlatsPos[5];
 
-uniform float uBaseDirection;
 uniform float uAngleAmplitude;
 uniform float uMovementSpeed;
 uniform float uLifeTime;
