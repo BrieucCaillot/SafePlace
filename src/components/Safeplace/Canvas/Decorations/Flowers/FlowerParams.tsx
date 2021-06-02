@@ -29,6 +29,10 @@ const FlowersParams = ({
         '/img/common/greenery/red_flower.png',
         (t) => (t.flipY = false)
       ),
+      red_flower_stem: loaders.load(
+        '/img/common/greenery/red_flower_stem.png',
+        (t) => (t.flipY = false)
+      ),
     }
   }, [])
 
