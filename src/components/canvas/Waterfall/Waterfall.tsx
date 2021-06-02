@@ -22,7 +22,10 @@ import Routes from '@/constants/enums/Routes'
 import { useGLTF } from '@react-three/drei'
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 
-const Waterfall = (props: GroupProps) => {
+const Waterfall = ({
+  slats,
+  ...props
+}: GroupProps & { slats: THREE.Object3D }) => {
   const { showDegug, numPoints } = useControls(
     'particles',
     {
@@ -166,6 +169,7 @@ const Waterfall = (props: GroupProps) => {
         mousePosRef={raycastedMouseRef}
         doesIntersectRef={doesIntersectRef}
         sdfScene={nodes['sdf']}
+        slats={slats}
       />
     </group>
   )
