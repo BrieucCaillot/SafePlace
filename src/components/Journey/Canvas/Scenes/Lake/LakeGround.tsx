@@ -40,6 +40,7 @@ const LakeGround = ({ object }: { object: THREE.Object3D }) => {
         folderName={'lake_greenery'}
         controlsName={'flowers'}
         route={Routes.Journey}
+        textureName={'red_flower_stem'}
         flowersParams={{ weightAttribute: 'flowerWeight1', amount: 1024 }}
         position={groundMesh.position}
         shadowTexture={shadowTex}
