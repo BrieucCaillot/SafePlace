@@ -3,9 +3,11 @@ import {
   createRef,
   ForwardedRef,
   forwardRef,
+  RefObject,
   useCallback,
   useImperativeHandle,
   useMemo,
+  useRef,
 } from 'react'
 import Slat from './Slat'
 
@@ -18,9 +20,13 @@ const Slats = forwardRef(
       group: THREE.Object3D
       anims: THREE.AnimationClip[]
     },
-    ref: ForwardedRef<{ play: () => Promise<any> }>
+    ref: ForwardedRef<{
+      play: () => Promise<any>
+      getGroup: () => RefObject<THREE.Group>
+    }>
   ) => {
     const slats = useMemo(() => [...group.children] as THREE.Mesh[], [])
+    const groupRef = useRef<THREE.Group>()
 
     const slatRefs = useMemo(
       () =>
@@ -42,10 +48,11 @@ const Slats = forwardRef(
 
     useImperativeHandle(ref, () => ({
       play: () => Promise.all(slatRefs.map((r) => r.current.play())),
+      getGroup: () => groupRef,
     }))
 
     return (
-      <GroupShorthand object={group}>
+      <GroupShorthand object={group} ref={groupRef}>
         {slats.map((s, i) => (
           <Slat object={s} anim={getAnim(s.name)} ref={slatRefs[i]} key={i} />
         ))}

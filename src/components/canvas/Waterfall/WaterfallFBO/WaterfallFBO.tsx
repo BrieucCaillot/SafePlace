@@ -34,7 +34,7 @@ const WaterfallFBO = forwardRef(
       mousePosRef: WatchableRefObject<THREE.Vector3>
       doesIntersectRef: WatchableRefObject<boolean>
       sdfScene: THREE.Object3D
-      slats: THREE.Object3D
+      slats: RefObject<{ getGroup: () => RefObject<THREE.Group> }>
     },
     ref: RefObject<THREE.Mesh>
   ) => {
@@ -78,7 +78,9 @@ const WaterfallFBO = forwardRef(
       uSdfOffset: { value: new THREE.Vector3() },
       uRounding: { value: 0 },
       uCursorSize: { value: 0 },
-      uSlatsPos: { value: slats.children.map(() => new THREE.Vector3()) },
+      uSlatsPos: {
+        value: new Array(5).fill(null).map(() => new THREE.Vector3()),
+      },
     })
     useNumberUniform(uniforms.current.uAngleAmplitude, angleAmplitude)
     useNumberUniform(uniforms.current.uMovementSpeed, movementSpeed)
@@ -95,7 +97,7 @@ const WaterfallFBO = forwardRef(
       uniforms.current.uTime.value = clockRef.current.elapsedTime
       uniforms.current.uDelta.value = clockRef.current.getDelta()
       ;(uniforms.current.uSlatsPos.value as THREE.Vector3[]).map((v, i) =>
-        slats.children[i].getWorldPosition(v)
+        slats.current.getGroup().current.children[i].getWorldPosition(v)
       )
     })
 

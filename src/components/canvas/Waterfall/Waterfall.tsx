@@ -1,5 +1,6 @@
 import {
   MutableRefObject,
+  RefObject,
   useCallback,
   useEffect,
   useMemo,
@@ -25,7 +26,9 @@ import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 const Waterfall = ({
   slats,
   ...props
-}: GroupProps & { slats: THREE.Object3D }) => {
+}: GroupProps & {
+  slats: RefObject<{ getGroup: () => RefObject<THREE.Group> }>
+}) => {
   const { showDegug, numPoints } = useControls(
     'particles',
     {
