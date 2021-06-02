@@ -1,5 +1,6 @@
 import React, { forwardRef, RefObject, useEffect, useMemo, useRef } from 'react'
 import { useAnimations, useGLTF } from '@react-three/drei'
+import mergeRefs from 'react-merge-refs'
 
 import useSceneStore from '@/stores/useSceneStore'
 import useJourneyStore from '@/stores/useJourneyStore'
@@ -25,7 +26,8 @@ import useAudioManager from '@/hooks/audio/useAudioManager'
 import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
 import WaterfallGround from './WaterfallGround'
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
-import { useFrame } from 'react-three-fiber'
+import useMouseRotation from '@/hooks/animation/useMouseRotation'
+import wait from '@/utils/promise/wait'
 
 const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   // REFS
@@ -44,7 +46,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     return [[cam1, cam2, cam3], [...slatsAnims]]
   }, [])
 
-  const cameraOffset = useMemo(() => cameras.position.toArray(), [])
+  const localCamRef = useRef<THREE.PerspectiveCamera>()
   const camContainer = useRef<THREE.Group>()
   const slatRef = useRef<{
     play: () => Promise<void>
@@ -111,12 +113,13 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       setShowShelterButton(false)
       await wrap(waitEndButton())
       setJourneyStatus(true)
-      await wrap(
+      wrap(
         Promise.all([
           anim.play('camera_3'), //---
           audio.play(VOICEOVER.JOURNEY.OUTRO), //---
         ])
       )
+      await wrap(wait(35_000))
       router.push(Routes.Resources)
     },
     () => {
@@ -131,24 +134,32 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     [isSettledInScene]
   )
 
+  useMouseRotation(localCamRef, {
+    offset: [-Math.PI / 2, 0, 0],
+    amplitude: 0.02,
+    easing: 0.01,
+  })
+
+  console.log(gltf)
+
   return (
     <>
       {/* <ClassicCamera ref={camRef} /> */}
-      <group position={cameraOffset}>
+      <GroupShorthand object={cameras}>
         <group ref={camContainer}>
           <perspectiveCamera
-            ref={camRef}
+            ref={mergeRefs([camRef, localCamRef])}
             rotation-x={-Math.PI / 2}
             near={0.1}
             far={1000}
-            fov={32.6}
+            fov={32.4}
           />
           {/* <mesh>
             <boxBufferGeometry args={[1, 1, 1]} />
             <meshNormalMaterial />
           </mesh> */}
         </group>
-      </group>
+      </GroupShorthand>
 
       <CustomSky />
 
