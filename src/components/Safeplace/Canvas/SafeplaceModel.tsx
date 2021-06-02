@@ -7,13 +7,15 @@ import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 
 import Shelter from '@/components/Safeplace/Canvas/Shelter/Shelter'
 import ColumnLocation from '@/components/Safeplace/Canvas/ColumLocation/ColumnLocation'
+import Routes from '@/constants/enums/Routes'
 import MountainColumn from '@/components/Safeplace/Canvas/ColumLocation/MountainColum'
-import SafeplaceFlyingRocks from '@/components/Safeplace/Canvas/Decorations/SafeplaceFlyingRocks'
+import FlyingRocks from '@/components/common/Canvas/Decorations/FlyingRocks'
 import SafeplaceGround from './SafeplaceGround'
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
 import WaterParams from './Decorations/Water/WaterParams'
-import Routes from '@/constants/enums/Routes'
+import Tree from '@/components/common/Canvas/Decorations/Trees/Tree'
+import TreeParams from '@/components/common/Canvas/Decorations/Trees/TreeParams'
 
 const SafeplaceModel = (): ReactElement => {
   const { scene } = useGLTF('/models/safeplace/safeplace.glb')
@@ -102,7 +104,7 @@ const SafeplaceModel = (): ReactElement => {
 
       {isJourneyCompleted && (
         <>
-          <SafeplaceFlyingRocks flyingRocks={flying_rocks} />
+          <FlyingRocks flyingRocks={flying_rocks} />
           <GroupShorthand object={ark}>
             <MeshShorthand object={ark.children[0] as THREE.Mesh} />
           </GroupShorthand>
@@ -123,7 +125,7 @@ const SafeplaceModel = (): ReactElement => {
       <GroupShorthand object={trees}>
         <GroupShorthand object={trees.children[0]}>
           {trees.children[0].children.map((child) => (
-            <MeshShorthand object={child as THREE.Mesh} key={child.uuid} />
+            <TreeParams tree={child as THREE.Mesh} key={child.uuid} />
           ))}
         </GroupShorthand>
       </GroupShorthand>

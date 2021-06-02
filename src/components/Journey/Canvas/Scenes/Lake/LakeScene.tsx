@@ -6,43 +6,32 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
 import { useAnimations, useGLTF } from '@react-three/drei'
+import mergeRefs from 'react-merge-refs'
 
 import useJourneyStore from '@/stores/useJourneyStore'
-import useAudioStore from '@/stores/useAudioStore'
-import useThreeAnimation from '@/hooks/animation/useThreeAnimation'
-import JourneySection from '@/constants/enums/JourneySection'
-import Place from '@/constants/enums/Place'
-import Ambiants from '@/constants/enums/Ambiant'
-import { VoiceoverJourney } from '@/constants/enums/Voiceover'
-
-import withScenePortal from '@/components/common/Scenes/withScenePortal'
-import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
-import Dandelion from '@/components/canvas/Dandelion/Dandelion'
-import CustomSky from '@/components/canvas/Sky/CustomSky'
-import AudioStatus from '@/constants/enums/Audio'
-import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
-import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
-import LakeGround from './LakeGround'
 import useSceneStore from '@/stores/useSceneStore'
-import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
-import WaterParams from '@/components/Safeplace/Canvas/Decorations/Water/WaterParams'
-import Routes from '@/constants/enums/Routes'
 import useMouseRotation from '@/hooks/animation/useMouseRotation'
-import mergeRefs from 'react-merge-refs'
-import { Howler } from 'howler'
-import VOICEOVER from '@/constants/VOICEOVER'
-import wait from '@/utils/promise/wait'
-import SceneName from '@/constants/enums/SceneName'
 import useAsyncEffect from '@/hooks/promise/useAsyncEffect'
 import useConfigActions from '@/hooks/animation/useConfigActions'
-import promisifyAction from '@/utils/promise/promisifyAction'
-import { useControls } from 'leva'
 import useAnimManager from '@/hooks/animation/useAnimManager'
 import useAudioManager from '@/hooks/audio/useAudioManager'
+import JourneySection from '@/constants/enums/JourneySection'
+import SceneName from '@/constants/enums/SceneName'
+import Routes from '@/constants/enums/Routes'
+import VOICEOVER from '@/constants/VOICEOVER'
+import wait from '@/utils/promise/wait'
+
+import withScenePortal from '@/components/common/Scenes/withScenePortal'
+import Dandelion from '@/components/canvas/Dandelion/Dandelion'
+import CustomSky from '@/components/canvas/Sky/CustomSky'
+import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
+import LakeGround from '@/components/Journey/Canvas/Scenes/Lake/LakeGround'
+import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
+import WaterParams from '@/components/Safeplace/Canvas/Decorations/Water/WaterParams'
 import SceneShorthand from '@/components/common/Canvas/SceneShorthand'
+import TreeParams from '@/components/common/Canvas/Decorations/Trees/TreeParams'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -169,8 +158,8 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
       <GroupShorthand object={trees}>
         <GroupShorthand object={trees.children[0]}>
-          {trees.children[0].children.map((o) => (
-            <MeshShorthand object={o as THREE.Mesh} key={o.uuid} />
+          {trees.children[0].children.map((tree) => (
+            <TreeParams tree={tree as THREE.Mesh} key={tree.uuid} />
           ))}
         </GroupShorthand>
       </GroupShorthand>

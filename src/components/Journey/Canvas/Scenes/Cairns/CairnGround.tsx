@@ -1,4 +1,5 @@
 import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
+import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 import FlowersParams from '@/components/Safeplace/Canvas/Decorations/Flowers/FlowerParams'
 import GrassParams from '@/components/Safeplace/Canvas/Decorations/Grass/GrassParams'
 import Routes from '@/constants/enums/Routes'
@@ -28,6 +29,7 @@ const CairnGround = ({
 
   return (
     <GroupShorthand object={group}>
+      <MeshShorthand object={groundMesh} />
       <GroupShorthand object={groundMesh}>
         <GrassParams
           targetMeshRef={groundMeshRef}
