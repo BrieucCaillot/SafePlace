@@ -2,8 +2,8 @@
   &-stonecut {
     &__wrapper {
       position: absolute;
-      top: -19px;
-      left: -29px;
+      top: -20px;
+      left: -40px;
       clip-path: polygon(
         100% 35%,
         100% 0%,
@@ -11,8 +11,8 @@
         0% 99%,
         100% 99%,
         100% 65%,
-        40% 65%,
-        40% 35%
+        40% 70%,
+        50% 35%
       );
     }
 
@@ -21,7 +21,7 @@
     }
 
     svg {
-      transform: scale(0.6) rotate(0deg);
+      transform: scale(0.6) rotate(7deg);
       transition: all 1s ease-in-out;
     }
   }
@@ -35,10 +35,10 @@
       top: 50%;
       left: 50%;
       transform: translate3d(-50%, -50%, 0);
-      transition: transform 1s ease-in-out;
+      transition: transform 2s ease-in-out;
     }
     &:hover:before {
-      transform: translate3d(-50%, -50%, 0) rotate(90deg);
+      transform: translate3d(-50%, -50%, 0) scale(1.2) rotate(360deg);
     }
   }
   &-close {

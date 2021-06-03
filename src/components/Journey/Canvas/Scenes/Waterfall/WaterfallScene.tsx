@@ -142,16 +142,16 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   return (
     <>
-      {/* <ClassicCamera ref={camRef} /> */}
+      <ClassicCamera ref={camRef} fov={32.4} />
       <GroupShorthand object={cameras}>
         <group ref={camContainer}>
-          <perspectiveCamera
+          {/* <perspectiveCamera
             ref={mergeRefs([camRef, localCamRef])}
             rotation-x={-Math.PI / 2}
             near={0.1}
             far={1000}
             fov={32.4}
-          />
+          /> */}
           {/* <mesh>
             <boxBufferGeometry args={[1, 1, 1]} />
             <meshNormalMaterial />
