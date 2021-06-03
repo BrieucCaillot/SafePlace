@@ -9,6 +9,8 @@ uniform float uWindAmplitude;
 
 varying vec2 vUv;
 
+#include <fog_pars_vertex>
+
 void main() {
 
   vec3 pos = position;
@@ -29,4 +31,6 @@ void main() {
 
   vUv = uv;
 
+  vec3 mvPosition = (vec4(pos, 1.0) * modelViewMatrix).xyz;
+  #include <fog_vertex>
 }

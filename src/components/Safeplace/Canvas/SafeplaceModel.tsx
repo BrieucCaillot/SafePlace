@@ -4,17 +4,16 @@ import * as THREE from 'three'
 
 import useUserStore from '@/stores/useUserStore'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
+import Routes from '@/constants/enums/Routes'
 
 import Shelter from '@/components/Safeplace/Canvas/Shelter/Shelter'
 import ColumnLocation from '@/components/Safeplace/Canvas/ColumLocation/ColumnLocation'
-import Routes from '@/constants/enums/Routes'
 import MountainColumn from '@/components/Safeplace/Canvas/ColumLocation/MountainColum'
 import FlyingRocks from '@/components/common/Canvas/Decorations/FlyingRocks'
-import SafeplaceGround from './SafeplaceGround'
+import SafeplaceGround from '@/components/Safeplace/Canvas/SafeplaceGround'
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
-import WaterParams from './Decorations/Water/WaterParams'
-import Tree from '@/components/common/Canvas/Decorations/Trees/Tree'
+import WaterParams from '@/components/Safeplace/Canvas/Decorations/Water/WaterParams'
 import TreeParams from '@/components/common/Canvas/Decorations/Trees/TreeParams'
 
 const SafeplaceModel = (): ReactElement => {
@@ -70,6 +69,11 @@ const SafeplaceModel = (): ReactElement => {
   }
 
   const columnChildren = useMemo(() => [...columnGroup.children], [])
+
+  useEffect(() => {
+    ;((backgrounds.children[0] as THREE.Mesh)
+      .material as THREE.MeshBasicMaterial).fog = false
+  }, [])
 
   return (
     <>
