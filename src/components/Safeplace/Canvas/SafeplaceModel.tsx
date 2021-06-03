@@ -71,8 +71,10 @@ const SafeplaceModel = (): ReactElement => {
   const columnChildren = useMemo(() => [...columnGroup.children], [])
 
   useEffect(() => {
-    ;((backgrounds.children[0] as THREE.Mesh)
-      .material as THREE.MeshBasicMaterial).fog = false
+    backgrounds.children.forEach(
+      (c) =>
+        (((c as THREE.Mesh).material as THREE.MeshBasicMaterial).fog = false)
+    )
   }, [])
 
   return (
@@ -130,6 +132,7 @@ const SafeplaceModel = (): ReactElement => {
         <GroupShorthand object={trees.children[0]}>
           {trees.children[0].children.map((child) => (
             <TreeParams
+              controlsName={'safeplace_tree'}
               tree={child as THREE.Mesh}
               key={child.uuid}
               route={Routes.Safeplace}
