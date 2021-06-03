@@ -21,6 +21,9 @@ uniform float uFoamDurationVar; //= 0.1;
 uniform float uFoamSensitivity; //= 0.9;
 uniform float uFoamSensitivityVar; //= 0.1;
 
+uniform float uWindIntensity;
+uniform float uWindFrequency;
+
 varying vec2 vUv;
 
 #pragma glslify: random2D = require('../../../../utils/shaders/random2D')
@@ -29,6 +32,23 @@ varying vec2 vUv;
 #define PI 3.14159265
 
 const float EPSILON = .01;
+
+vec4 eulerToQuaternion(vec3 e)
+{
+    float cx = cos(e.x*0.5);
+    float cy = cos(e.y*0.5);    
+    float cz = cos(e.z*0.5);
+    float sx = sin(e.x*0.5);
+    float sy = sin(e.y*0.5);    
+    float sz = sin(e.z*0.5);
+
+    vec4 q = vec4(0.);
+    q.w = (cz*cx*cy)+(sz*sx*sy);
+    q.x = (cz*sx*cy)-(sz*cx*sy);
+    q.y = (cz*cx*sy)+(sz*sx*cy);
+    q.z = (sz*cx*cy)-(cz*sx*sy);
+    return q;        
+}
 
 
 float sdSphere( vec3 p, float s )
@@ -80,7 +100,9 @@ vec3 fakeVelocity(float seed, float seed2) {
     z
   ));
   vec3 coneToZ = normDir * uMovementSpeed * uDelta;
-  vec4 toBottomQuaternion = vec4(0.7071067811865475, 0., 0., 0.7071067811865475);
+  float x = uTime * uWindFrequency;
+  float wind = (sin(x) + sin(2.2*x+5.52) + sin(2.9*x+0.93) + sin(4.6*x+8.94)) * uWindIntensity;
+  vec4 toBottomQuaternion = eulerToQuaternion(vec3(PI / 2., wind, 0.));
   return -rotateVector(toBottomQuaternion, coneToZ);
 }
 

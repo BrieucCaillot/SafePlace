@@ -51,6 +51,8 @@ const WaterfallFBO = forwardRef(
       durationVar: foamDurationVar,
       sensitivity: foamSensitivity,
       sensitivityVar: foamSensitivityVar,
+      windFrequency,
+      windIntensity,
     } = useControls('particles', {
       'Simulator Params': folder(
         {
@@ -66,6 +68,8 @@ const WaterfallFBO = forwardRef(
           rounding: { value: 6.6, min: 0, max: 20 },
           cursorSize: { value: 0.8, min: 0, max: 10 },
           slatOffset: 3.8,
+          windFrequency: { value: 0.6, step: 0.01 },
+          windIntensity: { value: 0.05, step: 0.01 },
         },
         { collapsed: true }
       ),
@@ -98,6 +102,8 @@ const WaterfallFBO = forwardRef(
       uFoamDurationVar: { value: 0 },
       uFoamSensitivity: { value: 0 },
       uFoamSensitivityVar: { value: 0 },
+      uWindFrequency: { value: 0 },
+      uWindIntensity: { value: 0 },
     })
     useNumberUniform(uniforms.current.uAngleAmplitude, angleAmplitude)
     useNumberUniform(uniforms.current.uMovementSpeed, movementSpeed)
@@ -106,6 +112,8 @@ const WaterfallFBO = forwardRef(
     useNumberUniform(uniforms.current.uCursorSize, cursorSize)
     useVector3Uniform(uniforms.current.uSdfOffset, sdfOffset)
     useNumberUniform(uniforms.current.uSlatOffset, slatOffset)
+    useNumberUniform(uniforms.current.uWindFrequency, windFrequency)
+    useNumberUniform(uniforms.current.uWindIntensity, windIntensity)
     useWatchableUniform(uniforms.current.uPosTexture, quadTexture)
     useWatchableUniform(uniforms.current.uOrigPosTexture, initTexture)
     useWatchableUniform(uniforms.current.uMousePos, mousePosRef)
