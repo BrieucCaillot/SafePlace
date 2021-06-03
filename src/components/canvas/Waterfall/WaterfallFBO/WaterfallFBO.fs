@@ -15,6 +15,7 @@ uniform float uLifeTime;
 uniform float uRounding;
 uniform bool uDoesIntersect;
 uniform float uCursorSize;
+uniform float uCursorVar;
 
 uniform float uFoamDuration; //= 0.58;
 uniform float uFoamDurationVar; //= 0.1;
@@ -28,6 +29,7 @@ varying vec2 vUv;
 
 #pragma glslify: random2D = require('../../../../utils/shaders/random2D')
 #pragma glslify: remap = require('../../../../utils/shaders/remap')
+#pragma glslify: cartesian2polar = require('../../../../utils/shaders/cartesian2polar')
 
 #define PI 3.14159265
 
@@ -109,7 +111,12 @@ vec3 fakeVelocity(float seed, float seed2) {
 float sdScene(vec3 pos) {
   float d = 0.;
   // Insert here
-  d = min(sdCylinder(uMousePos - pos, vec3(0., 0., uDoesIntersect ? uCursorSize : 0.)), d);
+  float x = uTime * uWindFrequency;
+  float rSize = (sin(x) + sin(2.2*x+5.52) + sin(2.9*x+0.93) + sin(4.6*x+8.94)) * 0.5;
+  float a = mod(cartesian2polar((uMousePos - pos).xy).y + uTime, PI);
+  float as = (((sin(a * 5.) + sin(a * 2.5 + 2.5) * 0.7 + sin(a * 10. + 8.41) * 0.3) / 2.) + .5);
+  float size = uDoesIntersect ? uCursorSize + as * rSize * uCursorVar : 0.;
+  d = min(sdCylinder(uMousePos - pos, vec3(0., 0., size)), d);
 
   return d;
 }
@@ -153,7 +160,6 @@ void main()
     uFoamSensitivity - uFoamSensitivityVar / 2.,
     uFoamSensitivity + uFoamSensitivityVar / 2.
   );
-
 
   vec4 data = texture2D(uPosTexture, vUv).rgba;
   float lastLife = mod(data.w, 1000.);

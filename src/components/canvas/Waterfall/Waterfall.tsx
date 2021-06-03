@@ -125,7 +125,7 @@ const Waterfall = ({
     if (newDoesIntersect !== doesIntersectRef.current)
       doesIntersectRef.current = newDoesIntersect
 
-    if (intersections.length > 0)
+    if (newDoesIntersect)
       raycastedMouseRef.current = particleRef.current?.worldToLocal(
         intersections[0].point
       )
