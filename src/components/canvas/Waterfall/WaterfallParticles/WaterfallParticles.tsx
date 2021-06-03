@@ -29,6 +29,9 @@ const WaterfallParticles = forwardRef(
       alpha,
       startColor,
       endColor,
+      colorFactor: foamColorFactor,
+      size: foamSize,
+      color: foamColor,
     } = useControls(
       'particles',
       {
@@ -39,6 +42,14 @@ const WaterfallParticles = forwardRef(
             alpha: { value: 1, min: 0, max: 1 },
             startColor: '#a3b0d5',
             endColor: '#184162',
+          },
+          { collapsed: true }
+        ),
+        foam: folder(
+          {
+            colorFactor: { value: 0.8, min: 0, max: 1 },
+            size: 3.5,
+            color: '#ffffff',
           },
           { collapsed: true }
         ),
@@ -61,22 +72,20 @@ const WaterfallParticles = forwardRef(
       uAlpha: { value: 0 },
       uStartColor: { value: new THREE.Color() },
       uEndColor: { value: new THREE.Color() },
-      // uMatcap: { value: null },
-      // uNormalMap: { value: null },
+      uFoamColorFactor: { value: 0 },
+      uFoamSize: { value: 0 },
+      uFoamColor: { value: new THREE.Color() },
     })
 
     useNumberUniform(uniforms.current.uSize, particlesSize * gl.getPixelRatio())
     useNumberUniform(uniforms.current.uSizeVariation, sizeVariation)
     useNumberUniform(uniforms.current.uAlpha, alpha)
+    useNumberUniform(uniforms.current.uFoamColorFactor, foamColorFactor)
+    useNumberUniform(uniforms.current.uFoamSize, foamSize)
+    useColorUniform(uniforms.current.uFoamColor, foamColor)
     useColorUniform(uniforms.current.uStartColor, startColor)
     useColorUniform(uniforms.current.uEndColor, endColor)
     useWatchableUniform(uniforms.current.uPosTexture, positionTexture)
-    // useEffect(() => {
-    //   uniforms.current.uMatcap.value = matcap
-    // }, [matcap])
-    // useEffect(() => {
-    //   uniforms.current.uNormalMap.value = normalMap
-    // }, [normalMap])
 
     const bufferGeometry = useMemo(() => {
       const geometry = new THREE.BufferGeometry()
