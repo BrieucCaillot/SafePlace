@@ -42,8 +42,8 @@ const About = ({ status }: { status: TransitionStatus }) => {
             unmountOnExit
             appear
           >
-            <div className='flex opacity-0 w-full xl:w-3/4 mx-auto h-full flex-col justify-center items-center text-center overflow-y-scroll md:overflow-hidden'>
-              <h1 className='text-primary tracking-widest text-4xl md:text-5xl mt-96 md:mt-0 pt-64 md:pt-0 pb-9'>
+            <div className='flex opacity-0 w-full xl:w-3/4 mx-auto h-full flex-col justify-start md:justify-center items-center text-center overflow-y-scroll md:overflow-hidden'>
+              <h1 className='text-primary tracking-widest text-4xl md:text-5xl py-9 mt-20 md:mt-0'>
                 Projet
               </h1>
               <p className='text-primary tracking-widest text-base'>
@@ -86,7 +86,8 @@ const About = ({ status }: { status: TransitionStatus }) => {
                   <h3 className='text-white tracking-wider font-serif italic pb-3'>
                     Voix off
                   </h3>
-                  <p className='text-primary tracking-wider'>Aude EHRHARDT</p>
+                  <p className='text-primary tracking-wider'>Aude</p>
+                  <p className='text-primary tracking-wider'>EHRHARDT</p>
                 </div>
                 <div className='flex flex-col w-full pt-7 md:pt-0 flex-1'>
                   <h3 className='text-white tracking-wider font-serif italic pb-3'>
@@ -101,7 +102,7 @@ const About = ({ status }: { status: TransitionStatus }) => {
                 Nous remercions tout l'équipe pédagogique de Gobelins
               </p>
               <img
-                className='w-20 mb-20 md:mb-0'
+                className='w-20 py-3 mb-20 md:mb-0'
                 src='/img/about/logo-gobelins.png'
                 alt='logo-gobelins'
               />
