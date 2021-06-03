@@ -36,14 +36,6 @@ const useAudioStore = create<AudioStore>((set, get) => ({
   setMuted: (b: boolean) => set({ isMuted: b }),
 }))
 
-// const HELPER_OBJECT = {
-//   checkVoiceoverStatus: (s: AudioStore, key: AudioKey, status: AudioStatus) =>
-//     s.voiceoverStatusMap.get(key) === status,
-//   isVoiceoverPlayable: (s: AudioStore, key: AudioKey) =>
-//     !s.checkVoiceoverStatus(key, AudioStatus.Playing) &&
-//     !s.checkVoiceoverStatus(key, AudioStatus.Played),
-// }
-
 // window.useAudioStore = useAudioStore
 
 export default useAudioStore

@@ -60,7 +60,7 @@ const WaterfallFBO = forwardRef(
           lifeTime: { value: 7, label: 'Life Time' },
           sdfOffset: { x: 0, y: 0, z: 0 },
           rounding: { value: 6.6, min: 0, max: 20 },
-          cursorSize: { value: 1.5, min: 0, max: 10 },
+          cursorSize: { value: 0.8, min: 0, max: 10 },
           slatOffset: 3.8,
         },
         { collapsed: true }

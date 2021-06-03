@@ -1,16 +1,12 @@
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import * as THREE from 'three'
 
-import AudioStatus from '@/constants/enums/Audio'
 import Routes from '@/constants/enums/Routes'
-import Place from '@/constants/enums/Place'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
-import { VoiceoverSafeplace } from '@/constants/enums/Voiceover'
-import useAudioStore from '@/stores/useAudioStore'
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import useUserStore from '@/stores/useUserStore'
-import ColumnLink from './ColumnLink/ColumnLink'
-import ColumnLocation from './ColumnLocation'
+import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
+import ColumnLocation from '@/components/Safeplace/Canvas/ColumLocation/ColumnLocation'
 
 const MountainColumn = ({ columnObj }: { columnObj: THREE.Object3D }) => {
   const router = useUserStore((s) => s.router)

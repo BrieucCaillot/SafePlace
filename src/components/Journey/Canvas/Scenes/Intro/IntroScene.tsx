@@ -39,9 +39,9 @@ const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         max: 0.03,
         step: 0.001,
       },
-      cloud1Speed: { min: 0, max: 10, value: 1.6 },
-      cloud2Speed: { min: 0, max: 10, value: 1.0 },
-      fogSpeed: { min: 0, max: 10, value: 0.8 },
+      cloud1Speed: { min: 0, max: 10, value: 0.8 },
+      cloud2Speed: { min: 0, max: 10, value: 0.2 },
+      fogSpeed: { min: 0, max: 10, value: 0.6 },
       fogSize: [1, 1.1, 1],
     },
     {

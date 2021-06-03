@@ -2,12 +2,9 @@ import { ReactNode, useMemo } from 'react'
 import * as THREE from 'three'
 
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
-import AudioStatus from '@/constants/enums/Audio'
-import { VoiceoverSafeplace } from '@/constants/enums/Voiceover'
 import Routes from '@/constants/enums/Routes'
 
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
-import useAudioStore from '@/stores/useAudioStore'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'

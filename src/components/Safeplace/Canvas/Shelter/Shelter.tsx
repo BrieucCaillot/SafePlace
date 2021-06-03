@@ -2,17 +2,12 @@ import { useCallback, useEffect, useMemo } from 'react'
 import * as THREE from 'three'
 
 import useUserStore from '@/stores/useUserStore'
-import useAudioStore from '@/stores/useAudioStore'
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
-import Place from '@/constants/enums/Place'
-import { VoiceoverSafeplace } from '@/constants/enums/Voiceover'
-import AudioStatus from '@/constants/enums/Audio'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
 import ShelterResources from '@/components/Safeplace/Canvas/Shelter/ShelterResources'
-import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 import SceneShorthand from '@/components/common/Canvas/SceneShorthand'
 
 const Shelter = ({ object }: { object: THREE.Object3D }) => {
@@ -47,6 +42,12 @@ const Shelter = ({ object }: { object: THREE.Object3D }) => {
   const shelterLinkPosition = useMemo(() => {
     const { x, y, z } = shelterInsideCam.position
     return new THREE.Vector3(x - 1, -1, z)
+  }, [])
+
+  useEffect(() => {
+    shelterMesh.children.map(
+      (c: THREE.Mesh) => ((c.material as THREE.MeshBasicMaterial).fog = false)
+    )
   }, [])
 
   return (

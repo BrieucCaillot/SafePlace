@@ -69,8 +69,8 @@ const Dandelion = ({
           particlesSize: 150,
           sizeVariation: 1,
           alpha: { value: 1, min: 0, max: 1 },
-          startColor: '#ffe997',
-          endColor: '#ad7979',
+          startColor: '#e2d195',
+          endColor: '#5e45a0',
         },
         { collapsed: true }
       ),

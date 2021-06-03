@@ -30,7 +30,7 @@ const LakeGround = ({ object }: { object: THREE.Object3D }) => {
         folderName={'lake_greenery'}
         controlsName={'grass'}
         route={Routes.Journey}
-        grassParams={{ weightAttribute: 'grassWeight', amount: 4096 }}
+        grassParams={{ weightAttribute: 'grassWeight', amount: 8096 }}
         textureName={'grass_chapter_1'}
         position={new THREE.Vector3(0, 0.4, 0).add(groundMesh.position)}
         shadowTexture={shadowTex}
@@ -41,7 +41,11 @@ const LakeGround = ({ object }: { object: THREE.Object3D }) => {
         controlsName={'flowers'}
         route={Routes.Journey}
         textureName={'red_flower_stem'}
-        flowersParams={{ weightAttribute: 'flowerWeight1', amount: 1024 }}
+        flowersParams={{
+          weightAttribute: 'flowerWeight1',
+          amount: 1024,
+          size: 2.5,
+        }}
         position={groundMesh.position}
         shadowTexture={shadowTex}
       />
