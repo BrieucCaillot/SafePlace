@@ -6,6 +6,7 @@ import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
 
 import vertexShader from '@/components/common/Canvas/Decorations/Trees/Tree.vs'
 import fragmentShader from '@/components/common/Canvas/Decorations/Trees/Tree.fs'
+import MeshShorthand from '../../MeshShorthand'
 
 type TreeParams = {
   uWindNoiseSize: number
@@ -14,10 +15,10 @@ type TreeParams = {
 }
 
 const Tree = ({
-  treeParams,
+  treeParams: { uWindNoiseSize, uWindSpeed, uWindAmplitude },
   tree,
   ...props
-}: MeshProps & { treeParams: TreeParams; tree: THREE.Mesh }) => {
+}: Omit<MeshProps, 'ref'> & { treeParams: TreeParams; tree: THREE.Mesh }) => {
   const clockRef = useRef<THREE.Clock>(new THREE.Clock(true))
 
   const uniforms = useRef<Record<string, THREE.IUniform>>(
@@ -33,39 +34,27 @@ const Tree = ({
     ])
   )
 
-  useNumberUniform(
-    uniforms.current.uWindNoiseSize,
-    treeParams.uWindNoiseSize / 10
-  )
-  useNumberUniform(uniforms.current.uWindSpeed, treeParams.uWindSpeed / 10)
-  useNumberUniform(
-    uniforms.current.uWindAmplitude,
-    treeParams.uWindAmplitude / 10
-  )
+  useNumberUniform(uniforms.current.uWindNoiseSize, uWindNoiseSize / 10)
+  useNumberUniform(uniforms.current.uWindSpeed, uWindSpeed / 10)
+  useNumberUniform(uniforms.current.uWindAmplitude, uWindAmplitude / 10)
 
   useFrame(() => {
     uniforms.current.uTime.value = clockRef.current.getElapsedTime()
   })
 
   return (
-    <mesh
-      geometry={tree.geometry}
-      position={tree.position}
-      scale={tree.scale}
-      rotation={tree.rotation}
-      {...props}
-    >
+    <MeshShorthand object={tree} {...props}>
       <shaderMaterial
         uniforms={uniforms.current}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
         transparent={true}
         vertexColors={true}
-        alphaTest={0.5}
+        alphaTest={0.8}
         fog={true}
         side={THREE.DoubleSide}
       />
-    </mesh>
+    </MeshShorthand>
   )
 }
 
