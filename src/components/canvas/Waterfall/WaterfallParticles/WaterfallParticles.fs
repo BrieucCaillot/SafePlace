@@ -1,5 +1,5 @@
 uniform float uAlpha;
-varying vec3 vColor;
+varying vec4 vColor;
 
 void main()
 {
@@ -7,5 +7,5 @@ void main()
   float alpha = step(length(uv - vec2(.5)), .5) * uAlpha;
 
   if (alpha < 0.01) discard;
-  gl_FragColor = vec4(vColor, alpha);
+  gl_FragColor = vec4(vColor.rgb, vColor.a * alpha);
 }

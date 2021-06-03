@@ -16,6 +16,11 @@ uniform float uRounding;
 uniform bool uDoesIntersect;
 uniform float uCursorSize;
 
+uniform float uFoamDuration; //= 0.58;
+uniform float uFoamDurationVar; //= 0.1;
+uniform float uFoamSensitivity; //= 0.9;
+uniform float uFoamSensitivityVar; //= 0.1;
+
 varying vec2 vUv;
 
 #pragma glslify: random2D = require('../../../../utils/shaders/random2D')
@@ -99,7 +104,7 @@ vec3 calcSceneNormal(vec3 p, float e) {
                     v4 * sdScene(p + v4 * e) );
 }
 
-vec3 sceneVelocity(vec3 pos, vec3 v) {
+vec4 sceneCollision(vec3 pos, vec3 v) {
   float x = pos.x * 0.2 + 10.;
   float n = (sin(x) + sin(2.2*x+5.52) + sin(2.9*x+0.93) + sin(4.6*x+8.94));
   n = remap(n, -1., 1., 0., 0.2);
@@ -107,23 +112,60 @@ vec3 sceneVelocity(vec3 pos, vec3 v) {
   float d = sdScene(p);
   vec3 normal = calcSceneNormal(p, EPSILON);
 
-  return d < 0. ? normal * -d : vec3(0.);
+  return vec4(normal, d);
 }
 
 void main()
 {
+  float seed1 = random2D(vUv);
+  float seed2 = random2D(vUv + 1.);
+  float seed3 = random2D(vUv + 2.);
+  float seed4 = random2D(vUv + 3.);
+  float seed5 = random2D(vUv + 4.);
+
+  float collisionFadeDuration = remap(seed4, 0., 1.,
+    uFoamDuration - uFoamDurationVar / 2.,
+    uFoamDuration + uFoamDurationVar / 2.
+  );
+  float collisionSensitivity = remap(seed5, 0., 1.,
+    uFoamSensitivity - uFoamSensitivityVar / 2.,
+    uFoamSensitivity + uFoamSensitivityVar / 2.
+  );
+
+
   vec4 data = texture2D(uPosTexture, vUv).rgba;
-  float oldLife = data.w;
+  float lastLife = mod(data.w, 1000.);
+  float lastCollision = clamp(remap(floor(data.w / 1000.), 0., 255., 0., 1.), 0., 1.);
   vec3 position = data.xyz;
 
-
-  vec3 v = fakeVelocity(random2D(vUv + 1.), random2D(vUv + 2.));
+  vec3 v = fakeVelocity(seed1, seed2);
   
-  v += sceneVelocity(position, v);
+  vec4 collision = sceneCollision(position, v);
+  vec3 cNormal = collision.xyz;
+  float cDF = collision.w;
+  float collide = step(cDF, 0.); // 0. if cDF is above 0., 1. otherwise
+  vec3 cV =  cNormal * -cDF * collide;
+
+  float relevantCollide = collide * step(collisionSensitivity, dot(cNormal, vec3(0., 1., 0.)));
+  float lastCollide = step(0.05, lastCollision);
+  
+  // Set collision to one if it just collided
+  float newCollisionInput = (1. - lastCollide) * relevantCollide * 1.;
+  
+  // Last collision but faded
+  float collisionFade = uDelta / collisionFadeDuration;
+  float fadedCollision = clamp(lastCollision - collisionFade, 0., 1.);
+  
+  // Cap collision if it's currently colliding
+  float newCollision = clamp(newCollisionInput + fadedCollision, 0.1 * relevantCollide, 1.);
+
+  v += cV;
   position += v;
 
-  float newLife = mod(uTime + remap(random2D(vUv), 0., 1., 100., 200.), uLifeTime);
-  resetPosition(position, newLife < oldLife);
+  float newLife = mod(uTime + remap(seed3, 0., 1., 100., 200.), uLifeTime);
+  resetPosition(position, newLife < lastLife);
+  // newLife += 1000. * floor(remap(newCollision, 0., 1., 0., 255.));
+  newLife += 1000. * floor(remap(newCollision, 0., 1., 0., 255.));
 
   gl_FragColor = vec4(position, newLife);
 }

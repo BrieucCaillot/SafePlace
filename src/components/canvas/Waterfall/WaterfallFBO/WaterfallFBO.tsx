@@ -47,6 +47,10 @@ const WaterfallFBO = forwardRef(
       rounding,
       cursorSize,
       slatOffset,
+      duration: foamDuration,
+      durationVar: foamDurationVar,
+      sensitivity: foamSensitivity,
+      sensitivityVar: foamSensitivityVar,
     } = useControls('particles', {
       'Simulator Params': folder(
         {
@@ -57,7 +61,7 @@ const WaterfallFBO = forwardRef(
             max: 30,
             label: 'Speed',
           },
-          lifeTime: { value: 7, label: 'Life Time' },
+          lifeTime: { value: 6.5, label: 'Life Time' },
           sdfOffset: { x: 0, y: 0, z: 0 },
           rounding: { value: 6.6, min: 0, max: 20 },
           cursorSize: { value: 0.8, min: 0, max: 10 },
@@ -65,6 +69,12 @@ const WaterfallFBO = forwardRef(
         },
         { collapsed: true }
       ),
+      foam: folder({
+        duration: 0.58,
+        durationVar: 0.1,
+        sensitivity: { value: 0.9, max: 1, min: 0 },
+        sensitivityVar: { value: 0.1, max: 1, min: 0 },
+      }),
     })
 
     const uniforms = useRef<Record<string, THREE.IUniform>>({
@@ -84,6 +94,10 @@ const WaterfallFBO = forwardRef(
         value: new Array(5).fill(null).map(() => new THREE.Vector3()),
       },
       uSlatOffset: { value: 0 },
+      uFoamDuration: { value: 0 },
+      uFoamDurationVar: { value: 0 },
+      uFoamSensitivity: { value: 0 },
+      uFoamSensitivityVar: { value: 0 },
     })
     useNumberUniform(uniforms.current.uAngleAmplitude, angleAmplitude)
     useNumberUniform(uniforms.current.uMovementSpeed, movementSpeed)
@@ -96,6 +110,10 @@ const WaterfallFBO = forwardRef(
     useWatchableUniform(uniforms.current.uOrigPosTexture, initTexture)
     useWatchableUniform(uniforms.current.uMousePos, mousePosRef)
     useWatchableUniform(uniforms.current.uDoesIntersect, doesIntersectRef)
+    useNumberUniform(uniforms.current.uFoamDuration, foamDuration)
+    useNumberUniform(uniforms.current.uFoamDurationVar, foamDurationVar)
+    useNumberUniform(uniforms.current.uFoamSensitivity, foamSensitivity)
+    useNumberUniform(uniforms.current.uFoamSensitivityVar, foamSensitivityVar)
 
     useFrame(() => {
       uniforms.current.uTime.value = clockRef.current.elapsedTime
