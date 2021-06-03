@@ -125,7 +125,11 @@ const SafeplaceModel = (): ReactElement => {
       <GroupShorthand object={trees}>
         <GroupShorthand object={trees.children[0]}>
           {trees.children[0].children.map((child) => (
-            <TreeParams tree={child as THREE.Mesh} key={child.uuid} />
+            <TreeParams
+              tree={child as THREE.Mesh}
+              key={child.uuid}
+              route={Routes.Safeplace}
+            />
           ))}
         </GroupShorthand>
       </GroupShorthand>

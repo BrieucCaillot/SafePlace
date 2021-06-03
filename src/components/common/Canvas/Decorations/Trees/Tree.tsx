@@ -57,7 +57,7 @@ const Tree = ({
         fragmentShader={fragmentShader}
         transparent={true}
         vertexColors={true}
-        alphaTest={0.1}
+        alphaTest={0.5}
         side={THREE.DoubleSide}
       />
     </mesh>

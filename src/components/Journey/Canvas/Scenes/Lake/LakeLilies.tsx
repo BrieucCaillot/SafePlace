@@ -48,7 +48,7 @@ const LakeLilies = ({ object }: { object: THREE.Object3D }) => {
     <GroupShorthand object={object}>
       <MeshShorthand object={lilypads as THREE.Mesh} />
       {flowerPoints.map((o, i) => (
-        <GroupShorthand object={o}>
+        <GroupShorthand object={o} key={o.uuid}>
           <primitive object={flowers[i]} ref={flowerRefCb} />
         </GroupShorthand>
       ))}

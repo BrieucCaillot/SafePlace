@@ -25,6 +25,7 @@ import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 import TreeParams from '@/components/common/Canvas/Decorations/Trees/TreeParams'
 import FlyingRocks from '@/components/common/Canvas/Decorations/FlyingRocks'
+import Routes from '@/constants/enums/Routes'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -141,7 +142,13 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       <GroupShorthand object={trees}>
         <GroupShorthand object={trees.children[0] as THREE.Mesh}>
           {trees.children[0].children.map((tree) => (
-            <TreeParams tree={tree as THREE.Mesh} key={tree.uuid} />
+            <TreeParams
+              tree={tree as THREE.Mesh}
+              key={tree.uuid}
+              treeParams={{ uWindAmplitude: 0.2 }}
+              folderName={'cairn_greenery'}
+              route={Routes.Journey}
+            />
           ))}
         </GroupShorthand>
       </GroupShorthand>
