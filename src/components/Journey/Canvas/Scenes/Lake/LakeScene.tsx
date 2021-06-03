@@ -160,7 +160,12 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       <GroupShorthand object={trees}>
         <GroupShorthand object={trees.children[0]}>
           {trees.children[0].children.map((tree) => (
-            <TreeParams tree={tree as THREE.Mesh} key={tree.uuid} />
+            <TreeParams
+              tree={tree as THREE.Mesh}
+              key={tree.uuid}
+              folderName={'lake_greenery'}
+              route={Routes.Journey}
+            />
           ))}
         </GroupShorthand>
       </GroupShorthand>
