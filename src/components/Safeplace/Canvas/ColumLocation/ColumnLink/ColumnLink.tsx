@@ -69,6 +69,7 @@ const ColumnLink = ({
   }, [show])
 
   useEffect(() => {
+    if (!show) return
     if (hover) {
       document.body.classList.add('cursor-pointer')
       setScale([1.4, 1.4, 1.4])
