@@ -21,6 +21,7 @@ const ColumnLink = ({
 } & Omit<MeshProps, 'scale'>) => {
   // -- State
   const { camera, viewport } = useThree()
+  const [hover, setHover] = useState(false)
   const [scale, setScale] = useState<THREE.Vector3Tuple>(
     show ? [1, 1, 1] : [0, 0, 0]
   )
@@ -29,6 +30,15 @@ const ColumnLink = ({
   const columnLinkRef = useRef<THREE.Mesh>()
   const vec3Ref = useMemo(() => new THREE.Vector3(), [])
   const scaleRef = useRef<THREE.Vector3>(new THREE.Vector3(...scale))
+
+  const linkTexture = useMemo(
+    () => new THREE.TextureLoader().load('/img/safeplace/link.png'),
+    []
+  )
+
+  const uniforms = useRef<{ [name: string]: THREE.IUniform }>({
+    uTexture: { value: linkTexture },
+  })
 
   // -- Anim
   useFrame(() => {
@@ -42,15 +52,6 @@ const ColumnLink = ({
     columnLinkRef.current?.scale
       .setScalar((height * size) / 200)
       .multiply(scaleRef.current)
-  })
-
-  const linkTexture = useMemo(
-    () => new THREE.TextureLoader().load('/img/safeplace/link.png'),
-    []
-  )
-
-  const uniforms = useRef<{ [name: string]: THREE.IUniform }>({
-    uTexture: { value: linkTexture },
   })
 
   useAnimateVector(scaleRef, scale, {
@@ -67,14 +68,24 @@ const ColumnLink = ({
     setScale(show ? [1, 1, 1] : [0, 0, 0])
   }, [show])
 
+  useEffect(() => {
+    if (hover) {
+      document.body.classList.add('cursor-pointer')
+      setScale([1.4, 1.4, 1.4])
+    } else {
+      document.body.classList.remove('cursor-pointer')
+      setScale([1, 1, 1])
+    }
+  }, [hover])
+
   return (
     <mesh
       {...meshProps}
       ref={columnLinkRef}
       renderOrder={1}
       onClick={() => show && onColumnClick()}
-      onPointerOver={() => show && setScale([1.4, 1.4, 1.4])}
-      onPointerOut={() => show && setScale([1, 1, 1])}
+      onPointerOver={() => show && setHover(true)}
+      onPointerOut={() => show && setHover(false)}
     >
       <planeGeometry args={[5, 5, 32, 32]} />
       <rawShaderMaterial
