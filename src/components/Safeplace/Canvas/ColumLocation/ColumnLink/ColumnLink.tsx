@@ -77,7 +77,7 @@ const ColumnLink = ({
       document.body.classList.remove('cursor-pointer')
       setScale([1, 1, 1])
     }
-  }, [hover])
+  }, [show, hover])
 
   return (
     <mesh
