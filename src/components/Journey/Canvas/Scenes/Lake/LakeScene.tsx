@@ -151,6 +151,13 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       />
       <WaterParams
         route={Routes.Journey}
+        waterParams={{
+          textureScale: 3.2,
+          flowSpeed: 0.05,
+          flowDirection: 0.2,
+          flowIntensity: 0.04,
+          hslTransform: { x: 1.06, y: 0.38, z: 1.06 },
+        }}
         targetMesh={lake.children[0] as THREE.Mesh}
       />
       <MeshShorthand object={dandelion.children[0] as THREE.Mesh} />

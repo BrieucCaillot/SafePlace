@@ -51,7 +51,7 @@ const SafeplaceGround = ({
       <GrassParams
         controlsName={'safeplace_grass'}
         route={Routes.Safeplace}
-        //---
+        grassParams={{ windAmplitude: 0.1, windSpeed: 0.25 }}
         targetMeshRef={groundMeshRef}
         shadowTexture={shadowTexture}
       />

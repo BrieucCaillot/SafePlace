@@ -34,7 +34,12 @@ const WaterfallGround = ({ object }: { object: THREE.Mesh }) => {
         folderName={'waterfall_greenery'}
         controlsName={'grass'}
         route={Routes.Journey}
-        grassParams={{ weightAttribute: 'grassWeight', amount: 16, size: 10 }}
+        grassParams={{
+          weightAttribute: 'grassWeight',
+          amount: 16,
+          size: 10,
+          windSpeed: 0.85,
+        }}
         position={pos}
         scale={groundMesh.scale}
         shadowTexture={shadowTex}

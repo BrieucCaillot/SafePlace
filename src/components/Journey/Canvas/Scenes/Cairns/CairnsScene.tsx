@@ -145,7 +145,11 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
             <TreeParams
               tree={tree as THREE.Mesh}
               key={tree.uuid}
-              treeParams={{ uWindAmplitude: 0.2 }}
+              treeParams={{
+                uWindNoiseSize: 2.5,
+                uWindSpeed: 2.0,
+                uWindAmplitude: 0.4,
+              }}
               folderName={'cairn_greenery'}
               route={Routes.Journey}
             />

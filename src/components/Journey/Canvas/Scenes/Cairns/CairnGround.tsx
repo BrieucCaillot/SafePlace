@@ -42,6 +42,7 @@ const CairnGround = ({
             amount: 24576,
             windAmplitude: 0.007,
             size: 0.04,
+            windSpeed: 0.25,
           }}
           position={new THREE.Vector3(0, 0.223, 0).add(groundMesh.position)}
           shadowTexture={shadowTex}
@@ -53,8 +54,8 @@ const CairnGround = ({
           route={Routes.Journey}
           flowersParams={{
             weightAttribute: 'flowerWeight1',
-            amount: 1024,
-            size: 0.3,
+            amount: 1280,
+            size: 0.28,
           }}
           position={new THREE.Vector3(0, 0.18, 0).add(groundMesh.position)}
           shadowTexture={shadowTex}

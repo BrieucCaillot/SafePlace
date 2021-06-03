@@ -134,6 +134,11 @@ const SafeplaceModel = (): ReactElement => {
             <TreeParams
               controlsName={'safeplace_tree'}
               tree={child as THREE.Mesh}
+              treeParams={{
+                uWindNoiseSize: 2.9,
+                uWindSpeed: 2.9,
+                uWindAmplitude: 0.6,
+              }}
               key={child.uuid}
               route={Routes.Safeplace}
             />

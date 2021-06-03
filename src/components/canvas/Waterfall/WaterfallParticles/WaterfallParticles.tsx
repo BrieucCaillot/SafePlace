@@ -37,8 +37,8 @@ const WaterfallParticles = forwardRef(
             particlesSize: 300,
             sizeVariation: 0.7,
             alpha: { value: 1, min: 0, max: 1 },
-            startColor: '#6c85ce',
-            endColor: '#132e3e',
+            startColor: '#a3b0d5',
+            endColor: '#184162',
           },
           { collapsed: true }
         ),
