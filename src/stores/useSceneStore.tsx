@@ -51,7 +51,7 @@ const useSceneStore = create<SceneStore>((set, get) => ({
     [SceneName.Safeplace]: {
       Component: SafeplaceScene,
       scene: newSceneModified({
-        fog: new THREE.FogExp2('#cce0ff', 0.015),
+        // fog: new THREE.FogExp2('#cce0ff', 0.015),
       }),
       isLoaded: false,
       cameraRef: createRef(),

@@ -27,14 +27,12 @@ const SafeplaceDebug = (): null => {
     { render: (s) => s('path') === Routes.Safeplace }
   )
 
-  const { color, density } = useControls('safeplace', {
-    fog: folder({
-      color: '#cce0ff',
-      density: (scene.fog as THREE.FogExp2).density,
-      // near: (scene.fog as THREE.Fog).near,
-      // far: (scene.fog as THREE.Fog).far,
-    }),
-  })
+  // const { color, density } = useControls('safeplace', {
+  //   fog: folder({
+  //     color: '#cce0ff',
+  //     density: (scene.fog as THREE.FogExp2).density,
+  //   }),
+  // })
 
   useEffect(() => {
     setCurrentPOI(currentPOI)
@@ -47,10 +45,10 @@ const SafeplaceDebug = (): null => {
       ),
     []
   )
-  useEffect(() => {
-    ;(scene.fog as THREE.FogExp2).color = new THREE.Color(color)
-    ;(scene.fog as THREE.FogExp2).density = density
-  }, [color, density])
+  // useEffect(() => {
+  //   ;(scene.fog as THREE.FogExp2).color = new THREE.Color(color)
+  //   ;(scene.fog as THREE.FogExp2).density = density
+  // }, [color, density])
 
   return null
 }
