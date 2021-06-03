@@ -46,6 +46,7 @@ const WaterfallFBO = forwardRef(
       sdfOffset,
       rounding,
       cursorSize,
+      cursorVar,
       slatOffset,
       duration: foamDuration,
       durationVar: foamDurationVar,
@@ -66,7 +67,8 @@ const WaterfallFBO = forwardRef(
           lifeTime: { value: 6.5, label: 'Life Time' },
           sdfOffset: { x: 0, y: 0, z: 0 },
           rounding: { value: 6.6, min: 0, max: 20 },
-          cursorSize: { value: 0.8, min: 0, max: 10 },
+          cursorSize: { value: 0.8, min: 0, max: 5 },
+          cursorVar: { value: 0.2, min: 0, max: 5 },
           slatOffset: 3.8,
           windFrequency: { value: 0.6, step: 0.01 },
           windIntensity: { value: 0.05, step: 0.01 },
@@ -94,6 +96,7 @@ const WaterfallFBO = forwardRef(
       uSdfOffset: { value: new THREE.Vector3() },
       uRounding: { value: 0 },
       uCursorSize: { value: 0 },
+      uCursorVar: { value: 0 },
       uSlatsPos: {
         value: new Array(5).fill(null).map(() => new THREE.Vector3()),
       },
@@ -110,6 +113,7 @@ const WaterfallFBO = forwardRef(
     useNumberUniform(uniforms.current.uLifeTime, lifeTime)
     useNumberUniform(uniforms.current.uRounding, rounding)
     useNumberUniform(uniforms.current.uCursorSize, cursorSize)
+    useNumberUniform(uniforms.current.uCursorVar, cursorVar)
     useVector3Uniform(uniforms.current.uSdfOffset, sdfOffset)
     useNumberUniform(uniforms.current.uSlatOffset, slatOffset)
     useNumberUniform(uniforms.current.uWindFrequency, windFrequency)
