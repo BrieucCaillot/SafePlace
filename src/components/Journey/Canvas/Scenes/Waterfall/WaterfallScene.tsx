@@ -140,8 +140,6 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     easing: 0.01,
   })
 
-  console.log(gltf)
-
   return (
     <>
       {/* <ClassicCamera ref={camRef} /> */}
