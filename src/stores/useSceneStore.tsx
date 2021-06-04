@@ -51,7 +51,7 @@ const useSceneStore = create<SceneStore>((set, get) => ({
     [SceneName.Safeplace]: {
       Component: SafeplaceScene,
       scene: sceneBuilder({
-        fog: new THREE.FogExp2('#e9a8be', 0.015),
+        fog: new THREE.FogExp2('#e9a8be', 0.01),
       }),
       isLoaded: false,
       cameraRef: createRef(),
@@ -64,19 +64,25 @@ const useSceneStore = create<SceneStore>((set, get) => ({
     },
     [SceneName.Cairns]: {
       Component: CairnsScene,
-      scene: sceneBuilder(),
+      scene: sceneBuilder({
+        fog: new THREE.FogExp2('#ccabb9', 0.015),
+      }),
       isLoaded: false,
       cameraRef: createRef(),
     },
     [SceneName.Lake]: {
       Component: LakeScene,
-      scene: sceneBuilder(),
+      scene: sceneBuilder({
+        fog: new THREE.FogExp2('#ddbade', 0.005),
+      }),
       isLoaded: false,
       cameraRef: createRef(),
     },
     [SceneName.Waterfall]: {
       Component: WaterfallScene,
-      scene: sceneBuilder(),
+      scene: sceneBuilder({
+        fog: new THREE.FogExp2('#e9b5a0', 0.012),
+      }),
       isLoaded: false,
       cameraRef: createRef(),
     },

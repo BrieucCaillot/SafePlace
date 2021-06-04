@@ -30,7 +30,7 @@ const Waterfall = ({
   slats: RefObject<{ getGroup: () => RefObject<THREE.Group> }>
 }) => {
   const { showDegug, numPoints } = useControls(
-    'particles',
+    'waterfall.particles',
     {
       showDegug: false,
       numPoints: {

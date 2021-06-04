@@ -132,7 +132,8 @@ const SafeplaceModel = (): ReactElement => {
         <GroupShorthand object={trees.children[0]}>
           {trees.children[0].children.map((child) => (
             <TreeParams
-              controlsName={'safeplace_tree'}
+              controlsName={'tree'}
+              folderName={'safeplace.greenery'}
               tree={child as THREE.Mesh}
               treeParams={{
                 uWindNoiseSize: 2.9,
@@ -157,6 +158,7 @@ const SafeplaceModel = (): ReactElement => {
       <GroupShorthand object={water_contain}>
         <WaterParams
           targetMesh={water_contain.children[0] as THREE.Mesh}
+          controlsName={'safeplace.water'}
           shadowTexture={waterShadowTexture}
           route={Routes.Safeplace}
         />

@@ -33,7 +33,7 @@ const WaterfallParticles = forwardRef(
       size: foamSize,
       color: foamColor,
     } = useControls(
-      'particles',
+      'waterfall.particles',
       {
         'Particle Params': folder(
           {
@@ -66,6 +66,7 @@ const WaterfallParticles = forwardRef(
     const { gl } = useThree()
 
     const uniforms = useRef<Record<string, THREE.IUniform>>({
+      ...THREE.UniformsLib['fog'],
       uPosTexture: { value: null },
       uSize: { value: 0 },
       uSizeVariation: { value: 0 },
@@ -122,6 +123,7 @@ const WaterfallParticles = forwardRef(
           fragmentShader={fragmentShader}
           vertexShader={vertexShader}
           uniforms={uniforms.current}
+          fog={true}
         />
       </points>
     )

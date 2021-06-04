@@ -27,7 +27,7 @@ const LakeGround = ({ object }: { object: THREE.Object3D }) => {
       <MeshShorthand object={groundMesh} ref={groundRef} visible={true} />
       <GrassParams
         targetMeshRef={groundRef}
-        folderName={'lake_greenery'}
+        folderName={'lake.greenery'}
         controlsName={'grass'}
         route={Routes.Journey}
         grassParams={{ weightAttribute: 'grassWeight', amount: 8096 }}
@@ -37,7 +37,7 @@ const LakeGround = ({ object }: { object: THREE.Object3D }) => {
       />
       <FlowersParams
         targetMeshRef={groundRef}
-        folderName={'lake_greenery'}
+        folderName={'lake.greenery'}
         controlsName={'flowers'}
         route={Routes.Journey}
         textureName={'blue_flower'}

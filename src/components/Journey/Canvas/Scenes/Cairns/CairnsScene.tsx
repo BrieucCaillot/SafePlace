@@ -26,6 +26,7 @@ import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 import TreeParams from '@/components/common/Canvas/Decorations/Trees/TreeParams'
 import FlyingRocks from '@/components/common/Canvas/Decorations/FlyingRocks'
 import Routes from '@/constants/enums/Routes'
+import useSceneControls from '@/hooks/three/useSceneControls'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -64,6 +65,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     (s) => !s.inTransition && s.renderedScene === SceneName.Cairns
   )
   const willPlay = useSceneStore((s) => s.nextScene === SceneName.Cairns)
+  useSceneControls(SceneName.Cairns, Routes.Journey)
 
   const audio = useAudioManager(VOICEOVER.JOURNEY.CAIRNS)
 
@@ -92,6 +94,11 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     () => audio.stop(),
     [isSettledInScene]
   )
+
+  useEffect(() => {
+    ;((background.children[0] as THREE.Mesh)
+      .material as THREE.MeshBasicMaterial).fog = false
+  }, [])
 
   useMouseRotation(localCamRef, {
     offset: [-Math.PI / 2, 0, 0],
@@ -150,7 +157,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
                 uWindSpeed: 2.0,
                 uWindAmplitude: 0.4,
               }}
-              folderName={'cairn_greenery'}
+              folderName={'cairns.greenery'}
               route={Routes.Journey}
             />
           ))}

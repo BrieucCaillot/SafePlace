@@ -31,7 +31,7 @@ const WaterfallGround = ({ object }: { object: THREE.Mesh }) => {
       <MeshShorthand object={groundMesh} ref={groundRef} />
       <GrassParams
         targetMeshRef={groundRef}
-        folderName={'waterfall_greenery'}
+        folderName={'waterfall.greenery'}
         controlsName={'grass'}
         route={Routes.Journey}
         grassParams={{

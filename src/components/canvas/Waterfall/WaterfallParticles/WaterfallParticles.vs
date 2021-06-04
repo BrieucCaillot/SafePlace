@@ -18,6 +18,8 @@ varying vec4 vColor;
 #pragma glslify: random2D = require('../../../../utils/shaders/random2D')
 #pragma glslify: remap = require('../../../../utils/shaders/remap')
 
+#include <fog_pars_vertex>
+
 void main() {
   vec4 data = texture2D(uPosTexture, aPixelPosition);
   vec3 offset = data.rgb;
@@ -44,4 +46,6 @@ void main() {
   vec3 color = mix(uStartColor, uEndColor, random2D(aPixelPosition));
   color = mix(color, uFoamColor, collision * uFoamColorFactor);
   vColor = vec4(color, 1.);
+  
+  #include <fog_vertex>
 }
