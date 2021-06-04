@@ -17,7 +17,7 @@ const SafeplaceCamera = forwardRef(
     )
 
     const { amplitude, easing } = useControls(
-      'camera',
+      'safeplace.camera',
       {
         easing: { min: 0, max: 1, value: 0.02 },
         amplitude: { min: 0, max: Math.PI / 2, value: 0.02 },

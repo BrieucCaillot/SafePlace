@@ -46,7 +46,7 @@ const WaterfallFBO = forwardRef(
       sensitivityVar: foamSensitivityVar,
       windFrequency,
       windIntensity,
-    } = useControls('particles', {
+    } = useControls('waterfall.particles', {
       'Simulator Params': folder(
         {
           angleAmplitude: { value: 0.2, min: 0, max: Math.PI, label: 'Angle' },

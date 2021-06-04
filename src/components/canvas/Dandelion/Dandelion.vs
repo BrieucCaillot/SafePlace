@@ -53,6 +53,8 @@ float easeTime(float t, float speed, float ease, float easeDuration) {
 #pragma glslify: random2D = require('../../../utils/shaders/random2D')
 #pragma glslify: remap = require('../../../utils/shaders/remap')
 
+#include <fog_pars_vertex>
+
 void main() {
   float seed1 =  random2D(aPixelPosition);
   float seed2 =  random2D(aPixelPosition + 1.);
@@ -88,4 +90,6 @@ void main() {
   gl_PointSize *= (1.0 / - mvPosition.z);
 
   vColor = mix(uStartColor, uEndColor, seed3);
+  
+  #include <fog_vertex>
 }

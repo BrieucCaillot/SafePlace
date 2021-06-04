@@ -25,9 +25,9 @@ import Routes from '@/constants/enums/Routes'
 import useAudioManager from '@/hooks/audio/useAudioManager'
 import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
 import WaterfallGround from './WaterfallGround'
-import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import useMouseRotation from '@/hooks/animation/useMouseRotation'
 import wait from '@/utils/promise/wait'
+import useSceneControls from '@/hooks/three/useSceneControls'
 
 const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   // REFS
@@ -58,6 +58,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     (s) => !s.inTransition && s.renderedScene === SceneName.Waterfall
   )
   const willPlay = useSceneStore((s) => s.nextScene === SceneName.Waterfall)
+  useSceneControls(SceneName.Waterfall, Routes.Journey)
   const bridgeButtonPromise = useBooleanPromise()
 
   const audio = useAudioManager([
@@ -77,6 +78,13 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     anim.init('camera_1')
     return anim.stop
   }, [willPlay])
+
+  useEffect(() => {
+    background.children[0].children.forEach(
+      (c) =>
+        (((c as THREE.Mesh).material as THREE.MeshBasicMaterial).fog = false)
+    )
+  }, [])
 
   useAsyncEffect(
     async (wrap) => {

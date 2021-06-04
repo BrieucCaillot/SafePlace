@@ -33,7 +33,7 @@ const CairnGround = ({
       <GroupShorthand object={groundMesh}>
         <GrassParams
           targetMeshRef={groundMeshRef}
-          folderName={'cairn_greenery'}
+          folderName={'cairns.greenery'}
           controlsName={'grass'}
           route={Routes.Journey}
           textureName={'grass_chapter_1'}
@@ -49,7 +49,7 @@ const CairnGround = ({
         />
         <FlowersParams
           targetMeshRef={groundMeshRef}
-          folderName={'cairn_greenery'}
+          folderName={'cairns.greenery'}
           controlsName={'flowers'}
           route={Routes.Journey}
           flowersParams={{

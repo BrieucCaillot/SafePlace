@@ -33,6 +33,7 @@ import WaterParams from '@/components/Safeplace/Canvas/Decorations/Water/WaterPa
 import SceneShorthand from '@/components/common/Canvas/SceneShorthand'
 import TreeParams from '@/components/common/Canvas/Decorations/Trees/TreeParams'
 import LakeLilies from './LakeLilies'
+import useSceneControls from '@/hooks/three/useSceneControls'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -72,6 +73,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     (s) => !s.inTransition && s.renderedScene === SceneName.Lake
   )
   const willPlay = useSceneStore((s) => s.nextScene === SceneName.Lake)
+  useSceneControls(SceneName.Lake, Routes.Journey)
 
   const audio = useAudioManager([
     VOICEOVER.JOURNEY.LAKE1,
@@ -151,6 +153,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       />
       <WaterParams
         route={Routes.Journey}
+        controlsName={'lake.water'}
         waterParams={{
           textureScale: 3.2,
           flowSpeed: 0.05,
@@ -170,7 +173,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
             <TreeParams
               tree={tree as THREE.Mesh}
               key={tree.uuid}
-              folderName={'lake_greenery'}
+              folderName={'lake.greenery'}
               route={Routes.Journey}
             />
           ))}

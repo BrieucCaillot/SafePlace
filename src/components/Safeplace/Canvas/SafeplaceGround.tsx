@@ -49,7 +49,8 @@ const SafeplaceGround = ({
     <>
       <MeshShorthand object={ground} ref={groundMeshRef} />
       <GrassParams
-        controlsName={'safeplace_grass'}
+        controlsName={'grass'}
+        folderName={'safeplace.greenery'}
         route={Routes.Safeplace}
         grassParams={{ windAmplitude: 0.1, windSpeed: 0.25 }}
         targetMeshRef={groundMeshRef}
@@ -57,6 +58,7 @@ const SafeplaceGround = ({
       />
       <FlowersParams
         controlsName={'red_flower'}
+        folderName={'safeplace.greenery'}
         route={Routes.Safeplace}
         //---
         textureName={'red_flower'}
@@ -67,6 +69,7 @@ const SafeplaceGround = ({
       />
       <FlowersParams
         controlsName={'blue_flower'}
+        folderName={'safeplace.greenery'}
         route={Routes.Safeplace}
         //---
         textureName={'blue_flower'}

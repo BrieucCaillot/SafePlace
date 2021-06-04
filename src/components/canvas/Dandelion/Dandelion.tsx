@@ -50,7 +50,7 @@ const Dandelion = ({
     detachEase,
     detachEaseDuration,
   } = useControls(
-    'dandelion',
+    'lake.dandelion',
     {
       // sequence: 0,
       ease: folder(
@@ -89,6 +89,7 @@ const Dandelion = ({
 
   // Uniforms
   const uniforms = useRef<Record<string, THREE.IUniform>>({
+    ...THREE.UniformsLib['fog'],
     uPosTexture: { value: null },
 
     uSpreadFactor: { value: 0 },

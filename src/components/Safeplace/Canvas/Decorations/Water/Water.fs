@@ -40,7 +40,7 @@ void main()
   color = rgb2hsv(color) * uHslTransform;
   color = hsv2rgb(color) * shadow;
 
-  gl_FragColor = vec4(color, 1.);
+  gl_FragColor = vec4(clamp(color, 0., 1.), 1.);
 
   #include <fog_fragment>
 }

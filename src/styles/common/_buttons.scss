@@ -22,7 +22,7 @@
 
     svg {
       transform: scale(0.6) rotate(7deg);
-      transition: all 1s ease-in-out;
+      transition: all 2s cubic-bezier(0.32, 0, 0.27, 1);
     }
   }
   &-stonefull {
@@ -35,15 +35,26 @@
       top: 50%;
       left: 50%;
       transform: translate3d(-50%, -50%, 0);
-      transition: transform 2s ease-in-out;
+      transition: transform 0.7s ease-out;
     }
     &:hover:before {
-      transform: translate3d(-50%, -50%, 0) scale(1.2) rotate(360deg);
+      transform: translate3d(-50%, -50%, 0) scale(0.9) rotate(15deg);
     }
   }
   &-close {
     &:hover {
       transform: rotate(90deg);
+    }
+  }
+}
+
+#button {
+  &-start {
+    transform: scale3D(1, 1, 1);
+    transition: transform 0.7s ease-out;
+
+    &:hover {
+      transform: scale3D(1.05, 1.05, 1.05);
     }
   }
 }

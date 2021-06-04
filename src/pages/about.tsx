@@ -87,14 +87,15 @@ const About = ({ status }: { status: TransitionStatus }) => {
                     Voix off
                   </h3>
                   <p className='text-primary tracking-wider'>Aude</p>
-                  <p className='text-primary tracking-wider'>EHRHARDT</p>
+                  <p className='text-primary tracking-wider'>Ehrhardt</p>
                 </div>
                 <div className='flex flex-col w-full pt-7 md:pt-0 flex-1'>
                   <h3 className='text-white tracking-wider font-serif italic pb-3'>
                     Son
                   </h3>
+                  <p className='text-primary tracking-wider'>Roxane Peuvrier</p>
                   <p className='text-primary tracking-wider'>
-                    Gabrielle HILOYTOT
+                    Michael De Laborde Noguez
                   </p>
                 </div>
               </div>
@@ -102,7 +103,7 @@ const About = ({ status }: { status: TransitionStatus }) => {
                 Nous remercions tout l'équipe pédagogique de Gobelins
               </p>
               <img
-                className='w-20 py-3 mb-20 md:mb-0'
+                className='w-20 py-4 mb-20 md:mb-0'
                 src='/img/about/logo-gobelins.png'
                 alt='logo-gobelins'
               />

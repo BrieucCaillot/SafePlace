@@ -1,6 +1,8 @@
 uniform float uAlpha;
 varying vec4 vColor;
 
+#include <fog_pars_fragment>
+
 void main()
 {
   vec2 uv = vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y);
@@ -8,4 +10,6 @@ void main()
 
   if (alpha < 0.01) discard;
   gl_FragColor = vec4(vColor.rgb, vColor.a * alpha);
+
+  #include <fog_fragment>
 }
