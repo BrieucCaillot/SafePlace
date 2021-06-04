@@ -6,7 +6,7 @@ import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 
-import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
+import ColumnLink from '@/components/Safeplace/Canvas/Columns/ColumnLink/ColumnLink'
 import ShelterResources from '@/components/Safeplace/Canvas/Shelter/ShelterResources'
 import SceneShorthand from '@/components/common/Canvas/SceneShorthand'
 

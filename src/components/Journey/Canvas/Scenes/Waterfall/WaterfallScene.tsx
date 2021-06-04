@@ -13,7 +13,7 @@ import Waterfall from '@/components/canvas/Waterfall/Waterfall'
 import withScenePortal from '@/components/common/Scenes/withScenePortal'
 import CustomSky from '@/components/canvas/Sky/CustomSky'
 import SceneShorthand from '@/components/common/Canvas/SceneShorthand'
-import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
+import ColumnLink from '@/components/Safeplace/Canvas/Columns/ColumnLink/ColumnLink'
 import Slats from './Slats'
 
 import useConfigActions from '@/hooks/animation/useConfigActions'

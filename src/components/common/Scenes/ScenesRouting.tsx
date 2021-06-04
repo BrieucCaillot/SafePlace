@@ -53,6 +53,13 @@ const ScenesRouting = ({
       setCurrentPOI(SafeplacePOI.MountainColumn)
     }
 
+    if (pathname === Routes.BridgeColumn) {
+      const { setCurrentPOI } = useSafeplaceStore.getState()
+      mountScene(SceneName.Safeplace)
+      setRenderedScene(SceneName.Safeplace)
+      setCurrentPOI(SafeplacePOI.BridgeColumn)
+    }
+
     if (pathname === Routes.Resources) {
       const { setCurrentPOI } = useSafeplaceStore.getState()
       mountScene(SceneName.Safeplace)

@@ -4,7 +4,7 @@ import * as THREE from 'three'
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 
-import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
+import ColumnLink from '@/components/Safeplace/Canvas/Columns/ColumnLink/ColumnLink'
 import useUserStore from '@/stores/useUserStore'
 import Routes from '@/constants/enums/Routes'
 
