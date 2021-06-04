@@ -4,7 +4,13 @@ import gsap from 'gsap'
 
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 
-const ColumnRock = ({ rock, show }: { rock: THREE.Mesh; show: boolean }) => {
+const ColumnRock = ({
+  rock,
+  canRotate,
+}: {
+  rock: THREE.Mesh
+  canRotate: boolean
+}) => {
   const rockRef = useRef<THREE.Mesh>()
   const rockRotation = useMemo(() => rock.rotation, [rockRef])
   const [hover, setHover] = useState(false)
@@ -22,13 +28,13 @@ const ColumnRock = ({ rock, show }: { rock: THREE.Mesh; show: boolean }) => {
   }, [])
 
   useEffect(() => {
-    if (!show) return
+    if (!canRotate) return
     gsap.to(rockRef.current.rotation, {
       y: hover ? rockRotation.y + 0.5 : rockRotation.y,
       duration: 2,
       ease: 'sine.inOut',
     })
-  }, [show, hover])
+  }, [canRotate, hover])
 
   return (
     <MeshShorthand

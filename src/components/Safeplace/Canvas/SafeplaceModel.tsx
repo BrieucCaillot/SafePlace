@@ -7,8 +7,9 @@ import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import Routes from '@/constants/enums/Routes'
 
 import Shelter from '@/components/Safeplace/Canvas/Shelter/Shelter'
-import ColumnLocation from '@/components/Safeplace/Canvas/ColumLocation/ColumnLocation'
-import MountainColumn from '@/components/Safeplace/Canvas/ColumLocation/MountainColumn'
+import DefaultColumn from '@/components/Safeplace/Canvas/Columns/DefaultColumn'
+import MountainColumn from '@/components/Safeplace/Canvas/Columns/MountainColumn'
+import BridgeColumn from '@/components/Safeplace/Canvas/Columns/BridgeColumn'
 import FlyingRocks from '@/components/common/Canvas/Decorations/FlyingRocks'
 import SafeplaceGround from '@/components/Safeplace/Canvas/SafeplaceGround'
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
@@ -62,7 +63,7 @@ const SafeplaceModel = (): ReactElement => {
 
   const columnAssoc: { [name: string]: SafeplacePOI } = {
     column_1_group: SafeplacePOI.MountainColumn,
-    column_2_group: SafeplacePOI.PlaceholderColumn1,
+    column_2_group: SafeplacePOI.BridgeColumn,
     column_3_group: SafeplacePOI.PlaceholderColumn2,
     column_4_group: SafeplacePOI.PlaceholderColumn3,
     column_5_group: SafeplacePOI.PlaceholderColumn4,
@@ -85,10 +86,13 @@ const SafeplaceModel = (): ReactElement => {
         {columnChildren.map((col) =>
           columnAssoc[col.name] === SafeplacePOI.MountainColumn ? (
             <MountainColumn columnObj={col} key={col.name} />
+          ) : columnAssoc[col.name] === SafeplacePOI.BridgeColumn ? (
+            <BridgeColumn columnObj={col} key={col.name} />
           ) : (
-            <ColumnLocation
+            <DefaultColumn
               safeplacePOI={columnAssoc[col.name]}
               columnObj={col}
+              onColumnClick={null}
               key={col.name}
             />
           )

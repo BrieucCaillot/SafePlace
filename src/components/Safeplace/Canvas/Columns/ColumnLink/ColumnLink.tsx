@@ -6,8 +6,8 @@ import EasingFunction from 'easing-functions'
 
 import useAnimateVector from '@/hooks/animation/useAnimateVector'
 
-import vertexShader from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink.vert'
-import fragmentShader from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink.frag'
+import vertexShader from '@/components/Safeplace/Canvas/Columns/ColumnLink/ColumnLink.vert'
+import fragmentShader from '@/components/Safeplace/Canvas/Columns/ColumnLink/ColumnLink.frag'
 
 const ColumnLink = ({
   show,
@@ -55,7 +55,7 @@ const ColumnLink = ({
   })
 
   useAnimateVector(scaleRef, scale, {
-    duration: 0.8,
+    duration: 1,
     ease: EasingFunction.Quartic.Out,
     onUpdate: () => {
       if (columnLinkRef.current == null) return

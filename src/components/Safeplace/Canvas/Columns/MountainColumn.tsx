@@ -1,15 +1,20 @@
 import { useMemo } from 'react'
 import * as THREE from 'three'
 
-import Routes from '@/constants/enums/Routes'
-import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import useUserStore from '@/stores/useUserStore'
-import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
-import ColumnLocation from '@/components/Safeplace/Canvas/ColumLocation/ColumnLocation'
+import Routes from '@/constants/enums/Routes'
+import SafeplacePOI from '@/constants/enums/SafeplacePOI'
+
+import ColumnLink from '@/components/Safeplace/Canvas/Columns/ColumnLink/ColumnLink'
+import DefaultColumn from '@/components/Safeplace/Canvas/Columns/DefaultColumn'
 
 const MountainColumn = ({ columnObj }: { columnObj: THREE.Object3D }) => {
   const router = useUserStore((s) => s.router)
+
+  const isCurrentlyAvailable = useSafeplaceStore((s) =>
+    s.isCurrentlyAvailable(SafeplacePOI.MountainColumn)
+  )
 
   const onMountainPOI = useSafeplaceStore(
     (s) => SafeplacePOI.MountainColumn === s.currentPOI
@@ -23,9 +28,13 @@ const MountainColumn = ({ columnObj }: { columnObj: THREE.Object3D }) => {
   const journeyLinkPos = useMemo(() => new THREE.Vector3(0, 1, 0), [])
 
   return (
-    <ColumnLocation
+    <DefaultColumn
       safeplacePOI={SafeplacePOI.MountainColumn}
       columnObj={columnObj}
+      onColumnClick={() => router.push(Routes.MountainColumn)}
+      isColumnAvailable={
+        !isCameraTravelling && isVoiceoverPlayed && isCurrentlyAvailable
+      }
     >
       <ColumnLink
         onColumnClick={() => router.push(Routes.Journey)}
@@ -33,7 +42,7 @@ const MountainColumn = ({ columnObj }: { columnObj: THREE.Object3D }) => {
         size={5}
         position={journeyLinkPos}
       />
-    </ColumnLocation>
+    </DefaultColumn>
   )
 }
 

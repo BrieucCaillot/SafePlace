@@ -8,25 +8,34 @@ import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import useUserStore from '@/stores/useUserStore'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 
-import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
+import ColumnLink from '@/components/Safeplace/Canvas/Columns/ColumnLink/ColumnLink'
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
-import ColumnRock from '@/components/Safeplace/Canvas/ColumLocation/ColumnRock'
+import ColumnRock from '@/components/Safeplace/Canvas/Columns/ColumnRock'
 
-const ColumnLocation = ({
+const DefaultColumn = ({
   safeplacePOI,
   columnObj,
   children,
+  onColumnClick,
+  isColumnAvailable = null,
 }: {
   safeplacePOI: SafeplacePOI
   columnObj: THREE.Object3D
   children?: ReactNode
+  onColumnClick: Function
+  isColumnAvailable?: boolean
 }) => {
+  const router = useUserStore((s) => s.router)
+
   const isCurrentlyAvailable = useSafeplaceStore((s) =>
     s.isCurrentlyAvailable(safeplacePOI)
   )
-  const router = useUserStore((s) => s.router)
+  const isCameraTravelling = useSafeplaceStore((s) => s.isCameraTravelling)
 
-  const isVoiceoverPlayed = useUserStore((s) => s.userData.voiceover.inside)
+  const isAvailable = useMemo(
+    () => !isCameraTravelling && isCurrentlyAvailable,
+    [isCameraTravelling, isCurrentlyAvailable]
+  )
 
   const [camContainer, rock, column] = useMemo(
     () => columnObj.children as [THREE.Object3D, THREE.Mesh, THREE.Mesh],
@@ -55,18 +64,17 @@ const ColumnLocation = ({
       scale={columnObj.scale}
     >
       <MeshShorthand object={column} />
-      <ColumnRock
-        rock={rock}
-        show={isVoiceoverPlayed && isCurrentlyAvailable}
-      />
+      <ColumnRock rock={rock} canRotate={isAvailable} />
       {children}
       <ColumnLink
-        show={isVoiceoverPlayed && isCurrentlyAvailable}
-        onColumnClick={() => router.push(Routes.MountainColumn)}
+        show={
+          isColumnAvailable ?? (!isCameraTravelling && isCurrentlyAvailable)
+        }
+        onColumnClick={onColumnClick}
         position={columnLinkPosition}
       />
     </group>
   )
 }
 
-export default ColumnLocation
+export default DefaultColumn
