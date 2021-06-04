@@ -34,7 +34,7 @@ const LayoutDom = ({ children }: { children: ReactNode }) => {
       <LayoutAudio />
       <LayoutHeader />
 
-      <main className='dom font-serif relative pointer-events-none'>
+      <main className='dom font-serif subpixel-antialiased relative pointer-events-none'>
         {isHomeOrAboutPage && <LayoutGradient pathname={pathname} />}
         {/* <Leva hidden={true} /> */}
         {children}

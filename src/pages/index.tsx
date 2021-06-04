@@ -64,7 +64,7 @@ const Index = ({ status }: { status: TransitionStatus }) => {
           appear
         >
           <img
-            className='absolute top-1/2 left-1/2 transform-gpu -translate-x-1/2 -translate-y-1/2 -mt-24 max-w-xs md:max-w-full'
+            className='absolute top-1/2 left-1/2 transform-gpu -translate-x-1/2 -translate-y-1/2 -mt-28 max-w-xs md:max-w-full'
             src='/img/index/logo.png'
             alt='safeplace-logo'
           />
@@ -77,8 +77,12 @@ const Index = ({ status }: { status: TransitionStatus }) => {
           unmountOnExit
           appear
         >
-          <div className='absolute bottom-16 flex justify-center w-full'>
+          <div
+            className='absolute bottom-16 flex justify-center w-full'
+            style={{ perspective: '2500px' }}
+          >
             <button
+              id='button-start'
               onClick={onStartButtonClick}
               className='relative button-stonefull text-white text-xl font-bold tracking-widest rounded px-10 py-3 focus:outline-none cursor-pointer'
             >
