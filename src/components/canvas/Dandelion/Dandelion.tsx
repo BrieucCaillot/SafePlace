@@ -206,6 +206,7 @@ const Dandelion = ({
           uniforms={uniforms.current}
           fragmentShader={fragmentShader}
           vertexShader={vertexShader}
+          fog={true}
         />
       </points>
     </group>
