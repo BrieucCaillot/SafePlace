@@ -8,7 +8,7 @@ import Routes from '@/constants/enums/Routes'
 
 import Shelter from '@/components/Safeplace/Canvas/Shelter/Shelter'
 import ColumnLocation from '@/components/Safeplace/Canvas/ColumLocation/ColumnLocation'
-import MountainColumn from '@/components/Safeplace/Canvas/ColumLocation/MountainColum'
+import MountainColumn from '@/components/Safeplace/Canvas/ColumLocation/MountainColumn'
 import FlyingRocks from '@/components/common/Canvas/Decorations/FlyingRocks'
 import SafeplaceGround from '@/components/Safeplace/Canvas/SafeplaceGround'
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'

@@ -5,11 +5,12 @@ import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 import Routes from '@/constants/enums/Routes'
 
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
+import useUserStore from '@/stores/useUserStore'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 
 import ColumnLink from '@/components/Safeplace/Canvas/ColumLocation/ColumnLink/ColumnLink'
-import useUserStore from '@/stores/useUserStore'
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
+import ColumnRock from '@/components/Safeplace/Canvas/ColumLocation/ColumnRock'
 
 const ColumnLocation = ({
   safeplacePOI,
@@ -54,7 +55,10 @@ const ColumnLocation = ({
       scale={columnObj.scale}
     >
       <MeshShorthand object={column} />
-      <MeshShorthand object={rock} />
+      <ColumnRock
+        rock={rock}
+        show={isVoiceoverPlayed && isCurrentlyAvailable}
+      />
       {children}
       <ColumnLink
         show={isVoiceoverPlayed && isCurrentlyAvailable}
