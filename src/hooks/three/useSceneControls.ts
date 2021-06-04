@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 import * as THREE from 'three'
 
 const useSceneControls = (sceneName: SceneName, route: Routes = null) => {
-  const { scene } = useSceneStore((s) => s.scenesData[sceneName])
+  const scene = useSceneStore((s) => s.scenesData[sceneName].scene)
 
   const { color, density, enabled } = useControls(
     `${sceneName.toLowerCase()}`,

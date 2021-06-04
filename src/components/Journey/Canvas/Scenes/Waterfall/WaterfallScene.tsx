@@ -28,6 +28,8 @@ import WaterfallGround from './WaterfallGround'
 import useMouseRotation from '@/hooks/animation/useMouseRotation'
 import wait from '@/utils/promise/wait'
 import useSceneControls from '@/hooks/three/useSceneControls'
+import useSectionProgress from '@/hooks/journey/useSectionProgress'
+import JourneySection from '@/constants/enums/JourneySection'
 
 const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   // REFS
@@ -85,6 +87,13 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         (((c as THREE.Mesh).material as THREE.MeshBasicMaterial).fog = false)
     )
   }, [])
+
+  useSectionProgress(JourneySection.Waterfall, [
+    VOICEOVER.JOURNEY.BRIDGE,
+    20000,
+    bridgeButtonPromise.isWaiting,
+    VOICEOVER.JOURNEY.WATERFALL,
+  ])
 
   useAsyncEffect(
     async (wrap) => {

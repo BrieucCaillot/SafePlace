@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 
-import useFitObjectToCamera from '@/hooks/useFitObjectToCamera'
+import useFitObjectToCamera from '@/hooks/three/useFitObjectToCamera'
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
 
 import fragmentShader from '@/components/Journey/Canvas/Scenes/Intro/Mountain/MountainPlane.fs'

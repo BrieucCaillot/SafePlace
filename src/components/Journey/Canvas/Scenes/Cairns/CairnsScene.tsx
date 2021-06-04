@@ -27,6 +27,7 @@ import TreeParams from '@/components/common/Canvas/Decorations/Trees/TreeParams'
 import FlyingRocks from '@/components/common/Canvas/Decorations/FlyingRocks'
 import Routes from '@/constants/enums/Routes'
 import useSceneControls from '@/hooks/three/useSceneControls'
+import useSectionProgress from '@/hooks/journey/useSectionProgress'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -79,6 +80,11 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     anim.init()
     return anim.stop
   }, [willPlay])
+
+  useSectionProgress(JourneySection.Cairns, [
+    { actions, name: 'Action.003' },
+    5000,
+  ])
 
   // Sequence
   useAsyncEffect(

@@ -11,6 +11,9 @@ type HowlEvents =
   | 'seek'
   | 'fade'
   | 'unlock'
+  | 'load'
+  | 'loaderror'
+  | 'playerror'
 
 const promisifyHowl = (howl: Howl, event: HowlEvents) =>
   new Promise<void>((res) => howl.on(event, () => res()))

@@ -34,6 +34,7 @@ import SceneShorthand from '@/components/common/Canvas/SceneShorthand'
 import TreeParams from '@/components/common/Canvas/Decorations/Trees/TreeParams'
 import LakeLilies from './LakeLilies'
 import useSceneControls from '@/hooks/three/useSceneControls'
+import useSectionProgress from '@/hooks/journey/useSectionProgress'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -90,6 +91,14 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     setAnimatedDandelion(0)
     return anim.stop
   }, [willPlay])
+
+  useSectionProgress(JourneySection.Lake, [
+    2000,
+    VOICEOVER.JOURNEY.LAKE1,
+    5000,
+    VOICEOVER.JOURNEY.LAKE2,
+    5000,
+  ])
 
   // Sequence
   useAsyncEffect(
