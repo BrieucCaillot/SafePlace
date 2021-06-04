@@ -19,7 +19,7 @@ import LakeScene from '@/components/Journey/Canvas/Scenes/Lake/LakeScene'
 import CairnsScene from '@/components/Journey/Canvas/Scenes/Cairns/CairnsScene'
 import WaterfallScene from '@/components/Journey/Canvas/Scenes/Waterfall/WaterfallScene'
 import SceneName from '@/constants/enums/SceneName'
-import newSceneModified from '@/utils/newSceneModified'
+import sceneBuilder from '@/utils/sceneBuilder'
 
 export type SceneData = {
   Component: ForwardRefExoticComponent<
@@ -50,33 +50,33 @@ const useSceneStore = create<SceneStore>((set, get) => ({
   scenesData: {
     [SceneName.Safeplace]: {
       Component: SafeplaceScene,
-      scene: newSceneModified({
-        // fog: new THREE.FogExp2('#cce0ff', 0.015),
+      scene: sceneBuilder({
+        fog: new THREE.FogExp2('#e9a8be', 0.015),
       }),
       isLoaded: false,
       cameraRef: createRef(),
     },
     [SceneName.JourneyIntro]: {
       Component: IntroScene,
-      scene: newSceneModified({}),
+      scene: sceneBuilder(),
       isLoaded: false,
       cameraRef: createRef(),
     },
     [SceneName.Cairns]: {
       Component: CairnsScene,
-      scene: newSceneModified({}),
+      scene: sceneBuilder(),
       isLoaded: false,
       cameraRef: createRef(),
     },
     [SceneName.Lake]: {
       Component: LakeScene,
-      scene: newSceneModified({}),
+      scene: sceneBuilder(),
       isLoaded: false,
       cameraRef: createRef(),
     },
     [SceneName.Waterfall]: {
       Component: WaterfallScene,
-      scene: newSceneModified({}),
+      scene: sceneBuilder(),
       isLoaded: false,
       cameraRef: createRef(),
     },

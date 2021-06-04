@@ -7,11 +7,11 @@ varying float vGroundValue;
 void main() {
   vec4 texel = texture2D(uTexture, vUv);
   texel.rgb *= vGroundValue;
-  #ifdef ALPHATEST
-  if(texel.a < ALPHATEST)
-    discard;
-  #endif
   gl_FragColor = texel;
 
   #include <fog_fragment>
+
+  #ifdef ALPHATEST
+    if(gl_FragColor.a < ALPHATEST) discard;
+  #endif
 }

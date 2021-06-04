@@ -27,6 +27,7 @@ uniform float uWindFrequency;
 
 varying vec2 vUv;
 
+#pragma glslify: quarticOut = require(glsl-easings/quartic-out)
 #pragma glslify: random2D = require('../../../../utils/shaders/random2D')
 #pragma glslify: remap = require('../../../../utils/shaders/remap')
 #pragma glslify: cartesian2polar = require('../../../../utils/shaders/cartesian2polar')

@@ -14,10 +14,15 @@ vec2 rotateUV(vec2 uv, float rotation)
   );
 }
 
+#include <fog_pars_vertex>
+
 void main()
 {
   vUv = uv;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+  gl_Position = projectionMatrix * mvPosition;
   vWorldUv = (modelMatrix * vec4(position, 1.)).xz * (1. / uScale);
   vFlowUv = rotateUV(vWorldUv, uFlowDirection);
+
+  #include <fog_vertex>
 }

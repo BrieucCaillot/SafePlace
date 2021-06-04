@@ -42,8 +42,8 @@ void main() {
   vec3 pos = position;
   transform(pos, offset, uRotation, vec3(uSize));
 
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+  vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+  gl_Position = projectionMatrix * mvPosition;
 
-  vec3 mvPosition = (vec4(pos, 1.0) * modelViewMatrix).xyz;
   #include <fog_vertex>
 }

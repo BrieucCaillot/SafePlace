@@ -1,5 +1,5 @@
 import { CSSTransition, TransitionStatus } from 'react-transition-group'
-import useTransitionStatus from '@/hooks/useTransitionStatus'
+import useTransitionStatus from '@/hooks/animation/useTransitionStatus'
 
 import Instructions from '@/components/Instructions/Instructions'
 import useSceneStore from '@/stores/useSceneStore'

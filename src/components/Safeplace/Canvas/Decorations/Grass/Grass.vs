@@ -58,8 +58,8 @@ void main() {
   pos.x += windOffsetX * uv.y * uWindAmplitude;
   pos.z += windOffsetZ * uv.y * uWindAmplitude;
 
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+  vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+  gl_Position = projectionMatrix * mvPosition;
 
-  vec3 mvPosition = (vec4(pos, 1.0) * modelViewMatrix).xyz;
   #include <fog_vertex>
 }

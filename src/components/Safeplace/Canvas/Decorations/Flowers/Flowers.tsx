@@ -57,19 +57,15 @@ const Flowers = ({
   )
 
   // --- UNIFORMS
-  const uniforms = useRef<Record<string, THREE.IUniform>>(
-    THREE.UniformsUtils.merge([
-      THREE.UniformsLib['fog'],
-      {
-        uTexture: { value: null },
-        uPositionTexture: { value: null },
-        uUvTexture: { value: null },
-        uGroundTexture: { value: null },
-        uSize: { value: 1 },
-        uRotation: { value: new THREE.Quaternion() },
-      },
-    ])
-  )
+  const uniforms = useRef<Record<string, THREE.IUniform>>({
+    ...THREE.UniformsLib['fog'],
+    uTexture: { value: null },
+    uPositionTexture: { value: null },
+    uUvTexture: { value: null },
+    uGroundTexture: { value: null },
+    uSize: { value: 1 },
+    uRotation: { value: new THREE.Quaternion() },
+  })
 
   useUniform(uniforms.current.uTexture, texture)
   useWatchableUniform(uniforms.current.uPositionTexture, positionTexture)
