@@ -87,22 +87,18 @@ const Grass = ({
   }, [bufferGeometry])
 
   // --- UNIFORMS
-  const uniforms = useRef<Record<string, THREE.IUniform>>(
-    THREE.UniformsUtils.merge([
-      THREE.UniformsLib['fog'],
-      {
-        uPositionTexture: { value: null },
-        uUvTexture: { value: null },
-        uTexture: { value: null },
-        uGroundTexture: { value: null },
-        uTime: { value: 0 },
-        uSize: { value: 1 },
-        uWindAmplitude: { value: 0 },
-        uWindNoiseSize: { value: 0 },
-        uWindSpeed: { value: 0 },
-      },
-    ])
-  )
+  const uniforms = useRef<Record<string, THREE.IUniform>>({
+    ...THREE.UniformsLib['fog'],
+    uPositionTexture: { value: null },
+    uUvTexture: { value: null },
+    uTexture: { value: null },
+    uGroundTexture: { value: null },
+    uTime: { value: 0 },
+    uSize: { value: 1 },
+    uWindAmplitude: { value: 0 },
+    uWindNoiseSize: { value: 0 },
+    uWindSpeed: { value: 0 },
+  })
 
   useUniform(uniforms.current.uSize, size)
   useUniform(uniforms.current.uWindAmplitude, windAmplitude)

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { CSSTransition, TransitionStatus } from 'react-transition-group'
 
 import useUserStore from '@/stores/useUserStore'
-import useTransitionStatus from '@/hooks/useTransitionStatus'
+import useTransitionStatus from '@/hooks/animation/useTransitionStatus'
 import usePrevious from '@/hooks/usePrevious'
 import Routes from '@/constants/enums/Routes'
 

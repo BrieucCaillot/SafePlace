@@ -3,7 +3,7 @@ import { TransitionStatus } from 'react-transition-group'
 
 import ButtonShelterSafeplace from '@/components/Safeplace/UI/Buttons/ButtonShelterSafeplace'
 
-import useTransitionStatus from '@/hooks/useTransitionStatus'
+import useTransitionStatus from '@/hooks/animation/useTransitionStatus'
 import useUserStore from '@/stores/useUserStore'
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'

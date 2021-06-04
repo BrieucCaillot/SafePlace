@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import { CSSTransition, TransitionStatus } from 'react-transition-group'
 
 import useUserStore from '@/stores/useUserStore'
-import useTransitionStatus from '@/hooks/useTransitionStatus'
+import useTransitionStatus from '@/hooks/animation/useTransitionStatus'
 import Routes from '@/constants/enums/Routes'
 
 import PortalUI from '@/components/common/UI/PortalUI'

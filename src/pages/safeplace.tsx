@@ -1,5 +1,5 @@
 import { TransitionStatus } from 'react-transition-group'
-import useTransitionStatus from '@/hooks/useTransitionStatus'
+import useTransitionStatus from '@/hooks/animation/useTransitionStatus'
 import PortalUI from '@/components/common/UI/PortalUI'
 import ResourcesButton from '@/components/Safeplace/UI/ResourcesButton'
 import useSafeplaceStore from '@/stores/useSafeplaceStore'

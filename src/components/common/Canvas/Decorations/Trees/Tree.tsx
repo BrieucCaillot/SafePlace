@@ -21,18 +21,14 @@ const Tree = ({
 }: Omit<MeshProps, 'ref'> & { treeParams: TreeParams; tree: THREE.Mesh }) => {
   const clockRef = useRef<THREE.Clock>(new THREE.Clock(true))
 
-  const uniforms = useRef<Record<string, THREE.IUniform>>(
-    THREE.UniformsUtils.merge([
-      THREE.UniformsLib['fog'],
-      {
-        uTexture: { value: (tree.material as THREE.MeshBasicMaterial).map },
-        uTime: { value: 0 },
-        uWindNoiseSize: { value: 0 },
-        uWindSpeed: { value: 0 },
-        uWindAmplitude: { value: 0 },
-      },
-    ])
-  )
+  const uniforms = useRef<Record<string, THREE.IUniform>>({
+    ...THREE.UniformsLib['fog'],
+    uTexture: { value: (tree.material as THREE.MeshBasicMaterial).map },
+    uTime: { value: 0 },
+    uWindNoiseSize: { value: 0 },
+    uWindSpeed: { value: 0 },
+    uWindAmplitude: { value: 0 },
+  })
 
   useNumberUniform(uniforms.current.uWindNoiseSize, uWindNoiseSize / 10)
   useNumberUniform(uniforms.current.uWindSpeed, uWindSpeed / 10)

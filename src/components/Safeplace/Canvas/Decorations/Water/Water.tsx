@@ -39,6 +39,7 @@ const Water = ({
   }, [])
 
   const uniforms = useRef<{ [name: string]: THREE.IUniform }>({
+    ...THREE.UniformsLib['fog'],
     uShadowTexture: { value: shadowTexture },
     uUseShadow: { value: shadowTexture === null ? 0 : 1 },
     uBackground: { value: bg },
@@ -64,6 +65,7 @@ const Water = ({
         uniforms={uniforms.current}
         fragmentShader={fragmentShader}
         vertexShader={vertexShader}
+        fog={true}
       />
     </MeshShorthand>
   )

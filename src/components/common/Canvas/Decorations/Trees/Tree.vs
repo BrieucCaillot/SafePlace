@@ -27,10 +27,11 @@ void main() {
 
   float windAlpha = step(0.5, color.r);
 
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(mix(pos, position, windAlpha), 1.0);
+  pos = mix(pos, position, windAlpha);
+  vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+  gl_Position = projectionMatrix * mvPosition;
 
   vUv = uv;
 
-  vec3 mvPosition = (vec4(pos, 1.0) * modelViewMatrix).xyz;
   #include <fog_vertex>
 }

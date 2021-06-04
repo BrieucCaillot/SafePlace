@@ -1,14 +1,6 @@
-import {
-  forwardRef,
-  RefObject,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-} from 'react'
+import { forwardRef, RefObject, useMemo, useRef } from 'react'
 import { createPortal, useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
-import useVector2Uniform from '@/hooks/uniforms/useVector2Uniform'
 import fragmentShader from './WaterfallFBO.fs'
 import vertexShader from './WaterfallFBO.vs'
 import { folder, useControls } from 'leva'
@@ -189,7 +181,9 @@ const WaterfallFBO = forwardRef(
       const rs1 = `vec3(${format(rb1.scale.clone().subScalar(rounding))})`
       lines.push(
         `float rd1 = sdRoundBox(rotateVector(${rq1}, ${rp1} - pos), vec3(${rs1}), ${r});`,
-        'd = opSmoothUnion(rd1, d1, uRounding);'
+        'float rounding = quarticOut(clamp(remap(pos.x, -21., -15., 0., 1.), 0., 1.));',
+        'rounding = remap(rounding, 0., 1., 0., 1.);',
+        'd = opSmoothUnion(rd1, d1, uRounding * rounding);'
       )
 
       for (const o of sdfScene.children) {
