@@ -8,6 +8,11 @@ import Routes from '@/constants/enums/Routes'
 
 import PortalUI from '@/components/common/UI/PortalUI'
 import ButtonStonecut from '@/components/common/UI/Buttons/ButtonStonecut'
+import useSceneStore from '@/stores/useSceneStore'
+import SceneName from '@/constants/enums/SceneName'
+import useBooleanPromise from '@/hooks/promise/useBooleanPromise'
+import useDropPromise from '@/hooks/promise/useDropPromise'
+import wait from '@/utils/promise/wait'
 
 const Index = ({ status }: { status: TransitionStatus }) => {
   const show = useTransitionStatus(status)
@@ -17,6 +22,22 @@ const Index = ({ status }: { status: TransitionStatus }) => {
 
   const [hide, setHide] = useState(false)
   const [showSafeplaceAnim, setShowSafeplaceAnim] = useState(false)
+
+  // Promise setup for sceneData loaded
+  const { isWaiting, wait: waitSafeplaceLoaded, resolve } = useBooleanPromise()
+  useEffect(() => {
+    if (!isWaiting) return
+    if (useSceneStore.getState().scenesData[SceneName.Waterfall].isLoaded)
+      resolve()
+    else
+      return useSceneStore.subscribe(
+        (b) => b && resolve(),
+        (s) => s.scenesData[SceneName.Waterfall].isLoaded
+      )
+  }, [isWaiting])
+
+  const { wrap, drop } = useDropPromise()
+  useEffect(() => void drop(), [])
 
   const safeplaceImgClass = useMemo(
     () => (showSafeplaceAnim ? (hide ? 'topToBottom' : 'bottomToTop') : ''),
@@ -31,7 +52,10 @@ const Index = ({ status }: { status: TransitionStatus }) => {
     (route: Routes) => {
       setShowSafeplaceAnim(true)
       setHide(true)
-      setTimeout(() => router.push(route), 2000)
+      let promise = wrap(wait(2000))
+      if (route === Routes.Safeplace)
+        promise = wrap(promise.then(waitSafeplaceLoaded))
+      promise.then(() => router.push(route))
     },
     [router]
   )
