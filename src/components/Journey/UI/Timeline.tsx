@@ -64,7 +64,7 @@ const Timeline = () => {
             isActive={i <= currentIndex}
             onClick={() => onCheckpointClicked(s)}
           />
-          <div className='timeline-bullets bg-repeat-x h-1 w-full rounded-full' />
+          <div className='timeline-bullets bg-repeat-x h-1 w-full rounded-full mt-0.5' />
         </div>
       ))}
     </div>
