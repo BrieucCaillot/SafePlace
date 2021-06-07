@@ -1,16 +1,17 @@
 const SVGSoundOff = ({ className = '' }: { className?: string }) => {
   return (
     <svg
-      className={`text-white transform-gpu scale-150 ${className}`}
-      width='18'
-      height='12'
-      viewBox='0 0 18 3'
+      className={`text-white transform-gpu scale-75 ${className}`}
+      width='64'
+      height='37'
+      viewBox='0 0 64 37'
+      shapeRendering='geometricPrecision'
+      textRendering='geometricPrecision'
       fill='none'
-      xmlns='http://www.w3.org/2000/svg'
     >
       <path
         stroke='currentColor'
-        strokeWidth='1.5'
+        strokeWidth='4'
         strokeLinecap='round'
         strokeLinejoin='round'
       >
@@ -18,7 +19,7 @@ const SVGSoundOff = ({ className = '' }: { className?: string }) => {
           repeatCount='indefinite'
           attributeName='d'
           dur='1.5s'
-          values='M18 2C15 2 15.5 1 13.5 1C11.5 1 11 2 9.3705 2C7.74101 2 7.51391 1 5.5 1C3.48609 1 3.6 2 1 2;
+          values='M2 22.9396C3.25 22.9396 8.8921 24.0401 11.3921 24.0401C13.8921 24.0401 17.4901 21.8833 21.2401 21.8833C24.9901 21.8833 28.25 25.0009 32 25.0009C35.75 25.0009 39.25 21.8828 43 21.8828C46.75 21.8828 48.5 24.0401 53.5 24.0401C57.5 24.0401 59.5 22.9396 62 22.9396;
  '
         ></animate>
       </path>

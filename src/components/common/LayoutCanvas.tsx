@@ -22,7 +22,7 @@ const LayoutCanvas = ({ router }: { router: NextRouter }) => {
         top: 0,
       }}
       colorManagement={true}
-      pixelRatio={[devicePixelRatio, 2]}
+      pixelRatio={Math.min(devicePixelRatio, 2)}
     >
       {enableOrbitControls && <OrbitControls />}
       <Scenes />

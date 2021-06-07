@@ -1,5 +1,5 @@
 import { forwardRef, RefObject, useMemo, useRef } from 'react'
-import { createPortal, useFrame } from 'react-three-fiber'
+import { createPortal, useFrame, useThree } from 'react-three-fiber'
 import * as THREE from 'three'
 import fragmentShader from './WaterfallFBO.fs'
 import vertexShader from './WaterfallFBO.vs'
@@ -30,7 +30,8 @@ const WaterfallFBO = forwardRef(
     },
     ref: RefObject<THREE.Mesh>
   ) => {
-    const clockRef = useRef<THREE.Clock>(new THREE.Clock())
+    const clock = useMemo(() => new THREE.Clock(true), [])
+
     const {
       angleAmplitude,
       movementSpeed,
@@ -120,8 +121,8 @@ const WaterfallFBO = forwardRef(
     useNumberUniform(uniforms.current.uFoamSensitivityVar, foamSensitivityVar)
 
     useFrame(() => {
-      uniforms.current.uTime.value = clockRef.current.elapsedTime
-      uniforms.current.uDelta.value = clockRef.current.getDelta()
+      uniforms.current.uTime.value = clock.elapsedTime
+      uniforms.current.uDelta.value = clock.getDelta()
       if (slats.current === null) return
       ;(uniforms.current.uSlatsPos.value as THREE.Vector3[]).map((v, i) =>
         slats.current.getGroup().current.children[i].getWorldPosition(v)

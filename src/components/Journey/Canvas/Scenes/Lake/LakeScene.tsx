@@ -134,6 +134,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     offset: [-Math.PI / 2, 0, 0],
     amplitude: 0.02,
     easing: 0.02,
+    enable: isSettledInScene || willPlay,
   })
 
   return (

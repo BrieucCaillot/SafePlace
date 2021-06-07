@@ -38,7 +38,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const [slats, rocks, waterfall, cameras, background] = useMemo(
     () =>
       ['slats', 'rocks', 'waterfall', 'cameras', 'background'].map((n) =>
-        gltf.scene.children.find((o) => o.name === n)
+        gltf.scene.children.find((o) => o.name.includes(n))
       ),
     []
   )
@@ -77,7 +77,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   useEffect(() => {
     if (!willPlay) return
-    anim.init('camera_1')
+    anim.init('camera_1.002')
     return anim.stop
   }, [willPlay])
 
@@ -115,7 +115,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
       await wrap(
         Promise.all([
-          anim.play('camera_1'), //---
+          anim.play('camera_1.002'), //---
           audio.play(VOICEOVER.JOURNEY.BRIDGE), //---
         ])
       )
@@ -155,6 +155,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     offset: [-Math.PI / 2, 0, 0],
     amplitude: 0.02,
     easing: 0.01,
+    enable: isSettledInScene || willPlay,
   })
 
   return (
