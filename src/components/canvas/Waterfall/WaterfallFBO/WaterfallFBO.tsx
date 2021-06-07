@@ -30,7 +30,6 @@ const WaterfallFBO = forwardRef(
     },
     ref: RefObject<THREE.Mesh>
   ) => {
-    const clockRef = useRef<THREE.Clock>(new THREE.Clock())
     const {
       angleAmplitude,
       movementSpeed,
@@ -119,9 +118,9 @@ const WaterfallFBO = forwardRef(
     useNumberUniform(uniforms.current.uFoamSensitivity, foamSensitivity)
     useNumberUniform(uniforms.current.uFoamSensitivityVar, foamSensitivityVar)
 
-    useFrame(() => {
-      uniforms.current.uTime.value = clockRef.current.elapsedTime
-      uniforms.current.uDelta.value = clockRef.current.getDelta()
+    useFrame(({}, delta) => {
+      uniforms.current.uTime.value += delta
+      uniforms.current.uDelta.value = delta
       if (slats.current === null) return
       ;(uniforms.current.uSlatsPos.value as THREE.Vector3[]).map((v, i) =>
         slats.current.getGroup().current.children[i].getWorldPosition(v)
