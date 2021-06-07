@@ -16,6 +16,7 @@ const Instruction = ({
   currentInstruction,
   text,
   textAnimDuration,
+  textClassName,
   buttonText,
   onNextStep,
 }: {
@@ -24,6 +25,7 @@ const Instruction = ({
   currentInstruction: number
   text: string
   textAnimDuration?: number
+  textClassName?: string
   buttonText: string
   onNextStep: () => void
 }) => {
@@ -75,7 +77,7 @@ const Instruction = ({
       <div className='w-screen'>
         <p
           ref={contentRef}
-          className='text-primary text-stroke-6 font-sans text-xl leading-loose tracking-wider text-center pb-7 whitespace-pre-line max-w-2xl m-auto'
+          className={`text-primary text-stroke-6 font-sans text-xl leading-loose tracking-wider text-center pb-7 whitespace-pre-line m-auto ${textClassName}`}
         >
           {text}
         </p>

@@ -22,6 +22,7 @@ const Instructions = ({ show }: { show: boolean }) => {
         currentInstruction={currentInstruction}
         text={`Pour une expérience plus riche, je vous recommande de \n prendre un casque et de désactiver vos notifications.`}
         textAnimDuration={9}
+        textClassName='max-w-2xl'
         buttonText={'Continuer'}
         onNextStep={() => setCurrentInstruction(1)}
       />
@@ -31,6 +32,7 @@ const Instructions = ({ show }: { show: boolean }) => {
         currentInstruction={currentInstruction}
         text={`Installez-vous confortablement, le dos droit, les pieds bien à plat.`}
         textAnimDuration={6}
+        textClassName='max-w-3xl'
         buttonText={'Continuer'}
         onNextStep={() => setCurrentInstruction(2)}
       />
@@ -40,6 +42,7 @@ const Instructions = ({ show }: { show: boolean }) => {
         currentInstruction={currentInstruction}
         text={`Respirez profondément, détendez-vous, faites le calme autour de vous, \n et quand vous serez prêt, venez me retrouver dans votre safeplace.`}
         textAnimDuration={13}
+        textClassName='max-w-3xl'
         buttonText={'Rejoindre la safeplace'}
         onNextStep={() => {
           router.push(Routes.Safeplace)
