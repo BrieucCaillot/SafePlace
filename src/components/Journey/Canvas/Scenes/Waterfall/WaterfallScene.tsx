@@ -44,7 +44,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   )
 
   const [camAnims, slatAnims] = useMemo(() => {
-    const [cam1, cam2, cam3, ...slatsAnims] = gltf.animations
+    const [cam1, cam2, cam3, ...slatsAnims] = gltf.animations.reverse()
     return [[cam1, cam2, cam3], [...slatsAnims]]
   }, [])
 
