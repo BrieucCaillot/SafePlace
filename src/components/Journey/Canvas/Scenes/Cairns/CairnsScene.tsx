@@ -28,6 +28,8 @@ import FlyingRocks from '@/components/common/Canvas/Decorations/FlyingRocks'
 import Routes from '@/constants/enums/Routes'
 import useSceneControls from '@/hooks/three/useSceneControls'
 import useSectionProgress from '@/hooks/journey/useSectionProgress'
+import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
+import Birds from './Birds/Birds'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -44,6 +46,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     background,
     rocks,
     trees,
+    birds,
   ] = useMemo(
     () =>
       [
@@ -55,9 +58,11 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         'background',
         'rocks',
         'trees',
+        'birds',
       ].map((n) => scene.children.find((o) => o.name === n)),
     []
   )
+  console.log(scene)
 
   const localCamRef = useRef<THREE.Camera>()
   const containerRef = useRef<THREE.Group>()
@@ -174,6 +179,8 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         group={ground as THREE.Group}
         mesh={ground.children[0] as THREE.Mesh}
       />
+
+      <Birds points={birds.children} />
     </>
   )
 })
