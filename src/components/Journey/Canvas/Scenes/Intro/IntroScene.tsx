@@ -16,6 +16,7 @@ import MountainPlane from '@/components/Journey/Canvas/Scenes/Intro/Mountain/Mou
 import CloudPlane from '@/components/Journey/Canvas/Scenes/Intro/Clouds/CloudPlane'
 import FogPlane from '@/components/Journey/Canvas/Scenes/Intro/Fog/FogPlane'
 import useAudioManager from '@/hooks/audio/useAudioManager'
+import useSectionProgress from '@/hooks/journey/useSectionProgress'
 
 const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const isSettledInScene = useSceneStore(
@@ -50,6 +51,8 @@ const IntroScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   )
 
   const audio = useAudioManager(VOICEOVER.JOURNEY.INTRO)
+
+  useSectionProgress(JourneySection.Intro, [VOICEOVER.JOURNEY.INTRO])
 
   useAsyncEffect(
     async (wrap) => {

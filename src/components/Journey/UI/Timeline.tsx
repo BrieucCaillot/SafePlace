@@ -10,7 +10,6 @@ import SVGCheckpoint from '@/components/Journey/UI/SVG/SVGCheckpoint'
 
 const Timeline = () => {
   const currentSection = useJourneyStore((state) => state.currentSection)
-  const setCurrentSection = useJourneyStore((state) => state.setSection)
 
   const timelineProgressRef = useRef<HTMLDivElement>(null)
 
@@ -22,29 +21,40 @@ const Timeline = () => {
   )
 
   const onCheckpointClicked = useCallback((section: JourneySection) => {
-    setCurrentSection(section)
+    useJourneyStore.getState().setSection(section)
   }, [])
 
-  useEffect(() => {
-    const prog = currentIndex / steps.length
+  // useEffect(() => {
+  //   const prog = currentIndex / steps.length
 
-    // const duration = Object.values(JourneySectionDuration)[currentIndex]
+  //   // const duration = Object.values(JourneySectionDuration)[currentIndex]
 
-    const anim = gsap.to(timelineProgressRef.current, {
-      width: `${prog * 100}%`,
-      duration: 1,
-    })
+  //   const anim = gsap.to(timelineProgressRef.current, {
+  //     width: `${prog * 100}%`,
+  //     duration: 1,
+  //   })
 
-    return () => {
-      anim.kill()
-    }
-  }, [currentSection])
+  //   return () => {
+  //     anim.kill()
+  //   }
+  // }, [currentSection])
+
+  useEffect(
+    () =>
+      useJourneyStore
+        .getState()
+        .onProgress(
+          (n) =>
+            (timelineProgressRef.current.style.transform = `scale3D(${n}, 1, 1)`)
+        ),
+    []
+  )
 
   return (
     <div className='relative flex items-center w-full'>
       <div
         ref={timelineProgressRef}
-        className={`absolute top-1/2 transform-gpu -translate-y-1/2 bg-white h-1 rounded-full`}
+        className={`absolute bg-white h-1 rounded-full w-full origin-top-left`}
       />
       {steps.map((s: JourneySection, i) => (
         <div key={i} className='relative flex-1 flex items-center'>

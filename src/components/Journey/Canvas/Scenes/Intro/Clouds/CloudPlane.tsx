@@ -3,7 +3,7 @@ import { useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
 
 import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
-import useFitObjectToCamera from '@/hooks/useFitObjectToCamera'
+import useFitObjectToCamera from '@/hooks/three/useFitObjectToCamera'
 
 import fragmentShader from '@/components/Journey/Canvas/Scenes/Intro/Clouds/CloudPlane.fs'
 import vertexShader from '@/components/Journey/Canvas/Scenes/Intro/Clouds/CloudPlane.vs'
