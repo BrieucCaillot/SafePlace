@@ -96,7 +96,9 @@ const Index = ({ status }: { status: TransitionStatus }) => {
               <button
                 id='button-start'
                 onClick={() => onButtonClicked(Routes.OnBoarding)}
-                className='relative button-stonefull text-white text-xl font-bold tracking-widest rounded px-10 py-3 focus:outline-none cursor-pointer'
+                className={`relative button-stonefull text-white text-xl font-bold tracking-widest rounded px-10 py-3 focus:outline-none cursor-pointer ${
+                  hide ? 'pointer-events-none' : ''
+                }`}
               >
                 Lancer l'experience
               </button>
