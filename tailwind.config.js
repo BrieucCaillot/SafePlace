@@ -54,9 +54,6 @@ module.exports = {
       cursor: {
         none: 'none',
       },
-      maxWidth: {
-        '2xl': '47rem',
-      },
     },
   },
   variants: {
