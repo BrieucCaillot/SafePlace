@@ -181,6 +181,11 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
           {trees.children[0].children.map((tree) => (
             <TreeParams
               tree={tree as THREE.Mesh}
+              treeParams={{
+                uWindNoiseSize: 3.1,
+                uWindSpeed: 4.3,
+                uWindAmplitude: 0.8,
+              }}
               key={tree.uuid}
               folderName={'lake.greenery'}
               route={Routes.Journey}
