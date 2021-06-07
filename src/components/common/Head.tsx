@@ -109,19 +109,19 @@ const Head = () => {
           rel='icon'
           type='image/png'
           sizes='32x32'
-          href='/img/favicon-32x32.png'
+          href='/icons/favicon-32x32.png'
         />
         <link
           rel='icon'
           type='image/png'
           sizes='96x96'
-          href='/img/favicon-96x96.png'
+          href='/icons/favicon-96x96.png'
         />
         <link
           rel='icon'
           type='image/png'
           sizes='16x16'
-          href='/img/favicon-16x16.png'
+          href='/icons/favicon-16x16.png'
         />
 
         <link rel='manifest' href='/manifest.json' />
