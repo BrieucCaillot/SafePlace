@@ -7,13 +7,18 @@ import bezier from 'bezier-easing'
 import useAnimateVector from '@/hooks/animation/useAnimateVector'
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
 import useMouseRotation from '@/hooks/animation/useMouseRotation'
+import useSceneStore from '@/stores/useSceneStore'
+import SceneName from '@/constants/enums/SceneName'
 
 const SafeplaceCamera = forwardRef(
   (_, forwardedRef: MutableRefObject<THREE.Camera>) => {
     const camRef = useRef<THREE.Camera>()
-    const groupRef = useRef<THREE.Camera>()
-    const setIsCameraTravelling = useSafeplaceStore(
-      (state) => state.setIsCameraTravelling
+    const groupRef = useRef<THREE.Group>()
+
+    const isSceneVisible = useSceneStore(
+      (s) =>
+        s.renderedScene === SceneName.Safeplace ||
+        s.nextScene === SceneName.Safeplace
     )
 
     const { amplitude, easing } = useControls(
@@ -42,7 +47,8 @@ const SafeplaceCamera = forwardRef(
         params: {
           ease: bezier(0.49, 0.01, 0.24, 0.99),
           duration: 3.5,
-          onComplete: () => setIsCameraTravelling(false),
+          onComplete: () =>
+            useSafeplaceStore.getState().setIsCameraTravelling(false),
         },
       }
 
@@ -72,7 +78,7 @@ const SafeplaceCamera = forwardRef(
     useAnimateVector({ ref: groupRef, target: 'rotation' }, rotation, params)
     useAnimateVector({ ref: groupRef, target: 'scale' }, scale, params)
 
-    useMouseRotation(camRef, { amplitude, easing })
+    useMouseRotation(camRef, { amplitude, easing, enable: isSceneVisible })
 
     return (
       <group ref={groupRef}>

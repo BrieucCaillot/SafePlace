@@ -30,6 +30,7 @@ import useSceneControls from '@/hooks/three/useSceneControls'
 import useSectionProgress from '@/hooks/journey/useSectionProgress'
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import Birds from './Birds/Birds'
+import useTraceRender from '@/hooks/debug/useTraceRender'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const {
@@ -62,9 +63,8 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       ].map((n) => scene.children.find((o) => o.name === n)),
     []
   )
-  console.log(scene)
 
-  const localCamRef = useRef<THREE.Camera>()
+  const localCamRef = useRef<THREE.PerspectiveCamera>()
   const containerRef = useRef<THREE.Group>()
 
   const isSettledInScene = useSceneStore(
@@ -115,8 +115,30 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     offset: [-Math.PI / 2, 0, 0],
     amplitude: 0.2,
     easing: 0.01,
+    enable: willPlay || isSettledInScene,
   })
 
+  // useTraceRender({
+  //   camera,
+  //   ground,
+  //   flying_rocks,
+  //   cairns,
+  //   ark,
+  //   background,
+  //   rocks,
+  //   trees,
+  //   birds,
+  //   scene,
+  //   camAnim,
+  //   localCamRef,
+  //   containerRef,
+  //   isSettledInScene,
+  //   willPlay,
+  //   audio,
+  //   actions,
+  //   mixer,
+  //   anim,
+  // })
   return (
     <>
       {/* <ClassicCamera ref={camRef} /> */}
@@ -127,6 +149,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       >
         <perspectiveCamera
           ref={mergeRefs([camRef, localCamRef])}
+          rotation-x={-Math.PI / 2}
           near={0.1}
           far={1000}
           fov={54.9}
