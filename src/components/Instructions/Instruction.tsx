@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
+import gsap from 'gsap'
+import SplitType from 'split-type'
 
-import ButtonStonecut from '../common/UI/Buttons/ButtonStonecut'
-import VOICEOVER from '@/constants/VOICEOVER'
-import useDropPromise from '@/hooks/promise/useDropPromise'
-import useAudioStore from '@/stores/useAudioStore'
 import usePlayAudio from '@/hooks/audio/usePlayAudio'
+import VOICEOVER from '@/constants/VOICEOVER'
+
+import ButtonStonecut from '@/components/common/UI/Buttons/ButtonStonecut'
 
 const TIMEOUT = 2000
 
@@ -14,6 +15,7 @@ const Instruction = ({
   instruction,
   currentInstruction,
   text,
+  textAnimDuration,
   buttonText,
   onNextStep,
 }: {
@@ -21,9 +23,12 @@ const Instruction = ({
   instruction: number
   currentInstruction: number
   text: string
+  textAnimDuration?: number
   buttonText: string
   onNextStep: () => void
 }) => {
+  const contentRef = useRef<HTMLDivElement>()
+
   const show = currentInstruction === instruction && parentShow
 
   const [hide, setHide] = useState(false)
@@ -34,6 +39,28 @@ const Instruction = ({
     show, //---
     () => setIsVoiceoverPlayed(true) //---
   )
+
+  useEffect((): GSAPCallback => {
+    if (!show || hide) return
+
+    const text = new SplitType(contentRef.current, {
+      types: 'words, chars',
+    })
+
+    const anim = gsap.from(text.chars, {
+      autoAlpha: 0,
+      y: 20,
+      duration: 1,
+      rotationY: 45,
+      transformOrigin: 'bottom left -20',
+      stagger: { amount: textAnimDuration || 6 },
+      onComplete: () => {
+        text.revert()
+      },
+    })
+
+    return () => anim.kill()
+  }, [show, !hide])
 
   return (
     <CSSTransition
@@ -46,7 +73,10 @@ const Instruction = ({
       appear={true}
     >
       <div className='w-screen'>
-        <p className='text-primary text-stroke-6 font-sans text-xl leading-loose tracking-wider text-center pb-7 whitespace-pre-line'>
+        <p
+          ref={contentRef}
+          className='text-primary text-stroke-6 font-sans text-xl leading-loose tracking-wider text-center pb-7 whitespace-pre-line max-w-2xl m-auto'
+        >
           {text}
         </p>
         <ButtonStonecut
