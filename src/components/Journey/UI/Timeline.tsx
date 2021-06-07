@@ -53,8 +53,9 @@ const Timeline = () => {
   return (
     <div className='relative flex items-center w-full'>
       <div
+        id='timeline-progress'
         ref={timelineProgressRef}
-        className={`absolute bg-white h-1 rounded-full w-full origin-top-left`}
+        className={`absolute bg-white h-0.5 rounded-full w-full origin-top-left`}
       />
       {steps.map((s: JourneySection, i) => (
         <div key={i} className='relative flex-1 flex items-center'>
