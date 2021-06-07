@@ -2,10 +2,8 @@ import { ReactNode, useMemo } from 'react'
 import * as THREE from 'three'
 
 import SafeplacePOI from '@/constants/enums/SafeplacePOI'
-import Routes from '@/constants/enums/Routes'
 
 import useSafeplaceStore from '@/stores/useSafeplaceStore'
-import useUserStore from '@/stores/useUserStore'
 import useSavePOIData from '@/hooks/POI/useSavePOIData'
 
 import ColumnLink from '@/components/Safeplace/Canvas/Columns/ColumnLink/ColumnLink'
@@ -25,8 +23,6 @@ const DefaultColumn = ({
   onColumnClick: Function
   isColumnAvailable?: boolean
 }) => {
-  const router = useUserStore((s) => s.router)
-
   const isCurrentlyAvailable = useSafeplaceStore((s) =>
     s.isCurrentlyAvailable(safeplacePOI)
   )
@@ -37,14 +33,15 @@ const DefaultColumn = ({
     [isCameraTravelling, isCurrentlyAvailable]
   )
 
-  const [camContainer, rock, column] = useMemo(
-    () => columnObj.children as [THREE.Object3D, THREE.Mesh, THREE.Mesh],
+  const [btn, camContainer, rock, column] = useMemo(
+    () =>
+      columnObj.children as [
+        THREE.Mesh,
+        THREE.Object3D,
+        THREE.Mesh,
+        THREE.Mesh
+      ],
     []
-  )
-
-  const columnLinkPosition = useMemo(
-    () => new THREE.Vector3(0, 1.9, 0).add(column.position),
-    [column]
   )
 
   const camera = useMemo(
@@ -71,7 +68,7 @@ const DefaultColumn = ({
           isColumnAvailable ?? (!isCameraTravelling && isCurrentlyAvailable)
         }
         onColumnClick={onColumnClick}
-        position={columnLinkPosition}
+        position={btn.position}
       />
     </group>
   )
