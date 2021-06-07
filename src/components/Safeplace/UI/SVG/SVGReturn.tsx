@@ -5,7 +5,7 @@ const SVGReturn = ({ className }: { className?: string }) => {
       height='25'
       viewBox='0 0 25 25'
       fill='none'
-      className={className}
+      className='pointer-events-none'
     >
       <path
         d='M8.50012 5.5L3.85156 10.2114L8.50012 15'

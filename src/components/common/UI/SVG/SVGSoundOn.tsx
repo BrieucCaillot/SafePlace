@@ -1,4 +1,4 @@
-const SVGSoundOn = ({ className = '' }: { className?: string }) => {
+const SVGSoundOn = () => {
   return (
     <svg
       id='eQLxVcRMEj51'
@@ -7,7 +7,7 @@ const SVGSoundOn = ({ className = '' }: { className?: string }) => {
       viewBox='0 0 64 37'
       shapeRendering='geometricPrecision'
       textRendering='geometricPrecision'
-      className={`text-white transform-gpu scale-75 ${className}`}
+      className='text-white transform-gpu scale-75 pointer-events-none'
     >
       <path
         fill={'none'}

@@ -70,11 +70,12 @@ const ColumnLink = ({
 
   useEffect(() => {
     if (!show) return
+    const cursor = document.querySelector('#cursor')
     if (hover) {
-      document.body.classList.add('cursor-pointer')
+      cursor.classList.add('is-hovering')
       setScale([1.4, 1.4, 1.4])
     } else {
-      document.body.classList.remove('cursor-pointer')
+      cursor.classList.remove('is-hovering')
       setScale([1, 1, 1])
     }
   }, [show, hover])

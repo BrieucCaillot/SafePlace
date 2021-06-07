@@ -46,7 +46,7 @@ const ResourceContent = (show: { show: boolean }) => {
               {Object.values(ResourceSteps).map((stepName, i) => (
                 <li
                   key={i}
-                  className={`resource-step-link font-bold px-4 cursor-pointer ${
+                  className={`resource-step-link font-bold mx-4 cursor-pointer ${
                     currentStep === stepName
                       ? 'resource-step-link__active text-tertiary'
                       : 'text-black'
@@ -59,10 +59,10 @@ const ResourceContent = (show: { show: boolean }) => {
             </ul>
           </nav>
           <div
-            className='button-close absolute top-7 right-8 h-4 w-4 transition-all duration-500 cursor-pointer'
+            className='button-close absolute top-7 right-8 h-4 w-4 transition-all duration-500 cursor-pointer text-tertiary'
             onClick={onCloseButtonClick}
           >
-            <SVGCross className='text-tertiary' />
+            <SVGCross />
           </div>
           {currentStep == ResourceSteps.Summary && (
             <div className='fadeIn'>
