@@ -21,12 +21,12 @@ const ButtonStonecut = ({
   const content = (
     <button
       onClick={onClick}
-      className={`relative button-stonecut tracking-widest text-lg focus:outline-none w-max ml-auto mr-auto ${className}`}
+      className={`relative button-stonecut tracking-widest text-lg focus:outline-none w-max ml-auto mr-auto cursor-pointer ${className}`}
     >
       <div className='button-stonecut__wrapper'>
         <SVGStonecut />
       </div>
-      <span className='text-stroke-4'>{children}</span>
+      <span className='text-stroke-4 pointer-events-none'>{children}</span>
     </button>
   )
 

@@ -2,15 +2,16 @@ import React, { ReactNode, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { Leva } from 'leva'
 
+import useSceneStore from '@/stores/useSceneStore'
 import Routes from '@/constants/enums/Routes'
 
 import User from '@/components/common/User'
 import DebugNavigation from '@/components/common/DebugNavigation'
-import LayoutHeader from '@/components/common/UI/LayoutHeader'
-import LayoutBottom from '@/components/common/UI/LayoutBottom'
 import LayoutAudio from '@/components/common/LayoutAudio'
-import useSceneStore from '@/stores/useSceneStore'
-import LayoutGradient from './UI/LayoutGradient'
+import LayoutHeader from '@/components/common/UI/LayoutHeader'
+import LayoutGradient from '@/components/common/UI/LayoutGradient'
+import LayoutBottom from '@/components/common/UI/LayoutBottom'
+import Cursor from '@/components/Journey/UI/Cursor'
 
 const LayoutDom = ({ children }: { children: ReactNode }) => {
   const { pathname } = useRouter()
@@ -34,11 +35,12 @@ const LayoutDom = ({ children }: { children: ReactNode }) => {
       <LayoutAudio />
       <LayoutHeader />
 
-      <main className='dom font-serif subpixel-antialiased relative pointer-events-none'>
+      <main className='dom font-serif subpixel-antialiased relative cursor-none pointer-events-none'>
         {isHomeOrAboutPage && <LayoutGradient pathname={pathname} />}
         {/* <Leva hidden={true} /> */}
         {children}
         <LayoutBottom show={isLayoutBottomAvailable} />
+        <Cursor />
       </main>
     </>
   )

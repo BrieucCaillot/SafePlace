@@ -51,6 +51,9 @@ module.exports = {
         'spin-cloud-medium': 'spin 25s linear infinite',
         'spin-cloud-fast': 'spin 15s linear infinite',
       },
+      cursor: {
+        none: 'none',
+      },
     },
   },
   variants: {

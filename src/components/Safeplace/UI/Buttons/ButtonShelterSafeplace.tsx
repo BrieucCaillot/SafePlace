@@ -34,11 +34,7 @@ const ButtonShelterSafeplace = ({
             <div
               className={`shape shape-shelter-arrow shape-shelter-arrow__${direction} pointer-events-auto relative cursor-pointer`}
             >
-              {direction === 'left' ? (
-                <SVGReturn />
-              ) : (
-                <SVGRight className='transform-gpu scale-125' />
-              )}
+              {direction === 'left' ? <SVGReturn /> : <SVGRight />}
             </div>
           </Link>
         </div>

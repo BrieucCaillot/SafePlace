@@ -1,11 +1,11 @@
-const SVGRight = ({ className }: { className?: string }) => {
+const SVGRight = () => {
   return (
     <svg
       width='21'
       height='12'
       viewBox='0 0 21 12'
       fill='none'
-      className={className}
+      className='transform-gpu scale-125 pointer-events-none'
     >
       <path
         d='M15.1079 1L19.7565 5.71143L15.1079 10.5'

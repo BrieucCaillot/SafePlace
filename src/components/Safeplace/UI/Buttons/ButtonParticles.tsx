@@ -23,8 +23,9 @@ const ButtonParticles = ({ direction }: { direction: 'left' | 'right' }) => {
       {
         y: -20,
         x: 0,
-        duration: 8,
+        duration: 9,
         autoAlpha: 0,
+        repeat: 4,
         ease: 'sine.in',
       }
     )

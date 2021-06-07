@@ -21,7 +21,11 @@ const MountainColumn = ({ columnObj }: { columnObj: THREE.Object3D }) => {
   )
   const isCameraTravelling = useSafeplaceStore((s) => s.isCameraTravelling)
 
-  const isVoiceoverPlayed = useUserStore(
+  const isVoiceoverInsidePlayed = useUserStore(
+    (s) => s.userData.voiceover.inside
+  )
+
+  const isVoiceoverColumnPlayed = useUserStore(
     (s) => s.userData.voiceover.mountainColumn
   )
 
@@ -33,12 +37,12 @@ const MountainColumn = ({ columnObj }: { columnObj: THREE.Object3D }) => {
       columnObj={columnObj}
       onColumnClick={() => router.push(Routes.MountainColumn)}
       isColumnAvailable={
-        !isCameraTravelling && isVoiceoverPlayed && isCurrentlyAvailable
+        !isCameraTravelling && isVoiceoverInsidePlayed && isCurrentlyAvailable
       }
     >
       <ColumnLink
         onColumnClick={() => router.push(Routes.Journey)}
-        show={onMountainPOI && isVoiceoverPlayed && !isCameraTravelling}
+        show={onMountainPOI && isVoiceoverColumnPlayed && !isCameraTravelling}
         size={5}
         position={journeyLinkPos}
       />
