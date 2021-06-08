@@ -37,10 +37,7 @@ import useSceneControls from '@/hooks/three/useSceneControls'
 import useSectionProgress from '@/hooks/journey/useSectionProgress'
 
 const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
-  const {
-    scene,
-    animations: [camAnim],
-  } = useGLTF('/models/journey/chapter2.glb')
+  const { scene, animations } = useGLTF('/models/journey/chapter2.glb')
 
   const containerRef = useRef<THREE.Group>()
   const localCamRef = useRef<THREE.Camera>()
@@ -81,7 +78,7 @@ const LakeScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     VOICEOVER.JOURNEY.LAKE2,
   ])
 
-  const { actions, mixer } = useAnimations([camAnim], containerRef)
+  const { actions, mixer } = useAnimations(animations, containerRef)
   useConfigActions(actions, 'Action.006')
   const anim = useAnimManager(actions, mixer, 'Action.006')
 

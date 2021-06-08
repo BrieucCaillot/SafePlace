@@ -117,7 +117,7 @@ const Waterfall = ({
   }, [isSceneRendered])
 
   useFrame(({ camera, raycaster }) => {
-    if (!isSceneRendered) return
+    if (!isSceneRendered || raycastPlane.current === null) return
     raycaster.setFromCamera(windowMouseRef.current, camera)
     const intersections = raycaster.intersectObject(raycastPlane.current)
 

@@ -10,6 +10,7 @@ import {
   forwardRef,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
 } from 'react'
 import * as THREE from 'three'
@@ -27,7 +28,9 @@ const Slat = forwardRef(
     const slatRef = useRef<THREE.Mesh>(null)
     const willPlay = useSceneStore((s) => s.nextScene === SceneName.Waterfall)
 
-    const { actions, mixer } = useAnimations([anim], slatRef)
+    const animArray = useMemo(() => [anim], [anim])
+
+    const { actions, mixer } = useAnimations(animArray, slatRef)
     useConfigActions(actions)
     const animation = useAnimManager(actions, mixer)
 

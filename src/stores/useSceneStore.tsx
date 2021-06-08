@@ -80,9 +80,7 @@ const useSceneStore = create<SceneStore>((set, get) => ({
     },
     [SceneName.Waterfall]: {
       Component: WaterfallScene,
-      scene: sceneBuilder({
-        fog: new THREE.FogExp2('#e9b5a0', 0.012),
-      }),
+      scene: sceneBuilder(),
       isLoaded: false,
       cameraRef: createRef(),
     },

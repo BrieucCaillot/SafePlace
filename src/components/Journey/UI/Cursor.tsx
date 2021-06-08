@@ -46,7 +46,7 @@ const Cursor = () => {
     <div
       ref={cursorRef}
       id='cursor'
-      className={`absolute top-screen-h/2 left-screen-w/2 z-10 pointer-events-none h-10 w-10 ${
+      className={`absolute top-screen-h/2 left-screen-w/2 pointer-events-none h-10 w-10 ${
         hovering ? 'is-hovering' : ''
       }`}
     >
