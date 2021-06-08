@@ -3,6 +3,8 @@ import gsap from 'gsap'
 import useSceneStore, { SceneData } from '@/stores/useSceneStore'
 import useWatchableRef from '@/hooks/useWatchableRef'
 import useNonInitialEffect from '@/hooks/useNonInitialEffect'
+import useAudioStore from '@/stores/useAudioStore'
+import SFX from '@/constants/SFX'
 
 const useSceneTransition = () => {
   const renderedSceneData = useSceneStore((s) =>
@@ -13,7 +15,7 @@ const useSceneTransition = () => {
     s.nextScene ? s.scenesData[s.nextScene] : null
   )
 
-  const endTransition = useSceneStore((s) => s.endTransition)
+  const audio = useAudioStore((s) => s.initAudio(SFX.CLOUDS))
   const [waitForSceneLoad, setWaitForSceneLoad] = useState(false)
   const [shouldShowNextScene, setShouldShowNextScene] = useState(false)
 
@@ -29,6 +31,7 @@ const useSceneTransition = () => {
   const outProgress = useWatchableRef<number>(0)
   useNonInitialEffect(() => {
     if (nextSceneData === null) return
+    audio.play()
     outProgress.current = 0
     inProgress.current = 0
     const anim = gsap.to(outProgress, {
@@ -59,7 +62,7 @@ const useSceneTransition = () => {
         inProgress.current = 0
         outProgress.current = 0
         setShouldShowNextScene(false)
-        endTransition()
+        useSceneStore.getState().endTransition()
       },
     })
     return () => {

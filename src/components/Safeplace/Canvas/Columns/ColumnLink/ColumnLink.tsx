@@ -7,6 +7,8 @@ import useAnimateVector from '@/hooks/animation/useAnimateVector'
 
 import vertexShader from '@/components/Safeplace/Canvas/Columns/ColumnLink/ColumnLink.vert'
 import fragmentShader from '@/components/Safeplace/Canvas/Columns/ColumnLink/ColumnLink.frag'
+import useAudioStore from '@/stores/useAudioStore'
+import SFX from '@/constants/SFX'
 
 const ColumnLink = ({
   show,
@@ -28,6 +30,7 @@ const ColumnLink = ({
   // -- Refs
   const columnLinkRef = useRef<THREE.Mesh>()
   const vec3Ref = useMemo(() => new THREE.Vector3(), [])
+  const audio = useAudioStore((s) => s.initAudio(SFX.BUTTON))
   const scaleRef = useRef<THREE.Vector3>(new THREE.Vector3(...scale))
 
   const linkTexture = useMemo(
@@ -66,13 +69,8 @@ const ColumnLink = ({
   useEffect(() => {
     if (show) {
       const cursor = document.querySelector('#cursor')
-      if (hover) {
-        cursor.classList.add('is-hovering')
-        setScale([1.4, 1.4, 1.4])
-      } else {
-        cursor.classList.remove('is-hovering')
-        setScale([1, 1, 1])
-      }
+      cursor.classList.toggle('is-hovering', hover)
+      setScale(hover ? [1.4, 1.4, 1.4] : [1, 1, 1])
     } else {
       setScale([0, 0, 0])
     }
@@ -83,13 +81,10 @@ const ColumnLink = ({
       {...meshProps}
       ref={columnLinkRef}
       renderOrder={1}
-      onClick={() => {
-        if (show) {
-          onColumnClick()
-          setHover(false)
-        }
-      }}
-      onPointerOver={() => show && setHover(true)}
+      onClick={() => show && (onColumnClick(), setHover(false))}
+      onPointerOver={() =>
+        show && (setHover(true), !audio.playing() && audio.play())
+      }
       onPointerOut={() => show && setHover(false)}
     >
       <planeGeometry args={[5, 5, 32, 32]} />

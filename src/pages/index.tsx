@@ -13,10 +13,13 @@ import SceneName from '@/constants/enums/SceneName'
 import useBooleanPromise from '@/hooks/promise/useBooleanPromise'
 import useDropPromise from '@/hooks/promise/useDropPromise'
 import wait from '@/utils/promise/wait'
+import useAudioStore from '@/stores/useAudioStore'
+import SFX from '@/constants/SFX'
 
 const Index = ({ status }: { status: TransitionStatus }) => {
   const show = useTransitionStatus(status)
 
+  const audio = useAudioStore((s) => s.initAudio(SFX.BUTTON))
   const router = useUserStore((s) => s.router)
   const previousPathname = usePrevious(router.pathname)
 
@@ -36,9 +39,6 @@ const Index = ({ status }: { status: TransitionStatus }) => {
       )
   }, [isWaiting])
 
-  const { wrap, drop } = useDropPromise()
-  useEffect(() => void drop(), [])
-
   const safeplaceImgClass = useMemo(
     () => (showSafeplaceAnim ? (hide ? 'topToBottom' : 'bottomToTop') : ''),
     [showSafeplaceAnim, hide]
@@ -48,6 +48,8 @@ const Index = ({ status }: { status: TransitionStatus }) => {
     if (previousPathname === Routes.About) setShowSafeplaceAnim(true)
   }, [previousPathname])
 
+  const { wrap, drop } = useDropPromise()
+  useEffect(() => void drop(), [])
   const onButtonClicked = useCallback(
     (route: Routes) => {
       setShowSafeplaceAnim(true)
@@ -96,6 +98,7 @@ const Index = ({ status }: { status: TransitionStatus }) => {
               <button
                 id='button-start'
                 onClick={() => onButtonClicked(Routes.OnBoarding)}
+                onMouseEnter={() => !audio.playing() && audio.play()}
                 className={`relative button-stonefull text-white text-xl font-bold tracking-widest rounded px-10 py-3 focus:outline-none cursor-pointer ${
                   hide ? 'pointer-events-none' : ''
                 }`}

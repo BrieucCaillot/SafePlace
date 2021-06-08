@@ -143,7 +143,7 @@ const Waterfall = ({
     )
     smoothedRayMouseRef.current.lerp(
       targetRayMouseRef.current,
-      diff > 8 ? 1 : cursorEase
+      diff > 15 ? 1 : cursorEase
     )
   })
 

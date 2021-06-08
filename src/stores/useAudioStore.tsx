@@ -7,7 +7,10 @@ import SceneName from '@/constants/enums/SceneName'
 type AudioStore = {
   ambiantHowlMap: Map<SceneName, Howl>
   onceAudioMap: Map<string, Howl>
-  initAudio: (url: string) => Howl
+  initAudio: (
+    url: string,
+    params?: Omit<ConstructorParameters<typeof Howl>[0], 'src'>
+  ) => Howl
   isMuted: boolean
   setMuted: (b: boolean) => void
 }
@@ -20,13 +23,16 @@ const useAudioStore = create<AudioStore>((set, get) => ({
     ])
   ),
   onceAudioMap: new Map<string, Howl>(),
-  initAudio: (url: string) => {
+  initAudio: (
+    url: string,
+    params: Omit<ConstructorParameters<typeof Howl>[0], 'src'> = {}
+  ) => {
     const { onceAudioMap } = get()
 
     let howl = onceAudioMap.get(url)
     if (howl !== undefined) return howl
 
-    howl = new Howl({ src: [url], rate: 1 /* DEBUG */ })
+    howl = new Howl({ src: [url], rate: 1, ...params })
     onceAudioMap.set(url, howl)
     set({ onceAudioMap })
 

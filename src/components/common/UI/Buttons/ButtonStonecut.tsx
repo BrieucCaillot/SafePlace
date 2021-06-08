@@ -1,9 +1,11 @@
-import React, { MouseEventHandler, ReactNode } from 'react'
+import React, { MouseEventHandler, ReactNode, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import Link from 'next/link'
 
 import SVGStonecut from '@/components/common/UI/SVG/SVGStonecut'
 import Routes from '@/constants/enums/Routes'
+import useAudioStore from '@/stores/useAudioStore'
+import SFX from '@/constants/SFX'
 
 const ButtonStonecut = ({
   show,
@@ -18,8 +20,11 @@ const ButtonStonecut = ({
   onClick?: MouseEventHandler<HTMLButtonElement>
   route?: Routes
 }) => {
+  const audio = useAudioStore((s) => s.initAudio(SFX.BUTTON))
+
   const content = (
     <button
+      onMouseEnter={() => !audio.playing() && audio.play()}
       onClick={onClick}
       className={`relative button-stonecut tracking-widest text-lg focus:outline-none w-max ml-auto mr-auto cursor-pointer ${className}`}
     >
