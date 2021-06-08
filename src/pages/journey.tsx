@@ -7,15 +7,17 @@ import LayoutShelterButton from '@/components/common/UI/LayoutShelterButton'
 import Routes from '@/constants/enums/Routes'
 
 import useJourneyStore from '@/stores/useJourneyStore'
+import { useControls } from 'leva'
 
 const Journey = () => {
   const buttonCallback = useJourneyStore((s) => s.endButtonCallback)
 
   return (
     <>
-      {buttonCallback !== null && (
-        <ButtonJourneyCompleted onClick={buttonCallback} />
-      )}
+      <ButtonJourneyCompleted
+        show={buttonCallback !== null}
+        onClick={buttonCallback}
+      />
       <PortalUI selector='#layout-bottom-left'>
         <LayoutShelterButton to={Routes.Safeplace} />
       </PortalUI>
