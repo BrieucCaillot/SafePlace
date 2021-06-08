@@ -44,7 +44,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   )
 
   const [camAnims, slatAnims] = useMemo(() => {
-    const [cam1, cam2, cam3, ...slatsAnims] = gltf.animations.reverse()
+    const [cam1, cam2, cam3, ...slatsAnims] = gltf.animations
     return [[cam1, cam2, cam3], [...slatsAnims]]
   }, [])
 
@@ -77,7 +77,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   useEffect(() => {
     if (!willPlay) return
-    anim.init('camera_1.002')
+    anim.init('camera_1')
     return anim.stop
   }, [willPlay])
 
@@ -115,7 +115,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
       await wrap(
         Promise.all([
-          anim.play('camera_1.002'), //---
+          anim.play('camera_1'), //---
           audio.play(VOICEOVER.JOURNEY.BRIDGE), //---
         ])
       )
