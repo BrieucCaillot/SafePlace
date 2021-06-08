@@ -44,8 +44,10 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   )
 
   const [camAnims, slatAnims] = useMemo(() => {
-    const [cam1, cam2, cam3, ...slatsAnims] = gltf.animations
-    return [[cam1, cam2, cam3], [...slatsAnims]]
+    return [
+      gltf.animations.filter((a) => a.name.includes('camera')),
+      gltf.animations.filter((a) => a.name.includes('slat')),
+    ]
   }, [])
 
   const localCamRef = useRef<THREE.PerspectiveCamera>()
@@ -117,9 +119,13 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         Promise.all([
           anim.play('camera_1'), //---
           audio.play(VOICEOVER.JOURNEY.BRIDGE), //---
+          (async () => {
+            await wrap(wait(45_000))
+            await wrap(slatRef.current.play())
+          })(),
         ])
       )
-      await wrap(slatRef.current.play())
+
       await wrap(bridgeButtonPromise.wait())
       await wrap(
         Promise.all([
