@@ -138,7 +138,13 @@ const Waterfall = ({
         intersections[0].point
       )
 
-    smoothedRayMouseRef.current.lerp(targetRayMouseRef.current, cursorEase)
+    const diff = targetRayMouseRef.current.distanceTo(
+      smoothedRayMouseRef.current
+    )
+    smoothedRayMouseRef.current.lerp(
+      targetRayMouseRef.current,
+      diff > 8 ? 1 : cursorEase
+    )
   })
 
   usePingPong(bufferSize, {

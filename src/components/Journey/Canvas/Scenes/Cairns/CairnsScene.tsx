@@ -37,12 +37,9 @@ import useSceneControls from '@/hooks/three/useSceneControls'
 import useSectionProgress from '@/hooks/journey/useSectionProgress'
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import Birds from './Birds/Birds'
-import useTraceRender from '@/hooks/debug/useTraceRender'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const { scene, animations } = useGLTF('/models/journey/chapter1.glb')
-
-  console.log(animations)
 
   const [
     camera,
