@@ -42,6 +42,8 @@ import useTraceRender from '@/hooks/debug/useTraceRender'
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const { scene, animations } = useGLTF('/models/journey/chapter1.glb')
 
+  console.log(animations)
+
   const [
     camera,
     ground,
@@ -82,8 +84,8 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   // Animation
   const { actions, mixer } = useAnimations(animations, containerRef)
-  const anim = useAnimManager(actions, mixer, 'Action.003')
-  useConfigActions(actions, 'Action.003')
+  const anim = useAnimManager(actions, mixer, 'camera')
+  useConfigActions(actions, 'camera')
 
   useEffect(() => {
     if (!willPlay) return
@@ -91,10 +93,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     return anim.stop
   }, [willPlay])
 
-  useSectionProgress(JourneySection.Cairns, [
-    { actions, name: 'Action.003' },
-    5000,
-  ])
+  useSectionProgress(JourneySection.Cairns, [{ actions, name: 'camera' }, 5000])
 
   // Sequence
   useAsyncEffect(
