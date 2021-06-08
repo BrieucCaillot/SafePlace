@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import { useControls } from 'leva'
 import { MeshProps, useFrame, useThree } from 'react-three-fiber'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import EasingFunction from 'easing-functions'
@@ -65,18 +64,17 @@ const ColumnLink = ({
 
   // -- Callbacks
   useEffect(() => {
-    setScale(show ? [1, 1, 1] : [0, 0, 0])
-  }, [show])
-
-  useEffect(() => {
-    if (!show) return
-    const cursor = document.querySelector('#cursor')
-    if (hover) {
-      cursor.classList.add('is-hovering')
-      setScale([1.4, 1.4, 1.4])
+    if (show) {
+      const cursor = document.querySelector('#cursor')
+      if (hover) {
+        cursor.classList.add('is-hovering')
+        setScale([1.4, 1.4, 1.4])
+      } else {
+        cursor.classList.remove('is-hovering')
+        setScale([1, 1, 1])
+      }
     } else {
-      cursor.classList.remove('is-hovering')
-      setScale([1, 1, 1])
+      setScale([0, 0, 0])
     }
   }, [show, hover])
 
@@ -85,7 +83,12 @@ const ColumnLink = ({
       {...meshProps}
       ref={columnLinkRef}
       renderOrder={1}
-      onClick={() => show && onColumnClick()}
+      onClick={() => {
+        if (show) {
+          onColumnClick()
+          setHover(false)
+        }
+      }}
       onPointerOver={() => show && setHover(true)}
       onPointerOut={() => show && setHover(false)}
     >
