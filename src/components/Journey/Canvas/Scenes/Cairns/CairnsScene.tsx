@@ -1,4 +1,11 @@
-import React, { forwardRef, RefObject, useEffect, useMemo, useRef } from 'react'
+import React, {
+  forwardRef,
+  RefObject,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import * as THREE from 'three'
 import { useAnimations, useGLTF } from '@react-three/drei'
 import mergeRefs from 'react-merge-refs'
@@ -30,7 +37,6 @@ import useSceneControls from '@/hooks/three/useSceneControls'
 import useSectionProgress from '@/hooks/journey/useSectionProgress'
 import ClassicCamera from '@/components/common/Canvas/ClassicCamera'
 import Birds from './Birds/Birds'
-import useTraceRender from '@/hooks/debug/useTraceRender'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const { scene, animations } = useGLTF('/models/journey/chapter1.glb')
@@ -67,6 +73,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const isSettledInScene = useSceneStore(
     (s) => !s.inTransition && s.renderedScene === SceneName.Cairns
   )
+  const [sequence, setSequence] = useState(0)
   const willPlay = useSceneStore((s) => s.nextScene === SceneName.Cairns)
   useSceneControls(SceneName.Cairns, Routes.Journey)
 
@@ -74,8 +81,8 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
   // Animation
   const { actions, mixer } = useAnimations(animations, containerRef)
-  const anim = useAnimManager(actions, mixer, 'Action.003')
-  useConfigActions(actions, 'Action.003')
+  const anim = useAnimManager(actions, mixer, 'camera')
+  useConfigActions(actions, 'camera')
 
   useEffect(() => {
     if (!willPlay) return
@@ -83,10 +90,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
     return anim.stop
   }, [willPlay])
 
-  useSectionProgress(JourneySection.Cairns, [
-    { actions, name: 'Action.003' },
-    5000,
-  ])
+  useSectionProgress(JourneySection.Cairns, [{ actions, name: 'camera' }, 5000])
 
   // Sequence
   useAsyncEffect(
@@ -94,12 +98,18 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       if (!isSettledInScene) return
       const { setSection } = useJourneyStore.getState()
 
+      wait(24_000).then(() => setSequence(1))
+      wait(25_300).then(() => setSequence(2))
+      wait(28_000).then(() => setSequence(3))
       await wrap(Promise.all([anim.play(), audio.play()]))
       await wrap(wait(5000))
 
       setSection(JourneySection.Lake)
     },
-    () => audio.stop(),
+    () => {
+      audio.stop()
+      setSequence(0)
+    },
     [isSettledInScene]
   )
 
@@ -199,7 +209,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         mesh={ground.children[0] as THREE.Mesh}
       />
 
-      <Birds points={birds.children} />
+      <Birds points={birds.children} sequence={sequence} />
     </>
   )
 })

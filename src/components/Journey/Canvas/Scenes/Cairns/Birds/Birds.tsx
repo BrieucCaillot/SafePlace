@@ -14,8 +14,10 @@ import usePrevious from '@/hooks/usePrevious'
 
 const Birds = ({
   points,
+  sequence: sequenceProp = null,
 }: Omit<InstancedMeshProps, 'geometry' | 'material' | 'args' | 'count'> & {
   points: THREE.Object3D[]
+  sequence?: number
 }) => {
   // --- STATE
   const instancedMeshRef = useRef<THREE.InstancedMesh>(null)
@@ -25,7 +27,7 @@ const Birds = ({
   const {
     particleAmount: numPoints,
     size,
-    sequence,
+    sequence: sequenceControl,
     color,
     timeVariation,
     spreadAngle,
@@ -42,13 +44,15 @@ const Birds = ({
       timeVariation: 0.3,
       particleAmount: { value: 50, step: 1 },
       spreadAngle: { min: 0, max: Math.PI, value: 0.3 },
-      speed: 7,
+      speed: 5,
       speedVar: { min: 0, max: 1, value: 0.34 },
       wingSpeed: 15,
       wingAmplitude: { min: 0, max: Math.PI / 2, value: Math.PI / 4 },
     },
     { collapsed: true, render: (s) => s('path') === Routes.Journey }
   )
+
+  const sequence = sequenceProp || sequenceControl
 
   const previousSequence = usePrevious(sequence)
 

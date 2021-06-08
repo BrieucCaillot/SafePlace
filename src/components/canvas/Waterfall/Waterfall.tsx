@@ -29,7 +29,7 @@ const Waterfall = ({
 }: GroupProps & {
   slats: RefObject<{ getGroup: () => RefObject<THREE.Group> }>
 }) => {
-  const { showDegug, numPoints } = useControls(
+  const { showDegug, numPoints, cursorEase } = useControls(
     'waterfall.particles',
     {
       showDegug: false,
@@ -37,6 +37,11 @@ const Waterfall = ({
         value: 16368 * 8,
         step: 1,
         label: 'Particle amount',
+      },
+      cursorEase: {
+        value: 0.1,
+        min: 0,
+        max: 1,
       },
     },
     {
@@ -71,7 +76,10 @@ const Waterfall = ({
 
   const windowMouseRef = useRef<THREE.Vector2>(new THREE.Vector2())
   const doesIntersectRef = useWatchableRef<boolean>(false)
-  const raycastedMouseRef = useWatchableRef<THREE.Vector3>(
+  const targetRayMouseRef = useRef<THREE.Vector3>(
+    new THREE.Vector3(-10, -10, -10)
+  )
+  const smoothedRayMouseRef = useWatchableRef<THREE.Vector3>(
     new THREE.Vector3(-10, -10, -10)
   )
 
@@ -126,10 +134,19 @@ const Waterfall = ({
       doesIntersectRef.current = newDoesIntersect
 
     if (newDoesIntersect)
-      raycastedMouseRef.current = particleRef.current?.worldToLocal(
+      targetRayMouseRef.current = particleRef.current?.worldToLocal(
         intersections[0].point
       )
+
+    const diff = targetRayMouseRef.current.distanceTo(
+      smoothedRayMouseRef.current
+    )
+    smoothedRayMouseRef.current.lerp(
+      targetRayMouseRef.current,
+      diff > 8 ? 1 : cursorEase
+    )
   })
+
   usePingPong(bufferSize, {
     particleTexture,
     quadTexture,
@@ -169,7 +186,7 @@ const Waterfall = ({
         scene={sceneRef}
         quadTexture={quadTexture}
         initTexture={initTextureRef}
-        mousePosRef={raycastedMouseRef}
+        mousePosRef={smoothedRayMouseRef}
         doesIntersectRef={doesIntersectRef}
         sdfScene={nodes['sdf']}
         slats={slats}
