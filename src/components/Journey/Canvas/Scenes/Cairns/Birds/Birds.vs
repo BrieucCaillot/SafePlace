@@ -38,12 +38,14 @@ void main() {
   float seed3 = rand(aIndex + 2.);
 
   float timeOffset = ease(seed) * uTimeVariation;
-  float time = clamp(uTime - uSequenceTimestamp[int(aSequence)] - timeOffset, 0., 10000.);
+  float time = uTime - uSequenceTimestamp[int(aSequence)] - timeOffset;
+  float started = step(0., time);
+  time = clamp(time, 0., 10000.);
 
   float wingSpeed = uWingSpeed * (1. + (seed3 - 0.5) * 2. * uSpeedVar);
   float wingAngle = sin(uTime * wingSpeed + seed2 * PI * 2.) * uWingAmplitude;
   vec3 wingPosition = vec3(sign(position.x) * 2. * cos(wingAngle), sin(wingAngle), position.z);
-  vec3 pos = mix(position, wingPosition, uv.x);
+  vec3 pos = mix(position, wingPosition, uv.x) * started;
   
   vec3 direction = vec3(0., 1., 0.);
   transform(direction, vec3(0.), aDirection, vec3(1.));

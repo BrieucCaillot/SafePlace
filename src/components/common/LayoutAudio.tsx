@@ -11,7 +11,7 @@ const LayoutAudio = (): null => {
   const isMuted = useAudioStore((s) => s.isMuted)
 
   const { volume } = useControls({
-    volume: { min: 0, max: 1, value: 0.5 },
+    volume: { min: 0, max: 1, value: 1 },
   })
   useEffect(() => {
     Howler.volume(isMuted ? 0 : volume)

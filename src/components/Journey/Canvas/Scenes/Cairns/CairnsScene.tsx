@@ -1,4 +1,11 @@
-import React, { forwardRef, RefObject, useEffect, useMemo, useRef } from 'react'
+import React, {
+  forwardRef,
+  RefObject,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import * as THREE from 'three'
 import { useAnimations, useGLTF } from '@react-three/drei'
 import mergeRefs from 'react-merge-refs'
@@ -67,6 +74,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const isSettledInScene = useSceneStore(
     (s) => !s.inTransition && s.renderedScene === SceneName.Cairns
   )
+  const [sequence, setSequence] = useState(0)
   const willPlay = useSceneStore((s) => s.nextScene === SceneName.Cairns)
   useSceneControls(SceneName.Cairns, Routes.Journey)
 
@@ -94,12 +102,18 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
       if (!isSettledInScene) return
       const { setSection } = useJourneyStore.getState()
 
+      wait(24_000).then(() => setSequence(1))
+      wait(25_300).then(() => setSequence(2))
+      wait(28_000).then(() => setSequence(3))
       await wrap(Promise.all([anim.play(), audio.play()]))
       await wrap(wait(5000))
 
       setSection(JourneySection.Lake)
     },
-    () => audio.stop(),
+    () => {
+      audio.stop()
+      setSequence(0)
+    },
     [isSettledInScene]
   )
 
@@ -199,7 +213,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         mesh={ground.children[0] as THREE.Mesh}
       />
 
-      <Birds points={birds.children} />
+      <Birds points={birds.children} sequence={sequence} />
     </>
   )
 })
