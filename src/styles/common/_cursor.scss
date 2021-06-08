@@ -8,6 +8,7 @@ body {
 
 #cursor {
   will-change: transform;
+  z-index: 10000;
 
   &.is-hovering {
     .cursor__pointer {

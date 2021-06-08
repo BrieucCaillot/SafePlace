@@ -7,6 +7,7 @@ import TransitionScene from './TransitionScene/TransitionScene'
 import SceneName from '@/constants/enums/SceneName'
 import useSceneTransition from './useSceneTransition'
 import { useControls } from 'leva'
+import Scene from './Scene'
 
 const Scenes = () => {
   const { size, gl } = useThree()
@@ -24,7 +25,6 @@ const Scenes = () => {
       ),
     shallow
   )
-  const setSceneLoaded = useSceneStore((s) => s.setSceneLoaded)
 
   const transitionTarget = useRef(
     new THREE.WebGLMultisampleRenderTarget(size.width, size.height, {
@@ -36,25 +36,31 @@ const Scenes = () => {
   ])
 
   // Prerender a scene when it loads to avoid transition flicker
-  useEffect(() => {
-    let lastLoadedScenes: SceneData[] = []
-    let nullRenderTarget = new THREE.WebGLMultisampleRenderTarget(
-      size.width,
-      size.height
-    )
-    return useSceneStore.subscribe(
-      (scenes: SceneData[]) => {
-        for (const s of scenes) {
-          if (lastLoadedScenes.includes(s)) return
-          gl.setRenderTarget(nullRenderTarget)
-          gl.render(s.scene, s.cameraRef.current)
-          gl.setRenderTarget(null)
-        }
-      },
-      (s) => Object.values(s.scenesData).filter((s) => s.isLoaded),
-      shallow
-    )
-  })
+  // useEffect(() => {
+  //   let lastLoadedScenes: SceneName[] = []
+  //   let nullRenderTarget = new THREE.WebGLMultisampleRenderTarget(
+  //     size.width,
+  //     size.height
+  //   )
+  //   return useSceneStore.subscribe(
+  //     (scenes: SceneName[]) => {
+  //       for (const s of scenes) {
+  //         if (lastLoadedScenes.includes(s)) return
+  //         const d = useSceneStore.getState().scenesData[s]
+  //         console.log('prerender', s)
+  //         gl.setRenderTarget(nullRenderTarget)
+  //         gl.render(d.scene, d.cameraRef.current)
+  //         gl.setRenderTarget(null)
+  //       }
+  //       lastLoadedScenes = scenes
+  //     },
+  //     (s) =>
+  //       Object.entries(s.scenesData)
+  //         .filter(([_, data]) => data.isLoaded)
+  //         .map(([name]) => name),
+  //     shallow
+  //   )
+  // }, [])
 
   useFrame(({ gl, camera, setDefaultCamera }) => {
     if (
@@ -75,21 +81,9 @@ const Scenes = () => {
 
   return (
     <>
-      {Object.entries(mountedSceneData).map(
-        ([name, { Component, scene, cameraRef }]) => (
-          <Fragment key={scene.uuid}>
-            <Suspense fallback={'loading'}>
-              <Component
-                scene={scene}
-                ref={(ref: THREE.Camera) => {
-                  cameraRef.current = ref
-                  setSceneLoaded(name as SceneName, cameraRef.current !== null)
-                }}
-              />
-            </Suspense>
-          </Fragment>
-        )
-      )}
+      {Object.entries(mountedSceneData).map(([name, sceneData]) => (
+        <Scene key={name} name={name} sceneData={sceneData} />
+      ))}
       <TransitionScene
         scene={transitionScene}
         ref={transitionCam}

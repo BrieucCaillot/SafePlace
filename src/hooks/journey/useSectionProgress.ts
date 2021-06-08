@@ -7,6 +7,7 @@ import useUserStore from '@/stores/useUserStore'
 import promisifyHowl from '@/utils/promise/promisifyHowl'
 import { useCallback, useEffect, useRef } from 'react'
 import { useFrame } from 'react-three-fiber'
+import useTraceRender from '../debug/useTraceRender'
 
 type DurationElement =
   | number
@@ -50,7 +51,7 @@ const useSectionProgress = (
     )
   }, [])
 
-  const processDuration = () => {
+  const processDuration = useCallback(() => {
     let d = 0
     for (const el of durationElements)
       switch (typeof el) {
@@ -67,7 +68,7 @@ const useSectionProgress = (
           break
       }
     return d
-  }
+  }, [durationElements, storeAudioDuration])
 
   const duration = useRef(0)
 
@@ -99,6 +100,11 @@ const useSectionProgress = (
       )
     })
   })
+
+  // useTraceRender({
+  //   onScene,
+  //   isPaused,
+  // })
 }
 
 export default useSectionProgress

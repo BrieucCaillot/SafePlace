@@ -4,6 +4,7 @@ import useSceneStore from '@/stores/useSceneStore'
 import { folder, useControls } from 'leva'
 import { useEffect } from 'react'
 import * as THREE from 'three'
+import useTraceRender from '../debug/useTraceRender'
 
 const useSceneControls = (sceneName: SceneName, route: Routes = null) => {
   const scene = useSceneStore((s) => s.scenesData[sceneName].scene)
@@ -27,6 +28,12 @@ const useSceneControls = (sceneName: SceneName, route: Routes = null) => {
     },
     { collapsed: true, render: (s) => route === null || s('path') === route }
   )
+
+  // useTraceRender({
+  //   color,
+  //   density,
+  //   enabled,
+  // })
 
   useEffect(() => {
     scene.fog = enabled ? new THREE.FogExp2(color, density) : null

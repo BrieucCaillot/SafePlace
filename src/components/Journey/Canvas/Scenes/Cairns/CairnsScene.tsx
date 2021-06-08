@@ -33,10 +33,7 @@ import Birds from './Birds/Birds'
 import useTraceRender from '@/hooks/debug/useTraceRender'
 
 const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
-  const {
-    scene,
-    animations: [camAnim],
-  } = useGLTF('/models/journey/chapter1.glb')
+  const { scene, animations } = useGLTF('/models/journey/chapter1.glb')
 
   const [
     camera,
@@ -76,7 +73,7 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const audio = useAudioManager(VOICEOVER.JOURNEY.CAIRNS)
 
   // Animation
-  const { actions, mixer } = useAnimations([camAnim], containerRef)
+  const { actions, mixer } = useAnimations(animations, containerRef)
   const anim = useAnimManager(actions, mixer, 'Action.003')
   useConfigActions(actions, 'Action.003')
 
@@ -129,16 +126,15 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   //   trees,
   //   birds,
   //   scene,
-  //   camAnim,
+  //   animations,
   //   localCamRef,
   //   containerRef,
   //   isSettledInScene,
   //   willPlay,
-  //   audio,
-  //   actions,
   //   mixer,
-  //   anim,
+  //   camRef,
   // })
+
   return (
     <>
       {/* <ClassicCamera ref={camRef} /> */}
@@ -208,4 +204,4 @@ const CairnsScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   )
 })
 
-export default withScenePortal(CairnsScene)
+export default withScenePortal(React.memo(CairnsScene))
