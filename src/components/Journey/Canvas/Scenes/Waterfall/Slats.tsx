@@ -1,4 +1,5 @@
 import GroupShorthand from '@/components/common/Canvas/GroupShorthand'
+import { useControls } from 'leva'
 import {
   createRef,
   ForwardedRef,
@@ -28,6 +29,15 @@ const Slats = forwardRef(
     const slats = useMemo(() => [...group.children] as THREE.Mesh[], [])
     const groupRef = useRef<THREE.Group>()
 
+    const { volume, decay } = useControls(
+      'audio.slats',
+      {
+        volume: { min: 0, max: 1, value: 0.35 },
+        decay: { min: 0, max: 1, value: 0.07 },
+      },
+      { collapsed: true }
+    )
+
     const slatRefs = useMemo(
       () =>
         new Array(slats.length)
@@ -54,7 +64,14 @@ const Slats = forwardRef(
     return (
       <GroupShorthand object={group} ref={groupRef}>
         {slats.map((s, i) => (
-          <Slat object={s} anim={getAnim(s.name)} ref={slatRefs[i]} key={i} />
+          <Slat
+            object={s}
+            anim={getAnim(s.name)}
+            ref={slatRefs[i]}
+            key={i}
+            volume={volume - decay * i}
+            delay={2.283 * i + 7.933}
+          />
         ))}
       </GroupShorthand>
     )

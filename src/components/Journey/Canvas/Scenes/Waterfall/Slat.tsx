@@ -14,14 +14,21 @@ import {
   useRef,
 } from 'react'
 import * as THREE from 'three'
+import { Howl } from 'howler'
+import SFX from '@/constants/SFX'
+import wait from '@/utils/promise/wait'
 const Slat = forwardRef(
   (
     {
       object,
       anim,
+      volume,
+      delay,
     }: {
       object: THREE.Mesh
       anim: THREE.AnimationClip
+      volume: number
+      delay: number
     },
     ref: ForwardedRef<{ play: () => Promise<any> }>
   ) => {
@@ -29,6 +36,8 @@ const Slat = forwardRef(
     const willPlay = useSceneStore((s) => s.nextScene === SceneName.Waterfall)
 
     const animArray = useMemo(() => [anim], [anim])
+
+    const audio = useMemo(() => new Howl({ src: SFX.SLAT, volume }), [volume])
 
     const { actions, mixer } = useAnimations(animArray, slatRef)
     useConfigActions(actions)
@@ -41,7 +50,11 @@ const Slat = forwardRef(
     }, [willPlay])
 
     useImperativeHandle(ref, () => ({
-      play: () => animation.play(Object.keys(actions)[0]),
+      play: () =>
+        Promise.all([
+          animation.play(Object.keys(actions)[0]),
+          wait(delay * 1000).then(() => audio.play()),
+        ]),
     }))
 
     return <MeshShorthand object={object} ref={slatRef} />

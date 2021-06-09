@@ -22,6 +22,7 @@ import SceneName from '@/constants/enums/SceneName'
 import Routes from '@/constants/enums/Routes'
 import { useGLTF } from '@react-three/drei'
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
+import useWaterfallCursor from './useWaterfallCursor'
 
 const Waterfall = ({
   slats,
@@ -74,15 +75,6 @@ const Waterfall = ({
   const particleTexture = useWatchableRef<THREE.Texture | null>(null)
   const initTextureRef = useWatchableRef<THREE.Texture | null>(null)
 
-  const windowMouseRef = useRef<THREE.Vector2>(new THREE.Vector2())
-  const doesIntersectRef = useWatchableRef<boolean>(false)
-  const targetRayMouseRef = useRef<THREE.Vector3>(
-    new THREE.Vector3(-10, -10, -10)
-  )
-  const smoothedRayMouseRef = useWatchableRef<THREE.Vector3>(
-    new THREE.Vector3(-10, -10, -10)
-  )
-
   useEffect(
     () =>
       showDegug
@@ -112,47 +104,19 @@ const Waterfall = ({
     )
   }, [])
 
-  useEffect(() => {
-    if (!isSceneRendered) return
-    const handleMouse = (e: MouseEvent) => {
-      windowMouseRef.current.set(
-        (e.clientX / window.innerWidth) * 2 - 1,
-        -(e.clientY / window.innerHeight) * 2 + 1
-      )
-    }
-    window.addEventListener('mousemove', handleMouse)
-    return () => window.removeEventListener('mousemove', handleMouse)
-  }, [isSceneRendered])
-
-  useFrame(({ camera, raycaster }) => {
-    if (!isSceneRendered || raycastPlane.current === null) return
-    raycaster.setFromCamera(windowMouseRef.current, camera)
-    const intersections = raycaster.intersectObject(raycastPlane.current)
-
-    const newDoesIntersect = intersections.length > 0
-    if (newDoesIntersect !== doesIntersectRef.current)
-      doesIntersectRef.current = newDoesIntersect
-
-    if (newDoesIntersect)
-      targetRayMouseRef.current = particleRef.current?.worldToLocal(
-        intersections[0].point
-      )
-
-    const diff = targetRayMouseRef.current.distanceTo(
-      smoothedRayMouseRef.current
-    )
-    smoothedRayMouseRef.current.lerp(
-      targetRayMouseRef.current,
-      diff > 8 ? 1 : cursorEase
-    )
-  })
-
   usePingPong(bufferSize, {
     particleTexture,
     quadTexture,
     initTextureRef,
     sceneRef,
     cameraRef,
+    enable: isSceneRendered,
+  })
+
+  const { doesIntersect, smoothedRayMouseRef } = useWaterfallCursor({
+    particleRef,
+    raycastPlane,
+    cursorEase,
     enable: isSceneRendered,
   })
 
@@ -187,7 +151,7 @@ const Waterfall = ({
         quadTexture={quadTexture}
         initTexture={initTextureRef}
         mousePosRef={smoothedRayMouseRef}
-        doesIntersectRef={doesIntersectRef}
+        doesIntersect={doesIntersect}
         sdfScene={nodes['sdf']}
         slats={slats}
       />

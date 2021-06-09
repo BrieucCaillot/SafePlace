@@ -8,6 +8,7 @@ import useNumberUniform from '@/hooks/uniforms/useNumberUniform'
 import { WatchableRefObject } from '@/hooks/useWatchableRef'
 import useWatchableUniform from '@/hooks/uniforms/useWatchableUniform'
 import useVector3Uniform from '@/hooks/uniforms/useVector3Uniform'
+import useUniform from '@/hooks/uniforms/useUniform'
 
 const WaterfallFBO = forwardRef(
   (
@@ -16,7 +17,7 @@ const WaterfallFBO = forwardRef(
       quadTexture,
       initTexture,
       mousePosRef,
-      doesIntersectRef,
+      doesIntersect,
       sdfScene,
       slats,
     }: {
@@ -24,7 +25,7 @@ const WaterfallFBO = forwardRef(
       quadTexture: WatchableRefObject<THREE.Texture>
       initTexture: WatchableRefObject<THREE.Texture>
       mousePosRef: WatchableRefObject<THREE.Vector3>
-      doesIntersectRef: WatchableRefObject<boolean>
+      doesIntersect: boolean
       sdfScene: THREE.Object3D
       slats: RefObject<{ getGroup: () => RefObject<THREE.Group> }>
     },
@@ -114,7 +115,7 @@ const WaterfallFBO = forwardRef(
     useWatchableUniform(uniforms.current.uPosTexture, quadTexture)
     useWatchableUniform(uniforms.current.uOrigPosTexture, initTexture)
     useWatchableUniform(uniforms.current.uMousePos, mousePosRef)
-    useWatchableUniform(uniforms.current.uDoesIntersect, doesIntersectRef)
+    useUniform(uniforms.current.uDoesIntersect, doesIntersect)
     useNumberUniform(uniforms.current.uFoamDuration, foamDuration)
     useNumberUniform(uniforms.current.uFoamDurationVar, foamDurationVar)
     useNumberUniform(uniforms.current.uFoamSensitivity, foamSensitivity)
