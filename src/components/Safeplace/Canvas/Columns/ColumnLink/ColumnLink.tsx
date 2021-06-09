@@ -76,27 +76,16 @@ const ColumnLink = ({
     }
   }, [show, hover])
 
-  const pointerHandlers = useMemo(() => {
-    if (!show) return {}
-    return {
-      onClick: () => {
-        onColumnClick()
-        setHover(false)
-      },
-      onPointerOver: () => {
-        setHover(true)
-        if (!audio.playing()) audio.play()
-      },
-      onPointerOut: () => setHover(false),
-    }
-  }, [show])
-
   return (
     <mesh
       {...meshProps}
       ref={columnLinkRef}
       renderOrder={1}
-      {...pointerHandlers}
+      onClick={() => show && (onColumnClick(), setHover(false))}
+      onPointerOver={() =>
+        show && (setHover(true), !audio.playing() && audio.play())
+      }
+      onPointerOut={() => show && setHover(false)}
     >
       <planeGeometry args={[5, 5, 32, 32]} />
       <rawShaderMaterial
