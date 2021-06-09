@@ -59,7 +59,9 @@ const Waterfall = ({
   )
 
   const isSceneRendered = useSceneStore(
-    (s) => s.renderedScene === SceneName.Waterfall
+    (s) =>
+      s.renderedScene === SceneName.Waterfall ||
+      s.nextScene === SceneName.Waterfall
   )
 
   const sceneRef = useRef<THREE.Scene>(new THREE.Scene())
