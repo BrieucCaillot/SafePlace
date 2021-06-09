@@ -28,7 +28,12 @@ const SVGCheckpoint = ({
       className='pointer-events-auto cursor-pointer'
       onClick={() => onClick()}
     >
-      <path d={path} stroke='white' strokeWidth='2' />
+      <path
+        className='pointer-events-none'
+        d={path}
+        stroke='white'
+        strokeWidth='2'
+      />
     </svg>
   )
 }
