@@ -19,7 +19,7 @@ const useAudioStore = create<AudioStore>((set, get) => ({
   ambiantHowlMap: new Map<SceneName, Howl>(
     Object.entries(SCENES_AMBIANTS).map(([sceneName, url]) => [
       sceneName as SceneName,
-      new Howl({ src: [url], loop: true }),
+      new Howl({ src: [url], loop: true, autoplay: true, volume: 0 }),
     ])
   ),
   onceAudioMap: new Map<string, Howl>(),

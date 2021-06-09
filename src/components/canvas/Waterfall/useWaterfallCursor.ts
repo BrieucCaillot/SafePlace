@@ -20,13 +20,15 @@ const useWaterfallCursor = ({
   const { volume, fadeDuration, pitchFactor } = useControls(
     'audio.water',
     {
-      volume: { min: 0, max: 1, value: 0.05 },
+      volume: { min: 0, max: 1, value: 0.03 },
       fadeDuration: 800,
       pitchFactor: 0.03,
     },
     { collapsed: true }
   )
-  const audio = useAudioStore((s) => s.initAudio(SFX.WATER, { loop: true }))
+  const audio = useAudioStore((s) =>
+    s.initAudio(SFX.WATER, { loop: true, volume: 0 })
+  )
 
   const windowMouseRef = useRef<THREE.Vector2>(new THREE.Vector2())
   const targetRayMouseRef = useRef<THREE.Vector3>(
@@ -74,15 +76,14 @@ const useWaterfallCursor = ({
 
   useEffect(() => {
     audio.play()
-    audio.volume(0)
     return () => void audio.stop()
   })
   useEffect(() => {
     audio.volume(volume)
   }, [volume])
   useEffect(() => {
-    if (doesIntersect) audio.fade(0, volume, fadeDuration)
-    else audio.fade(volume, 0, fadeDuration)
+    if (doesIntersect) audio.fade(audio.volume(), volume, fadeDuration)
+    else audio.fade(audio.volume(), 0, fadeDuration)
   }, [doesIntersect, fadeDuration, volume])
 
   return { doesIntersect, smoothedRayMouseRef }

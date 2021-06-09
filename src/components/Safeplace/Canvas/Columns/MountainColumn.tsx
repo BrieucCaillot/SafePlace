@@ -8,6 +8,8 @@ import SafeplacePOI from '@/constants/enums/SafeplacePOI'
 
 import ColumnLink from '@/components/Safeplace/Canvas/Columns/ColumnLink/ColumnLink'
 import DefaultColumn from '@/components/Safeplace/Canvas/Columns/DefaultColumn'
+import useSceneStore from '@/stores/useSceneStore'
+import SceneName from '@/constants/enums/SceneName'
 
 const MountainColumn = ({ columnObj }: { columnObj: THREE.Object3D }) => {
   const router = useUserStore((s) => s.router)
@@ -29,6 +31,10 @@ const MountainColumn = ({ columnObj }: { columnObj: THREE.Object3D }) => {
     (s) => s.userData.voiceover.mountainColumn
   )
 
+  const onSafeplace = useSceneStore(
+    (s) => s.renderedScene === SceneName.Safeplace
+  )
+
   const journeyLinkPos = useMemo(() => new THREE.Vector3(0, 1, 0), [])
 
   return (
@@ -42,7 +48,12 @@ const MountainColumn = ({ columnObj }: { columnObj: THREE.Object3D }) => {
     >
       <ColumnLink
         onColumnClick={() => router.push(Routes.Journey)}
-        show={onMountainPOI && isVoiceoverColumnPlayed && !isCameraTravelling}
+        show={
+          onMountainPOI &&
+          isVoiceoverColumnPlayed &&
+          !isCameraTravelling &&
+          onSafeplace
+        }
         size={5}
         position={journeyLinkPos}
       />

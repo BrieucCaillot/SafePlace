@@ -7,16 +7,22 @@ import { useEffect } from 'react'
 
 const LayoutAudio = (): null => {
   const inTransition = useSceneStore((s) => s.inTransition)
-  const scene = useSceneStore((s) => s.renderedScene)
+  const scene = useSceneStore((s) => s.nextScene || s.renderedScene)
 
   const isMuted = useAudioStore((s) => s.isMuted)
   const buttonAudio = useAudioStore((s) => s.initAudio(SFX.BUTTON))
   const cloudsAudio = useAudioStore((s) => s.initAudio(SFX.CLOUDS))
 
-  const { globalvolume, buttonVolume, cloudsVolume } = useControls(
+  const {
+    globalvolume,
+    buttonVolume,
+    cloudsVolume,
+    ambiantVolume,
+  } = useControls(
     'audio',
     {
       globalvolume: { min: 0, max: 1, value: 1 },
+      ambiantVolume: { min: 0, max: 1, value: 1 },
       buttonVolume: { min: 0, max: 1, value: 0.14 },
       cloudsVolume: { min: 0, max: 1, value: 0.14 },
     },
@@ -33,14 +39,14 @@ const LayoutAudio = (): null => {
   }, [cloudsVolume])
 
   useEffect(() => {
-    if (inTransition || scene === null) return
+    if (scene === null) return
     const { ambiantHowlMap } = useAudioStore.getState()
     const ambiant = ambiantHowlMap.get(scene)
+    ambiant.stop()
     ambiant.play()
-    return () => {
-      ambiant.stop()
-    }
-  }, [scene, inTransition])
+    ambiant.fade(ambiant.volume(), ambiantVolume, 2000)
+    return () => void ambiant.fade(ambiant.volume(), 0, 2000)
+  }, [scene, ambiantVolume])
 
   return null
 }
