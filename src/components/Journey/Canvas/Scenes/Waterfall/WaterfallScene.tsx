@@ -134,15 +134,10 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
         ])
       )
       setShowShelterButton(false)
+      await wrap(audio.play(VOICEOVER.JOURNEY.OUTRO))
       await wrap(waitEndButton())
       setJourneyStatus(true)
-      wrap(
-        Promise.all([
-          anim.play('camera_3'), //---
-          audio.play(VOICEOVER.JOURNEY.OUTRO), //---
-        ])
-      )
-      await wrap(wait(35_000))
+      await wrap(anim.play('camera_3'))
       router.push(Routes.Resources)
     },
     () => {

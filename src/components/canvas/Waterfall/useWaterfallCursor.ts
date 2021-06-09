@@ -73,8 +73,8 @@ const useWaterfallCursor = ({
   })
 
   useEffect(() => {
-    audio.play()
     audio.volume(0)
+    audio.play()
     return () => void audio.stop()
   })
   useEffect(() => {
