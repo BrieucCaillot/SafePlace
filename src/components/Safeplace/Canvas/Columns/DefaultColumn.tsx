@@ -9,6 +9,8 @@ import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import ColumnLink from '@/components/Safeplace/Canvas/Columns/ColumnLink/ColumnLink'
 import MeshShorthand from '@/components/common/Canvas/MeshShorthand'
 import ColumnRock from '@/components/Safeplace/Canvas/Columns/ColumnRock'
+import useSceneStore from '@/stores/useSceneStore'
+import SceneName from '@/constants/enums/SceneName'
 
 const DefaultColumn = ({
   safeplacePOI,
@@ -23,14 +25,12 @@ const DefaultColumn = ({
   onColumnClick: Function
   isColumnAvailable?: boolean
 }) => {
-  const isCurrentlyAvailable = useSafeplaceStore((s) =>
-    s.isCurrentlyAvailable(safeplacePOI)
+  const isAvailable = useSafeplaceStore(
+    (s) => !s.isCameraTravelling && s.isCurrentlyAvailable(safeplacePOI)
   )
-  const isCameraTravelling = useSafeplaceStore((s) => s.isCameraTravelling)
 
-  const isAvailable = useMemo(
-    () => !isCameraTravelling && isCurrentlyAvailable,
-    [isCameraTravelling, isCurrentlyAvailable]
+  const onSafeplace = useSceneStore(
+    (s) => s.renderedScene === SceneName.Safeplace
   )
 
   const [btn, camContainer, rock, column] = useMemo(
@@ -64,9 +64,7 @@ const DefaultColumn = ({
       <ColumnRock rock={rock} canRotate={isAvailable} />
       {children}
       <ColumnLink
-        show={
-          isColumnAvailable ?? (!isCameraTravelling && isCurrentlyAvailable)
-        }
+        show={(isColumnAvailable ?? isAvailable) && onSafeplace}
         onColumnClick={onColumnClick}
         position={btn.position}
       />

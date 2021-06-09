@@ -191,7 +191,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
 
       <ColumnLink
         onColumnClick={bridgeButtonPromise.resolve}
-        show={bridgeButtonPromise.isWaiting}
+        show={bridgeButtonPromise.isWaiting && isSettledInScene}
         position={[0, 3.5, 5]}
       />
 

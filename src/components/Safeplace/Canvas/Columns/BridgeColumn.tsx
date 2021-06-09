@@ -16,9 +16,6 @@ const BridgeColumn = ({ columnObj }: { columnObj: THREE.Object3D }) => {
     s.isCurrentlyAvailable(SafeplacePOI.BridgeColumn)
   )
 
-  const onBridgePOI = useSafeplaceStore(
-    (s) => SafeplacePOI.BridgeColumn === s.currentPOI
-  )
   const isCameraTravelling = useSafeplaceStore((s) => s.isCameraTravelling)
   const isJourneyCompleted = useUserStore((s) => s.userData.journey)
 

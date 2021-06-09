@@ -131,7 +131,7 @@ const Grass = ({
       ref={instancedMeshRef}
     >
       <shaderMaterial
-        alphaTest={0.5}
+        alphaTest={0.75}
         transparent={true}
         side={THREE.DoubleSide}
         fragmentShader={fragmentShader}
