@@ -55,6 +55,7 @@ const WaterfallScene = forwardRef((_, camRef: RefObject<THREE.Camera>) => {
   const slatRef = useRef<{
     play: () => Promise<void>
     getGroup: () => RefObject<THREE.Group>
+    instantPlay: () => void
   }>()
 
   // --- STATE

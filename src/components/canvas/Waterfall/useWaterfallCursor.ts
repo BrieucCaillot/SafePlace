@@ -1,3 +1,4 @@
+import Routes from '@/constants/enums/Routes'
 import SFX from '@/constants/SFX'
 import useWatchableRef from '@/hooks/useWatchableRef'
 import useAudioStore from '@/stores/useAudioStore'
@@ -24,7 +25,11 @@ const useWaterfallCursor = ({
       fadeDuration: 800,
       pitchFactor: 0.03,
     },
-    { collapsed: true }
+    {
+      collapsed: true,
+      render: (s) =>
+        s('path') === Routes.Journey || s('path') === Routes.Waterfall,
+    }
   )
   const audio = useAudioStore((s) =>
     s.initAudio(SFX.WATER, { loop: true, volume: 0 })

@@ -1,16 +1,8 @@
-import {
-  MutableRefObject,
-  RefObject,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-} from 'react'
-import { GroupProps, PointerEvent, useFrame } from 'react-three-fiber'
+import { RefObject, useEffect, useMemo, useRef } from 'react'
+import { GroupProps } from 'react-three-fiber'
 import * as THREE from 'three'
 import { useControls } from 'leva'
 
-import useSavePOIData from '@/hooks/POI/useSavePOIData'
 import WaterfallFBO from './WaterfallFBO/WaterfallFBO'
 import WaterfallParticles from './WaterfallParticles/WaterfallParticles'
 import { getPositionTextureFromBox } from '@/utils/FBO/getPositionTexture'
@@ -47,7 +39,8 @@ const Waterfall = ({
     },
     {
       collapsed: true,
-      render: (s) => s('path') === Routes.Journey,
+      render: (s) =>
+        s('path') === Routes.Journey || s('path') === Routes.Waterfall,
     }
   )
 
@@ -61,7 +54,9 @@ const Waterfall = ({
   const isSceneRendered = useSceneStore(
     (s) =>
       s.renderedScene === SceneName.Waterfall ||
-      s.nextScene === SceneName.Waterfall
+      s.nextScene === SceneName.Waterfall ||
+      s.renderedScene === SceneName.WaterfallStandalone ||
+      s.nextScene === SceneName.WaterfallStandalone
   )
 
   const sceneRef = useRef<THREE.Scene>(new THREE.Scene())

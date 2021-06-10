@@ -85,6 +85,11 @@ const ScenesRouting = ({
       setRenderedScene(SceneName.JourneyIntro)
       setSection(JourneySection.Intro)
     }
+
+    if (pathname === Routes.Waterfall) {
+      mountScene(SceneName.WaterfallStandalone)
+      setRenderedScene(SceneName.WaterfallStandalone)
+    }
   }, [pathname])
 
   useEffect(() => {
@@ -100,6 +105,9 @@ const ScenesRouting = ({
     }
     if (previousPathname === Routes.OnBoarding) {
       setCurrentPOI(SafeplacePOI.Outside)
+    }
+    if (previousPathname === Routes.Waterfall) {
+      scenesToUnmounts.current.push(SceneName.WaterfallStandalone)
     }
   }, [previousPathname, pathname])
 

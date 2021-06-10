@@ -4,6 +4,7 @@ enum SceneName {
   Cairns = 'Cairns',
   JourneyIntro = 'JourneyIntro',
   Waterfall = 'Waterfall',
+  WaterfallStandalone = 'WaterfallStandalone',
 }
 
 export default SceneName

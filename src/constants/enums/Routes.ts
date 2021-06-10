@@ -8,6 +8,7 @@ enum Routes {
   Resources = '/resources',
   ResourcesFocus = '/resource/journey',
   Journey = '/journey',
+  Waterfall = '/waterfall',
 }
 
 export default Routes

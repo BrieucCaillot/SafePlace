@@ -49,7 +49,7 @@ const WaterfallFBO = forwardRef(
       windFrequency,
       windIntensity,
     } = useControls('waterfall.particles', {
-      'Simulator Params': folder(
+      simulation: folder(
         {
           angleAmplitude: { value: 0.2, min: 0, max: Math.PI, label: 'Angle' },
           movementSpeed: {

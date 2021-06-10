@@ -30,12 +30,12 @@ const Index = ({ status }: { status: TransitionStatus }) => {
   const { isWaiting, wait: waitSafeplaceLoaded, resolve } = useBooleanPromise()
   useEffect(() => {
     if (!isWaiting) return
-    if (useSceneStore.getState().scenesData[SceneName.Waterfall].isLoaded)
+    if (useSceneStore.getState().scenesData[SceneName.Safeplace].isLoaded)
       resolve()
     else
       return useSceneStore.subscribe(
         (b) => b && resolve(),
-        (s) => s.scenesData[SceneName.Waterfall].isLoaded
+        (s) => s.scenesData[SceneName.Safeplace].isLoaded
       )
   }, [isWaiting])
 

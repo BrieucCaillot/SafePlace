@@ -6,6 +6,7 @@ const SCENES_AMBIANTS: { [key in SceneName]: string } = {
   Cairns: '/audios/ambiants/Journey/Cairns.mp3',
   JourneyIntro: '/audios/ambiants/Journey/Intro.mp3',
   Waterfall: '/audios/ambiants/Journey/Waterfall.mp3',
+  WaterfallStandalone: '/audios/ambiants/Journey/Waterfall.mp3',
 }
 
 export default SCENES_AMBIANTS

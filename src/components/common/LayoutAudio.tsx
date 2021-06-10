@@ -40,8 +40,7 @@ const LayoutAudio = (): null => {
 
   useEffect(() => {
     if (scene === null) return
-    const { ambiantHowlMap } = useAudioStore.getState()
-    const ambiant = ambiantHowlMap.get(scene)
+    const ambiant = useAudioStore.getState().getAmbiant(scene)
     ambiant.stop()
     ambiant.play()
     ambiant.fade(ambiant.volume(), ambiantVolume, 2000)

@@ -24,6 +24,7 @@ const Slats = forwardRef(
     ref: ForwardedRef<{
       play: () => Promise<any>
       getGroup: () => RefObject<THREE.Group>
+      instantPlay: () => void
     }>
   ) => {
     const slats = useMemo(() => [...group.children] as THREE.Mesh[], [])
@@ -42,7 +43,9 @@ const Slats = forwardRef(
       () =>
         new Array(slats.length)
           .fill(null)
-          .map((_) => createRef<{ play: () => Promise<any> }>()),
+          .map((_) =>
+            createRef<{ play: () => Promise<any>; instantPlay: () => void }>()
+          ),
       []
     )
 
@@ -59,6 +62,7 @@ const Slats = forwardRef(
     useImperativeHandle(ref, () => ({
       play: () => Promise.all(slatRefs.map((r) => r.current.play())),
       getGroup: () => groupRef,
+      instantPlay: () => slatRefs.map((r) => r.current.instantPlay()),
     }))
 
     return (

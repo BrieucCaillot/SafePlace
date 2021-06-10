@@ -35,7 +35,7 @@ const WaterfallParticles = forwardRef(
     } = useControls(
       'waterfall.particles',
       {
-        'Particle Params': folder(
+        aspect: folder(
           {
             particlesSize: 300,
             sizeVariation: 0.7,

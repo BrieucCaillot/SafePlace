@@ -6,6 +6,7 @@ import SceneName from '@/constants/enums/SceneName'
 
 type AudioStore = {
   ambiantHowlMap: Map<SceneName, Howl>
+  getAmbiant: (scene: SceneName) => Howl
   onceAudioMap: Map<string, Howl>
   initAudio: (
     url: string,
@@ -16,12 +17,20 @@ type AudioStore = {
 }
 
 const useAudioStore = create<AudioStore>((set, get) => ({
-  ambiantHowlMap: new Map<SceneName, Howl>(
-    Object.entries(SCENES_AMBIANTS).map(([sceneName, url]) => [
-      sceneName as SceneName,
-      new Howl({ src: [url], loop: true, autoplay: true, volume: 0 }),
-    ])
-  ),
+  ambiantHowlMap: new Map<SceneName, Howl>(),
+  getAmbiant: (s: SceneName) => {
+    const { ambiantHowlMap } = get()
+    let ambiant = ambiantHowlMap.get(s)
+    if (ambiant != null) return ambiant
+    ambiant = new Howl({
+      src: [SCENES_AMBIANTS[s]],
+      loop: true,
+      autoplay: true,
+      volume: 0,
+    })
+    ambiantHowlMap.set(s, ambiant)
+    return ambiant
+  },
   onceAudioMap: new Map<string, Howl>(),
   initAudio: (
     url: string,

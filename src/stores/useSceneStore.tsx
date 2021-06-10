@@ -20,6 +20,7 @@ import CairnsScene from '@/components/Journey/Canvas/Scenes/Cairns/CairnsScene'
 import WaterfallScene from '@/components/Journey/Canvas/Scenes/Waterfall/WaterfallScene'
 import SceneName from '@/constants/enums/SceneName'
 import sceneBuilder from '@/utils/sceneBuilder'
+import WaterfallStandalone from '@/components/Journey/Canvas/Scenes/WaterfallStandalone/WaterfallStandalone'
 
 export type SceneData = {
   Component: ForwardRefExoticComponent<
@@ -80,6 +81,12 @@ const useSceneStore = create<SceneStore>((set, get) => ({
     },
     [SceneName.Waterfall]: {
       Component: WaterfallScene,
+      scene: sceneBuilder(),
+      isLoaded: false,
+      cameraRef: createRef(),
+    },
+    [SceneName.WaterfallStandalone]: {
+      Component: WaterfallStandalone,
       scene: sceneBuilder(),
       isLoaded: false,
       cameraRef: createRef(),

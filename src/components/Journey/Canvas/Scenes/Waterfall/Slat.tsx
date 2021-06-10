@@ -30,7 +30,7 @@ const Slat = forwardRef(
       volume: number
       delay: number
     },
-    ref: ForwardedRef<{ play: () => Promise<any> }>
+    ref: ForwardedRef<{ play: () => Promise<any>; instantPlay: () => void }>
   ) => {
     const slatRef = useRef<THREE.Mesh>(null)
     const willPlay = useSceneStore((s) => s.nextScene === SceneName.Waterfall)
@@ -55,6 +55,7 @@ const Slat = forwardRef(
           animation.play(Object.keys(actions)[0]),
           wait(delay * 1000).then(() => audio.play()),
         ]),
+      instantPlay: () => Object.values(actions)[0].setDuration(0).play(),
     }))
 
     return <MeshShorthand object={object} ref={slatRef} />
