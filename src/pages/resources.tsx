@@ -30,7 +30,10 @@ const Resources = ({ status }: { status: TransitionStatus }) => {
   )
   return (
     <div className={`fixed top-screen-h/2 flex justify-end w-full `}>
-      <ButtonShelterSafeplace show={show} direction='right' />
+      <ButtonShelterSafeplace
+        show={show && isVoiceoverPlayed}
+        direction='right'
+      />
     </div>
   )
 }
