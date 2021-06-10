@@ -72,7 +72,7 @@ const ResourceContent = (show: { show: boolean }) => {
               <p className='font-sans text-black text-stroke-4'>
                 La méditation de la montagne est une visualisation qui nous
                 permet de nous ancrer et de nous apaiser. <br /> Elle vous
-                emmènera, au grès de la musique, dans paysages harmonieux.{' '}
+                emmènera, au gré de la musique, dans des paysages harmonieux.{' '}
                 <br /> Au travers des interactions, prenez un grand bol d’air
                 frais...
               </p>
@@ -86,7 +86,7 @@ const ResourceContent = (show: { show: boolean }) => {
               <p className='font-sans text-black text-stroke-4'>
                 Quotidiennement, posez-vous pendant 3 à 5 minutes. Fermez les
                 yeux pour vous reconnecter à votre souffle et votre état
-                intérieur. Pour vous aidez, portez votre attention sur chacun de
+                intérieur. Pour vous aider, portez votre attention sur chacun de
                 vos 5 sens.
               </p>
             </div>
