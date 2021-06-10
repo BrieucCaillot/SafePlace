@@ -11,6 +11,10 @@ import Routes from '@/constants/enums/Routes'
 const ShelterResources = ({ resources }: { resources: THREE.Object3D }) => {
   const router = useUserStore((s) => s.router)
 
+  const isVoiceoverPlayed = useUserStore(
+    (s) => s.userData.voiceover.backFromJourney
+  )
+
   const isCurrentlyAvailable = useSafeplaceStore((s) =>
     s.isCurrentlyAvailable(SafeplacePOI.ResourceFocused)
   )
@@ -22,7 +26,10 @@ const ShelterResources = ({ resources }: { resources: THREE.Object3D }) => {
   return (
     <group position={resources.position}>
       <primitive object={mountainTrophy}>
-        <ColumnLink show={isCurrentlyAvailable} onColumnClick={onLinkClick} />
+        <ColumnLink
+          show={isCurrentlyAvailable && isVoiceoverPlayed}
+          onColumnClick={onLinkClick}
+        />
       </primitive>
     </group>
   )
