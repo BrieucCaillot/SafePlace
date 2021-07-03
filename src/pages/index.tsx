@@ -86,7 +86,7 @@ const Index = ({ status }: { status: TransitionStatus }) => {
         >
           <div>
             <img
-              className='absolute top-1/2 left-1/2 transform-gpu -translate-x-1/2 -translate-y-1/2 -mt-28 max-w-xs md:max-w-full'
+              className='absolute top-1/2 left-1/2 transform-gpu -translate-x-1/2 -translate-y-1/2 -mt-28 max-w-xs md:max-w-full select-none'
               src='/img/index/logo.png'
               alt='safeplace-logo'
             />
@@ -99,7 +99,7 @@ const Index = ({ status }: { status: TransitionStatus }) => {
                 id='button-start'
                 onClick={() => onButtonClicked(Routes.OnBoarding)}
                 onMouseEnter={() => !audio.playing() && audio.play()}
-                className={`relative button-stonefull text-white text-xl font-bold tracking-widest rounded px-10 py-3 focus:outline-none cursor-pointer ${
+                className={`relative button-stonefull text-white text-xl font-bold tracking-widest rounded px-10 py-3 focus:outline-none cursor-pointer select-none ${
                   hide ? 'pointer-events-none' : ''
                 }`}
               >

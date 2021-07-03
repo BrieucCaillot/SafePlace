@@ -26,7 +26,7 @@ const ButtonStonecut = ({
     <button
       onMouseEnter={() => !audio.playing() && audio.play()}
       onClick={onClick}
-      className={`relative button-stonecut tracking-widest text-lg focus:outline-none w-max ml-auto mr-auto cursor-pointer ${className}`}
+      className={`relative button-stonecut tracking-widest text-lg focus:outline-none w-max ml-auto mr-auto cursor-pointer select-none ${className}`}
     >
       <div className='button-stonecut__wrapper'>
         <SVGStonecut />

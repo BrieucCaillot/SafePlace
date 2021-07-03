@@ -77,7 +77,7 @@ const Instruction = ({
       <div className='w-screen'>
         <p
           ref={contentRef}
-          className={`text-primary text-stroke-6 font-sans text-xl leading-loose tracking-wider text-center pb-7 whitespace-pre-line m-auto ${textClassName}`}
+          className={`text-primary text-stroke-6 font-sans text-xl leading-loose tracking-wider text-center pb-7 whitespace-pre-line m-auto select-none ${textClassName}`}
         >
           {text}
         </p>
